@@ -23,7 +23,7 @@
     font-weight: 300;
     background: var(--cream);
     color: var(--ink);
-    font-size: 16px;
+    font-size: 17px;
     line-height: 1.65;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -81,7 +81,7 @@
   }
 
   nav.scrolled .nav-links a {
-    color: var(--muted);
+    color: var(--ink);
   }
 
   .nav-links a:hover {
@@ -89,7 +89,7 @@
   }
 
   nav.scrolled .nav-links a:hover {
-    color: var(--ink);
+    color: var(--muted);
   }
 
   /* ── CONTAINERS ──────────────────────────────── */
@@ -229,7 +229,7 @@
     font-weight: 400;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--ink);
     text-decoration: none;
     transition: color 0.2s;
   }
@@ -239,7 +239,7 @@
   }
 
   .link-arrow:hover {
-    color: var(--ink);
+    color: var(--muted);
   }
 
   #hero .link-arrow:hover {
@@ -547,13 +547,13 @@
     font-weight: 400;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--ink);
     text-decoration: none;
     transition: color 0.2s;
   }
 
   .footer-links a:hover {
-    color: var(--ink);
+    color: var(--muted);
   }
 
   .footer-copy {
