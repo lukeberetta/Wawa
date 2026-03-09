@@ -300,8 +300,7 @@
   }
 
   .quote-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
+    font-family: 'Inter', sans-serif;
     font-weight: 300;
     font-size: clamp(1.5rem, 3vw, 2.4rem);
     line-height: 1.38;
@@ -453,8 +452,7 @@
   }
 
   .footer-tagline {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
+    font-family: 'Inter', sans-serif;
     font-weight: 300;
     font-size: 1rem;
     color: var(--muted);
