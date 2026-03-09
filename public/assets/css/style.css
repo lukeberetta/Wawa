@@ -16,6 +16,7 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   body {
@@ -636,7 +637,7 @@
   }
 
   @media (max-width: 600px) {
-    nav {
+    .nav-inner {
       padding: 1rem 1.25rem;
     }
 
@@ -644,6 +645,10 @@
     .hero-grid {
       padding-left: 1.25rem;
       padding-right: 1.25rem;
+    }
+
+    .hero-grid {
+      padding-bottom: 1.25rem;
     }
 
 #boards,
@@ -654,8 +659,9 @@
       padding: 4rem 0;
     }
 
-    footer {
-      padding: 2rem 1.25rem;
+    .footer-inner {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
     }
 
     .boards-row {
@@ -663,6 +669,16 @@
     }
 
     .nav-links {
-      gap: 1.5rem;
+      gap: 1.25rem;
+    }
+
+    .nav-logo img,
+    .footer-logo img {
+      height: 14px;
+    }
+
+    .fab-wa {
+      bottom: 1rem;
+      right: 1rem;
     }
   }
