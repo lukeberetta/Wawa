@@ -10,7 +10,7 @@
     --cream: #f5f0e8;
     --ink: #1a1410;
     --muted: #7d7168;
-    --rule: #d4cfc7;
+    --rule: #b8b0a6;
     --warm: #9c7d5e;
   }
 
@@ -35,13 +35,18 @@
     position: fixed;
     inset: 0 0 auto 0;
     z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.25rem 2.5rem;
     background: transparent;
     border-bottom: 1px solid transparent;
     transition: background 0.3s, border-color 0.3s;
+  }
+
+  .nav-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.25rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   nav.scrolled {
@@ -90,7 +95,7 @@
   /* ── CONTAINERS ──────────────────────────────── */
 
   .wrap {
-    max-width: 1160px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 2.5rem;
   }
@@ -100,18 +105,81 @@
   #hero {
     min-height: 100svh;
     display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--rule);
-    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.6)), url('public/storefront.png');
+    align-items: stretch;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-slide {
+    position: absolute;
+    inset: 0;
     background-size: cover;
     background-position: center;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+  .hero-slide.active {
+    opacity: 1;
+  }
+
+  .hero-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.6));
+  }
+
+  .hero-nav {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: auto;
+    padding-top: 3rem;
+  }
+
+  .hero-dot {
+    width: 36px;
+    height: 2px;
+    padding: 0;
+    border: none;
+    background: rgba(255, 255, 255, 0.25);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-dot-fill {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .hero-dot.active .hero-dot-fill {
+    animation: dot-progress 5s linear forwards;
+  }
+
+  @keyframes dot-progress {
+    to { transform: scaleX(1); }
   }
 
   .hero-grid {
-    max-width: 1160px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 6rem 2.5rem 4rem;
     width: 100%;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .hero-label {
@@ -254,7 +322,6 @@
     align-items: flex-end;
     gap: 3rem;
     padding-bottom: 2rem;
-    border-bottom: 1px solid var(--rule);
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -301,6 +368,7 @@
 
   .quote-text {
     font-family: 'Inter', sans-serif;
+    font-style: italic;
     font-weight: 300;
     font-size: clamp(1.5rem, 3vw, 2.4rem);
     line-height: 1.38;
@@ -439,23 +507,25 @@
 
   /* ── FOOTER ──────────────────────────────────── */
 
-  footer {
-    padding: 2.5rem 2.5rem;
-    border-top: 1px solid var(--rule);
+  footer {}
+
+  .footer-inner {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
-    max-width: 1160px;
-    margin: 0 auto;
   }
 
-  .footer-tagline {
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    font-size: 1rem;
-    color: var(--muted);
+  .footer-logo img {
+    opacity: 0.55;
+    transition: opacity 0.2s;
+  }
+
+  .footer-logo:hover img {
+    opacity: 1;
   }
 
   .footer-links {
@@ -484,6 +554,32 @@
     text-transform: uppercase;
     color: var(--muted);
     opacity: 0.45;
+  }
+
+  /* ── WHATSAPP FAB ────────────────────────────── */
+
+  .fab-wa {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 200;
+    width: 52px;
+    height: 52px;
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(26, 20, 16, 0.18);
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+
+  .fab-wa:hover {
+    background: var(--warm);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26, 20, 16, 0.22);
   }
 
   /* ── FADE IN ─────────────────────────────────── */
@@ -542,7 +638,7 @@
       padding-right: 1.25rem;
     }
 
-    #boards,
+#boards,
     #pullquote,
     #story,
     #craft,
