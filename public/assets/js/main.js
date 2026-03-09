@@ -1,10 +1,10 @@
-// Hero slideshow — add filenames here as you drop images into public/img/
+// Hero slideshow — add filenames here as you drop images into public/assets/img/
 const heroImages = [
-    'public/img/surfers.jpeg',
-    'public/img/storefront.png',
-    'public/img/boards.png',
-    'public/img/cafe.png',
-    'public/img/workshop.png',
+    'assets/img/surfers.jpeg',
+    'assets/img/storefront.png',
+    'assets/img/boards.png',
+    'assets/img/cafe.png',
+    'assets/img/workshop.png',
 ];
 
 const DURATION = 5000;
