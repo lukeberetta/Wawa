@@ -160,10 +160,12 @@
     padding: 2rem 0;
   }
 
-  .hero-board {
-    height: clamp(300px, 48vh, 440px);
-    width: auto;
-    opacity: 0.88;
+  .hero-image {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px;
   }
 
   /* ── SECTION TYPOGRAPHY ──────────────────────── */
