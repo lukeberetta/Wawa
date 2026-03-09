@@ -1,7 +1,9 @@
 // Hero slideshow — add filenames here as you drop images into public/img/
 const heroImages = [
-    'public/img/storefront.png',
     'public/img/surfers.jpeg',
+    'public/img/storefront.png',
+    'public/img/boards.png',
+    'public/img/cafe.png',
     'public/img/workshop.png',
 ];
 
@@ -40,7 +42,12 @@ function goTo(index) {
     slides[current].classList.remove('active');
     dots[current].classList.remove('active');
     current = index;
-    slides[current].classList.add('active');
+    // Reset Ken Burns so it always starts from fully zoomed in
+    const slide = slides[current];
+    slide.style.animation = 'none';
+    slide.offsetWidth; // force reflow
+    slide.style.animation = '';
+    slide.classList.add('active');
     // Remove and re-add active to restart the fill animation
     const dot = dots[current];
     dot.classList.remove('active');
