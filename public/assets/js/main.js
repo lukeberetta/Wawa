@@ -75,3 +75,38 @@ window.addEventListener('scroll', () => {
         nav.classList.remove('scrolled');
     }
 });
+
+// Hamburger menu
+const menuBtn = document.querySelector('.nav-menu-btn');
+const navDrawer = document.querySelector('.nav-drawer');
+const navOverlay = document.querySelector('.nav-overlay');
+
+function openMenu() {
+    menuBtn.classList.add('open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    navDrawer.classList.add('open');
+    navOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeMenu() {
+    menuBtn.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    navDrawer.classList.remove('open');
+    navOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+menuBtn.addEventListener('click', () => {
+    navDrawer.classList.contains('open') ? closeMenu() : openMenu();
+});
+
+navOverlay.addEventListener('click', closeMenu);
+
+navDrawer.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', closeMenu);
+});
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMenu();
+});
