@@ -59,6 +59,17 @@ function goTo(index) {
 
 timer = setInterval(() => goTo((current + 1) % slides.length), DURATION);
 
+// Instagram-style tap to navigate
+hero.addEventListener('click', (e) => {
+    if (e.target.closest('a, button')) return;
+    const rect = hero.getBoundingClientRect();
+    if (e.clientX < rect.left + rect.width / 2) {
+        goTo((current - 1 + slides.length) % slides.length);
+    } else {
+        goTo((current + 1) % slides.length);
+    }
+});
+
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
         if (e.isIntersecting) e.target.classList.add('visible');
