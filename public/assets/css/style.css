@@ -764,7 +764,7 @@
   .fab-wa {
     position: fixed;
     bottom: 2rem;
-    right: 2rem;
+    right: max(2.5rem, calc((100vw - 1400px) / 2 + 2.5rem));
     z-index: 200;
     width: 52px;
     height: 52px;
@@ -900,6 +900,6 @@
 
     .fab-wa {
       bottom: 1rem;
-      right: 1rem;
+      right: 1.25rem;
     }
   }
