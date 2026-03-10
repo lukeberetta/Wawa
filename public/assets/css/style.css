@@ -393,6 +393,7 @@
 
   .link-arrow {
     display: inline-flex;
+    align-self: flex-start;
     align-items: center;
     gap: 0.6rem;
     font-size: 0.7rem;
