@@ -693,6 +693,7 @@ p:last-child {
   font-weight: 400;
   color: var(--muted);
   line-height: 1.9;
+  text-decoration: none;
 }
 
 .order-details strong {
