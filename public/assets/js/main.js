@@ -1,10 +1,11 @@
 // Hero slideshow — add filenames here as you drop images into public/assets/img/
 const heroImages = [
-    'assets/img/surfers.jpeg',
-    'assets/img/storefront.png',
-    'assets/img/boards.png',
-    'assets/img/cafe.png',
-    'assets/img/workshop.png',
+    'assets/img/surfers.jpg',
+    'assets/img/storefront.jpg',
+    'assets/img/boards.jpg',
+    'assets/img/cafe.jpg',
+    'assets/img/workshop.jpg',
+    'assets/img/floor.jpg',
 ];
 
 const DURATION = 5000;
@@ -98,7 +99,8 @@ window.addEventListener('scroll', () => {
     } else {
         nav.classList.remove('scrolled');
     }
-    if (window.scrollY > heroHeight * 0.15) {
+    const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80;
+    if (window.scrollY > heroHeight * 0.15 && !atBottom) {
         fabWa.classList.add('visible');
     } else {
         fabWa.classList.remove('visible');
@@ -155,3 +157,5 @@ function updateActiveSection() {
 
 window.addEventListener('scroll', updateActiveSection, { passive: true });
 updateActiveSection();
+
+document.getElementById('footer-year').textContent = new Date().getFullYear();
