@@ -103,6 +103,8 @@ menuBtn.addEventListener('click', () => {
 
 navOverlay.addEventListener('click', closeMenu);
 
+document.querySelector('.nav-drawer-close').addEventListener('click', closeMenu);
+
 navDrawer.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', closeMenu);
 });
@@ -110,3 +112,22 @@ navDrawer.querySelectorAll('a[href^="#"]').forEach(link => {
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeMenu();
 });
+
+// Active section tracking for sidebar
+const sections = document.querySelectorAll('section[id]');
+const sidebarLinks = navDrawer.querySelectorAll('.nav-drawer-nav a');
+
+function updateActiveSection() {
+    let current = '';
+    sections.forEach(section => {
+        if (section.getBoundingClientRect().top <= window.innerHeight / 2) {
+            current = section.id;
+        }
+    });
+    sidebarLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+    });
+}
+
+window.addEventListener('scroll', updateActiveSection, { passive: true });
+updateActiveSection();
