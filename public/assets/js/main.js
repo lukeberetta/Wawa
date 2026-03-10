@@ -68,24 +68,41 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
 const nav = document.querySelector('nav');
+
+// Track nav height so the slide-down drawer sits flush below it
+function setNavHeight() {
+    if (nav) {
+        document.documentElement.style.setProperty('--nav-height', nav.offsetHeight + 'px');
+    }
+}
+setNavHeight();
+window.addEventListener('resize', setNavHeight);
+
+const fabWa = document.querySelector('.fab-wa');
+const heroHeight = document.querySelector('#hero')?.offsetHeight ?? window.innerHeight;
+
 window.addEventListener('scroll', () => {
     if (window.scrollY > 50) {
         nav.classList.add('scrolled');
     } else {
         nav.classList.remove('scrolled');
     }
+    if (window.scrollY > heroHeight * 0.15) {
+        fabWa.classList.add('visible');
+    } else {
+        fabWa.classList.remove('visible');
+    }
 });
 
 // Hamburger menu
 const menuBtn = document.querySelector('.nav-menu-btn');
 const navDrawer = document.querySelector('.nav-drawer');
-const navOverlay = document.querySelector('.nav-overlay');
 
 function openMenu() {
     menuBtn.classList.add('open');
     menuBtn.setAttribute('aria-expanded', 'true');
     navDrawer.classList.add('open');
-    navOverlay.classList.add('open');
+    nav.classList.add('nav-open');
     document.body.style.overflow = 'hidden';
 }
 
@@ -93,17 +110,13 @@ function closeMenu() {
     menuBtn.classList.remove('open');
     menuBtn.setAttribute('aria-expanded', 'false');
     navDrawer.classList.remove('open');
-    navOverlay.classList.remove('open');
+    nav.classList.remove('nav-open');
     document.body.style.overflow = '';
 }
 
 menuBtn.addEventListener('click', () => {
     navDrawer.classList.contains('open') ? closeMenu() : openMenu();
 });
-
-navOverlay.addEventListener('click', closeMenu);
-
-document.querySelector('.nav-drawer-close').addEventListener('click', closeMenu);
 
 navDrawer.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', closeMenu);
