@@ -779,7 +779,7 @@ footer p a:hover {
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  box-shadow: 0 4px 16px rgba(26, 20, 16, 0.18);
+  /* box-shadow: 0 4px 16px rgba(26, 20, 16, 0.18); */
   opacity: 0;
   pointer-events: none;
   transition: background 0.2s, transform 0.2s, box-shadow 0.2s, opacity 0.4s;
