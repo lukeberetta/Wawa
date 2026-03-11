@@ -1,0 +1,30 @@
+---
+export interface Props {
+    name: string;
+    type: string;
+    price: string;
+    lead?: string;
+    img: string;
+    back: string;
+    desc: string;
+}
+
+const { name, type, price, lead, img, back, desc } = Astro.props;
+---
+
+<div class="featured-card"
+    data-name={name}
+    data-type={type}
+    data-price={price}
+    data-lead={lead}
+    data-img={img}
+    data-back={back}
+    data-desc={desc}>
+    <img class="featured-img-front" src={img} alt={`${name} — front`}>
+    <img class="featured-img-back" src={back} alt={`${name} — back`}>
+    <span class="featured-name">{name}</span>
+    <div class="featured-card-bar">
+        <span class="featured-card-price">{price}</span>
+        <button class="featured-card-btn">Product Details</button>
+    </div>
+</div>
