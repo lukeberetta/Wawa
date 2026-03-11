@@ -210,9 +210,8 @@ modalImgContainer.addEventListener('click', () => {
     modalDots[1].classList.toggle('active', showingBack);
 });
 
-document.querySelectorAll('.featured-card-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const card = btn.closest('.featured-card');
+document.querySelectorAll('.featured-card').forEach(card => {
+    card.addEventListener('click', () => {
         modalImgFront.src = card.dataset.img;
         modalImgFront.alt = card.dataset.name;
         modalImgBack.src = card.dataset.back;

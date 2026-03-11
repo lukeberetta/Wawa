@@ -1093,9 +1093,6 @@ footer p a:hover {
   margin-bottom: 1.5rem;
 }
 
-.board-modal-body>p {
-  line-height: 1.7;
-}
 
 .board-modal-meta {
   display: flex;
@@ -1225,6 +1222,11 @@ footer p a:hover {
   .featured-card {
     flex: 0 0 82vw;
     height: 70vh;
+    cursor: pointer;
+  }
+
+  .featured-card-bar {
+    display: flex;
   }
 
   .featured-nav-btn {
@@ -1241,9 +1243,8 @@ footer p a:hover {
   }
 
   .board-modal-img {
-    height: 72vw;
-    min-height: 260px;
-    flex-shrink: 0;
+    width: 100%;
+    height: min(100vw, 70vh);
   }
 
   .board-modal-body {
