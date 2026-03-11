@@ -201,6 +201,7 @@ const modalType = document.getElementById('modalType');
 const modalName = document.getElementById('modalName');
 const modalDesc = document.getElementById('modalDesc');
 const modalPrice = document.getElementById('modalPrice');
+const modalLead = document.getElementById('modalLead');
 const modalWa = document.getElementById('modalWa');
 const WA_BASE = 'https://api.whatsapp.com/send?phone=27823723142';
 
@@ -223,6 +224,7 @@ document.querySelectorAll('.featured-card').forEach(card => {
         modalName.textContent = card.dataset.name;
         modalDesc.textContent = card.dataset.desc;
         modalPrice.textContent = card.dataset.price;
+        modalLead.textContent = card.dataset.lead || '4–6 weeks from order';
         const msg = encodeURIComponent(`Hi, I'm interested in a ${card.dataset.name}. Can you tell me more?`);
         modalWa.href = `${WA_BASE}&text=${msg}`;
         boardModal.classList.add('open');
