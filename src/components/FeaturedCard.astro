@@ -1,7 +1,6 @@
 ---
 export interface Props {
     name: string;
-    type: string;
     price: string;
     lead?: string;
     img: string;
@@ -9,12 +8,11 @@ export interface Props {
     desc: string;
 }
 
-const { name, type, price, lead, img, back, desc } = Astro.props;
+const { name, price, lead, img, back, desc } = Astro.props;
 ---
 
 <div class="featured-card"
     data-name={name}
-    data-type={type}
     data-price={price}
     data-lead={lead}
     data-img={img}

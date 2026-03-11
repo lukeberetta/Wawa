@@ -1,56 +1,17 @@
 ---
+import Layout from '../layouts/Layout.astro';
 import FeaturedCard from '../components/FeaturedCard.astro';
 import BoardItem from '../components/BoardItem.astro';
 import WhatsAppLink from '../components/WhatsAppLink.astro';
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wawa Surfboards — Muizenberg, Cape Town</title>
-    <meta name="description"
-        content="Traditional wooden surfboards handcrafted in Muizenberg, Cape Town. Custom builds shaped from paulownia timber by Wawa Surfboards.">
-    <meta name="theme-color" content="#1a1410">
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://wawa.lukeberetta.com/">
-    <meta property="og:title" content="Wawa Surfboards">
-    <meta property="og:description" content="Traditional wooden surfboards handcrafted in Muizenberg, Cape Town.">
-    <meta property="og:image" content="https://wawa.lukeberetta.com/og-image.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Wawa Surfboards">
-    <meta name="twitter:description" content="Traditional wooden surfboards handcrafted in Muizenberg, Cape Town.">
-    <meta name="twitter:image" content="https://wawa.lukeberetta.com/og-image.jpg">
-
-    <!-- Icons -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="manifest" href="site.webmanifest">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-
-<body>
+<Layout>
 
     <!-- NAV -->
     <nav>
         <div class="nav-inner">
             <a href="#hero" class="nav-logo">
-                <img src="logotype.svg" alt="Wawa Wooden Surfboards" height="20">
+                <img src="/logotype.svg" alt="Wawa Wooden Surfboards" height="20">
             </a>
             <button class="nav-menu-btn" aria-label="Open menu" aria-expanded="false">
                 <span></span>
@@ -67,7 +28,7 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
     <div class="nav-drawer" role="dialog" aria-label="Navigation" aria-modal="true">
         <div class="nav-drawer-inner">
             <a href="#hero" class="nav-drawer-logo">
-                <img src="logotype.svg" alt="Wawa Wooden Surfboards" height="18">
+                <img src="/logotype.svg" alt="Wawa Wooden Surfboards" height="18">
             </a>
             <p class="nav-drawer-tagline">Shaped by hand.<br>Muizenberg, Cape Town.</p>
             <ul class="nav-drawer-nav">
@@ -119,7 +80,6 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
 
             <FeaturedCard
                 name="Handslide"
-                type="Handslide"
                 price="From R850"
                 lead="In stock — available now"
                 img="assets/img/2-board-front.jpg"
@@ -129,7 +89,6 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
 
             <FeaturedCard
                 name="Fish"
-                type="Fish"
                 price="R 16,500"
                 img="assets/img/1-board-front.jpg"
                 back="assets/img/1-board-back.jpg"
@@ -138,7 +97,6 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
 
             <FeaturedCard
                 name="Alaia"
-                type="Alaia"
                 price="POA"
                 img="assets/img/3-board-front.jpg"
                 back="assets/img/3-board-back.jpg"
@@ -147,7 +105,6 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
 
             <FeaturedCard
                 name="Mid-length"
-                type="Mid-length"
                 price="R 22,000"
                 img="assets/img/1-board-front.jpg"
                 back="assets/img/1-board-back.jpg"
@@ -156,7 +113,6 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
 
             <FeaturedCard
                 name="Longboard"
-                type="Longboard"
                 price="R 28,500"
                 img="assets/img/1-board-front.jpg"
                 back="assets/img/1-board-back.jpg"
@@ -186,7 +142,6 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
 
             <div class="boards-row fade-in">
 
-                <!-- Paipo -->
                 <BoardItem name="Paipo">
                     <svg height="80" viewBox="0 0 80 122" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M40,8 C62,8 72,30 72,61 C72,92 62,110 40,115 C18,110 8,92 8,61 C8,30 18,8 40,8 Z"
@@ -194,7 +149,6 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
                     </svg>
                 </BoardItem>
 
-                <!-- Fish -->
                 <BoardItem name="Fish">
                     <svg height="120" viewBox="0 0 90 158" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -203,7 +157,6 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
                     </svg>
                 </BoardItem>
 
-                <!-- Bodyboard -->
                 <BoardItem name="Bodyboard">
                     <svg height="130" viewBox="0 0 108 148" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -212,7 +165,6 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
                     </svg>
                 </BoardItem>
 
-                <!-- Mid-length -->
                 <BoardItem name="Mid-length">
                     <svg height="165" viewBox="0 0 70 189" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M35,6 C54,6 62,36 62,94 C62,148 54,176 35,183 C16,176 8,148 8,94 C8,36 16,6 35,6 Z"
@@ -220,7 +172,6 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
                     </svg>
                 </BoardItem>
 
-                <!-- Alaia -->
                 <BoardItem name="Alaia">
                     <svg height="210" viewBox="0 0 44 220" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M22,3 C29,8 35,38 35,110 C35,172 29,205 22,217 C15,205 9,172 9,110 C9,38 15,8 22,3 Z"
@@ -228,7 +179,6 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
                     </svg>
                 </BoardItem>
 
-                <!-- Longboard -->
                 <BoardItem name="Longboard">
                     <svg height="260" viewBox="0 0 62 222" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M31,5 C50,8 56,40 56,111 C56,174 46,207 31,218 C16,207 6,174 6,111 C6,40 12,8 31,5 Z"
@@ -332,7 +282,7 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
                         level — whether you're stepping onto a board for the first time or looking for something
                         specific.</p>
                     <p>Production is intentionally limited. Each board gets the time it deserves.</p>
-                    <WhatsAppLink classNames="btn-wa">
+                    <WhatsAppLink class="btn-wa">
                         Let's chat
                     </WhatsAppLink>
                 </div>
@@ -355,13 +305,12 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
     </section>
 
 
-
     <!-- FOOTER -->
     <footer>
         <div class="wrap footer-inner">
             <div class="footer-left">
                 <a href="#hero" class="footer-logo">
-                    <img src="logotype.svg" alt="Wawa Surfboards" height="14">
+                    <img src="/logotype.svg" alt="Wawa Surfboards" height="14">
                 </a>
                 <p>&copy; <span id="footer-year"></span> Wawa</p>
             </div>
@@ -370,7 +319,7 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
     </footer>
 
     <!-- WHATSAPP FAB -->
-    <WhatsAppLink classNames="fab-wa" ariaLabel="Chat on WhatsApp" />
+    <WhatsAppLink class="fab-wa" ariaLabel="Chat on WhatsApp" />
 
     <!-- BOARD MODAL -->
     <div class="board-modal" id="boardModal" role="dialog" aria-modal="true" aria-label="Board details">
@@ -401,14 +350,11 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
                         <span id="modalLead"></span>
                     </div>
                 </div>
-                <WhatsAppLink classNames="btn-wa" id="modalWa">
+                <WhatsAppLink class="btn-wa" id="modalWa">
                     Enquire on WhatsApp
                 </WhatsAppLink>
             </div>
         </div>
     </div>
 
-    <script src="assets/js/main.js" is:inline></script>
-</body>
-
-</html>
+</Layout>

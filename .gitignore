@@ -1,16 +1,16 @@
-node_modules/
-.DS_Store
-.env
-dist/
-build/
-.wrangler/
 # build output
 dist/
+build/
+
 # generated types
 .astro/
 
 # dependencies
 node_modules/
+
+# environment variables
+.env
+.env.production
 
 # logs
 npm-debug.log*
@@ -18,13 +18,11 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Cloudflare
+.wrangler/
 
-# environment variables
-.env
-.env.production
-
-# macOS-specific files
+# macOS
 .DS_Store
 
-# jetbrains setting folder
+# editors
 .idea/
