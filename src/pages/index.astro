@@ -1,0 +1,360 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FeaturedCard from '../components/FeaturedCard.astro';
+import BoardItem from '../components/BoardItem.astro';
+import WhatsAppLink from '../components/WhatsAppLink.astro';
+---
+
+<Layout>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-inner">
+            <a href="#hero" class="nav-logo">
+                <img src="/logotype.svg" alt="Wawa Wooden Surfboards" height="20">
+            </a>
+            <button class="nav-menu-btn" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- NAV OVERLAY -->
+    <div class="nav-overlay"></div>
+
+    <!-- NAV DRAWER -->
+    <div class="nav-drawer" role="dialog" aria-label="Navigation" aria-modal="true">
+        <div class="nav-drawer-inner">
+            <a href="#hero" class="nav-drawer-logo">
+                <img src="/logotype.svg" alt="Wawa Wooden Surfboards" height="18">
+            </a>
+            <p class="nav-drawer-tagline">Shaped by hand.<br>Muizenberg, Cape Town.</p>
+            <ul class="nav-drawer-nav">
+                <li><a href="#boards">Boards</a></li>
+                <li><a href="#story">Story</a></li>
+                <li><a href="#craft">Craft</a></li>
+                <li><a href="#order">Order</a></li>
+            </ul>
+            <div class="nav-drawer-contact">
+                <span class="nav-drawer-contact-label">Contact</span>
+                <a href="https://instagram.com/wawa_surfboards" target="_blank" rel="noopener">Instagram</a>
+                <a href="mailto:surfboards@wawawave.com">Email</a>
+                <a href="tel:+27823723142">Call us</a>
+                <a href="https://api.whatsapp.com/send?phone=27823723142" target="_blank" rel="noopener">WhatsApp</a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- HERO -->
+    <section id="hero">
+        <div class="hero-grid">
+
+            <div class="hero-content">
+                <p class="hero-label fade-in">Wawa Surfboards</p>
+                <h1 class="fade-in">Honouring<br>surfing's<br>heritage.</h1>
+                <p class="hero-sub fade-in">Traditional wooden surfboards. Made by hand, shaped by nature.</p>
+                <a href="#boards" class="link-arrow fade-in">
+                    Explore boards <span class="arrow">→</span>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PULL QUOTE -->
+    <section id="pullquote">
+        <div class="wrap">
+            <p class="quote-text fade-in">"Centuries ago, the first Polynesian surfers carved their boards from native
+                timber, guided by instinct, respect and a connection to the ocean. At Wawa, that spirit lives on."</p>
+            <p class="quote-attr fade-in">— Cobus Joubert, Founder</p>
+        </div>
+    </section>
+
+
+    <!-- FEATURED -->
+    <section id="featured">
+        <div class="featured-track">
+
+            <FeaturedCard
+                name="Handslide"
+                price="From R850"
+                lead="In stock — available now"
+                img="assets/img/2-board-front.jpg"
+                back="assets/img/2-board-back.jpg"
+                desc="Bodysurfing is the art of riding a wave with nothing but your body — and a Wawa Handslide. Carved from paulownia and fitted with a woven hand strap, it extends your reach and trims your line across the face of the wave. Designed to sharpen your feel for how a wave moves, and make spins and barrel rolls a whole lot easier."
+            />
+
+            <FeaturedCard
+                name="Fish"
+                price="R 16,500"
+                img="assets/img/1-board-front.jpg"
+                back="assets/img/1-board-back.jpg"
+                desc="A smaller, more responsive fish. Works beautifully in punchy beachbreak — ideal for intermediate riders looking for something lively underfoot."
+            />
+
+            <FeaturedCard
+                name="Alaia"
+                price="POA"
+                img="assets/img/3-board-front.jpg"
+                back="assets/img/3-board-back.jpg"
+                desc="If our Paipo boards are punk rock, then our Alaias are Miles Davis. Thin, flat rockered and sealed with oil, the Alaia is designed to be ridden primarily standup and on a rail. They glide with an unrestricted ease that modern surfboards cannot begin to compete with. Talk to anyone who has put the time into learning to ride one of these boards and you will find them waxing lyrical about the spiritual journey they have found themselves on. Unbelievably fun and entirely addictive, these boards transform days, which would otherwise be too small or weak, into adrenaline soaked, speed sessions."
+            />
+
+            <FeaturedCard
+                name="Mid-length"
+                price="R 22,000"
+                img="assets/img/1-board-front.jpg"
+                back="assets/img/1-board-back.jpg"
+                desc="A versatile mid-length with a single-to-double concave through the fins. Works across a wide range of conditions — the most approachable shape in the Wawa range."
+            />
+
+            <FeaturedCard
+                name="Longboard"
+                price="R 28,500"
+                img="assets/img/1-board-front.jpg"
+                back="assets/img/1-board-back.jpg"
+                desc="A classic single-fin longboard. Long, relaxed turns and a stable platform for noseriding. Shaped for flow."
+            />
+
+        </div>
+        <button class="featured-nav-btn featured-nav-prev" aria-label="Previous board" hidden>←</button>
+        <button class="featured-nav-btn featured-nav-next" aria-label="Next board">→</button>
+    </section>
+
+
+    <!-- BOARDS -->
+    <section id="boards">
+        <div class="wrap">
+
+            <div class="boards-header fade-in">
+                <div>
+                    <p class="label">Boards</p>
+                    <h2>Shaped from<br>timber.</h2>
+                </div>
+                <div class="boards-header-note">
+                    <p>Every Wawa board is a custom build — shaped to your style, your break and your experience level.
+                        Select a form below and we'll shape the rest.</p>
+                </div>
+            </div>
+
+            <div class="boards-row fade-in">
+
+                <BoardItem name="Paipo">
+                    <svg height="80" viewBox="0 0 80 122" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M40,8 C62,8 72,30 72,61 C72,92 62,110 40,115 C18,110 8,92 8,61 C8,30 18,8 40,8 Z"
+                            stroke="var(--ink)" stroke-width="1.5" />
+                    </svg>
+                </BoardItem>
+
+                <BoardItem name="Fish">
+                    <svg height="120" viewBox="0 0 90 158" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M45,5 C68,5 82,32 82,79 C82,116 72,136 60,146 L45,138 L30,146 C18,136 8,116 8,79 C8,32 22,5 45,5 Z"
+                            stroke="var(--ink)" stroke-width="1.5" />
+                    </svg>
+                </BoardItem>
+
+                <BoardItem name="Bodyboard">
+                    <svg height="130" viewBox="0 0 108 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M54,5 C82,5 98,22 98,48 L98,105 C98,120 84,132 70,134 L58,130 L54,134 L50,130 L38,134 C24,132 10,120 10,105 L10,48 C10,22 26,5 54,5 Z"
+                            stroke="var(--ink)" stroke-width="1.5" />
+                    </svg>
+                </BoardItem>
+
+                <BoardItem name="Mid-length">
+                    <svg height="165" viewBox="0 0 70 189" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M35,6 C54,6 62,36 62,94 C62,148 54,176 35,183 C16,176 8,148 8,94 C8,36 16,6 35,6 Z"
+                            stroke="var(--ink)" stroke-width="1.5" />
+                    </svg>
+                </BoardItem>
+
+                <BoardItem name="Alaia">
+                    <svg height="210" viewBox="0 0 44 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22,3 C29,8 35,38 35,110 C35,172 29,205 22,217 C15,205 9,172 9,110 C9,38 15,8 22,3 Z"
+                            stroke="var(--ink)" stroke-width="1.5" />
+                    </svg>
+                </BoardItem>
+
+                <BoardItem name="Longboard">
+                    <svg height="260" viewBox="0 0 62 222" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M31,5 C50,8 56,40 56,111 C56,174 46,207 31,218 C16,207 6,174 6,111 C6,40 12,8 31,5 Z"
+                            stroke="var(--ink)" stroke-width="1.5" />
+                    </svg>
+                </BoardItem>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- STORY -->
+    <section id="story">
+        <div class="wrap">
+
+            <div class="story-header fade-in">
+                <p class="label">Story</p>
+                <h2>A return<br>to origin.</h2>
+            </div>
+
+            <div class="story-grid fade-in">
+                <div>
+                    <p>Wawa was founded in Muizenberg by Cobus Joubert, Andrew Strode and David Hidi — driven by a
+                        shared relationship with the ocean and a desire to build boards that feel purposeful.</p>
+                    <p>The name tells you something about the material. Wawa is the Brazilian term for African timber,
+                        known elsewhere as obeche — a nod to the wood at the heart of everything they make.</p>
+                    <p>Surfing's earliest boards were carved from trees. Over time, foam and fiberglass replaced wood in
+                        the pursuit of convenience and mass production. Wawa revisits that original material — not as
+                        nostalgia, but as evolution.</p>
+                </div>
+                <div>
+                    <p>Cobus shaped his first board in 2000. The years that followed were spent refining the approach —
+                        experimenting with locally harvested timber, testing forms inspired by the alaias and paipos of
+                        early wave riders, and studying the work of legendary shapers Bob Simmons, Joe Quigg, Mike
+                        Larmont and Brian O'Donnell.</p>
+                    <p>The current method — paulownia over recycled foam cores with cork rails — is the result of over
+                        fifteen years of iteration. It combines the feel and character of wood with the demands of
+                        contemporary surfing.</p>
+                    <p>Each board honours surfing's lineage while embracing what riding waves feels like today.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- CRAFT -->
+    <section id="craft">
+        <div class="wrap">
+
+            <div class="craft-header fade-in">
+                <p class="label">Craft</p>
+                <h2>Built with<br>intention.</h2>
+            </div>
+
+            <div class="craft-grid fade-in">
+
+                <div class="craft-cell">
+                    <h3>Timber</h3>
+                    <p>Paulownia is grown along South Africa's eastern coast — lightweight, water-resistant and
+                        naturally strong. It forms the outer skin of every Wawa board, giving each one its grain,
+                        character and warmth.</p>
+                    <p>No two pieces of timber are identical. No two boards are either.</p>
+                </div>
+
+                <div class="craft-cell">
+                    <h3>Core</h3>
+                    <p>Reclaimed foam blanks are stripped back and reshaped. CNC technology cuts each form to precise
+                        digital blueprints — developed through years of shaping experience and iteration.</p>
+                    <p>Reusing foam reduces waste without compromising the structure of the finished board.</p>
+                </div>
+
+                <div class="craft-cell">
+                    <h3>Rails & Finish</h3>
+                    <p>Cork rails replace conventional fibreglass — more resilient, easier to repair, and less reliant
+                        on petrochemicals. Hardwood reinforces the nose and tail where stress concentrates.</p>
+                    <p>Optional watercolour finishes echo the tones of the ocean. Hand-finished throughout.</p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ORDER -->
+    <section id="order">
+        <div class="wrap">
+
+            <div class="order-header fade-in">
+                <p class="label">Order</p>
+                <h2>Get a board.</h2>
+            </div>
+
+            <div class="order-grid fade-in">
+
+                <div>
+                    <p>All Wawa boards are made to order. We shape to your style, your local break and your experience
+                        level — whether you're stepping onto a board for the first time or looking for something
+                        specific.</p>
+                    <p>Production is intentionally limited. Each board gets the time it deserves.</p>
+                    <WhatsAppLink class="btn-wa">
+                        Let's chat
+                    </WhatsAppLink>
+                </div>
+
+                <div class="order-details">
+                    <strong>Lead time</strong>
+                    4–6 weeks from order
+                    <strong>Production</strong>
+                    Intentionally limited runs
+                    <strong>Location & Reviews</strong>
+                    <a href="https://share.google/9dNvu8DYZZZ70H7T0" target="_blank" rel="noopener"
+                        class="order-details">
+                        See Google <span class="arrow">→</span>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="wrap footer-inner">
+            <div class="footer-left">
+                <a href="#hero" class="footer-logo">
+                    <img src="/logotype.svg" alt="Wawa Surfboards" height="14">
+                </a>
+                <p>&copy; <span id="footer-year"></span> Wawa</p>
+            </div>
+            <p><a href="https://lukeberetta.com" target="_blank" rel="noopener">Built by a local surfer.</a></p>
+        </div>
+    </footer>
+
+    <!-- WHATSAPP FAB -->
+    <WhatsAppLink class="fab-wa" ariaLabel="Chat on WhatsApp" />
+
+    <!-- BOARD MODAL -->
+    <div class="board-modal" id="boardModal" role="dialog" aria-modal="true" aria-label="Board details">
+        <div class="board-modal-overlay"></div>
+        <div class="board-modal-inner">
+            <button class="board-modal-close" aria-label="Close">
+                <span></span>
+                <span></span>
+            </button>
+            <div class="board-modal-img" id="modalImgContainer">
+                <img class="modal-img modal-img-front" id="modalImgFront" src="" alt="">
+                <img class="modal-img modal-img-back" id="modalImgBack" src="" alt="">
+                <div class="modal-img-indicator">
+                    <span class="active"></span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="board-modal-body">
+                <h2 id="modalName"></h2>
+                <p id="modalDesc"></p>
+                <div class="board-modal-meta">
+                    <div>
+                        <strong>Price</strong>
+                        <span id="modalPrice"></span>
+                    </div>
+                    <div>
+                        <strong>Lead time</strong>
+                        <span id="modalLead"></span>
+                    </div>
+                </div>
+                <WhatsAppLink class="btn-wa" id="modalWa">
+                    Enquire on WhatsApp
+                </WhatsAppLink>
+            </div>
+        </div>
+    </div>
+
+</Layout>

@@ -1,0 +1,57 @@
+---
+export interface Props {
+    title?: string;
+    description?: string;
+}
+
+const {
+    title = 'Wawa Surfboards — Muizenberg, Cape Town',
+    description = 'Traditional wooden surfboards handcrafted in Muizenberg, Cape Town. Custom builds shaped from paulownia timber by Wawa Surfboards.',
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+    <meta name="description" content={description}>
+    <meta name="theme-color" content="#1a1410">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://wawa.lukeberetta.com/">
+    <meta property="og:title" content="Wawa Surfboards">
+    <meta property="og:description" content="Traditional wooden surfboards handcrafted in Muizenberg, Cape Town.">
+    <meta property="og:image" content="https://wawa.lukeberetta.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Wawa Surfboards">
+    <meta name="twitter:description" content="Traditional wooden surfboards handcrafted in Muizenberg, Cape Town.">
+    <meta name="twitter:image" content="https://wawa.lukeberetta.com/og-image.jpg">
+
+    <!-- Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body>
+    <slot />
+    <script src="/assets/js/main.js" is:inline></script>
+</body>
+
+</html>
