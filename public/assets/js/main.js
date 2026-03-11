@@ -197,7 +197,6 @@ const modalImgContainer = document.getElementById('modalImgContainer');
 const modalImgFront = document.getElementById('modalImgFront');
 const modalImgBack = document.getElementById('modalImgBack');
 const modalDots = modalImgContainer.querySelectorAll('.modal-img-indicator span');
-const modalType = document.getElementById('modalType');
 const modalName = document.getElementById('modalName');
 const modalDesc = document.getElementById('modalDesc');
 const modalPrice = document.getElementById('modalPrice');
@@ -220,7 +219,6 @@ document.querySelectorAll('.featured-card').forEach(card => {
         modalImgContainer.classList.remove('show-back');
         modalDots[0].classList.add('active');
         modalDots[1].classList.remove('active');
-        modalType.textContent = card.dataset.type;
         modalName.textContent = card.dataset.name;
         modalDesc.textContent = card.dataset.desc;
         modalPrice.textContent = card.dataset.price;
@@ -229,12 +227,14 @@ document.querySelectorAll('.featured-card').forEach(card => {
         modalWa.href = `${WA_BASE}&text=${msg}`;
         boardModal.classList.add('open');
         document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
     });
 });
 
 function closeBoardModal() {
     boardModal.classList.remove('open');
     document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
 }
 
 boardModalOverlay.addEventListener('click', closeBoardModal);

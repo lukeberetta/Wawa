@@ -832,7 +832,7 @@ footer p a:hover {
 }
 
 .featured-card {
-  flex: 0 0 calc(100vw / 3);
+  flex: 0 0 calc((100vw - 6rem) / 3);
   height: 85vh;
   position: relative;
   scroll-snap-align: start;
@@ -988,7 +988,7 @@ footer p a:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   width: min(900px, 90vw);
-  max-height: 85vh;
+  height: min(580px, 85vh);
   overflow: hidden;
   transform: translateY(16px);
   transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
