@@ -809,7 +809,332 @@ footer p a:hover {
   transform: translateY(0);
 }
 
+/* ── FEATURED ────────────────────────────────── */
+
+#featured {
+  position: relative;
+  /* border-bottom: 1px solid var(--rule); */
+  display: flex;
+  flex-direction: column;
+}
+
+.featured-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--rule);
+}
+
+.featured-track::-webkit-scrollbar {
+  display: none;
+}
+
+.featured-card {
+  flex: 0 0 calc(100vw / 3);
+  height: 85vh;
+  position: relative;
+  scroll-snap-align: start;
+  overflow: hidden;
+  border-right: 1px solid var(--rule);
+}
+
+.featured-card:last-child {
+  border-right: none;
+}
+
+.featured-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.6s ease;
+}
+
+.featured-img-back {
+  opacity: 0;
+}
+
+.featured-card:hover .featured-img-front {
+  opacity: 0;
+}
+
+.featured-card:hover .featured-img-back {
+  opacity: 1;
+}
+
+.featured-name {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.75rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.featured-card-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: stretch;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.featured-card:hover .featured-card-bar,
+.featured-card:focus-within .featured-card-bar {
+  transform: translateY(0);
+}
+
+.featured-card-price {
+  flex: 0 0 50%;
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--ink);
+  background: var(--cream);
+  white-space: nowrap;
+}
+
+.featured-card-btn {
+  flex: 0 0 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  background: #2e2a26;
+  border: none;
+  font-size: 0.78rem;
+  font-weight: 400;
+  font-family: inherit;
+  color: var(--cream);
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.featured-card-btn:hover {
+  background: var(--ink);
+}
+
+.featured-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: inherit;
+  z-index: 2;
+  padding: 0.5rem;
+  transition: transform 0.2s;
+}
+
+.featured-nav-next {
+  right: 2.5rem;
+}
+
+.featured-nav-next:hover {
+  transform: translateY(-50%) translateX(4px);
+}
+
+.featured-nav-prev {
+  left: 2.5rem;
+}
+
+.featured-nav-prev:hover {
+  transform: translateY(-50%) translateX(-4px);
+}
+
+/* ── BOARD MODAL ─────────────────────────────── */
+
+.board-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s;
+}
+
+.board-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.board-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 20, 16, 0.6);
+}
+
+.board-modal-inner {
+  position: relative;
+  z-index: 1;
+  background: var(--cream);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: min(900px, 90vw);
+  max-height: 85vh;
+  overflow: hidden;
+  transform: translateY(16px);
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.board-modal.open .board-modal-inner {
+  transform: translateY(0);
+}
+
+.board-modal-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.board-modal-close span {
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: var(--ink);
+  transform-origin: center;
+}
+
+.board-modal-close span:nth-child(1) {
+  transform: translateY(0.75px) rotate(45deg);
+}
+
+.board-modal-close span:nth-child(2) {
+  transform: translateY(-0.75px) rotate(-45deg);
+}
+
+.board-modal-img {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.modal-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.5s ease;
+}
+
+.modal-img-back {
+  opacity: 0;
+}
+
+.board-modal-img.show-back .modal-img-front {
+  opacity: 0;
+}
+
+.board-modal-img.show-back .modal-img-back {
+  opacity: 1;
+}
+
+.modal-img-indicator {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.modal-img-indicator span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  transition: background 0.2s;
+}
+
+.modal-img-indicator span.active {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.board-modal-body {
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.board-modal-body h2 {
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.board-modal-body>p {
+  line-height: 1.7;
+}
+
+.board-modal-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin: 2rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 1.5rem 0;
+}
+
+.board-modal-meta strong {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.3rem;
+}
+
+.board-modal-meta span {
+  font-size: 0.95rem;
+  color: var(--ink);
+  opacity: 1;
+}
+
+.board-modal-body .btn-wa {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
 /* ── RESPONSIVE ──────────────────────────────── */
+
+@media (hover: none) {
+  .featured-card-bar {
+    transform: translateY(0);
+  }
+}
 
 @media (max-width: 960px) {
   .boards-header {
@@ -895,6 +1220,38 @@ footer p a:hover {
 
   .boards-row {
     gap: 2rem;
+  }
+
+  .featured-card {
+    flex: 0 0 82vw;
+    height: 70vh;
+  }
+
+  .featured-nav-btn {
+    display: none;
+  }
+
+  .board-modal-inner {
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-height: 92vh;
+    align-self: flex-end;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .board-modal-img {
+    height: 72vw;
+    min-height: 260px;
+    flex-shrink: 0;
+  }
+
+  .board-modal-body {
+    overflow-y: visible;
+  }
+
+  .board-modal {
+    align-items: flex-end;
   }
 
   .nav-logo img,

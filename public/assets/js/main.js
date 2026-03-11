@@ -164,3 +164,80 @@ window.addEventListener('scroll', updateActiveSection, { passive: true });
 updateActiveSection();
 
 document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+// Featured section — scroll nav
+const featuredTrack = document.querySelector('.featured-track');
+const featuredPrev = document.querySelector('.featured-nav-prev');
+const featuredNext = document.querySelector('.featured-nav-next');
+
+function updateFeaturedNav() {
+    const { scrollLeft, scrollWidth, clientWidth } = featuredTrack;
+    featuredPrev.hidden = scrollLeft <= 0;
+    featuredNext.hidden = scrollLeft >= scrollWidth - clientWidth - 1;
+}
+
+featuredTrack.addEventListener('scroll', updateFeaturedNav, { passive: true });
+updateFeaturedNav();
+
+featuredPrev.addEventListener('click', () => {
+    const cardWidth = featuredTrack.querySelector('.featured-card').offsetWidth;
+    featuredTrack.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+});
+
+featuredNext.addEventListener('click', () => {
+    const cardWidth = featuredTrack.querySelector('.featured-card').offsetWidth;
+    featuredTrack.scrollBy({ left: cardWidth, behavior: 'smooth' });
+});
+
+// Board modal
+const boardModal = document.getElementById('boardModal');
+const boardModalOverlay = boardModal.querySelector('.board-modal-overlay');
+const boardModalClose = boardModal.querySelector('.board-modal-close');
+const modalImgContainer = document.getElementById('modalImgContainer');
+const modalImgFront = document.getElementById('modalImgFront');
+const modalImgBack = document.getElementById('modalImgBack');
+const modalDots = modalImgContainer.querySelectorAll('.modal-img-indicator span');
+const modalType = document.getElementById('modalType');
+const modalName = document.getElementById('modalName');
+const modalDesc = document.getElementById('modalDesc');
+const modalPrice = document.getElementById('modalPrice');
+const modalWa = document.getElementById('modalWa');
+const WA_BASE = 'https://api.whatsapp.com/send?phone=27823723142';
+
+modalImgContainer.addEventListener('click', () => {
+    const showingBack = modalImgContainer.classList.toggle('show-back');
+    modalDots[0].classList.toggle('active', !showingBack);
+    modalDots[1].classList.toggle('active', showingBack);
+});
+
+document.querySelectorAll('.featured-card-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const card = btn.closest('.featured-card');
+        modalImgFront.src = card.dataset.img;
+        modalImgFront.alt = card.dataset.name;
+        modalImgBack.src = card.dataset.back;
+        modalImgBack.alt = card.dataset.name;
+        modalImgContainer.classList.remove('show-back');
+        modalDots[0].classList.add('active');
+        modalDots[1].classList.remove('active');
+        modalType.textContent = card.dataset.type;
+        modalName.textContent = card.dataset.name;
+        modalDesc.textContent = card.dataset.desc;
+        modalPrice.textContent = card.dataset.price;
+        const msg = encodeURIComponent(`Hi, I'm interested in a ${card.dataset.name}. Can you tell me more?`);
+        modalWa.href = `${WA_BASE}&text=${msg}`;
+        boardModal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    });
+});
+
+function closeBoardModal() {
+    boardModal.classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+boardModalOverlay.addEventListener('click', closeBoardModal);
+boardModalClose.addEventListener('click', closeBoardModal);
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && boardModal.classList.contains('open')) closeBoardModal();
+});
