@@ -1131,6 +1131,14 @@ footer p a:hover {
   .featured-card-bar {
     transform: translateY(0);
   }
+
+  .featured-card:hover .featured-img-front {
+    opacity: 1;
+  }
+
+  .featured-card:hover .featured-img-back {
+    opacity: 0;
+  }
 }
 
 @media (max-width: 960px) {
