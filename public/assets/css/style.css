@@ -652,6 +652,9 @@ p:last-child {
   height: 180px;
   overflow: hidden;
   margin-bottom: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .craft-cell-img img {
