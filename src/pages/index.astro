@@ -150,39 +150,40 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
 
             <div class="boards-row fade-in">
 
-                <BoardItem name="Paipo">
-                    <svg height="80" viewBox="0 0 80 122" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M40,8 C62,8 72,30 72,61 C72,92 62,110 40,115 C18,110 8,92 8,61 C8,30 18,8 40,8 Z"
+                <BoardItem name="Handslide">
+                    <svg height="60" viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M40,5 C58,5 70,18 70,44 C70,64 62,78 40,84 C18,78 10,64 10,44 C10,18 22,5 40,5 Z"
                             stroke="var(--ink)" stroke-width="1.5" />
-                    </svg>
-                </BoardItem>
-
-                <BoardItem name="Fish">
-                    <svg height="120" viewBox="0 0 90 158" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M45,5 C68,5 82,32 82,79 C82,116 72,136 60,146 L45,138 L30,146 C18,136 8,116 8,79 C8,32 22,5 45,5 Z"
-                            stroke="var(--ink)" stroke-width="1.5" />
+                        <ellipse cx="40" cy="42" rx="10" ry="6" stroke="var(--ink)" stroke-width="1" />
                     </svg>
                 </BoardItem>
 
                 <BoardItem name="Bodyboard">
-                    <svg height="130" viewBox="0 0 108 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg height="100" viewBox="0 0 108 148" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M54,5 C82,5 98,22 98,48 L98,105 C98,120 84,132 70,134 L58,130 L54,134 L50,130 L38,134 C24,132 10,120 10,105 L10,48 C10,22 26,5 54,5 Z"
                             stroke="var(--ink)" stroke-width="1.5" />
                     </svg>
                 </BoardItem>
 
-                <BoardItem name="Mid-length">
-                    <svg height="165" viewBox="0 0 70 189" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M35,6 C54,6 62,36 62,94 C62,148 54,176 35,183 C16,176 8,148 8,94 C8,36 16,6 35,6 Z"
+                <BoardItem name="Fish">
+                    <svg height="135" viewBox="0 0 90 158" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M45,5 C68,5 82,32 82,79 C82,116 72,136 60,146 L45,138 L30,146 C18,136 8,116 8,79 C8,32 22,5 45,5 Z"
                             stroke="var(--ink)" stroke-width="1.5" />
                     </svg>
                 </BoardItem>
 
                 <BoardItem name="Alaia">
-                    <svg height="210" viewBox="0 0 44 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg height="175" viewBox="0 0 44 220" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M22,3 C29,8 35,38 35,110 C35,172 29,205 22,217 C15,205 9,172 9,110 C9,38 15,8 22,3 Z"
+                            stroke="var(--ink)" stroke-width="1.5" />
+                    </svg>
+                </BoardItem>
+
+                <BoardItem name="Mid-length">
+                    <svg height="215" viewBox="0 0 70 189" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M35,6 C54,6 62,36 62,94 C62,148 54,176 35,183 C16,176 8,148 8,94 C8,36 16,6 35,6 Z"
                             stroke="var(--ink)" stroke-width="1.5" />
                     </svg>
                 </BoardItem>
@@ -368,6 +369,8 @@ import WhatsAppLink from '../components/WhatsAppLink.astro';
             <div class="board-modal-img" id="modalImgContainer">
                 <img class="modal-img modal-img-front" id="modalImgFront" src="" alt="">
                 <img class="modal-img modal-img-back" id="modalImgBack" src="" alt="">
+                <span class="modal-img-arrow modal-img-arrow-prev">←</span>
+                <span class="modal-img-arrow modal-img-arrow-next">→</span>
                 <div class="modal-img-indicator">
                     <span class="active"></span>
                     <span></span>

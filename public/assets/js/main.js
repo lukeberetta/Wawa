@@ -204,10 +204,20 @@ const modalLead = document.getElementById('modalLead');
 const modalWa = document.getElementById('modalWa');
 const WA_BASE = 'https://api.whatsapp.com/send?phone=27823723142';
 
-modalImgContainer.addEventListener('click', () => {
-    const showingBack = modalImgContainer.classList.toggle('show-back');
-    modalDots[0].classList.toggle('active', !showingBack);
-    modalDots[1].classList.toggle('active', showingBack);
+function setModalImgSide(showBack) {
+    modalImgContainer.classList.toggle('show-back', showBack);
+    modalDots[0].classList.toggle('active', !showBack);
+    modalDots[1].classList.toggle('active', showBack);
+}
+
+modalImgContainer.addEventListener('click', (e) => {
+    const rect = modalImgContainer.getBoundingClientRect();
+    const showingBack = modalImgContainer.classList.contains('show-back');
+    if (e.clientX < rect.left + rect.width / 2) {
+        if (showingBack) setModalImgSide(false);
+    } else {
+        if (!showingBack) setModalImgSide(true);
+    }
 });
 
 document.querySelectorAll('.featured-card').forEach(card => {
@@ -216,9 +226,7 @@ document.querySelectorAll('.featured-card').forEach(card => {
         modalImgFront.alt = card.dataset.name;
         modalImgBack.src = card.dataset.back;
         modalImgBack.alt = card.dataset.name;
-        modalImgContainer.classList.remove('show-back');
-        modalDots[0].classList.add('active');
-        modalDots[1].classList.remove('active');
+        setModalImgSide(false);
         modalName.textContent = card.dataset.name;
         modalDesc.textContent = card.dataset.desc;
         modalPrice.textContent = card.dataset.price;

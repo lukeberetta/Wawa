@@ -934,7 +934,7 @@ footer p a:hover {
   transform: translateY(-50%);
   background: none;
   border: none;
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: var(--ink);
   cursor: pointer;
   font-family: inherit;
@@ -1061,6 +1061,36 @@ footer p a:hover {
   opacity: 1;
 }
 
+.modal-img-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.modal-img-arrow-prev {
+  left: 1.25rem;
+  opacity: 0;
+}
+
+.modal-img-arrow-next {
+  right: 1.25rem;
+  opacity: 1;
+}
+
+.board-modal-img.show-back .modal-img-arrow-prev {
+  opacity: 1;
+}
+
+.board-modal-img.show-back .modal-img-arrow-next {
+  opacity: 0;
+}
+
 .modal-img-indicator {
   position: absolute;
   bottom: 1rem;
@@ -1076,12 +1106,12 @@ footer p a:hover {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(26, 20, 16, 0.25);
   transition: background 0.2s;
 }
 
 .modal-img-indicator span.active {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(26, 20, 16, 0.85);
 }
 
 .board-modal-body {
