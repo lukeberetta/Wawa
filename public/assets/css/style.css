@@ -23,6 +23,7 @@
 }
 
 html {
+  font-size: 17px;
   scroll-behavior: smooth;
   overflow-x: hidden;
 }
@@ -32,7 +33,6 @@ body {
   font-weight: 300;
   background: var(--cream);
   color: var(--ink);
-  font-size: 17px;
   line-height: 1.4;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -492,10 +492,6 @@ p:last-child {
   border-bottom: 1px solid var(--rule);
 }
 
-#boards {
-  /* Specific #boards styles (if any) could go here later */
-}
-
 .boards-header {
   display: flex;
   justify-content: space-between;
@@ -517,7 +513,6 @@ p:last-child {
 }
 
 .boards-header-note p {
-  font-size: 1rem;
   margin-bottom: 0;
 }
 
@@ -560,7 +555,6 @@ p:last-child {
 }
 
 .boards-footer p {
-  font-size: 1rem;
   color: var(--muted);
   margin: 0;
   max-width: 460px;
@@ -612,8 +606,6 @@ p:last-child {
   margin-bottom: 3.5rem;
 }
 
-/* h2 margin-top is grouped in .boards-header h2 */
-
 .story-grid,
 .order-grid {
   display: grid;
@@ -624,13 +616,9 @@ p:last-child {
 
 /* ── CRAFT ───────────────────────────────────── */
 
-/* Merged base styles with #boards */
-
 .craft-header {
   margin-bottom: 4rem;
 }
-
-/* h2 margin-top is grouped in .boards-header h2 */
 
 .craft-grid {
   display: grid;
@@ -664,21 +652,11 @@ p:last-child {
   display: block;
 }
 
-.craft-cell p {
-  font-size: 1rem;
-}
-
 /* ── ORDER ───────────────────────────────────── */
-
-/* Merged base styles with #boards */
 
 .order-header {
   margin-bottom: 3.5rem;
 }
-
-/* h2 margin-top is grouped in .boards-header h2 */
-
-/* Merged with .story-grid */
 
 .btn-wa {
   display: inline-flex;
