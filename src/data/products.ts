@@ -316,4 +316,40 @@ export const products: Product[] = [
     priceRange: { minVariantPrice: poa },
     images: [img('fins-front', 'Wawa timber fins'), img('fins-back', 'Wawa fins, detail')],
   },
+  {
+    id: 'mock/wax-comb',
+    handle: 'wooden-wax-comb',
+    title: 'Wooden Wax Comb',
+    description:
+      'A wax comb made the same way as the boards — offcut paulownia and cork, hand-shaped and sealed. Combs your bumps, scrapes old wax, and feels good in the hand. Small object, same craft.',
+    productType: 'Accessories',
+    tags: ['Wax Combs'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: poa },
+    images: [img('wax-comb', 'Wawa wooden wax comb')],
+  },
+  {
+    id: 'mock/art-prints',
+    handle: 'posters-and-prints',
+    title: 'Posters & Prints',
+    description:
+      'Original artwork and prints drawn from the Wawa world — timber, ocean and the craft behind the boards. Pieces for the wall, made to live alongside the boards they celebrate.',
+    productType: 'Accessories',
+    tags: ['Art'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: poa },
+    images: [img('art-prints-front', 'Wawa poster print'), img('art-prints-back', 'Wawa art print, detail')],
+  },
+  {
+    id: 'mock/myo-experience',
+    handle: 'make-your-own-surfboard',
+    title: 'Make Your Own Surfboard',
+    description:
+      'Surfing a board you made yourself is addictive — it connects you to the generations who saw shaping as a rite of passage. Seven 3-hour sessions in our workshop: transfer the shape, plane the blank, profile the rocker, vacuum-bag the timber and cork rails, set fin boxes, then sand, brand and seal. Hard work, pure joy. Also available as a gift card.',
+    productType: 'Accessories',
+    tags: ['Gift Cards'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: poa },
+    images: [img('myo-experience-front', 'Wawa make your own surfboard experience'), img('myo-experience-back', 'Wawa shaping workshop, detail')],
+  },
 ];
