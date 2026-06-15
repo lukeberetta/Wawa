@@ -1,7 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import ProductCard from '@/components/ProductCard.astro';
-import { getFeatured } from '@/lib/catalog';
+import { getFeatured, disciplines } from '@/lib/catalog';
 
 const featured = await getFeatured();
 ---
@@ -34,12 +34,35 @@ const featured = await getFeatured();
     </div>
   </section>
 
+  <!-- RANGE -->
+  <section id="range-home">
+    <div class="wrap">
+      <div class="section-head fade-in">
+        <p class="label">The range</p>
+        <h2>Every craft.</h2>
+      </div>
+      <ul class="discipline-list">
+        {
+          disciplines.map((d) => (
+            <li class="fade-in">
+              <a href={`/products/${d.handle}`}>
+                <h3>{d.title}</h3>
+                <p>{d.blurb}</p>
+                <span class="arrow">→</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
   <!-- FEATURED -->
   <section id="featured-home">
     <div class="wrap">
       <div class="section-head fade-in">
-        <p class="label">The range</p>
-        <h2>Shaped from<br />timber.</h2>
+        <p class="label">Favourites</p>
+        <h2>Most ridden.</h2>
       </div>
       <div class="product-grid">
         {featured.map((p) => <ProductCard product={p} />)}
@@ -103,6 +126,54 @@ const featured = await getFeatured();
     margin-top: 1.5rem;
     color: color-mix(in srgb, var(--cream) 70%, transparent);
     font-size: 0.9rem;
+  }
+
+  #range-home {
+    padding: 5rem 0 1rem;
+  }
+  .discipline-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  @media (max-width: 900px) {
+    .discipline-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .discipline-list {
+      grid-template-columns: 1fr;
+    }
+  }
+  .discipline-list a {
+    display: block;
+    background: var(--cream);
+    padding: 1.75rem;
+    height: 100%;
+    position: relative;
+    transition: background 0.3s var(--ease);
+  }
+  .discipline-list a:hover {
+    background: color-mix(in srgb, var(--warm) 7%, var(--cream));
+  }
+  .discipline-list h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+  .discipline-list p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    max-width: 34ch;
+  }
+  .discipline-list .arrow {
+    position: absolute;
+    top: 1.75rem;
+    right: 1.75rem;
+    color: var(--warm);
   }
 
   #featured-home {
