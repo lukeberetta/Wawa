@@ -14,7 +14,13 @@ const enquire = whatsappLink(`Hi Wawa — I'm interested in the ${product.title}
 ---
 
 <article class="card fade-in">
-  <a class="card-flip" href={enquire} aria-label={`Enquire about the ${product.title}`}>
+  <a
+    class="card-flip"
+    href={enquire}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={`Enquire about the ${product.title}`}
+  >
     <img class="face front" src={front.url} alt={front.altText} loading="lazy" />
     <img class="face back" src={back.url} alt={back.altText} loading="lazy" aria-hidden="true" />
   </a>
