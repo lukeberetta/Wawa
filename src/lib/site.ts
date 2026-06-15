@@ -5,8 +5,7 @@ export const site = {
   location: 'Muizenberg, Cape Town',
   description:
     'Traditional wooden surfboards handcrafted in Muizenberg, Cape Town. Custom builds shaped from paulownia timber by Wawa Surfboards.',
-  // TODO: replace with real number before launch
-  whatsapp: '27000000000',
+  whatsapp: '27823723142',
   instagram: 'https://www.instagram.com/wawa_surfboards/',
   // `children` (built from disciplines in Nav.astro) makes this a dropdown.
   nav: [
