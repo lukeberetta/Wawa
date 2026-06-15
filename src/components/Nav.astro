@@ -81,10 +81,21 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
   <ul class="drawer-links">
     {
       site.nav.map((item) => (
-        <li>
-          <a href={item.href} class:list={{ active: current === item.label.toLowerCase() }}>
-            {item.label}
-          </a>
+        <li class:list={['drawer-item', { 'has-sub': item.dropdown }]}>
+          <div class="drawer-row">
+            <a href={item.href} class:list={{ active: current === item.label.toLowerCase() }}>
+              {item.label}
+            </a>
+            {item.dropdown && (
+              <button
+                class="drawer-sub-toggle"
+                aria-expanded="false"
+                aria-label={`Toggle ${item.label} submenu`}
+              >
+                <span class="caret" aria-hidden="true">▾</span>
+              </button>
+            )}
+          </div>
           {item.dropdown && (
             <ul class="drawer-sub">
               {disciplines.map((d) => (
@@ -270,21 +281,54 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     flex-direction: column;
     gap: 0.25rem;
   }
-  .drawer-links a {
+  .drawer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--rule);
+  }
+  .drawer-row a {
+    flex: 1;
     display: flex;
     align-items: center;
     gap: 0.6rem;
     padding: 0.85rem 0;
     font-size: 1.4rem;
     color: var(--ink);
-    border-bottom: 1px solid var(--rule);
   }
-  .drawer-links a.active {
+  .drawer-row a.active {
     color: var(--warm);
+  }
+  .drawer-sub-toggle {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 0;
+    color: var(--ink);
+    cursor: pointer;
+    padding: 0;
+  }
+  .drawer-sub-toggle .caret {
+    font-size: 0.8rem;
+    transition: transform 0.3s var(--ease);
+  }
+  .drawer-sub-toggle[aria-expanded='true'] .caret {
+    transform: rotate(180deg);
   }
   .drawer-sub {
     list-style: none;
-    padding: 0.25rem 0 0.5rem 0.9rem;
+    overflow: hidden;
+    max-height: 0;
+    padding-left: 0.9rem;
+    transition: max-height 0.35s var(--ease);
+  }
+  .drawer-item.open .drawer-sub {
+    /* generous cap; 6 items × ~2.4rem */
+    max-height: 22rem;
   }
   .drawer-sub a {
     font-size: 1rem;
@@ -296,9 +340,15 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     color: var(--ink);
   }
   .drawer-ig {
-    font-size: 1.1rem !important;
-    color: var(--muted) !important;
-    border-bottom: 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 0;
+    font-size: 1.1rem;
+    color: var(--muted);
+  }
+  .drawer-ig:hover {
+    color: var(--ink);
   }
   .drawer-ig span {
     display: flex;
@@ -339,6 +389,26 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
   const drawer = document.getElementById('nav-drawer');
   const overlay = document.querySelector<HTMLDivElement>('.nav-overlay');
 
+  // Robust scroll lock: position:fixed preserves the scroll position on iOS,
+  // where `overflow: hidden` on <body> is ignored.
+  let lockedY = 0;
+  function lockScroll(lock: boolean) {
+    const b = document.body;
+    if (lock) {
+      lockedY = window.scrollY;
+      b.style.position = 'fixed';
+      b.style.top = `-${lockedY}px`;
+      b.style.left = '0';
+      b.style.right = '0';
+    } else {
+      b.style.position = '';
+      b.style.top = '';
+      b.style.left = '';
+      b.style.right = '';
+      window.scrollTo(0, lockedY);
+    }
+  }
+
   function setOpen(open: boolean) {
     if (!toggle || !drawer || !overlay) return;
     toggle.setAttribute('aria-expanded', String(open));
@@ -346,10 +416,15 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     drawer.setAttribute('aria-hidden', String(!open));
     drawer.classList.toggle('open', open);
     overlay.classList.toggle('open', open);
-    document.body.style.overflow = open ? 'hidden' : '';
+    lockScroll(open);
     if (open) {
       overlay.hidden = false;
     } else {
+      // collapse any open accordion sections
+      drawer.querySelectorAll('.drawer-item.open').forEach((li) => {
+        li.classList.remove('open');
+        li.querySelector('.drawer-sub-toggle')?.setAttribute('aria-expanded', 'false');
+      });
       // wait for the fade before removing from the a11y tree
       setTimeout(() => {
         if (toggle.getAttribute('aria-expanded') === 'false') overlay.hidden = true;
@@ -361,6 +436,17 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     setOpen(toggle.getAttribute('aria-expanded') !== 'true'),
   );
   overlay?.addEventListener('click', () => setOpen(false));
+
+  // Accordion: chevron expands/collapses the submenu without closing the drawer.
+  drawer?.querySelectorAll<HTMLButtonElement>('.drawer-sub-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const li = btn.closest('.drawer-item');
+      const isOpen = li?.classList.toggle('open') ?? false;
+      btn.setAttribute('aria-expanded', String(isOpen));
+    });
+  });
+
+  // Only navigation links close the drawer (not the accordion toggle button).
   drawer?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') setOpen(false);
