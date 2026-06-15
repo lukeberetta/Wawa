@@ -137,6 +137,110 @@ export const products: Product[] = [
     featured: true,
   },
 
+  // ── FOIL ─────────────────────────────────────
+  {
+    id: 'mock/foil-prone',
+    handle: 'foil-prone',
+    title: 'Prone Foilboard',
+    description:
+      'A compact prone deck for paddling into swell and flying. The paulownia-and-cork shell is shaped by the ocean over time into a textured “speed skin” — micro-bubbles reduce drag and optimise lift, in water and in air. Stable on the belly, loose once it lifts.',
+    productType: 'Foil',
+    tags: ['Prone'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: poa },
+    images: [img('foil-prone-front', 'Wawa prone foilboard, deck'), img('foil-prone-back', 'Wawa prone foilboard, hull')],
+  },
+  {
+    id: 'mock/foil-wave',
+    handle: 'foil-wave',
+    title: 'Wave Foilboard',
+    description:
+      'Built to draw long, silent lines off open-ocean energy. Timber-and-cork construction tuned for the surf foil — enough volume to find the wave, a pulled outline to carve once the foil takes over. Light, lively and made to last.',
+    productType: 'Foil',
+    tags: ['Wave'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: poa },
+    images: [img('foil-wave-front', 'Wawa wave foilboard, deck'), img('foil-wave-back', 'Wawa wave foilboard, hull')],
+    featured: true,
+  },
+  {
+    id: 'mock/foil-wing',
+    handle: 'foil-wing',
+    title: 'Wing Foilboard',
+    description:
+      'For wind and wing. A forgiving, stable platform in the same paulownia-and-cork build, sized to get up early and stay locked in. The “speed skin” exterior cuts drag as the board breaks free of the water.',
+    productType: 'Foil',
+    tags: ['Wing'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: poa },
+    images: [img('foil-wing-front', 'Wawa wing foilboard, deck'), img('foil-wing-back', 'Wawa wing foilboard, hull')],
+  },
+  {
+    id: 'mock/foil-custom',
+    handle: 'foil-custom',
+    title: 'Custom Foilboard',
+    description:
+      'Your dimensions, your discipline. Prone, wave or wing — shaped to your weight, wind and home break in timber over recycled foam with cork rails. Get in touch to start a build.',
+    productType: 'Foil',
+    tags: ['Custom'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: poa },
+    images: [img('foil-custom-front', 'Wawa custom foilboard, deck'), img('foil-custom-back', 'Wawa custom foilboard, hull')],
+  },
+
+  // ── KITE ─────────────────────────────────────
+  {
+    id: 'mock/kite-tomo',
+    handle: 'kite-tomo',
+    title: 'Tomo Kiteboard',
+    description:
+      'A Tomo-inspired outline tuned for wind — compact, fast and direct. The same timber-and-cork construction as the boards, with stiff flex and controlled energy return for a clean connection to the water.',
+    productType: 'Kite',
+    tags: ['Tomo'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: poa },
+    images: [img('kite-tomo-front', 'Wawa Tomo kiteboard, deck'), img('kite-tomo-back', 'Wawa Tomo kiteboard, base')],
+    featured: true,
+  },
+  {
+    id: 'mock/kite-trick',
+    handle: 'kite-trick',
+    title: 'Trick Kiteboard',
+    description:
+      'Built to pop and play. A lively twin-tip shape in paulownia and cork, tuned for snappy energy return off the water. Loose enough for tricks, stiff enough to hold an edge upwind.',
+    productType: 'Kite',
+    tags: ['Trick'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: poa },
+    images: [img('kite-trick-front', 'Wawa Trick kiteboard, deck'), img('kite-trick-back', 'Wawa Trick kiteboard, base')],
+  },
+  {
+    id: 'mock/kite-vlieer',
+    handle: 'kite-vlieer',
+    title: 'Vlieer Kiteboard',
+    description:
+      'The Vlieer — a directional shape for riders chasing flow over flat water and small wind swell. Timber-and-cork build for a smooth, damp ride and a direct line to the kite.',
+    productType: 'Kite',
+    tags: ['Vlieer'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: poa },
+    images: [img('kite-vlieer-front', 'Wawa Vlieer kiteboard, deck'), img('kite-vlieer-back', 'Wawa Vlieer kiteboard, base')],
+  },
+
+  // ── SKATE ────────────────────────────────────
+  {
+    id: 'mock/wooden-cruiser',
+    handle: 'wooden-cruiser',
+    title: 'Wooden Cruiser',
+    description:
+      'For the days the sea goes flat. A wooden cruiser built from the same paulownia and cork as the boards — warm underfoot, lively through a turn, and finished to age with salt and sun. Keep surfing when there’s no surf.',
+    productType: 'Skate',
+    tags: [],
+    availableForSale: false,
+    priceRange: { minVariantPrice: poa },
+    images: [img('wooden-cruiser-front', 'Wawa wooden cruiser, top'), img('wooden-cruiser-back', 'Wawa wooden cruiser, base')],
+  },
+
   // ── BODY & BELLY ─────────────────────────────
   {
     id: 'mock/handslide',
