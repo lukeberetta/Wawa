@@ -1,0 +1,63 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { site, whatsappLink } from '@/lib/site';
+
+const wa = whatsappLink('Hi Wawa — I’d like to talk about a board.');
+---
+
+<Layout title="Contact — Wawa Surfboards" current="contact">
+  <header class="page-header">
+    <div class="wrap">
+      <p class="label fade-in">Contact</p>
+      <h1 class="fade-in">Let’s shape<br />something.</h1>
+      <p class="page-header-sub fade-in">
+        Every board is a conversation. Tell us your style, your break and your experience — we’ll
+        shape the rest. Based in {site.location}.
+      </p>
+
+      <div class="actions fade-in">
+        <a class="btn" href={wa}>Message on WhatsApp <span class="arrow">→</span></a>
+        <a class="btn ghost" href="mailto:hello@wawasurfboards.com">Email us <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </header>
+</Layout>
+
+<style>
+  .page-header {
+    padding: calc(var(--nav-h) + 6rem) 0 6rem;
+  }
+  .page-header h1 {
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    margin: 1rem 0;
+  }
+  .page-header-sub {
+    max-width: 44ch;
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 0.9rem 1.5rem;
+    border: 1px solid var(--ink);
+    transition: opacity 0.25s;
+  }
+  .btn:hover {
+    opacity: 0.85;
+  }
+  .btn.ghost {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--rule);
+  }
+</style>

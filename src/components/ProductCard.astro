@@ -1,0 +1,76 @@
+---
+import type { Product } from '@/lib/types';
+import { formatPrice } from '@/lib/catalog';
+import { whatsappLink } from '@/lib/site';
+
+export interface Props {
+  product: Product;
+}
+const { product } = Astro.props;
+const price = formatPrice(product);
+const front = product.images[0];
+const back = product.images[1] ?? product.images[0];
+const enquire = whatsappLink(`Hi Wawa — I'm interested in the ${product.title}.`);
+---
+
+<article class="card fade-in">
+  <a class="card-flip" href={enquire} aria-label={`Enquire about the ${product.title}`}>
+    <img class="face front" src={front.url} alt={front.altText} loading="lazy" />
+    <img class="face back" src={back.url} alt={back.altText} loading="lazy" aria-hidden="true" />
+  </a>
+  <div class="card-meta">
+    <h3>{product.title}</h3>
+    <span class="price">{price}</span>
+  </div>
+  <p class="card-cat">{product.tags[0] ?? product.productType}</p>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+  }
+  .card-flip {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    background: color-mix(in srgb, var(--warm) 8%, var(--cream));
+    border: 1px solid var(--rule);
+    overflow: hidden;
+  }
+  .face {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s var(--ease);
+  }
+  .back {
+    opacity: 0;
+  }
+  .card-flip:hover .back {
+    opacity: 1;
+  }
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 0.85rem;
+    gap: 1rem;
+  }
+  .card-meta h3 {
+    font-size: 1.1rem;
+  }
+  .price {
+    font-size: 0.85rem;
+    color: var(--warm);
+    white-space: nowrap;
+  }
+  .card-cat {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+</style>

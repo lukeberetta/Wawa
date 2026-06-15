@@ -1,0 +1,44 @@
+/**
+ * Product shape mirrors a subset of the Shopify Storefront API `Product`.
+ * Keeping these names aligned means the phase-2 swap (mock → real Shopify)
+ * is a data-source change only, not a template change.
+ */
+
+export interface Money {
+  amount: string;
+  currencyCode: string; // 'ZAR'
+}
+
+export interface ProductImage {
+  url: string;
+  altText: string;
+  width?: number;
+  height?: number;
+}
+
+export interface Product {
+  id: string;
+  handle: string; // url slug
+  title: string;
+  description: string;
+  productType: string; // discipline: 'Surf' | 'Foil' | ...
+  tags: string[]; // category: 'Short' | 'Mid' | ...
+  availableForSale: boolean;
+  priceRange: { minVariantPrice: Money };
+  /** front + back for the flip-card; first = primary */
+  images: ProductImage[];
+  featured?: boolean;
+}
+
+/** Top-level discipline (Craft sub-section) → maps to a Shopify collection. */
+export interface Discipline {
+  handle: string;
+  title: string;
+  blurb: string;
+  /** longer intro shown on the discipline page header */
+  intro?: string;
+  /** hero image path for disciplines without products yet */
+  hero?: string;
+  /** category tags shown as filters under this discipline */
+  categories: string[];
+}

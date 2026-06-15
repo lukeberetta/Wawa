@@ -1,0 +1,135 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import ProductCard from '@/components/ProductCard.astro';
+import { disciplines, getFeatured } from '@/lib/catalog';
+
+const featured = await getFeatured();
+---
+
+<Layout
+  title="Products — Wawa Surfboards"
+  description="The full Wawa range — surf, foil, kite, skate, body & belly and accessories. Handcrafted wooden craft from Muizenberg, Cape Town."
+  current="products"
+>
+  <header class="page-header">
+    <div class="wrap">
+      <p class="label fade-in">Products</p>
+      <h1 class="fade-in">The full<br />range.</h1>
+      <p class="page-header-sub fade-in">
+        Every Wawa craft — shaped from timber, finished by hand. Surf, foil, kite, skate, body &amp;
+        belly and the accessories that go with them.
+      </p>
+    </div>
+  </header>
+
+  <!-- RANGE -->
+  <section id="range">
+    <div class="wrap">
+      <ul class="discipline-list">
+        {
+          disciplines.map((d) => (
+            <li class="fade-in">
+              <a href={`/products/${d.handle}`}>
+                <h3>{d.title}</h3>
+                <p>{d.blurb}</p>
+                <span class="arrow">→</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- FEATURED -->
+  <section id="featured">
+    <div class="wrap">
+      <div class="section-head fade-in">
+        <p class="label">Favourites</p>
+        <h2>Most ridden.</h2>
+      </div>
+      <div class="product-grid">
+        {featured.map((p) => <ProductCard product={p} />)}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header {
+    padding: calc(var(--nav-h) + 5rem) 0 3rem;
+  }
+  .page-header h1 {
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    margin: 1rem 0;
+  }
+  .page-header-sub {
+    max-width: 52ch;
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+  #range {
+    padding-bottom: 4rem;
+  }
+  .discipline-list {
+    list-style: none;
+    display: grid;
+    /* 6 disciplines: 3 cols → exactly 2 full rows, no empty cells */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  @media (max-width: 900px) {
+    .discipline-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .discipline-list {
+      grid-template-columns: 1fr;
+    }
+  }
+  .discipline-list a {
+    display: block;
+    background: var(--cream);
+    padding: 1.75rem;
+    height: 100%;
+    position: relative;
+    transition: background 0.3s var(--ease);
+  }
+  .discipline-list a:hover {
+    background: color-mix(in srgb, var(--warm) 7%, var(--cream));
+  }
+  .discipline-list h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+  .discipline-list p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    max-width: 34ch;
+  }
+  .discipline-list .arrow {
+    position: absolute;
+    top: 1.75rem;
+    right: 1.75rem;
+    color: var(--warm);
+  }
+  #featured {
+    padding: 4rem 0 5rem;
+    border-top: 1px solid var(--rule);
+  }
+  .section-head {
+    margin-bottom: 2.5rem;
+  }
+  .section-head h2 {
+    font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+    margin-top: 0.5rem;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 2.5rem 1.75rem;
+  }
+</style>

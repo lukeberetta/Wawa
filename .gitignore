@@ -1,28 +1,17 @@
 # build output
 dist/
-build/
-
-# generated types
 .astro/
 
-# dependencies
+# deps
 node_modules/
 
-# environment variables
+# env
 .env
 .env.production
 
-# logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Cloudflare
-.wrangler/
-
-# macOS
+# os / editor
 .DS_Store
+.vscode/
 
-# editors
-.idea/
+# cloudflare
+.wrangler/

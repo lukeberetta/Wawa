@@ -1,0 +1,80 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('journal');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString('en-ZA', { year: 'numeric', month: 'long' });
+---
+
+<Layout
+  title={`${post.data.title} — Wawa Press`}
+  description={post.data.excerpt}
+  current="press"
+>
+  <article>
+    <header class="post-header">
+      <div class="wrap">
+        <a href="/press" class="back fade-in">← Press</a>
+        <p class="post-date fade-in">
+          {post.data.publication ?? 'Wawa Journal'} · {fmtDate(post.data.date)}
+        </p>
+        <h1 class="fade-in">{post.data.title}</h1>
+        <p class="post-author fade-in">Words by {post.data.author}</p>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <div class="prose fade-in">
+        <Content />
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .post-header {
+    padding: calc(var(--nav-h) + 4rem) 0 2.5rem;
+  }
+  .back {
+    font-size: 0.85rem;
+    color: var(--muted);
+    display: inline-block;
+    margin-bottom: 2rem;
+  }
+  .back:hover {
+    color: var(--ink);
+  }
+  .post-date {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 0.75rem;
+  }
+  .post-header h1 {
+    font-size: clamp(2rem, 5.5vw, 3.6rem);
+    max-width: 18ch;
+  }
+  .post-author {
+    margin-top: 1rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .prose {
+    max-width: 62ch;
+    margin: 0 auto;
+    padding-bottom: 5rem;
+  }
+  .prose :global(p) {
+    margin-bottom: 1.3rem;
+    font-size: 1.08rem;
+    line-height: 1.6;
+  }
+</style>

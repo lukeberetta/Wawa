@@ -1,0 +1,99 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { site } from '@/lib/site';
+---
+
+<Layout
+  title="Cafe — Wawa Surfboards"
+  description="Coffee, cake and wooden boards in Muizenberg. The Wawa cafe — where the workshop meets the water."
+  current="cafe"
+>
+  <header class="page-header">
+    <div class="wrap">
+      <p class="label fade-in">Cafe</p>
+      <h1 class="fade-in">Coffee, cake<br />and craft.</h1>
+      <p class="page-header-sub fade-in">
+        Where the workshop meets the water. Pull up a stool, watch the timber take shape, and start
+        the day the Muizenberg way — slow, salty and unhurried.
+      </p>
+    </div>
+  </header>
+
+  <section id="cafe-hero">
+    <div class="wrap">
+      <img class="hero fade-in" src="/img/catalog/cafe-1.jpg" alt="The Wawa cafe in Muizenberg" loading="lazy" />
+    </div>
+  </section>
+
+  <section id="cafe-body">
+    <div class="wrap">
+      <div class="cols fade-in">
+        <div>
+          <h2>Good coffee, honest cake</h2>
+          <p>
+            A working surfboard workshop and a café under one roof. Locally roasted coffee, cake made
+            in-house, and the smell of sawdust and salt. No rush — surf time runs slow.
+          </p>
+        </div>
+        <div>
+          <h2>Find us</h2>
+          <p>{site.location}. Open from early, every surfable day. Come for the coffee, stay for the boards.</p>
+        </div>
+      </div>
+
+      <div class="gallery fade-in">
+        <img src="/img/catalog/cafe-2.jpg" alt="Coffee and cake at Wawa" loading="lazy" />
+        <img src="/img/catalog/cafe-3.jpg" alt="Inside the Wawa cafe" loading="lazy" />
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header {
+    padding: calc(var(--nav-h) + 5rem) 0 3rem;
+  }
+  .page-header h1 {
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    margin: 1rem 0;
+  }
+  .page-header-sub {
+    max-width: 46ch;
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+  .hero {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: 1px solid var(--rule);
+  }
+  #cafe-body {
+    padding: 3.5rem 0 5rem;
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    max-width: 56rem;
+    margin-bottom: 3rem;
+  }
+  .cols h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .cols p {
+    color: var(--muted);
+  }
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .gallery img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 1px solid var(--rule);
+  }
+</style>

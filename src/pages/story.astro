@@ -1,0 +1,187 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title="Story — Wawa Surfboards" current="story">
+  <header class="page-header">
+    <div class="wrap">
+      <p class="label fade-in">Story</p>
+      <h1 class="fade-in">A return<br />to origin.</h1>
+    </div>
+  </header>
+
+  <section class="prose">
+    <div class="wrap">
+      <div class="cols fade-in">
+        <div>
+          <p>
+            Wawa was founded in Muizenberg by Cobus Joubert, Andrew Strode and David Hidi — driven by
+            a shared relationship with the ocean and a desire to build boards that feel purposeful.
+          </p>
+          <p>
+            The name tells you something about the material. Wawa is the Brazilian term for African
+            timber, known elsewhere as obeche — a nod to the wood at the heart of everything they
+            make.
+          </p>
+          <p>
+            Surfing’s earliest boards were carved from trees. Over time, foam and fiberglass replaced
+            wood in the pursuit of convenience and mass production. Wawa revisits that original
+            material — not as nostalgia, but as evolution.
+          </p>
+        </div>
+        <div>
+          <p>
+            Cobus shaped his first board in 2000. The years that followed were spent refining the
+            approach — experimenting with locally harvested timber, testing forms inspired by the
+            alaias and paipos of early wave riders.
+          </p>
+          <p>
+            The current method — paulownia over recycled foam cores with cork rails — is the result
+            of over fifteen years of iteration. It combines the feel and character of wood with the
+            demands of contemporary surfing.
+          </p>
+          <p>Each board honours surfing’s lineage while embracing what riding waves feels like today.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRAFT -->
+  <section id="craft">
+    <div class="wrap">
+      <div class="craft-head fade-in">
+        <p class="label">Craft</p>
+        <h2>Old school,<br />modern tech.</h2>
+        <p class="craft-lead">
+          Old and forgotten surfboards — most of them soft-tops bound for the landfill — find new
+          life in our workshop. Stripped, cleaned and reshaped, they’re reborn beneath layers of wood
+          and cork, transformed Wawa-style into something beautiful, functional and enduring.
+        </p>
+      </div>
+
+      <div class="cols fade-in">
+        <div>
+          <p>
+            After 15 years of shaping foam by hand, we’ve digitised most of our designs. Our trusted
+            CNC partner cuts the raw foam shapes with precision, following the digital blueprints
+            we’ve refined over years of experimentation. Once the blanks return to our workshop, the
+            real artistry begins — the woodwork and cork detailing that bring warmth, texture and
+            individuality to every board.
+          </p>
+          <p>
+            The Paulownia timber, light yet resilient, forms the body of the board, its fine grain
+            alive with subtle patterns that shift and deepen with time. Along the rails, carbonised
+            and natural cork trace clean lines of contrast — a nod to the retro pin lines of 1960s
+            and ’70s surf craft.
+          </p>
+        </div>
+        <div>
+          <p>
+            The nose and tail are finished in hardwood for strength and endurance, giving each board
+            a sense of permanence against the ever-changing sea. Some riders choose a wash of
+            watercolours, painted to echo the ocean’s moods — muted blues, sunlit ambers, the pale
+            green of a breaking wave.
+          </p>
+          <p>
+            Over time, the timber takes on a patina all its own — a living signature of salt, sun and
+            session. No two boards will age in the same way. A fine balance of craftsmanship and
+            conscience, art and utility — born from saltwater, sawdust and an enduring respect for
+            the sea.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANET -->
+  <section id="planet">
+    <div class="wrap">
+      <div class="planet-head fade-in">
+        <p class="label">Planet</p>
+        <h2>The sea,<br />our heritage.</h2>
+        <p class="planet-lead">
+          Our thoughts and actions can pollute or restore, degrade or rebuild, hurt or heal. As part
+          of nature, we benefit from sustaining the eco-systems and surf we depend on — so the ocean
+          sits at the heart of every decision made in the Wawa workshop.
+        </p>
+      </div>
+
+      <div class="cols fade-in">
+        <div>
+          <h3>Wood is good</h3>
+          <p>
+            Wood is a renewable material that fosters a deeper emotional connection — encouraging
+            care, respect and longevity rather than disposability. When living nature features and
+            functions as intended in its natural form, our work is complete.
+          </p>
+        </div>
+        <div>
+          <h3>Less is more</h3>
+          <p>
+            No fiberglass or resin — toxic, and extra weight. Our timber is waterproof and
+            warp-resistant. Each board is shaped by hand with the rider and conditions in mind, with
+            CNC precision available for consistency on repeat orders.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header {
+    padding: calc(var(--nav-h) + 5rem) 0 3rem;
+  }
+  .page-header h1 {
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    margin-top: 1rem;
+  }
+  .prose {
+    padding-bottom: 5rem;
+  }
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    max-width: 60rem;
+  }
+  .cols p {
+    margin-bottom: 1.1rem;
+    color: var(--ink);
+  }
+
+  #craft,
+  #planet {
+    padding: 4rem 0 5rem;
+    border-top: 1px solid var(--rule);
+  }
+  #craft {
+    padding-bottom: 4rem;
+  }
+  .craft-head,
+  .planet-head {
+    margin-bottom: 2.5rem;
+  }
+  .craft-head h2,
+  .planet-head h2 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    margin: 0.75rem 0 1.5rem;
+  }
+  .craft-lead {
+    max-width: 56ch;
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+  #craft .cols {
+    max-width: 62rem;
+  }
+  .planet-lead {
+    max-width: 52ch;
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+  .cols h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.6rem;
+  }
+</style>

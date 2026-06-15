@@ -1,0 +1,122 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import ProductCard from '@/components/ProductCard.astro';
+import { disciplines, getProducts, slug } from '@/lib/catalog';
+import type { Product } from '@/lib/types';
+
+export async function getStaticPaths() {
+  const all = await getProducts();
+  return disciplines.map((d) => ({
+    params: { discipline: d.handle },
+    props: {
+      discipline: d,
+      products: all.filter((p: Product) => slug(p.productType) === d.handle),
+    },
+  }));
+}
+
+const { discipline, products } = Astro.props;
+---
+
+<Layout title={`${discipline.title} — Wawa Surfboards`} current="products">
+  <header class="page-header">
+    <div class="wrap">
+      <p class="label fade-in">Products</p>
+      <h1 class="fade-in">{discipline.title}</h1>
+      <p class="page-header-sub fade-in">{discipline.intro ?? discipline.blurb}</p>
+    </div>
+  </header>
+
+  {
+    discipline.hero && products.length === 0 && (
+      <div class="wrap">
+        <img
+          class="hero-img fade-in"
+          src={`/img/catalog/${discipline.hero}.jpg`}
+          alt={`Wawa ${discipline.title}`}
+          loading="lazy"
+        />
+      </div>
+    )
+  }
+
+  <section id="range">
+    <div class="wrap">
+      {
+        discipline.categories.length > 0 && (
+          <ul class="cats fade-in">
+            {discipline.categories.map((c: string) => (
+              <li>{c}</li>
+            ))}
+          </ul>
+        )
+      }
+
+      {
+        products.length > 0 ? (
+          <div class="product-grid">
+            {products.map((p: Product) => (
+              <ProductCard product={p} />
+            ))}
+          </div>
+        ) : (
+          <p class="empty fade-in">
+            Boards coming soon. Get in touch to commission a custom {discipline.title.toLowerCase()}{' '}
+            build.
+          </p>
+        )
+      }
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header {
+    padding: calc(var(--nav-h) + 5rem) 0 3rem;
+  }
+  .page-header h1 {
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    margin: 1rem 0;
+  }
+  .page-header-sub {
+    max-width: 44ch;
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+  #range {
+    padding-bottom: 5rem;
+  }
+  .hero-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: 1px solid var(--rule);
+    margin-bottom: 3rem;
+  }
+  .cats {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2.5rem;
+  }
+  .cats li {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--rule);
+    border-radius: 100px;
+    padding: 0.35rem 0.85rem;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 2.5rem 1.75rem;
+  }
+  .empty {
+    color: var(--muted);
+    max-width: 40ch;
+    font-size: 1.05rem;
+  }
+</style>

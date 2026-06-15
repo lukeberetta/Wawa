@@ -1,0 +1,135 @@
+@import './tokens.css';
+
+/* ── Fonts ─────────────────────────────────────── */
+@font-face {
+  font-family: 'PolySans';
+  src: url('/fonts/PolySans-Neutral.otf') format('opentype');
+  font-weight: 300 400;
+  font-display: swap;
+}
+
+/* ── Reset ─────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--fs-base);
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+/* Lenis owns scroll when active — disable native smooth to avoid fighting */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  font-family: var(--font-body), var(--font-fallback);
+  font-weight: var(--fw-light);
+  background: var(--ink); /* ink shows behind main when the footer reveals */
+  color: var(--ink);
+  line-height: var(--lh-base);
+  /* note: overflow-x lives on <html> only — setting it here makes body a
+     scroll container and breaks the fixed-footer reveal */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+/* ── Reveal footer ─────────────────────────────── */
+/* main is an opaque layer above the fixed footer; scrolling its bottom edge
+   past the viewport unveils the footer beneath — a curtain pull. */
+main {
+  position: relative;
+  z-index: 1;
+  background: var(--cream);
+  margin-bottom: var(--footer-h);
+  /* always cover the viewport so the fixed footer stays hidden until the
+     bottom edge scrolls past — short pages won't reveal it early */
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: var(--fw-light);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+/* ── Layout helpers ────────────────────────────── */
+.wrap {
+  width: 100%;
+  max-width: var(--wrap-max);
+  margin-inline: auto;
+  padding-inline: var(--wrap-pad);
+}
+
+.label {
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 2px;
+  transition: gap 0.3s var(--ease);
+}
+.link-arrow:hover {
+  gap: 0.85rem;
+}
+.link-arrow .arrow {
+  transition: transform 0.3s var(--ease);
+}
+
+/* ── Scroll reveal ─────────────────────────────── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.fade-in.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .fade-in {
+    opacity: 1;
+    transform: none;
+  }
+}

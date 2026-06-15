@@ -1,0 +1,150 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import VideoCard from '@/components/VideoCard.astro';
+import { videos } from '@/data/videos';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('journal')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString('en-ZA', { year: 'numeric', month: 'long' });
+// External coverage shows its masthead; Wawa's own writing shares one label.
+const source = (p: (typeof posts)[number]) => p.data.publication ?? 'Wawa Journal';
+---
+
+<Layout
+  title="Press — Wawa Surfboards"
+  description="Letters, essays and stories from the Wawa workshop — surfing history, sustainable craft and the people behind the boards."
+  current="press"
+>
+  <header class="page-header">
+    <div class="wrap">
+      <p class="label fade-in">Press</p>
+      <h1 class="fade-in">Words &amp;<br />film.</h1>
+      <p class="page-header-sub fade-in">
+        Wawa in the surf press — features, interviews and films about the boards, the workshop and
+        the people behind them.
+      </p>
+    </div>
+  </header>
+
+  <!-- FILMS -->
+  <section id="films">
+    <div class="wrap">
+      <div class="section-head fade-in">
+        <p class="label">Watch</p>
+        <h2>On film.</h2>
+      </div>
+      <div class="video-grid">
+        {videos.map((video) => <VideoCard video={video} />)}
+      </div>
+    </div>
+  </section>
+
+  <section id="posts">
+    <div class="wrap">
+      <div class="section-head fade-in">
+        <p class="label">Read</p>
+        <h2>In words.</h2>
+      </div>
+      <ul class="post-list">
+        {
+          posts.map((post) => (
+            <li class="fade-in">
+              <a href={`/press/${post.id}`}>
+                <p class="post-pub">
+                  {source(post)}
+                  <span class="post-date"> · {fmtDate(post.data.date)}</span>
+                </p>
+                <h2>{post.data.title}</h2>
+                <p class="post-excerpt">{post.data.excerpt}</p>
+                <p class="post-author">Words by {post.data.author}</p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      {posts.length === 0 && <p class="empty fade-in">Press coverage coming soon.</p>}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header {
+    padding: calc(var(--nav-h) + 5rem) 0 3rem;
+  }
+  .page-header h1 {
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    margin: 1rem 0;
+  }
+  .page-header-sub {
+    max-width: 44ch;
+    color: var(--muted);
+    font-size: 1.05rem;
+  }
+  .section-head {
+    margin-bottom: 2.5rem;
+  }
+  .section-head h2 {
+    font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+    margin-top: 0.5rem;
+  }
+  #films {
+    padding-bottom: 4rem;
+  }
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2.5rem 1.75rem;
+  }
+  #posts {
+    padding: 4rem 0 5rem;
+    border-top: 1px solid var(--rule);
+  }
+  .post-list {
+    list-style: none;
+  }
+  .post-list li {
+    border-top: 1px solid var(--rule);
+  }
+  .post-list li:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+  .post-list a {
+    display: block;
+    padding: 2.25rem 0;
+    transition: padding-left 0.3s var(--ease);
+  }
+  .post-list a:hover {
+    padding-left: 1rem;
+  }
+  .post-pub {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 0.5rem;
+  }
+  .post-date {
+    color: var(--muted);
+  }
+  .empty {
+    color: var(--muted);
+    padding: 2rem 0;
+  }
+  .post-list h2 {
+    font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+    margin-bottom: 0.75rem;
+  }
+  .post-excerpt {
+    color: var(--muted);
+    max-width: 60ch;
+  }
+  .post-author {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+</style>

@@ -1,0 +1,39 @@
+---
+// Lenis smooth scroll + scroll-reveal observer.
+// Honors prefers-reduced-motion (Lenis skipped, reveals shown immediately).
+---
+
+<script>
+  import Lenis from 'lenis';
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── Smooth scroll ──────────────────────────────
+  if (!reduce) {
+    const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    const raf = (time: number) => {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    };
+    requestAnimationFrame(raf);
+  }
+
+  // ── Reveal on scroll ───────────────────────────
+  const els = document.querySelectorAll<HTMLElement>('.fade-in');
+  if (reduce || !('IntersectionObserver' in window)) {
+    els.forEach((el) => el.classList.add('is-visible'));
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+    );
+    els.forEach((el) => io.observe(el));
+  }
+</script>

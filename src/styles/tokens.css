@@ -1,0 +1,39 @@
+/* ────────────────────────────────────────────────
+   Wawa design tokens — carried from POC, client-approved
+   Warm cream / ink editorial palette.
+   ──────────────────────────────────────────────── */
+
+:root {
+  /* palette */
+  --cream: #f5f0e8;
+  --ink: #1a1410;
+  --muted: #7d7168;
+  --rule: #b8b0a6;
+  --warm: #9c7d5e;
+
+  /* type */
+  --font-body: 'PolySans', system-ui, sans-serif;
+  --font-fallback: 'Inter', system-ui, sans-serif;
+  --fs-base: 17px;
+  --lh-base: 1.4;
+  --fw-light: 300;
+  --fw-regular: 400;
+
+  /* layout */
+  --nav-h: 66px;
+  --wrap-max: 1280px;
+  --wrap-pad: 2rem;
+  --footer-h: 440px; /* reveal footer panel height; main reserves this space */
+
+  /* motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 0.6s;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --nav-h: 58px;
+    --wrap-pad: 1.25rem;
+    --footer-h: 520px;
+  }
+}

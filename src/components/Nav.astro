@@ -1,0 +1,368 @@
+---
+import { site } from '@/lib/site';
+import { disciplines } from '@/lib/catalog';
+export interface Props {
+  current?: string;
+}
+const { current } = Astro.props;
+
+const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5" stroke="currentColor" stroke-width="1.6" />
+  <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6" />
+  <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" />
+</svg>`;
+---
+
+<nav id="nav">
+  <div class="nav-inner wrap">
+    <a href="/" class="nav-logo" aria-label="Wawa Surfboards home">
+      <img src="/logotype.svg" alt="Wawa" width="92" height="24" />
+    </a>
+
+    <ul class="nav-links">
+      {
+        site.nav.map((item) =>
+          item.dropdown ? (
+            <li class="has-dropdown">
+              <a
+                href={item.href}
+                class:list={['nav-link', { active: current === item.label.toLowerCase() }]}
+                aria-haspopup="true"
+              >
+                {item.label}
+                <span class="caret" aria-hidden="true">▾</span>
+              </a>
+              <ul class="dropdown">
+                {disciplines.map((d) => (
+                  <li>
+                    <a href={`/products/${d.handle}`}>{d.title}</a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li>
+              <a
+                href={item.href}
+                class:list={['nav-link', { active: current === item.label.toLowerCase() }]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ),
+        )
+      }
+      <li>
+        <a
+          class="nav-link nav-ig"
+          href={site.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Wawa on Instagram"
+          set:html={igSvg}
+        />
+      </li>
+    </ul>
+
+    <button
+      class="nav-toggle"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="nav-drawer"
+    >
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="nav-overlay" hidden></div>
+<aside id="nav-drawer" class="nav-drawer" aria-label="Menu" aria-hidden="true">
+  <ul class="drawer-links">
+    {
+      site.nav.map((item) => (
+        <li>
+          <a href={item.href} class:list={{ active: current === item.label.toLowerCase() }}>
+            {item.label}
+          </a>
+          {item.dropdown && (
+            <ul class="drawer-sub">
+              {disciplines.map((d) => (
+                <li>
+                  <a href={`/products/${d.handle}`}>{d.title}</a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))
+    }
+    <li>
+      <a
+        class="drawer-ig"
+        href={site.instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span set:html={igSvg} /> Instagram
+      </a>
+    </li>
+  </ul>
+</aside>
+
+<style>
+  nav {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 100;
+    height: var(--nav-h);
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
+  }
+  nav.scrolled {
+    background: color-mix(in srgb, var(--cream) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-color: var(--rule);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo img {
+    height: 22px;
+    width: auto;
+    display: block;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links li {
+    display: flex;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    opacity: 0.75;
+    transition: opacity 0.25s;
+  }
+  .nav-link:hover,
+  .nav-link.active {
+    opacity: 1;
+  }
+  .nav-ig svg {
+    display: block;
+  }
+
+  /* desktop dropdown */
+  .has-dropdown {
+    position: relative;
+  }
+  .caret {
+    font-size: 0.6rem;
+    margin-left: 0.3rem;
+  }
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    min-width: 168px;
+    list-style: none;
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    padding: 0.5rem 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+  }
+  .has-dropdown:hover .dropdown,
+  .has-dropdown:focus-within .dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(2px);
+  }
+  .dropdown li {
+    display: block;
+  }
+  .dropdown a {
+    display: block;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.85rem;
+    color: var(--ink);
+    opacity: 0.75;
+    white-space: nowrap;
+    transition: opacity 0.2s, background 0.2s;
+  }
+  .dropdown a:hover {
+    opacity: 1;
+    background: color-mix(in srgb, var(--warm) 8%, var(--cream));
+  }
+
+  /* hamburger */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 30px;
+    height: 30px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+    z-index: 120;
+  }
+  .nav-toggle span {
+    width: 22px;
+    height: 1.5px;
+    background: var(--ink);
+    transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+  }
+  .nav-toggle[aria-expanded='true'] span:first-child {
+    transform: translateY(3.25px) rotate(45deg);
+  }
+  .nav-toggle[aria-expanded='true'] span:last-child {
+    transform: translateY(-3.25px) rotate(-45deg);
+  }
+
+  /* drawer + overlay */
+  .nav-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 105;
+    background: color-mix(in srgb, var(--ink) 40%, transparent);
+    opacity: 0;
+    transition: opacity 0.3s var(--ease);
+  }
+  .nav-overlay.open {
+    opacity: 1;
+  }
+  .nav-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 110;
+    width: min(78vw, 320px);
+    height: 100dvh;
+    background: var(--cream);
+    border-left: 1px solid var(--rule);
+    transform: translateX(100%);
+    transition: transform 0.4s var(--ease);
+    padding: calc(var(--nav-h) + 1.5rem) 2rem 2rem;
+    overflow-y: auto;
+  }
+  .nav-drawer.open {
+    transform: translateX(0);
+  }
+  .drawer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .drawer-links a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 0;
+    font-size: 1.4rem;
+    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
+  }
+  .drawer-links a.active {
+    color: var(--warm);
+  }
+  .drawer-sub {
+    list-style: none;
+    padding: 0.25rem 0 0.5rem 0.9rem;
+  }
+  .drawer-sub a {
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    color: var(--muted);
+    border-bottom: 0;
+  }
+  .drawer-sub a:hover {
+    color: var(--ink);
+  }
+  .drawer-ig {
+    font-size: 1.1rem !important;
+    color: var(--muted) !important;
+    border-bottom: 0 !important;
+  }
+  .drawer-ig span {
+    display: flex;
+  }
+
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;
+    }
+    .nav-toggle {
+      display: flex;
+    }
+  }
+  @media (min-width: 769px) {
+    .nav-overlay,
+    .nav-drawer {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-drawer,
+    .nav-overlay,
+    .nav-toggle span {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav?.classList.toggle('scrolled', window.scrollY > 24);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ── Mobile drawer ──────────────────────────────
+  const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+  const drawer = document.getElementById('nav-drawer');
+  const overlay = document.querySelector<HTMLDivElement>('.nav-overlay');
+
+  function setOpen(open: boolean) {
+    if (!toggle || !drawer || !overlay) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    drawer.setAttribute('aria-hidden', String(!open));
+    drawer.classList.toggle('open', open);
+    overlay.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) {
+      overlay.hidden = false;
+    } else {
+      // wait for the fade before removing from the a11y tree
+      setTimeout(() => {
+        if (toggle.getAttribute('aria-expanded') === 'false') overlay.hidden = true;
+      }, 300);
+    }
+  }
+
+  toggle?.addEventListener('click', () =>
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true'),
+  );
+  overlay?.addEventListener('click', () => setOpen(false));
+  drawer?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+</script>
