@@ -88,41 +88,23 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
   <ul class="drawer-links">
     {
       site.nav.map((item) => (
-        <li class:list={['drawer-item', { 'has-sub': item.dropdown }]}>
-          <div class="drawer-row">
-            <a href={item.href} class:list={{ active: current === item.label.toLowerCase() }}>
-              {item.label}
-            </a>
-            {item.dropdown && (
-              <button
-                class="drawer-sub-toggle"
-                aria-expanded="false"
-                aria-label={`Toggle ${item.label} submenu`}
-              >
-                <span class="caret" aria-hidden="true">▾</span>
-              </button>
-            )}
-          </div>
-          {item.dropdown && (
-            <ul class="drawer-sub">
-              {disciplines.map((d) => (
-                <li>
-                  <a href={`/products/${d.handle}`}>{d.title}</a>
-                </li>
-              ))}
-            </ul>
-          )}
+        <li>
+          <a href={item.href} class:list={{ active: current === item.label.toLowerCase() }}>
+            {item.label}{item.dropdown && ` (${disciplines.length})`}
+          </a>
         </li>
       ))
     }
+    {site.shopDomain && (
+      <li>
+        <button class="drawer-cart" data-cart-toggle type="button">
+          Cart (<span data-cart-count>0</span>)
+        </button>
+      </li>
+    )}
     <li>
-      <a
-        class="drawer-ig"
-        href={site.instagram}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span set:html={igSvg} /> Instagram
+      <a href={site.instagram} target="_blank" rel="noopener noreferrer">
+        Instagram
       </a>
     </li>
   </ul>
@@ -133,7 +115,9 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     position: fixed;
     inset: 0 0 auto 0;
     z-index: 100;
-    height: var(--nav-h);
+    /* grow under the status bar in standalone (env is 0 in normal browsing) */
+    height: calc(var(--nav-h) + env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
     display: flex;
     align-items: center;
     background: transparent;
@@ -315,12 +299,14 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     right: 0;
     z-index: 110;
     width: min(78vw, 320px);
+    height: 100vh;
     height: 100dvh;
     background: var(--cream);
     border-left: 1px solid var(--rule);
     transform: translateX(100%);
     transition: transform 0.4s var(--ease);
-    padding: calc(var(--nav-h) + 1.5rem) 2rem 2rem;
+    padding: calc(var(--nav-h) + env(safe-area-inset-top) + 1.5rem)
+      calc(2rem + env(safe-area-inset-right)) calc(2rem + env(safe-area-inset-bottom)) 2rem;
     overflow-y: auto;
   }
   .nav-drawer.open {
@@ -332,82 +318,41 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     flex-direction: column;
     gap: 0.25rem;
   }
-  .drawer-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--rule);
-  }
-  .drawer-row a {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
+  /* every drawer row shares one type/colour/rule — link, cart and Instagram */
+  .drawer-links a,
+  .drawer-cart {
+    width: 100%;
     padding: 0.85rem 0;
+    font-family: inherit;
     font-size: 1.4rem;
     color: var(--ink);
-  }
-  .drawer-row a.active {
-    color: var(--warm);
-  }
-  .drawer-sub-toggle {
-    flex: none;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: none;
     border: 0;
-    color: var(--ink);
+    border-bottom: 1px solid var(--rule);
     cursor: pointer;
-    padding: 0;
   }
-  .drawer-sub-toggle .caret {
-    font-size: 0.8rem;
-    transition: transform 0.3s var(--ease);
-  }
-  .drawer-sub-toggle[aria-expanded='true'] .caret {
-    transform: rotate(180deg);
-  }
-  .drawer-sub {
-    list-style: none;
-    overflow: hidden;
-    max-height: 0;
-    padding-left: 0.9rem;
-    transition: max-height 0.35s var(--ease);
-  }
-  .drawer-item.open .drawer-sub {
-    /* generous cap; 6 items × ~2.4rem */
-    max-height: 22rem;
-  }
-  .drawer-sub a {
-    font-size: 1rem;
-    padding: 0.5rem 0;
-    color: var(--muted);
-    border-bottom: 0;
-  }
-  .drawer-sub a:hover {
-    color: var(--ink);
-  }
-  .drawer-ig {
+  .drawer-links a {
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.85rem 0;
-    font-size: 1.1rem;
-    color: var(--muted);
   }
-  .drawer-ig:hover {
-    color: var(--ink);
+  .drawer-cart {
+    display: block;
+    text-align: left;
   }
-  .drawer-ig span {
-    display: flex;
+  .drawer-links a.active {
+    color: var(--warm);
   }
 
   @media (max-width: 768px) {
     .nav-links {
       display: none;
+    }
+    .nav-ig {
+      display: none;
+    }
+    .nav-logo img {
+      height: 18px;
     }
     .nav-toggle {
       display: flex;
@@ -458,11 +403,6 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     if (open) {
       overlay.hidden = false;
     } else {
-      // collapse any open accordion sections
-      drawer.querySelectorAll('.drawer-item.open').forEach((li) => {
-        li.classList.remove('open');
-        li.querySelector('.drawer-sub-toggle')?.setAttribute('aria-expanded', 'false');
-      });
       // wait for the fade before removing from the a11y tree
       setTimeout(() => {
         if (toggle.getAttribute('aria-expanded') === 'false') overlay.hidden = true;
@@ -475,16 +415,8 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
   );
   overlay?.addEventListener('click', () => setOpen(false));
 
-  // Accordion: chevron expands/collapses the submenu without closing the drawer.
-  drawer?.querySelectorAll<HTMLButtonElement>('.drawer-sub-toggle').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const li = btn.closest('.drawer-item');
-      const isOpen = li?.classList.toggle('open') ?? false;
-      btn.setAttribute('aria-expanded', String(isOpen));
-    });
-  });
-
-  // Only navigation links close the drawer (not the accordion toggle button).
+  // Drawer links close the drawer on click. The cart button isn't an <a>; it
+  // opens the cart, which closes this drawer on its own (see Cart.astro).
   drawer?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') setOpen(false);

@@ -28,6 +28,12 @@ const year = new Date().getFullYear();
     content: '';
     position: absolute;
     inset: 0;
+    /* fallback for browsers without color-mix (Safari <16.2) */
+    background: linear-gradient(
+      180deg,
+      rgba(26, 20, 16, 0.78),
+      rgba(26, 20, 16, 0.9)
+    );
     background: linear-gradient(
       180deg,
       color-mix(in srgb, var(--ink) 78%, transparent),
@@ -44,6 +50,7 @@ const year = new Date().getFullYear();
     justify-content: center;
     gap: 3rem;
     text-align: center;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   /* the brand statement — softened, not stark white */
@@ -65,7 +72,7 @@ const year = new Date().getFullYear();
   .footer-inner > * {
     opacity: var(--reveal, 1);
     transform: translateY(calc((1 - var(--reveal, 1)) * 30px));
-    transition: opacity 0.12s linear, transform 0.12s linear;
+    will-change: opacity, transform;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -84,18 +91,37 @@ const year = new Date().getFullYear();
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (footer && !reduce) {
+    // Measure layout (forces reflow) only on resize/load — never per scroll.
+    // Caching winH also stops the reveal wobbling as iOS shows/hides its
+    // toolbar (which changes innerHeight mid-scroll).
     let fh = footer.offsetHeight;
-    const update = () => {
-      const remaining =
-        document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+    let docH = document.documentElement.scrollHeight;
+    let winH = window.innerHeight;
+    let ticking = false;
+
+    const compute = () => {
+      ticking = false;
+      // scrollY is cheap and reflow-free — the only thing read while scrolling.
+      const remaining = docH - winH - window.scrollY;
       const p = Math.min(Math.max(1 - remaining / fh, 0), 1);
       footer.style.setProperty('--reveal', p.toFixed(3));
     };
-    window.addEventListener('resize', () => {
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(compute);
+      }
+    };
+    const remeasure = () => {
       fh = footer.offsetHeight;
-      update();
-    });
-    window.addEventListener('scroll', update, { passive: true });
-    update();
+      docH = document.documentElement.scrollHeight;
+      winH = window.innerHeight;
+      compute();
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', remeasure);
+    window.addEventListener('load', remeasure);
+    remeasure();
   }
 </script>

@@ -97,6 +97,7 @@ const featured = await getFeatured();
     position: relative;
     overflow: hidden;
     min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     padding-top: var(--nav-h);
@@ -118,6 +119,13 @@ const featured = await getFeatured();
     position: absolute;
     inset: 0;
     z-index: 1;
+    /* fallback for browsers without color-mix (Safari <16.2): keep the dark
+       wash so cream text stays readable over the footage */
+    background: linear-gradient(
+      180deg,
+      rgba(26, 20, 16, 0.55),
+      rgba(26, 20, 16, 0.66)
+    );
     background:
       /* top scrim so the nav reads against the footage */
       linear-gradient(

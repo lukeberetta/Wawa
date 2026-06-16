@@ -167,8 +167,9 @@ const hasPrice = price !== 'Enquire';
     color: var(--muted);
     margin-top: 0.2rem;
   }
-  /* Touch devices have no hover — keep actions visible. */
-  @media (hover: none) {
+  /* No hover (touch) or a narrow viewport — keep actions visible. The width
+     clause also covers desktop-narrow + hybrid devices that report hover. */
+  @media (hover: none), (max-width: 768px) {
     .card-overlay {
       opacity: 1;
       transform: translateY(0);
