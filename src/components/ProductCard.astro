@@ -14,38 +14,47 @@ const enquire = whatsappLink(`Hi Wawa — I'm interested in the ${product.title}
 // Buyable when in stock with a variant id and a configured shop domain;
 // otherwise the card stays Enquire-only (boards, POA items).
 const buyable = product.availableForSale && !!product.variantId && !!site.shopDomain;
+// formatPrice returns 'Enquire' for POA items — skip the price box then so the
+// overlay doesn't read "Enquire | Enquire".
+const hasPrice = price !== 'Enquire';
 ---
 
 <article class="card fade-in">
-  <a
-    class="card-flip"
-    href={enquire}
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label={`Enquire about the ${product.title}`}
-  >
+  <div class="card-media">
     <img class="face front" src={front.url} alt={front.altText} loading="lazy" />
     <img class="face back" src={back.url} alt={back.altText} loading="lazy" aria-hidden="true" />
-  </a>
+    <div class="card-overlay">
+      {hasPrice && <span class="overlay-price">{price}</span>}
+      {buyable ? (
+        <button
+          class="overlay-action"
+          data-add-to-cart
+          data-variant-id={product.variantId}
+          data-handle={product.handle}
+          data-title={product.title}
+          data-price={product.priceRange.minVariantPrice.amount}
+          data-image={front.url}
+          aria-label={`Add the ${product.title} to cart`}
+        >
+          Add to cart
+        </button>
+      ) : (
+        <a
+          class="overlay-action"
+          href={enquire}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Enquire about the ${product.title}`}
+        >
+          Enquire
+        </a>
+      )}
+    </div>
+  </div>
   <div class="card-meta">
     <h3>{product.title}</h3>
-    <span class="price">{price}</span>
   </div>
   <p class="card-cat">{product.tags[0] ?? product.productType}</p>
-  {buyable && (
-    <button
-      class="card-cta"
-      data-add-to-cart
-      data-variant-id={product.variantId}
-      data-handle={product.handle}
-      data-title={product.title}
-      data-price={product.priceRange.minVariantPrice.amount}
-      data-image={front.url}
-      aria-label={`Add the ${product.title} to cart`}
-    >
-      Add to cart
-    </button>
-  )}
 </article>
 
 <style>
@@ -53,7 +62,7 @@ const buyable = product.availableForSale && !!product.variantId && !!site.shopDo
     display: flex;
     flex-direction: column;
   }
-  .card-flip {
+  .card-media {
     position: relative;
     aspect-ratio: 3 / 4;
     background: color-mix(in srgb, var(--warm) 8%, var(--cream));
@@ -71,8 +80,59 @@ const buyable = product.availableForSale && !!product.variantId && !!site.shopDo
   .back {
     opacity: 0;
   }
-  .card-flip:hover .back {
+  .card-media:hover .back {
     opacity: 1;
+  }
+  .card-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: stretch;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+    pointer-events: none;
+  }
+  .card-media:hover .card-overlay,
+  .card-media:focus-within .card-overlay {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .overlay-price {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.9rem;
+    color: var(--ink);
+    background: var(--cream);
+    white-space: nowrap;
+  }
+  .overlay-action {
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 1.4rem;
+    font-family: inherit;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--ink);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s var(--ease);
+  }
+  .overlay-action:hover {
+    opacity: 0.85;
+  }
+  /* POA cards have no price box — let the lone action fill the bar. */
+  .overlay-action:only-child {
+    flex: 1;
+    justify-content: center;
   }
   .card-meta {
     display: flex;
@@ -84,11 +144,6 @@ const buyable = product.availableForSale && !!product.variantId && !!site.shopDo
   .card-meta h3 {
     font-size: 1.1rem;
   }
-  .price {
-    font-size: 0.85rem;
-    color: var(--warm);
-    white-space: nowrap;
-  }
   .card-cat {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
@@ -96,21 +151,12 @@ const buyable = product.availableForSale && !!product.variantId && !!site.shopDo
     color: var(--muted);
     margin-top: 0.2rem;
   }
-  .card-cta {
-    align-self: flex-start;
-    margin-top: 0.75rem;
-    padding: 0.55rem 1.1rem;
-    font-family: inherit;
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--cream);
-    background: var(--ink);
-    border: 1px solid var(--ink);
-    cursor: pointer;
-    transition: opacity 0.2s var(--ease);
-  }
-  .card-cta:hover {
-    opacity: 0.85;
+  /* Touch devices have no hover — keep actions visible. */
+  @media (hover: none) {
+    .card-overlay {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
   }
 </style>
