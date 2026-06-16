@@ -1,7 +1,7 @@
 ---
 import type { Product } from '@/lib/types';
 import { formatPrice } from '@/lib/catalog';
-import { whatsappLink, checkoutLink } from '@/lib/site';
+import { site, whatsappLink } from '@/lib/site';
 
 export interface Props {
   product: Product;
@@ -13,7 +13,7 @@ const back = product.images[1] ?? product.images[0];
 const enquire = whatsappLink(`Hi Wawa — I'm interested in the ${product.title}.`);
 // Buyable when in stock with a variant id and a configured shop domain;
 // otherwise the card stays Enquire-only (boards, POA items).
-const checkout = product.availableForSale ? checkoutLink(product.variantId) : '';
+const buyable = product.availableForSale && !!product.variantId && !!site.shopDomain;
 ---
 
 <article class="card fade-in">
@@ -32,10 +32,19 @@ const checkout = product.availableForSale ? checkoutLink(product.variantId) : ''
     <span class="price">{price}</span>
   </div>
   <p class="card-cat">{product.tags[0] ?? product.productType}</p>
-  {checkout && (
-    <a class="card-cta" href={checkout} aria-label={`Add the ${product.title} to cart`}>
+  {buyable && (
+    <button
+      class="card-cta"
+      data-add-to-cart
+      data-variant-id={product.variantId}
+      data-handle={product.handle}
+      data-title={product.title}
+      data-price={product.priceRange.minVariantPrice.amount}
+      data-image={front.url}
+      aria-label={`Add the ${product.title} to cart`}
+    >
       Add to cart
-    </a>
+    </button>
   )}
 </article>
 
@@ -91,12 +100,14 @@ const checkout = product.availableForSale ? checkoutLink(product.variantId) : ''
     align-self: flex-start;
     margin-top: 0.75rem;
     padding: 0.55rem 1.1rem;
+    font-family: inherit;
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--cream);
-    background: var(--ink, #1a1a1a);
-    border: 1px solid var(--ink, #1a1a1a);
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    cursor: pointer;
     transition: opacity 0.2s var(--ease);
   }
   .card-cta:hover {

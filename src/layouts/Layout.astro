@@ -3,6 +3,7 @@ import '@/styles/global.css';
 import Nav from '@/components/Nav.astro';
 import Footer from '@/components/Footer.astro';
 import Motion from '@/components/Motion.astro';
+import Cart from '@/components/Cart.astro';
 import { site } from '@/lib/site';
 
 export interface Props {
@@ -64,6 +65,7 @@ const ogImage = `${site.url}/og-image.jpg`;
       <div id="footer-sentinel" aria-hidden="true"></div>
     </main>
     <Footer />
+    <Cart />
     <Motion />
   </body>
 </html>

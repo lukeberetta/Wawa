@@ -24,13 +24,3 @@ export const site = {
 export function whatsappLink(message: string): string {
   return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;
 }
-
-/**
- * Shopify cart permalink → adds the variant and lands on the hosted checkout
- * (where Yoco is the payment provider). Returns '' when the shop domain or
- * variant id is missing, so callers can fall back to Enquire.
- */
-export function checkoutLink(variantId: string | undefined, qty = 1): string {
-  if (!site.shopDomain || !variantId) return '';
-  return `https://${site.shopDomain}/cart/${variantId}:${qty}`;
-}
