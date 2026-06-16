@@ -15,3 +15,6 @@ node_modules/
 
 # cloudflare
 .wrangler/
+
+# generated Shopify import (regenerate via scripts/gen-shopify-csv.ts)
+shopify-products.csv

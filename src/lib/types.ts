@@ -24,6 +24,9 @@ export interface Product {
   productType: string; // discipline: 'Surf' | 'Foil' | ...
   tags: string[]; // category: 'Short' | 'Mid' | ...
   availableForSale: boolean;
+  /** Shopify variant id (numeric) for the cart-permalink checkout. Set on
+   *  buyable items; absent on POA/Enquire boards. */
+  variantId?: string;
   priceRange: { minVariantPrice: Money };
   /** front + back for the flip-card; first = primary */
   images: ProductImage[];

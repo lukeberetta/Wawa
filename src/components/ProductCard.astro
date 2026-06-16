@@ -1,7 +1,7 @@
 ---
 import type { Product } from '@/lib/types';
 import { formatPrice } from '@/lib/catalog';
-import { whatsappLink } from '@/lib/site';
+import { whatsappLink, checkoutLink } from '@/lib/site';
 
 export interface Props {
   product: Product;
@@ -11,6 +11,9 @@ const price = formatPrice(product);
 const front = product.images[0];
 const back = product.images[1] ?? product.images[0];
 const enquire = whatsappLink(`Hi Wawa — I'm interested in the ${product.title}.`);
+// Buyable when in stock with a variant id and a configured shop domain;
+// otherwise the card stays Enquire-only (boards, POA items).
+const checkout = product.availableForSale ? checkoutLink(product.variantId) : '';
 ---
 
 <article class="card fade-in">
@@ -29,6 +32,11 @@ const enquire = whatsappLink(`Hi Wawa — I'm interested in the ${product.title}
     <span class="price">{price}</span>
   </div>
   <p class="card-cat">{product.tags[0] ?? product.productType}</p>
+  {checkout && (
+    <a class="card-cta" href={checkout} aria-label={`Add the ${product.title} to cart`}>
+      Add to cart
+    </a>
+  )}
 </article>
 
 <style>
@@ -78,5 +86,20 @@ const enquire = whatsappLink(`Hi Wawa — I'm interested in the ${product.title}
     text-transform: uppercase;
     color: var(--muted);
     margin-top: 0.2rem;
+  }
+  .card-cta {
+    align-self: flex-start;
+    margin-top: 0.75rem;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--ink, #1a1a1a);
+    border: 1px solid var(--ink, #1a1a1a);
+    transition: opacity 0.2s var(--ease);
+  }
+  .card-cta:hover {
+    opacity: 0.85;
   }
 </style>
