@@ -13,6 +13,8 @@ import type { Product } from '@/lib/types';
 const zar = (amount: string) => ({ amount, currencyCode: 'ZAR' });
 const poa = zar('0.00');
 const img = (name: string, alt: string) => ({ url: `/img/catalog/${name}.jpg`, altText: alt });
+// Clean studio board shots live one level up in /img (deck + hull on concrete).
+const studio = (name: string, alt: string) => ({ url: `/img/${name}.jpg`, altText: alt });
 
 export const products: Product[] = [
   // ── SURF · Short ─────────────────────────────
@@ -26,7 +28,7 @@ export const products: Product[] = [
     tags: ['Short'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('16500.00') },
-    images: [img('classic-fish-front', 'Wawa Classic Fish, deck'), img('classic-fish-back', 'Wawa Classic Fish, hull')],
+    images: [studio('fish-front', 'Wawa Classic Fish, deck'), studio('fish-back', 'Wawa Classic Fish, hull')],
     featured: true,
   },
   {
@@ -78,7 +80,7 @@ export const products: Product[] = [
     tags: ['Mid'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('16500.00') },
-    images: [img('speed-egg-front', 'Wawa Speed Egg, deck'), img('speed-egg-back', 'Wawa Speed Egg, hull')],
+    images: [studio('mid-front', 'Wawa Speed Egg, deck'), studio('mid-back', 'Wawa Speed Egg, hull')],
     featured: true,
   },
   {
@@ -119,7 +121,7 @@ export const products: Product[] = [
     tags: ['Long'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('28500.00') },
-    images: [img('takayama-front', 'Wawa Model T, deck'), img('takayama-back', 'Wawa Model T, hull')],
+    images: [studio('longboard-front', 'Wawa Model T, deck'), studio('longboard-back', 'Wawa Model T, hull')],
   },
 
   // ── SURF · Finless ───────────────────────────
@@ -133,7 +135,7 @@ export const products: Product[] = [
     tags: ['Finless'],
     availableForSale: false,
     priceRange: { minVariantPrice: poa },
-    images: [img('alaia-front-new', 'Wawa Alaia, top'), img('alaia-back-new', 'Wawa Alaia, base')],
+    images: [studio('alaia-front', 'Wawa Alaia, top'), studio('alaia-back', 'Wawa Alaia, base')],
     featured: true,
   },
 
@@ -200,7 +202,6 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: poa },
     images: [img('kite-tomo-front', 'Wawa Tomo kiteboard, deck'), img('kite-tomo-back', 'Wawa Tomo kiteboard, base')],
-    featured: true,
   },
   {
     id: 'mock/kite-trick',
@@ -252,7 +253,8 @@ export const products: Product[] = [
     tags: ['Bodysurf'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('1200.00') },
-    images: [img('handslide-bs-front', 'Wawa Handslide bodysurfing'), img('handslide-bs-back', 'Wawa Handslide, detail')],
+    images: [studio('handslide-front', 'Wawa Handslide, top'), studio('handslide-back', 'Wawa Handslide, base')],
+    featured: true,
   },
   {
     id: 'mock/bellyboard',
@@ -264,7 +266,7 @@ export const products: Product[] = [
     tags: ['Bellyboard'],
     availableForSale: false,
     priceRange: { minVariantPrice: poa },
-    images: [img('bellyboard-front', 'Wawa Bellyboard, deck'), img('bellyboard-back', 'Wawa Bellyboard, hull')],
+    images: [studio('bodyboard-front', 'Wawa Bellyboard, deck'), studio('bodyboard-back', 'Wawa Bellyboard, hull')],
   },
 
   // ── ACCESSORIES ──────────────────────────────
@@ -277,6 +279,7 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Beach Bats'],
     availableForSale: true,
+    variantId: '40000000000010',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [img('beach-bats-front', 'Wawa wood and cork beach bats'), img('beach-bats-back', 'Wawa beach bats, detail')],
   },
@@ -289,6 +292,7 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Boardbag'],
     availableForSale: true,
+    variantId: '40000000000011',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [img('boardbag-front', 'Wawa cotton duck board cover'), img('boardbag-back', 'Wawa board cover, detail')],
   },
@@ -301,6 +305,7 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Wetsuits'],
     availableForSale: true,
+    variantId: '40000000000012',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [img('wetsuit-front', 'Wawa Geoprene wetsuit jacket'), img('wetsuit-back', 'Wawa wetsuit jacket, detail')],
   },
@@ -313,6 +318,7 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Fins'],
     availableForSale: true,
+    variantId: '40000000000013',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [img('fins-front', 'Wawa timber fins'), img('fins-back', 'Wawa fins, detail')],
   },
@@ -325,6 +331,7 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Wax Combs'],
     availableForSale: true,
+    variantId: '40000000000014',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [img('wax-comb', 'Wawa wooden wax comb')],
   },
@@ -337,6 +344,7 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Art'],
     availableForSale: true,
+    variantId: '40000000000015',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [img('art-prints-front', 'Wawa poster print'), img('art-prints-back', 'Wawa art print, detail')],
   },
@@ -349,6 +357,7 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Gift Cards'],
     availableForSale: true,
+    variantId: '40000000000016',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [img('myo-experience-front', 'Wawa make your own surfboard experience'), img('myo-experience-back', 'Wawa shaping workshop, detail')],
   },
