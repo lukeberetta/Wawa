@@ -8,9 +8,9 @@ export const disciplines: Discipline[] = [
   {
     handle: 'surf',
     title: 'Surf',
-    blurb: 'Shaped from timber — fish, mid-lengths, logs and finless craft.',
+    blurb: 'Shaped from timber: fish, mid-lengths, logs and finless craft.',
     intro:
-      'Trusted shapes, shaped by surfers. Paulownia over recycled foam cores with cork rails — light, lively, and built to last. From the Classic Fish to the Alaia, every outline carries a piece of surfing’s lineage.',
+      'Shapes built by surfers. Paulownia over recycled foam cores with cork rails, light and lively. From the Classic Fish to the Alaia, every outline carries a piece of surfing’s lineage.',
     categories: ['Short', 'Mid', 'Long', 'Finless', 'Custom & Make Your Own'],
   },
   {
@@ -18,7 +18,7 @@ export const disciplines: Discipline[] = [
     title: 'Foil',
     blurb: 'Prone, wave, wing and custom foil builds.',
     intro:
-      'Over time the paulownia and cork exterior is shaped by the ocean into a textured “speed skin” — micro-bubbles reduce drag and optimise lift, in water and in air. Prone, wave, wing and custom builds.',
+      'Over time the ocean works the paulownia and cork exterior into a textured “speed skin” that cuts drag and adds lift, in water and in air. Prone, wave, wing and custom builds.',
     hero: 'foil-hero',
     categories: ['Prone', 'Wave', 'Wing', 'Custom'],
   },
@@ -44,7 +44,7 @@ export const disciplines: Discipline[] = [
     title: 'Body & Belly',
     blurb: 'Bodysurf handplanes, bellyboards, paipos and boogies.',
     intro:
-      'One of the best ways to learn the rhythm of the ocean is to strip it all back. No board to paddle, no pop-up — just you, the wave and pure feel. Handslides, bellyboards and paipos.',
+      'One of the best ways to learn the rhythm of the ocean is to strip it all back. No board to paddle and no pop-up. Just you, the wave and the feel. Handslides, bellyboards and paipos.',
     categories: ['Bodysurf', 'Bellyboard', 'Paipo', 'Skimboard'],
   },
   {

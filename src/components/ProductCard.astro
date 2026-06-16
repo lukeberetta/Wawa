@@ -10,7 +10,7 @@ const { product } = Astro.props;
 const price = formatPrice(product);
 const front = product.images[0];
 const back = product.images[1] ?? product.images[0];
-const enquire = whatsappLink(`Hi Wawa — I'm interested in the ${product.title}.`);
+const enquire = whatsappLink(`Hi Wawa, I'm interested in the ${product.title}.`);
 // Buyable when in stock with a variant id and a configured shop domain;
 // otherwise the card stays Enquire-only (boards, POA items).
 const buyable = product.availableForSale && !!product.variantId && !!site.shopDomain;
