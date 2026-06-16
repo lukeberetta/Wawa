@@ -18,7 +18,7 @@ const bagSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria
 </svg>`;
 ---
 
-<nav id="nav">
+<nav id="nav" class:list={{ 'over-hero': current === 'home' }}>
   <div class="nav-inner wrap">
     <a href="/" class="nav-logo" aria-label="Wawa Surfboards home">
       <img src="/logotype.svg" alt="Wawa" width="92" height="24" />
@@ -152,6 +152,18 @@ const bagSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria
     background: color-mix(in srgb, var(--cream) 88%, transparent);
     backdrop-filter: blur(8px);
     border-color: var(--rule);
+  }
+  /* On the home hero the nav sits over a dark photo — flip text/logo to
+     cream while at the top, then fall back to ink once scrolled. */
+  nav.over-hero:not(.scrolled) .nav-link,
+  nav.over-hero:not(.scrolled) .nav-cart {
+    color: var(--cream);
+  }
+  nav.over-hero:not(.scrolled) .nav-logo img {
+    filter: brightness(0) invert(1);
+  }
+  nav.over-hero:not(.scrolled) .nav-toggle span {
+    background: var(--cream);
   }
   .nav-inner {
     display: flex;

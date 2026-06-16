@@ -75,11 +75,30 @@ const featured = await getFeatured();
 </Layout>
 
 <style>
+  /* Same treatment as the footer: surfers photo under a dark ink gradient,
+     cream text. The nav switches to cream-on-transparent over this (see Nav). */
   #hero {
-    min-height: 88vh;
+    position: relative;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     padding-top: var(--nav-h);
+    background: var(--ink) url('/img/surfers.jpg') center / cover no-repeat;
+    color: var(--cream);
+  }
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ink) 78%, transparent),
+      color-mix(in srgb, var(--ink) 90%, transparent)
+    );
+  }
+  #hero .wrap {
+    position: relative;
+    z-index: 1;
   }
   .hero-label {
     margin-bottom: 1.5rem;
@@ -90,32 +109,16 @@ const featured = await getFeatured();
   }
   .hero-sub {
     font-size: 1.15rem;
-    color: var(--muted);
+    color: color-mix(in srgb, var(--cream) 75%, transparent);
     max-width: 32ch;
     margin-bottom: 2rem;
   }
+  #hero .link-arrow {
+    color: var(--cream);
+  }
 
   #pullquote {
-    position: relative;
     padding: clamp(6rem, 16vw, 11rem) 0;
-    background: url('/img/surfers.jpg') center / cover no-repeat;
-    background-attachment: fixed;
-    color: var(--cream);
-    overflow: hidden;
-  }
-  #pullquote::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--ink) 55%, transparent),
-      color-mix(in srgb, var(--ink) 72%, transparent)
-    );
-  }
-  #pullquote .wrap {
-    position: relative;
-    z-index: 1;
   }
   .quote-text {
     font-size: clamp(1.4rem, 3.2vw, 2.3rem);
@@ -124,7 +127,7 @@ const featured = await getFeatured();
   }
   .quote-attr {
     margin-top: 1.5rem;
-    color: color-mix(in srgb, var(--cream) 70%, transparent);
+    color: var(--muted);
     font-size: 0.9rem;
   }
 
