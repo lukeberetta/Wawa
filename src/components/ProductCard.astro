@@ -1,6 +1,6 @@
 ---
 import type { Product } from '@/lib/types';
-import { formatPrice } from '@/lib/catalog';
+import { formatPrice, slug } from '@/lib/catalog';
 import { site, whatsappLink } from '@/lib/site';
 
 export interface Props {
@@ -10,6 +10,7 @@ const { product } = Astro.props;
 const price = formatPrice(product);
 const front = product.images[0];
 const back = product.images[1] ?? product.images[0];
+const href = `/products/${slug(product.productType)}/${product.handle}`;
 const enquire = whatsappLink(`Hi Wawa, I'm interested in the ${product.title}.`);
 // Buyable when in stock with a variant id and a configured shop domain;
 // otherwise the card stays Enquire-only (boards, POA items).
@@ -21,8 +22,10 @@ const hasPrice = price !== 'Enquire';
 
 <article class="card fade-in">
   <div class="card-media">
-    <img class="face front" src={front.url} alt={front.altText} loading="lazy" />
-    <img class="face back" src={back.url} alt={back.altText} loading="lazy" aria-hidden="true" />
+    <a class="card-link" href={href} aria-label={`View the ${product.title}`}>
+      <img class="face front" src={front.url} alt={front.altText} loading="lazy" />
+      <img class="face back" src={back.url} alt={back.altText} loading="lazy" aria-hidden="true" />
+    </a>
     <div class="card-overlay">
       {hasPrice && <span class="overlay-price">{price}</span>}
       {buyable ? (
@@ -52,7 +55,7 @@ const hasPrice = price !== 'Enquire';
     </div>
   </div>
   <div class="card-meta">
-    <h3>{product.title}</h3>
+    <h3><a href={href}>{product.title}</a></h3>
   </div>
   <p class="card-cat">{product.tags[0] ?? product.productType}</p>
 </article>
@@ -68,6 +71,12 @@ const hasPrice = price !== 'Enquire';
     background: color-mix(in srgb, var(--warm) 8%, var(--cream));
     border: 1px solid var(--rule);
     overflow: hidden;
+  }
+  .card-link {
+    position: absolute;
+    inset: 0;
+    display: block;
+    z-index: 1;
   }
   .face {
     position: absolute;
@@ -88,6 +97,7 @@ const hasPrice = price !== 'Enquire';
     left: 0;
     right: 0;
     bottom: 0;
+    z-index: 2;
     display: flex;
     align-items: stretch;
     opacity: 0;
@@ -143,6 +153,12 @@ const hasPrice = price !== 'Enquire';
   }
   .card-meta h3 {
     font-size: 1.1rem;
+  }
+  .card-meta h3 a {
+    transition: color 0.2s var(--ease);
+  }
+  .card-meta h3 a:hover {
+    color: var(--warm);
   }
   .card-cat {
     font-size: 0.72rem;
