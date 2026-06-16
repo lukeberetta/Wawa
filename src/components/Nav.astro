@@ -141,8 +141,7 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
   }
   nav.scrolled {
-    background: color-mix(in srgb, var(--cream) 88%, transparent);
-    backdrop-filter: blur(8px);
+    background: var(--cream);
     border-color: var(--rule);
   }
   /* On the home hero the nav sits over a dark photo — flip text/logo to
@@ -431,8 +430,15 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
 </style>
 
 <script>
+  import { lockScroll } from '@/lib/scrollLock';
+
   const nav = document.getElementById('nav');
-  const onScroll = () => nav?.classList.toggle('scrolled', window.scrollY > 24);
+  const onScroll = () => {
+    // While a drawer holds the scroll lock the document is pinned to 0; ignore
+    // the spurious scroll events so the nav keeps its background (see scrollLock).
+    if (document.documentElement.classList.contains('is-locked')) return;
+    nav?.classList.toggle('scrolled', window.scrollY > 24);
+  };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
@@ -440,26 +446,6 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
   const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
   const drawer = document.getElementById('nav-drawer');
   const overlay = document.querySelector<HTMLDivElement>('.nav-overlay');
-
-  // Robust scroll lock: position:fixed preserves the scroll position on iOS,
-  // where `overflow: hidden` on <body> is ignored.
-  let lockedY = 0;
-  function lockScroll(lock: boolean) {
-    const b = document.body;
-    if (lock) {
-      lockedY = window.scrollY;
-      b.style.position = 'fixed';
-      b.style.top = `-${lockedY}px`;
-      b.style.left = '0';
-      b.style.right = '0';
-    } else {
-      b.style.position = '';
-      b.style.top = '';
-      b.style.left = '';
-      b.style.right = '';
-      window.scrollTo(0, lockedY);
-    }
-  }
 
   function setOpen(open: boolean) {
     if (!toggle || !drawer || !overlay) return;

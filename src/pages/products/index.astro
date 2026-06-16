@@ -1,9 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import ProductCard from '@/components/ProductCard.astro';
-import { disciplines, getFeatured } from '@/lib/catalog';
-
-const featured = await getFeatured();
+import { disciplines } from '@/lib/catalog';
 ---
 
 <Layout
@@ -28,29 +25,18 @@ const featured = await getFeatured();
       <ul class="discipline-list">
         {
           disciplines.map((d) => (
-            <li class="fade-in">
+            <li>
               <a href={`/products/${d.handle}`}>
-                <h3>{d.title}</h3>
-                <p>{d.blurb}</p>
-                <span class="arrow">→</span>
+                <span class="arrow fade-in">→</span>
+                <div class="disc-inner fade-in">
+                  <h3>{d.title}</h3>
+                  <p>{d.blurb}</p>
+                </div>
               </a>
             </li>
           ))
         }
       </ul>
-    </div>
-  </section>
-
-  <!-- FEATURED -->
-  <section id="featured">
-    <div class="wrap">
-      <div class="section-head fade-in">
-        <p class="label">Favourites</p>
-        <h2>Most ridden.</h2>
-      </div>
-      <div class="product-grid">
-        {featured.map((p) => <ProductCard product={p} />)}
-      </div>
     </div>
   </section>
 </Layout>
@@ -115,21 +101,5 @@ const featured = await getFeatured();
     top: 1.75rem;
     right: 1.75rem;
     color: var(--warm);
-  }
-  #featured {
-    padding: 4rem 0 5rem;
-    border-top: 1px solid var(--rule);
-  }
-  .section-head {
-    margin-bottom: 2.5rem;
-  }
-  .section-head h2 {
-    font-size: clamp(1.8rem, 4.5vw, 2.8rem);
-    margin-top: 0.5rem;
-  }
-  .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    gap: 2.5rem 1.75rem;
   }
 </style>

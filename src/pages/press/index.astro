@@ -109,8 +109,8 @@ const source = (p: (typeof posts)[number]) => p.data.publication ?? 'Wawa Journa
   .post-list li {
     border-top: 1px solid var(--rule);
   }
-  .post-list li:last-child {
-    border-bottom: 1px solid var(--rule);
+  .post-list li:first-child {
+    border-top: none;
   }
   .post-list a {
     display: block;

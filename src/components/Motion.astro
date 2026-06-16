@@ -11,6 +11,9 @@
   // ── Smooth scroll ──────────────────────────────
   if (!reduce) {
     const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    // Exposed so the shared scroll lock (drawers) can stop/start Lenis instead
+    // of fighting it — see src/lib/scrollLock.ts.
+    window.lenis = lenis;
     const raf = (time: number) => {
       lenis.raf(time);
       requestAnimationFrame(raf);

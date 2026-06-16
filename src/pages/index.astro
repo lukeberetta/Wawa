@@ -44,11 +44,13 @@ const featured = await getFeatured();
       <ul class="discipline-list">
         {
           disciplines.map((d) => (
-            <li class="fade-in">
+            <li>
               <a href={`/products/${d.handle}`}>
-                <h3>{d.title}</h3>
-                <p>{d.blurb}</p>
-                <span class="arrow">→</span>
+                <span class="arrow fade-in">→</span>
+                <div class="disc-inner fade-in">
+                  <h3>{d.title}</h3>
+                  <p>{d.blurb}</p>
+                </div>
               </a>
             </li>
           ))
@@ -119,6 +121,7 @@ const featured = await getFeatured();
 
   #pullquote {
     padding: clamp(6rem, 16vw, 11rem) 0;
+    border-bottom: 1px solid var(--rule);
   }
   .quote-text {
     font-size: clamp(1.4rem, 3.2vw, 2.3rem);
