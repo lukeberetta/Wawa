@@ -257,9 +257,7 @@ const enabled = !!site.shopDomain;
       function render(lines: CartLine[]) {
         // count badges (Nav)
         document.querySelectorAll('[data-cart-count]').forEach((el) => {
-          const n = count();
-          el.textContent = String(n);
-          (el as HTMLElement).hidden = n === 0;
+          el.textContent = String(count());
         });
         const has = lines.length > 0;
         if (emptyEl) emptyEl.hidden = has;

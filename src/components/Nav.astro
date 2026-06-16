@@ -12,10 +12,6 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
   <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" />
 </svg>`;
 
-const bagSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-  <path d="M6 8h12l-1 12H7L6 8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
-  <path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.6" />
-</svg>`;
 ---
 
 <nav id="nav" class:list={{ 'over-hero': current === 'home' }}>
@@ -35,8 +31,7 @@ const bagSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria
                 class:list={['nav-link', { active: current === item.label.toLowerCase() }]}
                 aria-haspopup="true"
               >
-                {item.label}
-                <span class="caret" aria-hidden="true">▾</span>
+                {item.label} ({disciplines.length})
               </a>
               <ul class="dropdown">
                 {disciplines.map((d) => (
@@ -58,25 +53,22 @@ const bagSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria
           ),
         )
       }
-      <li>
-        <a
-          class="nav-link nav-ig"
-          href={site.instagram}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Wawa on Instagram"
-          set:html={igSvg}
-        />
-      </li>
     </ul>
 
     <div class="nav-actions">
       {site.shopDomain && (
         <button class="nav-cart" data-cart-toggle aria-label="Open cart">
-          <span set:html={bagSvg} />
-          <span class="cart-count" data-cart-count hidden>0</span>
+          Cart (<span data-cart-count>0</span>)
         </button>
       )}
+      <a
+        class="nav-link nav-ig"
+        href={site.instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Wawa on Instagram"
+        set:html={igSvg}
+      />
       <button
         class="nav-toggle"
         aria-label="Open menu"
@@ -183,44 +175,24 @@ const bagSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria
   .nav-actions {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 2rem;
   }
   .nav-cart {
-    position: relative;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     background: none;
     border: 0;
     padding: 0;
     cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
     color: var(--ink);
     opacity: 0.75;
     transition: opacity 0.25s;
   }
   .nav-cart:hover {
     opacity: 1;
-  }
-  .nav-cart span {
-    display: flex;
-  }
-  .cart-count {
-    position: absolute;
-    top: -7px;
-    right: -9px;
-    min-width: 16px;
-    height: 16px;
-    padding: 0 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.62rem;
-    line-height: 1;
-    border-radius: 8px;
-    background: var(--warm);
-    color: var(--cream);
-  }
-  .cart-count[hidden] {
-    display: none;
   }
   .nav-links {
     display: flex;
@@ -252,9 +224,15 @@ const bagSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria
   .has-dropdown {
     position: relative;
   }
-  .caret {
-    font-size: 0.6rem;
-    margin-left: 0.3rem;
+  /* transparent bridge over the button→menu gap so the hover isn't lost
+     while the cursor travels down to the menu */
+  .has-dropdown::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 14px;
   }
   .dropdown {
     position: absolute;
