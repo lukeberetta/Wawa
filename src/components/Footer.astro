@@ -58,23 +58,18 @@ const year = new Date().getFullYear();
     color: color-mix(in srgb, var(--cream) 48%, transparent);
   }
 
-  /* ── reveal motion (staggered rise as the curtain lifts) ──
-     Only active once JS adds `.anim`; without JS the content is fully visible. */
-  .site-footer.anim .footer-inner > * {
-    opacity: 0;
-    transform: translateY(38px);
-    transition: opacity 0.7s var(--ease), transform 0.8s var(--ease);
-  }
-  .site-footer.anim.revealed .f-meta {
-    transition-delay: 0.12s;
-  }
-  .site-footer.anim.revealed .footer-inner > * {
-    opacity: 1;
-    transform: none;
+  /* ── scroll-linked reveal ──
+     `--reveal` (0–1) is driven by JS from scroll position: the text fades up
+     into the photo as the footer is uncovered, and back out on scroll up.
+     No-JS / fallback keeps the content fully visible. */
+  .footer-inner > * {
+    opacity: var(--reveal, 1);
+    transform: translateY(calc((1 - var(--reveal, 1)) * 30px));
+    transition: opacity 0.12s linear, transform 0.12s linear;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .site-footer.anim .footer-inner > * {
+    .footer-inner > * {
       opacity: 1;
       transform: none;
       transition: none;
@@ -83,25 +78,24 @@ const year = new Date().getFullYear();
 </style>
 
 <script>
-  // Reveal the footer content when the end-of-page sentinel scrolls into view.
+  // Drive `--reveal` (0–1) from scroll position: the footer text fades up into
+  // the photo as the fixed footer is uncovered, and back out on scroll up.
   const footer = document.querySelector<HTMLElement>('.site-footer');
-  const sentinel = document.getElementById('footer-sentinel');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (footer) {
-    // enable the hidden→reveal transition (no-JS keeps content visible)
-    footer.classList.add('anim');
-
-    if (reduce || !sentinel || !('IntersectionObserver' in window)) {
-      footer.classList.add('revealed');
-    } else {
-      const io = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => footer.classList.toggle('revealed', e.isIntersecting));
-        },
-        { rootMargin: '0px 0px -8% 0px', threshold: 0 },
-      );
-      io.observe(sentinel);
-    }
+  if (footer && !reduce) {
+    let fh = footer.offsetHeight;
+    const update = () => {
+      const remaining =
+        document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+      const p = Math.min(Math.max(1 - remaining / fh, 0), 1);
+      footer.style.setProperty('--reveal', p.toFixed(3));
+    };
+    window.addEventListener('resize', () => {
+      fh = footer.offsetHeight;
+      update();
+    });
+    window.addEventListener('scroll', update, { passive: true });
+    update();
   }
 </script>
