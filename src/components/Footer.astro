@@ -182,12 +182,6 @@ const wa = whatsappLink('Hi Wawa — I’d like to talk about a board.');
   }
 
   @media (max-width: 768px) {
-    /* Drop the fixed-height curtain: stacked columns exceed --footer-h and
-       get clipped. Let the footer flow normally and size to its content. */
-    .site-footer {
-      position: static;
-      height: auto;
-    }
     .footer-top {
       grid-template-columns: 1fr 1fr;
       gap: 2rem 1.5rem;
