@@ -65,6 +65,14 @@ main {
   min-height: 100dvh;
 }
 
+/* Mobile: the footer flows normally (see Footer.astro), so main must not
+   reserve curtain space for it. */
+@media (max-width: 768px) {
+  main {
+    margin-bottom: 0;
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;
