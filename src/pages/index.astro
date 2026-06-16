@@ -15,11 +15,13 @@ const featured = await getFeatured();
       muted
       loop
       playsinline
-      preload="metadata"
+      webkit-playsinline
+      preload="auto"
       poster="/hero-poster.jpg"
+      aria-hidden="true"
     >
-      <source src="/hero.webm" type="video/webm" />
       <source src="/hero.mp4" type="video/mp4" />
+      <source src="/hero.webm" type="video/webm" />
     </video>
     <div class="wrap hero-grid">
       <div class="hero-content">
@@ -238,3 +240,21 @@ const featured = await getFeatured();
     margin-top: 3rem;
   }
 </style>
+
+<script>
+  // Some browsers (Safari, low-power modes) ignore the autoplay attribute.
+  // Force muted playback and retry on the first ready/interaction signal.
+  const v = document.querySelector<HTMLVideoElement>('.hero-video');
+  if (v) {
+    v.muted = true;
+    const play = () => v.play().catch(() => {});
+    play();
+    v.addEventListener('canplay', play, { once: true });
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) play();
+    });
+    ['touchstart', 'pointerdown', 'scroll'].forEach((e) =>
+      window.addEventListener(e, play, { once: true, passive: true }),
+    );
+  }
+</script>
