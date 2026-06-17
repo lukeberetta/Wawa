@@ -10,7 +10,7 @@ export const site = {
   // Shopify shop domain for cart-permalink checkout (Yoco runs on Shopify's
   // hosted checkout). Use the store's primary/custom domain or *.myshopify.com.
   // Empty = checkout disabled (items fall back to Enquire). Fill after import.
-  shopDomain: 'wawa-test.myshopify.com',
+  shopDomain: 'wawawave.myshopify.com',
   // `children` (built from disciplines in Nav.astro) makes this a dropdown.
   nav: [
     { href: '/products', label: 'Products', dropdown: true },
