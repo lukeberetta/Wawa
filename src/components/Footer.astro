@@ -6,7 +6,7 @@ const year = new Date().getFullYear();
 <footer class="site-footer" aria-label="Site footer">
   <div class="footer-inner wrap">
     <p class="f-statement">Made by hand,<br />shaped by nature.</p>
-    <p class="f-meta">© {year} {site.name} · Muizenberg, Cape Town</p>
+    <p class="f-meta">© {year} {site.name}</p>
   </div>
 </footer>
 
@@ -103,7 +103,10 @@ const year = new Date().getFullYear();
       ticking = false;
       // scrollY is cheap and reflow-free — the only thing read while scrolling.
       const remaining = docH - winH - window.scrollY;
-      const p = Math.min(Math.max(1 - remaining / fh, 0), 1);
+      // Finish the reveal over the first 70% of the footer uncovering, so the
+      // text reaches full opacity before the absolute scroll bottom — on mobile
+      // the last pixels are often unreachable (browser chrome / rubber-banding).
+      const p = Math.min(Math.max(1 - remaining / (fh * 0.7), 0), 1);
       footer.style.setProperty('--reveal', p.toFixed(3));
     };
     const onScroll = () => {
