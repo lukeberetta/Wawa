@@ -70,6 +70,7 @@ const hasPrice = price !== 'Enquire';
     aspect-ratio: 3 / 4;
     background: color-mix(in srgb, var(--warm) 8%, var(--cream));
     overflow: hidden;
+    border: 1px solid var(--rule);
   }
   .card-link {
     position: absolute;
@@ -167,13 +168,11 @@ const hasPrice = price !== 'Enquire';
     color: var(--muted);
     margin-top: 0.2rem;
   }
-  /* No hover (touch) or a narrow viewport — keep actions visible. The width
-     clause also covers desktop-narrow + hybrid devices that report hover. */
+  /* No hover (touch) or a narrow viewport — hide the action overlay; the whole
+     card links to the PDP where add-to-cart / enquire live. */
   @media (hover: none), (max-width: 768px) {
     .card-overlay {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
+      display: none;
     }
   }
 </style>

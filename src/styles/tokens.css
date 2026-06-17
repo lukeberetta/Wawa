@@ -20,7 +20,9 @@
   --fw-regular: 400;
 
   /* layout */
-  --nav-h: 66px;
+  --bar-h: 66px; /* top bar: logo + cart */
+  --subnav-h: 0px; /* persistent mobile menu row (0 on desktop) */
+  --nav-h: var(--bar-h); /* full header height — pages offset content by this */
   --wrap-max: 1280px;
   --wrap-pad: 2rem;
   --footer-h: 440px; /* reveal footer panel height; main reserves this space */
@@ -32,7 +34,9 @@
 
 @media (max-width: 768px) {
   :root {
-    --nav-h: 58px;
+    --bar-h: 52px;
+    --subnav-h: 52px;
+    --nav-h: calc(var(--bar-h) + var(--subnav-h));
     --wrap-pad: 1.25rem;
     --footer-h: 520px;
   }

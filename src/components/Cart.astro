@@ -70,7 +70,7 @@ const enabled = !!site.shopDomain;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: var(--nav-h);
+    height: var(--bar-h);
     padding: 0 1.75rem;
     border-bottom: 1px solid var(--rule);
   }
@@ -259,11 +259,6 @@ const enabled = !!site.shopDomain;
 
       function setOpen(open: boolean) {
         if (!drawer || !overlay) return;
-        // close the nav menu first so the two drawers never fight over scroll lock
-        if (open) {
-          const navToggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
-          if (navToggle?.getAttribute('aria-expanded') === 'true') navToggle.click();
-        }
         drawer.setAttribute('aria-hidden', String(!open));
         drawer.classList.toggle('open', open);
         overlay.classList.toggle('open', open);

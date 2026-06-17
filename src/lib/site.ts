@@ -14,8 +14,8 @@ export const site = {
   // `children` (built from disciplines in Nav.astro) makes this a dropdown.
   nav: [
     { href: '/products', label: 'Products', dropdown: true },
-    { href: '/story', label: 'Story' },
     { href: '/cafe', label: 'Cafe' },
+    { href: '/story', label: 'Story' },
     { href: '/press', label: 'Press' },
     { href: '/contact', label: 'Contact' },
   ],

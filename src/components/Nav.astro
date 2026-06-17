@@ -69,46 +69,28 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
         aria-label="Wawa on Instagram"
         set:html={igSvg}
       />
-      <button
-        class="nav-toggle"
-        aria-label="Open menu"
-        aria-expanded="false"
-        aria-controls="nav-drawer"
-      >
-        <span></span><span></span>
-      </button>
     </div>
     </div>
   </div>
-</nav>
 
-<!-- Mobile drawer -->
-<div class="nav-overlay" hidden></div>
-<aside id="nav-drawer" class="nav-drawer" aria-label="Menu" aria-hidden="true">
-  <ul class="drawer-links">
-    {
-      site.nav.map((item) => (
-        <li>
-          <a href={item.href} class:list={{ active: current === item.label.toLowerCase() }}>
-            {item.label}{item.dropdown && ` (${disciplines.length})`}
-          </a>
-        </li>
-      ))
-    }
-    {site.shopDomain && (
-      <li>
-        <button class="drawer-cart" data-cart-toggle type="button">
-          Cart (<span data-cart-count>0</span>)
-        </button>
-      </li>
-    )}
-    <li>
-      <a href={site.instagram} target="_blank" rel="noopener noreferrer">
-        Instagram
-      </a>
-    </li>
-  </ul>
-</aside>
+  <!-- Persistent mobile menu row (replaces the burger drawer) -->
+  <div class="nav-subnav" aria-label="Sections">
+    <ul class="subnav-links wrap">
+      {
+        site.nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={{ active: current === item.label.toLowerCase() }}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</nav>
 
 <style>
   nav {
@@ -119,10 +101,12 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     height: calc(var(--nav-h) + env(safe-area-inset-top));
     padding-top: env(safe-area-inset-top);
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
     background: transparent;
     border-bottom: 1px solid transparent;
-    transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
+    transition: background 0.3s var(--ease), border-color 0.3s var(--ease),
+      height 0.3s var(--ease);
   }
   nav.scrolled {
     background: var(--cream);
@@ -137,10 +121,8 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
   nav.over-hero:not(.scrolled) .nav-logo img {
     filter: brightness(0) invert(1);
   }
-  nav.over-hero:not(.scrolled) .nav-toggle span {
-    background: var(--cream);
-  }
   .nav-inner {
+    height: var(--bar-h);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -254,171 +236,110 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     background: color-mix(in srgb, var(--warm) 8%, var(--cream));
   }
 
-  /* hamburger */
-  .nav-toggle {
+  /* persistent mobile menu row — hidden on desktop, where .nav-links serve */
+  .nav-subnav {
     display: none;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    width: 30px;
-    height: 30px;
-    background: none;
-    border: 0;
-    cursor: pointer;
-    padding: 0;
-    z-index: 120;
-  }
-  .nav-toggle span {
-    width: 22px;
-    height: 1.5px;
-    background: var(--ink);
-    transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
-  }
-  .nav-toggle[aria-expanded='true'] span:first-child {
-    transform: translateY(3.25px) rotate(45deg);
-  }
-  .nav-toggle[aria-expanded='true'] span:last-child {
-    transform: translateY(-3.25px) rotate(-45deg);
-  }
-
-  /* drawer + overlay */
-  .nav-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 105;
-    background: color-mix(in srgb, var(--ink) 40%, transparent);
-    opacity: 0;
-    transition: opacity 0.3s var(--ease);
-  }
-  .nav-overlay.open {
-    opacity: 1;
-  }
-  .nav-drawer {
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 110;
-    width: min(78vw, 320px);
-    height: 100vh;
-    height: 100dvh;
+    height: var(--subnav-h);
+    overflow: hidden;
     background: var(--cream);
-    border-left: 1px solid var(--rule);
-    transform: translateX(100%);
-    transition: transform 0.4s var(--ease);
-    padding: calc(var(--nav-h) + env(safe-area-inset-top) + 1.5rem)
-      calc(2rem + env(safe-area-inset-right)) calc(2rem + env(safe-area-inset-bottom)) 2rem;
-    overflow-y: auto;
+    border-top: 1px solid var(--rule);
+    transition: height 0.3s var(--ease), opacity 0.3s var(--ease),
+      border-color 0.3s var(--ease);
   }
-  .nav-drawer.open {
-    transform: translateX(0);
+  /* collapse the mobile menu row while scrolling down; reveal on scroll up */
+  nav.subnav-hidden .nav-subnav {
+    height: 0;
+    opacity: 0;
+    border-top-color: transparent;
   }
-  .drawer-links {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-  /* every drawer row shares one type/colour/rule — link, cart and Instagram */
-  .drawer-links a,
-  .drawer-cart {
-    width: 100%;
-    padding: 0.85rem 0;
-    font-family: inherit;
-    font-size: 1.4rem;
-    color: var(--ink);
-    background: none;
-    border: 0;
-    border-bottom: 1px solid var(--rule);
-    cursor: pointer;
-  }
-  .drawer-links a {
+  .subnav-links {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
-  .drawer-cart {
-    display: block;
-    text-align: left;
+  .subnav-links::-webkit-scrollbar {
+    display: none;
   }
-  .drawer-links a.active {
+  .subnav-links li {
+    display: flex;
+  }
+  .subnav-links a {
+    white-space: nowrap;
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    color: var(--ink);
+    opacity: 0.7;
+    transition: opacity 0.25s, color 0.25s;
+  }
+  .subnav-links a:hover {
+    opacity: 1;
+  }
+  .subnav-links a.active {
+    opacity: 1;
     color: var(--warm);
   }
 
   @media (max-width: 768px) {
+    /* solid bar with persistent rules — no transparent-over-hero on mobile */
+    nav,
+    nav.over-hero {
+      background: var(--cream);
+      border-color: var(--rule);
+    }
+    nav.over-hero:not(.scrolled) .nav-cart,
+    nav.over-hero:not(.scrolled) .nav-ig {
+      color: var(--ink);
+    }
+    nav.over-hero:not(.scrolled) .nav-logo img {
+      filter: none;
+    }
+    /* subnav collapsed — shrink the bar to match */
+    nav.subnav-hidden {
+      height: calc(var(--bar-h) + env(safe-area-inset-top));
+    }
     .nav-links {
       display: none;
     }
-    .nav-ig {
-      display: none;
+    .nav-actions {
+      gap: 1.25rem;
     }
     .nav-logo img {
       height: 18px;
     }
-    .nav-toggle {
+    .nav-cart {
+      font-size: 0.8rem;
+      letter-spacing: 0.03em;
+    }
+    .nav-subnav {
       display: flex;
-    }
-  }
-  @media (min-width: 769px) {
-    .nav-overlay,
-    .nav-drawer {
-      display: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .nav-drawer,
-    .nav-overlay,
-    .nav-toggle span {
-      transition: none;
+      align-items: center;
     }
   }
 </style>
 
 <script>
-  import { lockScroll } from '@/lib/scrollLock';
-
   const nav = document.getElementById('nav');
+  let lastY = window.scrollY;
   const onScroll = () => {
-    // While a drawer holds the scroll lock the document is pinned to 0; ignore
-    // the spurious scroll events so the nav keeps its background (see scrollLock).
+    // While the cart drawer holds the scroll lock the document is pinned to 0;
+    // ignore the spurious scroll events so the nav keeps its state.
     if (document.documentElement.classList.contains('is-locked')) return;
-    nav?.classList.toggle('scrolled', window.scrollY > 24);
+    const y = window.scrollY;
+    nav?.classList.toggle('scrolled', y > 24);
+    // Hide the subnav while scrolling down (past the bar); reveal on scroll up
+    // or back near the top.
+    if (y > lastY && y > 64) {
+      nav?.classList.add('subnav-hidden');
+    } else if (y < lastY) {
+      nav?.classList.remove('subnav-hidden');
+    }
+    lastY = y;
   };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
-
-  // ── Mobile drawer ──────────────────────────────
-  const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
-  const drawer = document.getElementById('nav-drawer');
-  const overlay = document.querySelector<HTMLDivElement>('.nav-overlay');
-
-  function setOpen(open: boolean) {
-    if (!toggle || !drawer || !overlay) return;
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    drawer.setAttribute('aria-hidden', String(!open));
-    drawer.classList.toggle('open', open);
-    overlay.classList.toggle('open', open);
-    lockScroll(open);
-    if (open) {
-      overlay.hidden = false;
-    } else {
-      // wait for the fade before removing from the a11y tree
-      setTimeout(() => {
-        if (toggle.getAttribute('aria-expanded') === 'false') overlay.hidden = true;
-      }, 300);
-    }
-  }
-
-  toggle?.addEventListener('click', () =>
-    setOpen(toggle.getAttribute('aria-expanded') !== 'true'),
-  );
-  overlay?.addEventListener('click', () => setOpen(false));
-
-  // Drawer links close the drawer on click. The cart button isn't an <a>; it
-  // opens the cart, which closes this drawer on its own (see Cart.astro).
-  drawer?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') setOpen(false);
-  });
 </script>

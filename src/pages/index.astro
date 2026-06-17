@@ -53,7 +53,7 @@ const featured = await getFeatured();
     <div class="wrap">
       <div class="section-head fade-in">
         <p class="label">The range</p>
-        <h2>Every craft.</h2>
+        <h2>Our products.</h2>
       </div>
       <ul class="discipline-list">
         {
@@ -201,6 +201,20 @@ const featured = await getFeatured();
     .discipline-list {
       grid-template-columns: 1fr;
     }
+    .discipline-list a {
+      padding: 1.1rem 1.25rem;
+    }
+    .discipline-list h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.25rem;
+    }
+    .discipline-list p {
+      font-size: 0.85rem;
+    }
+    .discipline-list .arrow {
+      top: 1.1rem;
+      right: 1.25rem;
+    }
   }
   .discipline-list a {
     display: block;
@@ -243,6 +257,12 @@ const featured = await getFeatured();
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
     gap: 2.5rem 1.75rem;
+  }
+  @media (max-width: 520px) {
+    .product-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.75rem 1rem;
+    }
   }
   .section-foot {
     margin-top: 3rem;
