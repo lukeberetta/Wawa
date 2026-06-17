@@ -508,10 +508,13 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
 
 <script>
   import { lockScroll } from '@/lib/scrollLock';
+  import { trapFocus } from '@/lib/focusTrap';
 
   const nav = document.getElementById('nav');
   const menu = document.getElementById('mobile-menu');
   const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const firstRow = menu?.querySelector<HTMLElement>('.m-panel-root .m-row');
+  let releaseTrap: (() => void) | null = null;
 
   // ── hamburger menu ──
   function setMenu(open: boolean) {
@@ -521,8 +524,14 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     lockScroll(open);
-    // reset to the root level once it has slid out of view
-    if (!open) setTimeout(() => nav.classList.remove('menu-sub'), 400);
+    if (open) {
+      releaseTrap = trapFocus(nav, firstRow);
+    } else {
+      releaseTrap?.();
+      releaseTrap = null;
+      // reset to the root level once it has slid out of view
+      setTimeout(() => nav.classList.remove('menu-sub'), 400);
+    }
   }
 
   toggle?.addEventListener('click', () =>
@@ -546,6 +555,9 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
       menu?.setAttribute('aria-hidden', 'true');
       toggle?.setAttribute('aria-expanded', 'false');
       toggle?.setAttribute('aria-label', 'Open menu');
+      // hand off cleanly — drop the menu's focus trap so the cart can claim it
+      releaseTrap?.();
+      releaseTrap = null;
       setTimeout(() => nav?.classList.remove('menu-sub'), 400);
     }
   });

@@ -33,7 +33,7 @@ html.lenis body {
 }
 
 body {
-  font-family: var(--font-body), var(--font-fallback);
+  font-family: var(--font-body);
   font-weight: var(--fw-light);
   background: var(--ink); /* ink shows behind main when the footer reveals */
   color: var(--ink);
@@ -70,12 +70,52 @@ a {
   text-decoration: none;
 }
 
+/* ── Focus ─────────────────────────────────────── */
+/* One cohesive keyboard-focus treatment. Ink ring on the cream surfaces that
+   make up most of the site; flipped to cream over the dark hero/footer photos
+   (and the nav while it sits over the hero) so it never vanishes into them.
+   Pointer focus stays quiet — only :focus-visible draws the ring. */
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+#hero :focus-visible,
+.site-footer :focus-visible,
+#nav.over-hero:not(.scrolled):not(.menu-open) :focus-visible {
+  outline-color: var(--cream);
+}
+
 h1,
 h2,
 h3 {
   font-weight: var(--fw-light);
   line-height: 1;
   letter-spacing: -0.01em;
+}
+
+/* ── Skip link ─────────────────────────────────── */
+/* Off-screen until focused, then drops in over the nav — first stop for the
+   keyboard, jumps straight past the header to the page content. */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -120%);
+  z-index: 200;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--cream);
+  background: var(--ink);
+  transition: transform 0.25s var(--ease);
+}
+.skip-link:focus-visible {
+  transform: translate(-50%, 0.5rem);
+  outline-offset: 2px;
 }
 
 /* ── Layout helpers ────────────────────────────── */
@@ -112,6 +152,31 @@ h3 {
 }
 .link-arrow .arrow {
   transition: transform 0.3s var(--ease);
+}
+
+/* ── Cart count bump ───────────────────────────── */
+/* The count badges (nav + drawer header) give a quick spring when an item is
+   added — a small confirmation the click landed, since the drawer slide is the
+   main feedback. Only fires on increase; see Cart.astro. */
+@keyframes cart-bump {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.cart-bump {
+  display: inline-block;
+  animation: cart-bump 0.4s var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cart-bump {
+    animation: none;
+  }
 }
 
 /* ── Scroll reveal ─────────────────────────────── */

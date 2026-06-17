@@ -85,13 +85,21 @@ const hasPrice = price !== 'Enquire';
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: opacity 0.5s var(--ease), filter 0.5s var(--ease);
+    transition: opacity 0.5s var(--ease), filter 0.5s var(--ease),
+      transform 0.7s var(--ease);
   }
   .back {
     opacity: 0;
   }
   .card-media:hover .back {
     opacity: 1;
+  }
+  /* a slow, slight push-in on hover — tactile without turning into a zoom.
+     Paired with the colour reveal below; only where hover exists. */
+  @media (hover: hover) {
+    .card-media:hover .face {
+      transform: scale(1.04);
+    }
   }
   /* desaturate at rest, restore colour on hover — only where hover exists, so
      touch devices (which never hover) keep the images in full colour */

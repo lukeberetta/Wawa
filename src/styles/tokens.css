@@ -12,8 +12,9 @@
   --warm: #9c7d5e;
 
   /* type */
+  /* system-ui carries the brief moment before PolySans swaps in — no webfont
+     fallback to download, so first paint is instant and never blocks on a CDN */
   --font-body: 'PolySans', system-ui, sans-serif;
-  --font-fallback: 'Inter', system-ui, sans-serif;
   --fs-base: 17px;
   --lh-base: 1.4;
   --fw-light: 300;
