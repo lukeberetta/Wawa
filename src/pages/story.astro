@@ -42,6 +42,13 @@ import Layout from '@/layouts/Layout.astro';
           <p>Each board honours surfing’s lineage and how it feels to ride waves today.</p>
         </div>
       </div>
+
+      <img
+        class="story-img fade-in"
+        src="/img/surfers.jpg"
+        alt="The Wawa founders, surfers from Muizenberg"
+        loading="lazy"
+      />
     </div>
   </section>
 
@@ -118,6 +125,13 @@ import Layout from '@/layouts/Layout.astro';
           </p>
         </div>
       </div>
+
+      <img
+        class="story-img fade-in"
+        src="/img/floor.jpg"
+        alt="Timber and sawdust on the Wawa workshop floor"
+        loading="lazy"
+      />
     </div>
   </section>
 </Layout>
@@ -142,6 +156,13 @@ import Layout from '@/layouts/Layout.astro';
   .cols p {
     margin-bottom: 1.1rem;
     color: var(--ink);
+  }
+  .story-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: 1px solid var(--rule);
+    margin-top: 3rem;
   }
 
   #craft,

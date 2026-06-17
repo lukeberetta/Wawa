@@ -37,6 +37,13 @@ import { disciplines } from '@/lib/catalog';
           ))
         }
       </ul>
+
+      <img
+        class="range-img fade-in"
+        src="/img/boards.jpg"
+        alt="The Wawa range of handmade wooden boards"
+        loading="lazy"
+      />
     </div>
   </section>
 </Layout>
@@ -53,6 +60,13 @@ import { disciplines } from '@/lib/catalog';
     max-width: 52ch;
     color: var(--muted);
     font-size: 1.05rem;
+  }
+  .range-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: 1px solid var(--rule);
+    margin-top: 3rem;
   }
   #range {
     padding-bottom: 4rem;

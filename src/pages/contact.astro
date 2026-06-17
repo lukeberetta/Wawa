@@ -19,6 +19,13 @@ const wa = whatsappLink('Hi Wawa, I’d like to talk about a board.');
         <a class="btn" href={wa} target="_blank" rel="noopener noreferrer">Message on WhatsApp <span class="arrow">→</span></a>
         <a class="btn ghost" href="mailto:hello@wawasurfboards.com">Email us <span class="arrow">→</span></a>
       </div>
+
+      <img
+        class="contact-img fade-in"
+        src="/img/workshop.jpg"
+        alt="Shaping a wooden board in the Wawa workshop"
+        loading="lazy"
+      />
     </div>
   </header>
 </Layout>
@@ -59,5 +66,12 @@ const wa = whatsappLink('Hi Wawa, I’d like to talk about a board.');
     background: transparent;
     color: var(--ink);
     border-color: var(--rule);
+  }
+  .contact-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: 1px solid var(--rule);
+    margin-top: 3.5rem;
   }
 </style>
