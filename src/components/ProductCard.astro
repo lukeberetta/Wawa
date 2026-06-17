@@ -85,13 +85,26 @@ const hasPrice = price !== 'Enquire';
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: opacity 0.5s var(--ease);
+    transition: opacity 0.5s var(--ease), filter 0.5s var(--ease);
   }
   .back {
     opacity: 0;
   }
   .card-media:hover .back {
     opacity: 1;
+  }
+  /* desaturate at rest, restore colour on hover — only where hover exists, so
+     touch devices (which never hover) keep the images in full colour */
+  @media (hover: hover) {
+    .face {
+      /* grayscale, then a dark-wood wash — sepia warmed, hue pulled off yellow
+         toward red-brown to echo the footer's deep ink tone */
+      filter: grayscale(1) sepia(0.85) hue-rotate(-18deg) saturate(0.3)
+        brightness(0.66) contrast(1.08);
+    }
+    .card-media:hover .face {
+      filter: grayscale(0) sepia(0);
+    }
   }
   .card-overlay {
     position: absolute;
