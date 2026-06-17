@@ -42,9 +42,9 @@ export { disciplines };
 export function formatPrice(p: Product): string {
   const amt = Number(p.priceRange.minVariantPrice.amount);
   if (!p.availableForSale || amt <= 0) return 'Enquire';
-  return new Intl.NumberFormat('en-ZA', {
-    style: 'currency',
-    currency: p.priceRange.minVariantPrice.currencyCode,
+  // R25,000 — comma thousands, no decimals (not the en-ZA space/comma)
+  const n = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 0,
   }).format(amt);
+  return `R${n}`;
 }

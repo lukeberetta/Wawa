@@ -11,7 +11,7 @@ export const disciplines: Discipline[] = [
     blurb: 'Shaped from timber: fish, mid-lengths, logs and finless craft.',
     intro:
       'Shapes built by surfers. Paulownia over recycled foam cores with cork rails, light and lively. From the Classic Fish to the Alaia, every outline carries a piece of surfing’s lineage.',
-    categories: ['Short', 'Mid', 'Long', 'Finless', 'Custom & Make Your Own'],
+    categories: ['Short', 'Mid', 'Long', 'Finless', 'Custom'],
   },
   {
     handle: 'foil',

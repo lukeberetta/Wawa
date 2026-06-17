@@ -56,8 +56,9 @@ const hasPrice = price !== 'Enquire';
   </div>
   <div class="card-meta">
     <h3><a href={href}>{product.title}</a></h3>
+    <p class="card-cat">{product.tags[0] ?? product.productType}</p>
+    <p class="card-price">{price}</p>
   </div>
-  <p class="card-cat">{product.tags[0] ?? product.productType}</p>
 </article>
 
 <style>
@@ -145,15 +146,17 @@ const hasPrice = price !== 'Enquire';
     flex: 1;
     justify-content: center;
   }
+  /* one consistent column rhythm — title leads, category sits as a quiet
+     eyebrow beneath it (single gap, not two stray margins) */
   .card-meta {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-top: 0.85rem;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: 0.6rem;
   }
   .card-meta h3 {
     font-size: 1.1rem;
+    line-height: 1.1;
   }
   .card-meta h3 a {
     transition: color 0.2s var(--ease);
@@ -162,11 +165,28 @@ const hasPrice = price !== 'Enquire';
     color: var(--warm);
   }
   .card-cat {
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
+    margin-top: 0.15rem;
+    font-size: 0.7rem;
+    line-height: 1;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-top: 0.2rem;
+  }
+  .card-price {
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    color: var(--warm);
+    white-space: nowrap;
+  }
+  /* mobile cards carry a big image — give the title matching presence */
+  @media (max-width: 520px) {
+    .card-meta {
+      gap: 0.15rem;
+      margin-top: 0.7rem;
+    }
+    .card-meta h3 {
+      font-size: 1.1rem;
+    }
   }
   /* No hover (touch) or a narrow viewport — hide the action overlay; the whole
      card links to the PDP where add-to-cart / enquire live. */

@@ -93,11 +93,10 @@ export function buildCheckoutUrl(lines: CartLine[] = read()): string {
   return `https://${site.shopDomain}/cart/${parts.join(',')}`;
 }
 
-/** Format a ZAR amount the same way product prices render. */
+/** Format a ZAR amount the same way product prices render: R25,000 */
 export function formatZAR(amount: number): string {
-  return new Intl.NumberFormat('en-ZA', {
-    style: 'currency',
-    currency: 'ZAR',
+  const n = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 0,
   }).format(amount);
+  return `R${n}`;
 }
