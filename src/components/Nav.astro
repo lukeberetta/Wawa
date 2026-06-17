@@ -97,7 +97,7 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
                   aria-label={`${item.label} — view categories`}
                 >
                   <span>{item.label}</span>
-                  <span class="m-row-arrow" aria-hidden="true">&rarr;</span>
+                  <span class="m-row-arrow" aria-hidden="true"></span>
                 </button>
               ) : (
                 <a
@@ -118,15 +118,12 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
       <!-- Products level -->
       <section class="m-panel m-panel-sub" data-panel="products" aria-hidden="true">
         <button class="m-back" data-back>
-          <span class="m-back-arrow" aria-hidden="true">&larr;</span> Products
+          <span class="m-back-arrow" aria-hidden="true"></span> Back
         </button>
         <nav class="m-list" aria-label="Products categories">
           {disciplines.map((d) => (
-            <a class="m-row m-row-cat" href={`/products/${d.handle}`}>
-              <span class="m-cat-title">{d.title}</span>
-              <span class="m-cat-meta">
-                {d.categories.length ? d.categories.join(' · ') : d.blurb}
-              </span>
+            <a class="m-row" href={`/products/${d.handle}`}>
+              <span>{d.title}</span>
             </a>
           ))}
         </nav>
@@ -416,31 +413,14 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
   .m-row.active {
     color: var(--warm);
   }
+  /* chevrons drawn as 1.5px strokes to match the burger / X bars */
   .m-row-arrow {
-    font-size: 1rem;
+    width: 9px;
+    height: 9px;
+    border-top: 1.5px solid currentColor;
+    border-right: 1.5px solid currentColor;
+    transform: rotate(45deg);
     color: var(--muted);
-  }
-  /* quiver index — each discipline lists its actual shapes in the warm accent */
-  .m-row-cat {
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 0.3rem;
-    min-height: 4.75rem;
-  }
-  .m-cat-title {
-    line-height: 1.1;
-  }
-  .m-cat-meta {
-    max-width: 100%;
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    line-height: 1.2;
-    color: var(--warm);
-    /* keep the shape list to one quiet line; the page itself holds the rest */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
   .m-back {
     align-self: flex-start;
@@ -462,7 +442,11 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     color: var(--ink);
   }
   .m-back-arrow {
-    font-size: 1rem;
+    width: 8px;
+    height: 8px;
+    border-bottom: 1.5px solid currentColor;
+    border-left: 1.5px solid currentColor;
+    transform: rotate(45deg);
   }
   .m-foot {
     margin-top: auto;
@@ -472,10 +456,11 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     gap: 0.45rem;
   }
   .m-foot a {
-    font-size: 0.9rem;
-    letter-spacing: 0.04em;
+    font-size: 1.4rem;
+    font-weight: var(--fw-light);
+    letter-spacing: 0.01em;
+    line-height: 1.1;
     color: var(--ink);
-    opacity: 0.75;
   }
 
   @media (max-width: 768px) {
