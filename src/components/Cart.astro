@@ -19,7 +19,7 @@ const enabled = !!site.shopDomain;
           <h2>Cart <span class="cart-head-count">(<span data-cart-count>0</span>)</span></h2>
           <button class="cart-close" aria-label="Close cart">&times;</button>
         </header>
-        <div class="cart-lines" data-cart-lines />
+        <div class="cart-lines" data-cart-lines data-lenis-prevent />
         <p class="cart-empty" data-cart-empty>Your cart is empty.</p>
         <footer class="cart-foot" data-cart-foot hidden>
           <div class="cart-subtotal">
@@ -98,7 +98,11 @@ const enabled = !!site.shopDomain;
   }
   .cart-lines {
     flex: 1;
+    /* without this a flex item won't shrink below its content height, so
+       overflow-y never kicks in and the list pushes the footer off-screen */
+    min-height: 0;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     padding: 0.5rem 1.75rem 1rem;
   }
   .cart-empty {
@@ -113,43 +117,48 @@ const enabled = !!site.shopDomain;
   .cart-empty[hidden] {
     display: none;
   }
-  .cart-line {
+  /*
+   * Cart lines are injected via innerHTML at runtime, so they never receive
+   * Astro's scoped-style hash attribute. Target them through :global() (kept
+   * under the static .cart-lines parent so the rules don't leak site-wide).
+   */
+  .cart-lines :global(.cart-line) {
     display: grid;
-    grid-template-columns: 64px 1fr auto;
-    gap: 1.1rem;
-    align-items: start;
-    padding: 1.25rem 0;
+    grid-template-columns: 52px 1fr auto;
+    gap: 0.9rem;
+    align-items: center;
+    padding: 0.85rem 0;
     border-bottom: 1px solid var(--rule);
   }
-  .cart-line:last-child {
+  .cart-lines :global(.cart-line:last-child) {
     border-bottom: none;
   }
-  .cart-line img {
-    width: 64px;
-    height: 80px;
+  .cart-lines :global(.cart-line img) {
+    width: 52px;
+    height: 64px;
     object-fit: cover;
     border: 1px solid var(--rule);
     background: color-mix(in srgb, var(--warm) 8%, var(--cream));
   }
-  .cart-line-title {
-    font-size: 0.95rem;
-    line-height: 1.3;
+  .cart-lines :global(.cart-line-title) {
+    font-size: 0.9rem;
+    line-height: 1.25;
     padding-right: 0.5rem;
   }
-  .cart-line-price {
-    font-size: 0.8rem;
+  .cart-lines :global(.cart-line-price) {
+    font-size: 0.78rem;
     color: var(--warm);
-    margin-top: 0.3rem;
+    margin-top: 0.2rem;
   }
-  .cart-qty {
+  .cart-lines :global(.cart-qty) {
     display: inline-flex;
     align-items: center;
     border: 1px solid var(--rule);
-    margin-top: 0.85rem;
+    margin-top: 0.55rem;
   }
-  .cart-qty button {
-    width: 30px;
-    height: 30px;
+  .cart-lines :global(.cart-qty button) {
+    width: 26px;
+    height: 26px;
     background: none;
     border: 0;
     color: var(--ink);
@@ -158,19 +167,19 @@ const enabled = !!site.shopDomain;
     line-height: 1;
     transition: background 0.2s var(--ease);
   }
-  .cart-qty button:hover {
+  .cart-lines :global(.cart-qty button:hover) {
     background: color-mix(in srgb, var(--warm) 8%, var(--cream));
   }
-  .cart-qty span {
-    min-width: 30px;
+  .cart-lines :global(.cart-qty span) {
+    min-width: 28px;
     text-align: center;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     border-inline: 1px solid var(--rule);
     align-self: stretch;
     display: grid;
     place-items: center;
   }
-  .cart-remove {
+  .cart-lines :global(.cart-remove) {
     background: none;
     border: 0;
     color: var(--muted);
@@ -178,10 +187,10 @@ const enabled = !!site.shopDomain;
     font-size: 1.25rem;
     line-height: 1;
     padding: 0;
-    align-self: start;
+    align-self: center;
     transition: color 0.2s var(--ease);
   }
-  .cart-remove:hover {
+  .cart-lines :global(.cart-remove:hover) {
     color: var(--ink);
   }
   .cart-foot {
