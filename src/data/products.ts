@@ -5,13 +5,12 @@ import type { Product } from '@/lib/types';
  * the Shopify Storefront shape. Phase 2: replace with a live Storefront fetch,
  * keeping these field names so templates don't change.
  *
- * PRICING: only the figures carried from the POC are real. Everything else is
- * POA (amount '0' + availableForSale:false) → renders "Enquire". Replace with
- * client pricing before launch.
+ * PRICING: board figures are indicative "From" estimates (custom builds,
+ * availableForSale:false → enquire-only). Accessories carry real fixed prices.
+ * Replace estimates with client pricing before launch.
  */
 
 const zar = (amount: string) => ({ amount, currencyCode: 'ZAR' });
-const poa = zar('0.00');
 const img = (name: string, alt: string) => ({ url: `/img/catalog/${name}.jpg`, altText: alt });
 // Clean studio board shots live one level up in /img (deck + hull on concrete).
 const studio = (name: string, alt: string) => ({ url: `/img/${name}.jpg`, altText: alt });
@@ -40,7 +39,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Short'],
     availableForSale: false,
-    priceRange: { minVariantPrice: poa },
+    priceRange: { minVariantPrice: zar('17000.00') },
     images: [img('gun-fish-front', 'Wawa Gun Fish, deck'), img('gun-fish-back', 'Wawa Gun Fish, hull')],
   },
   {
@@ -52,7 +51,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Short'],
     availableForSale: false,
-    priceRange: { minVariantPrice: poa },
+    priceRange: { minVariantPrice: zar('15000.00') },
     images: [img('simmons-front', 'Wawa Mini-Simmons, deck'), img('simmons-back', 'Wawa Mini-Simmons, hull')],
     featured: true,
   },
@@ -65,7 +64,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Short', 'Finless'],
     availableForSale: false,
-    priceRange: { minVariantPrice: poa },
+    priceRange: { minVariantPrice: zar('9000.00') },
     images: [img('paipo-front', 'Wawa Paipo, top'), img('paipo-back', 'Wawa Paipo, base')],
   },
 
@@ -92,7 +91,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Mid'],
     availableForSale: false,
-    priceRange: { minVariantPrice: poa },
+    priceRange: { minVariantPrice: zar('18000.00') },
     images: [img('long-fish-front', 'Wawa Long Fish, deck'), img('long-fish-back', 'Wawa Long Fish, hull')],
     featured: true,
   },
@@ -134,7 +133,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Finless'],
     availableForSale: false,
-    priceRange: { minVariantPrice: poa },
+    priceRange: { minVariantPrice: zar('12000.00') },
     images: [studio('alaia-front', 'Wawa Alaia, top'), studio('alaia-back', 'Wawa Alaia, base')],
     featured: true,
   },
@@ -149,7 +148,7 @@ export const products: Product[] = [
     productType: 'Foil',
     tags: ['Prone'],
     availableForSale: false,
-    priceRange: { minVariantPrice: poa },
+    priceRange: { minVariantPrice: zar('19000.00') },
     images: [img('foil-prone-front', 'Wawa prone foilboard, deck'), img('foil-prone-back', 'Wawa prone foilboard, hull')],
   },
   {
@@ -161,7 +160,7 @@ export const products: Product[] = [
     productType: 'Foil',
     tags: ['Wave'],
     availableForSale: false,
-    priceRange: { minVariantPrice: poa },
+    priceRange: { minVariantPrice: zar('20000.00') },
     images: [img('foil-wave-front', 'Wawa wave foilboard, deck'), img('foil-wave-back', 'Wawa wave foilboard, hull')],
     featured: true,
   },
@@ -174,7 +173,7 @@ export const products: Product[] = [
     productType: 'Foil',
     tags: ['Wing'],
     availableForSale: false,
-    priceRange: { minVariantPrice: poa },
+    priceRange: { minVariantPrice: zar('20000.00') },
     images: [img('foil-wing-front', 'Wawa wing foilboard, deck'), img('foil-wing-back', 'Wawa wing foilboard, hull')],
   },
   {
@@ -186,7 +185,7 @@ export const products: Product[] = [
     productType: 'Foil',
     tags: ['Custom'],
     availableForSale: false,
-    priceRange: { minVariantPrice: poa },
+    priceRange: { minVariantPrice: zar('22000.00') },
     images: [img('foil-custom-front', 'Wawa custom foilboard, deck'), img('foil-custom-back', 'Wawa custom foilboard, hull')],
   },
 
@@ -200,7 +199,7 @@ export const products: Product[] = [
     productType: 'Kite',
     tags: ['Tomo'],
     availableForSale: false,
-    priceRange: { minVariantPrice: poa },
+    priceRange: { minVariantPrice: zar('14000.00') },
     images: [img('kite-tomo-front', 'Wawa Tomo kiteboard, deck'), img('kite-tomo-back', 'Wawa Tomo kiteboard, base')],
   },
   {
@@ -212,7 +211,7 @@ export const products: Product[] = [
     productType: 'Kite',
     tags: ['Trick'],
     availableForSale: false,
-    priceRange: { minVariantPrice: poa },
+    priceRange: { minVariantPrice: zar('14000.00') },
     images: [img('kite-trick-front', 'Wawa Trick kiteboard, deck'), img('kite-trick-back', 'Wawa Trick kiteboard, base')],
   },
   {
@@ -224,7 +223,7 @@ export const products: Product[] = [
     productType: 'Kite',
     tags: ['Vlieer'],
     availableForSale: false,
-    priceRange: { minVariantPrice: poa },
+    priceRange: { minVariantPrice: zar('15000.00') },
     images: [img('kite-vlieer-front', 'Wawa Vlieer kiteboard, deck'), img('kite-vlieer-back', 'Wawa Vlieer kiteboard, base')],
   },
 
@@ -238,7 +237,7 @@ export const products: Product[] = [
     productType: 'Skate',
     tags: [],
     availableForSale: false,
-    priceRange: { minVariantPrice: poa },
+    priceRange: { minVariantPrice: zar('4500.00') },
     images: [img('wooden-cruiser-front', 'Wawa wooden cruiser, top'), img('wooden-cruiser-back', 'Wawa wooden cruiser, base')],
   },
 
@@ -265,7 +264,7 @@ export const products: Product[] = [
     productType: 'Body & Belly',
     tags: ['Bellyboard'],
     availableForSale: false,
-    priceRange: { minVariantPrice: poa },
+    priceRange: { minVariantPrice: zar('6000.00') },
     images: [studio('bodyboard-front', 'Wawa Bellyboard, deck'), studio('bodyboard-back', 'Wawa Bellyboard, hull')],
   },
 

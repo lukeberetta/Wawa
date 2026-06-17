@@ -172,7 +172,10 @@ const hasPrice = price !== 'Enquire';
     text-transform: uppercase;
     color: var(--muted);
   }
+  /* hidden on desktop — the hover overlay carries the price there; shown only
+     where the overlay is suppressed (touch / narrow), see the media query */
   .card-price {
+    display: none;
     font-size: 0.75rem;
     letter-spacing: 0.02em;
     color: var(--warm);
@@ -193,6 +196,9 @@ const hasPrice = price !== 'Enquire';
   @media (hover: none), (max-width: 768px) {
     .card-overlay {
       display: none;
+    }
+    .card-price {
+      display: block;
     }
   }
 </style>

@@ -41,10 +41,12 @@ export { disciplines };
 /** Format Storefront Money as a ZAR price string, or "Enquire" when POA. */
 export function formatPrice(p: Product): string {
   const amt = Number(p.priceRange.minVariantPrice.amount);
-  if (!p.availableForSale || amt <= 0) return 'Enquire';
+  if (amt <= 0) return 'Enquire';
   // R25,000 — comma thousands, no decimals (not the en-ZA space/comma)
   const n = new Intl.NumberFormat('en-US', {
     maximumFractionDigits: 0,
   }).format(amt);
-  return `R${n}`;
+  const price = `R${n}`;
+  // Boards are custom builds priced from a base; accessories are fixed.
+  return p.productType === 'Accessories' ? price : `From ${price}`;
 }
