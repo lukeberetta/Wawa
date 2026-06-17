@@ -24,6 +24,24 @@ const cats = discipline.categories.filter((c: string) => present.has(c));
 ---
 
 <Layout title={`${discipline.title} · Wawa Surfboards`} current="products">
+  <nav class="disc-switch" aria-label="Product types">
+    <div class="disc-band">
+      <div class="disc-switch-inner wrap">
+      {
+        disciplines.map((d) => (
+          <a
+            href={`/products/${d.handle}`}
+            class:list={['disc-tab', { active: d.handle === discipline.handle }]}
+            aria-current={d.handle === discipline.handle ? 'page' : undefined}
+          >
+            {d.title}
+          </a>
+        ))
+      }
+      </div>
+    </div>
+  </nav>
+
   <header class="page-header">
     <div class="wrap">
       <p class="label fade-in">Products</p>
@@ -87,8 +105,50 @@ const cats = discipline.categories.filter((c: string) => present.has(c));
 </Layout>
 
 <style>
+  /* secondary nav: switch between product disciplines.
+     Transparent spacer clears the fixed site nav; the band scrolls normally,
+     sliding up behind the nav (which is opaque once scrolled). */
+  .disc-switch {
+    padding-top: calc(var(--nav-h) + env(safe-area-inset-top));
+  }
+  /* full-bleed band, its own tone to read distinct from the cream page/nav */
+  .disc-band {
+    background: color-mix(in srgb, var(--warm) 12%, var(--cream));
+    border-bottom: 1px solid var(--rule);
+  }
+  .disc-switch-inner {
+    display: flex;
+    align-items: stretch;
+    gap: 2rem;
+    height: 2.4rem; /* slim band beneath the nav */
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .disc-switch-inner::-webkit-scrollbar {
+    display: none;
+  }
+  /* clear active/inactive by colour + weight: muted/light → ink/regular */
+  .disc-tab {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    color: var(--muted);
+    transition: color 0.2s var(--ease);
+  }
+  .disc-tab:hover {
+    color: var(--ink);
+  }
+  .disc-tab.active {
+    color: var(--ink);
+    font-weight: var(--fw-regular);
+  }
+
   .page-header {
-    padding: calc(var(--nav-h) + 5rem) 0 3rem;
+    padding: 3rem 0;
   }
   .page-header h1 {
     font-size: clamp(2.6rem, 7vw, 5rem);
