@@ -7,7 +7,7 @@ export interface Props {
 const { current } = Astro.props;
 ---
 
-<nav id="nav" class:list={{ 'over-hero': current === 'home' }}>
+<nav id="nav">
   <div class="nav-inner wrap">
     <a href="/" class="nav-logo" aria-label="Wawa Surfboards home">
       <img src="/logotype.svg" alt="Wawa" width="92" height="24" />
@@ -107,28 +107,6 @@ const { current } = Astro.props;
     border-bottom: 1px solid var(--rule);
     transition: background 0.3s var(--ease), border-color 0.3s var(--ease),
       height 0.3s var(--ease);
-  }
-  /* solid bar once scrolled, or while the mobile menu is open — both need to
-     out-rank the #nav base, hence the id-qualified selectors */
-  #nav.scrolled,
-  #nav.menu-open {
-    background: var(--cream);
-    border-color: var(--rule);
-  }
-  /* On the home hero the nav sits over a dark photo — flip text/logo to cream
-     while at the top, then fall back to ink once scrolled or the menu opens.
-     No bottom rule here; it returns once the bar goes solid. */
-  #nav.over-hero:not(.scrolled):not(.menu-open) {
-    background: transparent;
-    border-color: transparent;
-  }
-  #nav.over-hero:not(.scrolled):not(.menu-open) .nav-link,
-  #nav.over-hero:not(.scrolled):not(.menu-open) .nav-cart,
-  #nav.over-hero:not(.scrolled):not(.menu-open) .nav-burger {
-    color: var(--cream);
-  }
-  #nav.over-hero:not(.scrolled):not(.menu-open) .nav-logo img {
-    filter: brightness(0) invert(1);
   }
   .nav-inner {
     position: relative;

@@ -35,7 +35,7 @@ html.lenis body {
 body {
   font-family: var(--font-body);
   font-weight: var(--fw-light);
-  background: var(--ink); /* ink shows behind main when the footer reveals */
+  background: var(--cream);
   color: var(--ink);
   line-height: var(--lh-base);
   /* note: overflow-x lives on <html> only — setting it here makes body a
@@ -84,8 +84,7 @@ a {
   outline: none;
 }
 #hero :focus-visible,
-.site-footer :focus-visible,
-#nav.over-hero:not(.scrolled):not(.menu-open) :focus-visible {
+.site-footer :focus-visible {
   outline-color: var(--cream);
 }
 
