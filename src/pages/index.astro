@@ -80,6 +80,34 @@ const featured = await getFeatured();
       </div>
     </div>
   </section>
+
+  <!-- PERKS -->
+  <section id="perks">
+    <ul class="perks">
+      <li class="perk fade-in">
+        <svg class="perk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M11 20A7 7 0 0 1 4 13C4 7 10 4 17 4c0 7-3 13-9 13Z" />
+          <path d="M4 20c2-4 5-6.5 8-7.5" />
+        </svg>
+        <p>Shaped by hand from timber</p>
+      </li>
+      <li class="perk fade-in">
+        <svg class="perk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18" />
+          <path d="M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" />
+        </svg>
+        <p>Shipped worldwide</p>
+      </li>
+      <li class="perk fade-in">
+        <svg class="perk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 20h4L18.5 9.5a2.12 2.12 0 0 0-3-3L5 17v3Z" />
+          <path d="M13.5 8 16 10.5" />
+        </svg>
+        <p>Custom builds welcome</p>
+      </li>
+    </ul>
+  </section>
 </Layout>
 
 <style>
@@ -217,6 +245,45 @@ const featured = await getFeatured();
   }
   .section-foot {
     margin-top: 3rem;
+  }
+
+  /* perks strip: full-bleed hairline band. mobile-first — stacked with
+     horizontal dividers, becoming a 3-up row with vertical dividers. */
+  .perks {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-inline: calc(50% - 50vw);
+    border-block: 1px solid var(--rule);
+  }
+  .perk {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 2rem var(--wrap-pad);
+  }
+  .perk:not(:last-child) {
+    border-bottom: 1px solid var(--rule);
+  }
+  .perk-icon {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    color: var(--ink);
+  }
+  .perk p {
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+  @media (min-width: 768px) {
+    .perks {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .perk:not(:last-child) {
+      border-bottom: none;
+      border-right: 1px solid var(--rule);
+    }
   }
 </style>
 
