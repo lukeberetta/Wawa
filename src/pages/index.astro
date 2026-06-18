@@ -230,6 +230,9 @@ const featured = await getFeatured();
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+    /* lock gestures on the rail to horizontal — a diagonal swipe won't drag the
+       page vertically while scrolling cards */
+    touch-action: pan-x;
     margin-inline: calc(50% - 50vw);
     border-top: 1px solid var(--rule);
     border-left: 1px solid var(--rule);
