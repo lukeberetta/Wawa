@@ -37,6 +37,9 @@ const enquire = whatsappLink(`Hi Wawa, I'm interested in the ${product.title}.`)
 
 const images = product.images;
 const lead = images[0];
+// Carousel slide count — one per image; show at least 3 placeholder slides
+// while in the wireframe phase so the gallery reads as a real carousel.
+const slideCount = Math.max(images.length, 3);
 const category = product.tags[0];
 const disciplineHref = `/products?discipline=${slug(product.productType)}`;
 
@@ -65,30 +68,37 @@ const jsonLd = {
   current="products"
 >
   <article class="pdp">
+    <!-- Full-bleed image carousel — swipe + dots. Wireframe placeholders until
+         real deck/hull shots land (one slide per product image). -->
+    <section class="gallery fade-in" aria-label={`${product.title} images`}>
+      <div class="carousel" data-carousel>
+        <ul class="car-track" data-car-track data-lenis-prevent>
+          {Array.from({ length: slideCount }).map(() => (
+            <li class="car-slide"><div class="slide-media wf-ph" role="presentation" /></li>
+          ))}
+        </ul>
+        {slideCount > 1 && (
+          <div class="car-dots" data-car-dots role="tablist" aria-label="Choose image">
+            {Array.from({ length: slideCount }).map((_, i) => (
+              <button
+                class:list={['car-dot', { 'is-active': i === 0 }]}
+                data-i={i}
+                aria-label={`Show image ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+
     <div class="wrap">
-      <nav class="crumbs fade-in" aria-label="Breadcrumb">
-        <a href="/products">Shop</a>
-        <span aria-hidden="true">/</span>
-        <a href={disciplineHref}>{product.productType}</a>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">{product.title}</span>
-      </nav>
-
-      <div class="pdp-grid">
-        <!-- Gallery (wireframe placeholder while imagery is pending) -->
-        <section class="gallery fade-in" aria-label={`${product.title} images`}>
-          <div class="gallery-main wf-ph" role="presentation"></div>
-        </section>
-
-        <!-- Info -->
-        <section class="info">
-          <div class="info-inner fade-in">
+      <section class="info">
+        <div class="info-inner fade-in">
             {category && <p class="label info-cat">{category}</p>}
             <h1>{product.title}</h1>
-            <p class="info-price">{price}</p>
             <p class="info-desc">{product.description}</p>
 
-            <div class="info-actions" data-buy-anchor>
+            <div class="info-actions">
               {
                 buyable ? (
                   <button
@@ -142,40 +152,13 @@ const jsonLd = {
                 <dd>By hand in {site.location}</dd>
               </div>
             </dl>
-          </div>
-        </section>
-      </div>
-    </div>
-
-    <!-- Lightbox: opens on image click; carries the gallery images as JSON. -->
-    <div
-      class="lightbox"
-      data-lightbox
-      data-images={JSON.stringify(images.map((i) => ({ src: i.url, alt: i.altText })))}
-      role="dialog"
-      aria-modal="true"
-      aria-label={`${product.title} images`}
-      hidden
-    >
-      <button type="button" class="lb-close" aria-label="Close">&times;</button>
-      {
-        images.length > 1 && (
-          <>
-            <button type="button" class="lb-nav lb-prev" aria-label="Previous image">
-              &#8249;
-            </button>
-            <button type="button" class="lb-nav lb-next" aria-label="Next image">
-              &#8250;
-            </button>
-          </>
-        )
-      }
-      <img class="lb-img" alt="" />
+        </div>
+      </section>
     </div>
 
     <!-- Sticky buy bar — reveals once the inline action scrolls out of view,
          keeping the price + CTA in the thumb zone (Apple PDP pattern). -->
-    <div class="pdp-bar" data-buy-bar aria-hidden="true">
+    <div class="pdp-bar">
       <div class="wrap pdp-bar-inner">
         <div class="pdp-bar-meta">
           <span class="pdp-bar-title">{product.title}</span>
@@ -226,98 +209,99 @@ const jsonLd = {
 
 <style>
   .pdp {
-    padding-top: calc(var(--nav-h) + 2.5rem);
-    padding-bottom: 5rem;
+    padding-top: calc(var(--nav-h) + env(safe-area-inset-top));
   }
-  .crumbs {
+
+  /* ── Carousel ── full-bleed swipe gallery with dots ── */
+  .gallery {
+    /* overlap the nav's bottom hairline instead of stacking a doubled line */
+    margin-top: -1px;
+    margin-bottom: var(--space-xl);
+  }
+  .carousel {
+    position: relative;
+  }
+  .car-track {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .car-track::-webkit-scrollbar {
+    display: none;
+  }
+  /* slides sit shy of full width so the neighbouring image peeks in */
+  .car-slide {
+    flex: 0 0 92%;
+    min-width: 0;
+    scroll-snap-align: center;
+  }
+  /* overlap adjacent borders so the seam stays a single hairline, not 2px */
+  .car-slide + .car-slide {
+    margin-left: -1px;
+  }
+  .slide-media {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    border: 1px solid var(--rule);
+    background: color-mix(in srgb, var(--warm) 8%, var(--cream));
+  }
+  /* dots float over the foot of the image, centred */
+  .car-dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 1rem;
+    display: flex;
+    justify-content: center;
     gap: 0.5rem;
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-    margin-bottom: 2.5rem;
   }
-  .crumbs a:hover {
-    color: var(--ink);
-  }
-  .crumbs span[aria-current] {
-    color: var(--ink);
-  }
-
-  .pdp-grid {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: 3.5rem;
-    align-items: start;
-  }
-
-  /* ── Gallery ── */
-  .gallery-main {
-    display: block;
-    width: 100%;
+  .car-dot {
+    width: 7px;
+    height: 7px;
     padding: 0;
-    aspect-ratio: 3 / 4;
-    background: color-mix(in srgb, var(--warm) 8%, var(--cream));
-    border: 1px solid var(--rule);
-    overflow: hidden;
-  }
-  .gallery-main img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .gallery-thumbs {
-    display: flex;
-    gap: 0.75rem;
-    margin-top: 0.75rem;
-  }
-  .thumb {
-    width: 72px;
-    height: 90px;
-    padding: 0;
-    background: color-mix(in srgb, var(--warm) 8%, var(--cream));
-    border: 1px solid var(--rule);
+    border: 0;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--ink) 28%, transparent);
     cursor: pointer;
-    opacity: 0.6;
-    transition: opacity 0.2s var(--ease), border-color 0.2s var(--ease);
+    transition: background 0.25s var(--ease), transform 0.25s var(--ease);
   }
-  .thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .car-dot.is-active {
+    background: var(--ink);
+    transform: scale(1.15);
   }
-  .thumb:hover {
-    opacity: 0.85;
-  }
-  .thumb[aria-pressed='true'] {
-    opacity: 1;
-    border-color: var(--ink);
+  /* desktop: keep the image grand but stop it filling the whole viewport */
+  @media (min-width: 900px) {
+    .carousel {
+      max-width: 880px;
+      margin-inline: auto;
+    }
+    .slide-media {
+      aspect-ratio: 5 / 6;
+    }
   }
 
-  /* ── Info ── */
-  .info-inner {
-    position: sticky;
-    top: calc(var(--nav-h) + 2rem);
+  /* ── Info ── single centred column under the carousel ── */
+  .info {
+    max-width: 880px;
+    margin-inline: auto;
   }
   .info-cat {
     margin-bottom: 1rem;
   }
   .info h1 {
-    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-size: var(--fs-h2);
     line-height: 1.02;
-  }
-  .info-price {
-    font-size: 1.25rem;
-    color: var(--warm);
-    margin-top: 1.1rem;
   }
   .info-desc {
     color: var(--muted);
     font-size: 1.02rem;
     line-height: 1.6;
-    max-width: 46ch;
+    max-width: 56ch;
     margin-top: 1.5rem;
   }
   .info-actions {
@@ -351,7 +335,7 @@ const jsonLd = {
     max-width: 44ch;
   }
 
-  /* ── Sticky buy bar ── */
+  /* ── Sticky buy bar ── persistent, but slides away as the footer reveals ── */
   .pdp-bar {
     position: fixed;
     left: 0;
@@ -360,12 +344,17 @@ const jsonLd = {
     z-index: 100; /* under the cart drawer/overlay (125/126) */
     background: var(--cream);
     border-top: 1px solid var(--rule);
-    transform: translateY(100%);
-    transition: transform 0.35s var(--ease);
     padding-bottom: env(safe-area-inset-bottom);
+    transition: transform 0.35s var(--ease);
   }
-  .pdp-bar.show {
-    transform: translateY(0);
+  /* dropped out of view once the curtain footer starts to show */
+  .pdp-bar.is-hidden {
+    transform: translateY(100%);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pdp-bar {
+      transition: none;
+    }
   }
   .pdp-bar-inner {
     display: flex;
@@ -410,17 +399,10 @@ const jsonLd = {
   .pdp-bar-action:hover {
     opacity: 0.85;
   }
-  /* desktop keeps the inline action in view via the sticky info column —
-     the bar is a mobile thumb-zone affordance only */
-  @media (min-width: 900px) {
-    .pdp-bar {
-      display: none;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .pdp-bar {
-      transition: none;
-    }
+  /* centre the bar's content on wide screens to match the info column */
+  .pdp-bar-inner {
+    max-width: 880px;
+    margin-inline: auto;
   }
 
   .specs {
@@ -489,161 +471,80 @@ const jsonLd = {
     }
   }
 
-  /* ── Lightbox ── */
-  .lightbox {
-    position: fixed;
-    inset: 0;
-    z-index: 130;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 1.5rem;
-    background: color-mix(in srgb, var(--ink) 92%, transparent);
-    opacity: 0;
-    transition: opacity 0.3s var(--ease);
-    cursor: zoom-out;
-  }
-  .lightbox[hidden] {
-    display: none;
-  }
-  .lightbox.open {
-    opacity: 1;
-  }
-  .lb-img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    cursor: default;
-  }
-  .lightbox button {
-    position: absolute;
-    background: none;
-    border: 0;
-    color: var(--cream);
-    cursor: pointer;
-    opacity: 0.7;
-    transition: opacity 0.2s var(--ease);
-    line-height: 1;
-  }
-  .lightbox button:hover {
-    opacity: 1;
-  }
-  .lb-close {
-    top: 1.25rem;
-    right: 1.5rem;
-    font-size: 2.4rem;
-  }
-  .lb-nav {
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 3rem;
-    padding: 0 1rem;
-  }
-  .lb-prev {
-    left: 0.5rem;
-  }
-  .lb-next {
-    right: 0.5rem;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .lightbox {
-      transition: none;
-    }
-  }
-
-  @media (max-width: 860px) {
-    .pdp-grid {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-    .info-inner {
-      position: static;
-    }
-    .info-desc {
-      max-width: none;
-    }
-  }
 </style>
 
 <script>
-  // Gallery + lightbox. Framework-free, scoped to the PDP.
-  import { lockScroll } from '@/lib/scrollLock';
+  // ── Carousel ── native scroll-snap track + dot indicators.
+  const carousel = document.querySelector<HTMLElement>('[data-carousel]');
+  const track = carousel?.querySelector<HTMLElement>('[data-car-track]');
+  const dots = carousel
+    ? Array.from(carousel.querySelectorAll<HTMLButtonElement>('.car-dot'))
+    : [];
 
-  const main = document.getElementById('pdp-main') as HTMLImageElement | null;
-  const thumbs = Array.from(document.querySelectorAll<HTMLButtonElement>('.thumb'));
-  const zoomBtn = document.querySelector<HTMLButtonElement>('[data-zoom]');
-  const lb = document.querySelector<HTMLElement>('[data-lightbox]');
-  const lbImg = lb?.querySelector<HTMLImageElement>('.lb-img');
+  if (track && dots.length) {
+    const slides = Array.from(track.children) as HTMLElement[];
+    const setActive = (i: number) =>
+      dots.forEach((d, n) => d.classList.toggle('is-active', n === i));
 
-  type Img = { src: string; alt: string };
-  const images: Img[] = lb ? JSON.parse(lb.dataset.images || '[]') : [];
-  let current = 0;
+    // centre slide i in the track (slides are < full width, so don't assume
+    // clientWidth steps)
+    const centreOn = (i: number) => {
+      const s = slides[i];
+      if (!s) return;
+      track.scrollTo({
+        left: s.offsetLeft - (track.clientWidth - s.offsetWidth) / 2,
+        behavior: 'smooth',
+      });
+    };
 
-  function syncMain() {
-    const img = images[current];
-    if (main && img) {
-      main.src = img.src;
-      main.alt = img.alt;
-    }
-    thumbs.forEach((b, i) => b.setAttribute('aria-pressed', String(i === current)));
+    // dot → snap to that slide
+    dots.forEach((d, i) =>
+      d.addEventListener('click', () => {
+        centreOn(i);
+        setActive(i);
+      }),
+    );
+
+    // reflect the active dot as the track is swiped — pick the slide whose
+    // centre is nearest the track's centre
+    let raf = 0;
+    track.addEventListener(
+      'scroll',
+      () => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          raf = 0;
+          const centre = track.scrollLeft + track.clientWidth / 2;
+          let best = 0;
+          let bestDist = Infinity;
+          slides.forEach((s, i) => {
+            const dist = Math.abs(s.offsetLeft + s.offsetWidth / 2 - centre);
+            if (dist < bestDist) {
+              bestDist = dist;
+              best = i;
+            }
+          });
+          setActive(best);
+        });
+      },
+      { passive: true },
+    );
   }
 
-  // Thumbnail → swap the main gallery image.
-  thumbs.forEach((btn, i) => btn.addEventListener('click', () => { current = i; syncMain(); }));
-
-  // ── Lightbox ──
-  function show(i: number) {
-    if (!lbImg || !images.length) return;
-    current = (i + images.length) % images.length;
-    const img = images[current];
-    lbImg.src = img.src;
-    lbImg.alt = img.alt;
-    syncMain();
-  }
-  function open() {
-    if (!lb) return;
-    show(current);
-    lb.hidden = false;
-    requestAnimationFrame(() => lb.classList.add('open'));
-    lockScroll(true);
-  }
-  function close() {
-    if (!lb) return;
-    lb.classList.remove('open');
-    lockScroll(false);
-    setTimeout(() => { if (!lb.classList.contains('open')) lb.hidden = true; }, 300);
-  }
-
-  // ── Sticky buy bar ──
-  // Reveal the bar once the inline action has scrolled out of view above the
-  // fold; hide it again when the inline action is back on screen.
-  const buyBar = document.querySelector<HTMLElement>('[data-buy-bar]');
-  const buyAnchor = document.querySelector<HTMLElement>('[data-buy-anchor]');
-  if (buyBar && buyAnchor && 'IntersectionObserver' in window) {
+  // ── Buy bar ── persistent, but tuck it away once the "More from" related
+  // section comes into view (no longer relevant to the product being viewed).
+  const buyBar = document.querySelector<HTMLElement>('.pdp-bar');
+  const related = document.querySelector<HTMLElement>('.related');
+  if (buyBar && related && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver(
       ([entry]) => {
-        const show = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-        buyBar.classList.toggle('show', show);
-        buyBar.setAttribute('aria-hidden', String(!show));
+        // hide once the related section's top reaches the fold and keep it
+        // hidden past that — don't let it pop back when related exits the top
+        const reached = entry.boundingClientRect.top <= window.innerHeight;
+        buyBar.classList.toggle('is-hidden', reached);
       },
       { threshold: 0 },
     );
-    io.observe(buyAnchor);
+    io.observe(related);
   }
-
-  zoomBtn?.addEventListener('click', open);
-  lb?.querySelector('.lb-close')?.addEventListener('click', close);
-  lb?.querySelector('.lb-prev')?.addEventListener('click', (e) => { e.stopPropagation(); show(current - 1); });
-  lb?.querySelector('.lb-next')?.addEventListener('click', (e) => { e.stopPropagation(); show(current + 1); });
-  // Click the backdrop (not the image) to close.
-  lb?.addEventListener('click', (e) => { if (e.target === lb) close(); });
-  document.addEventListener('keydown', (e) => {
-    if (!lb || lb.hidden) return;
-    if (e.key === 'Escape') close();
-    else if (e.key === 'ArrowLeft') show(current - 1);
-    else if (e.key === 'ArrowRight') show(current + 1);
-  });
 </script>
