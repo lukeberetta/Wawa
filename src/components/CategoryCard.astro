@@ -38,7 +38,7 @@ const heroSrc = discipline.hero?.startsWith('/') ? discipline.hero : null;
     position: relative;
     display: block;
     width: 100%;
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 1 / 1;
     flex-shrink: 0;
     background: color-mix(in srgb, var(--warm) 8%, var(--cream));
     overflow: hidden;
@@ -84,6 +84,9 @@ const heroSrc = discipline.hero?.startsWith('/') ? discipline.hero : null;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    /* always reserve two lines so a one-line blurb doesn't make its card
+       shorter than the rest of the rail */
+    min-height: calc(0.9rem * 1.35 * 2);
   }
   @media (max-width: 520px) {
     .card-meta {

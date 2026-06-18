@@ -5,13 +5,6 @@ export interface Props {
   current?: string;
 }
 const { current } = Astro.props;
-
-const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-  <rect x="2.5" y="2.5" width="19" height="19" rx="5" stroke="currentColor" stroke-width="1.6" />
-  <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6" />
-  <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" />
-</svg>`;
-
 ---
 
 <nav id="nav" class:list={{ 'over-hero': current === 'home' }}>
@@ -20,55 +13,12 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
       <img src="/logotype.svg" alt="Wawa" width="92" height="24" />
     </a>
 
-    <div class="nav-right">
-    <ul class="nav-links">
-      {
-        site.nav.map((item) =>
-          item.dropdown ? (
-            <li class="has-dropdown">
-              <a
-                href={item.href}
-                class:list={['nav-link', { active: current === item.label.toLowerCase() }]}
-                aria-haspopup="true"
-              >
-                {item.label} ({disciplines.length})
-              </a>
-              <ul class="dropdown">
-                {disciplines.map((d) => (
-                  <li>
-                    <a href={`/products/${d.handle}`}>{d.title}</a>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ) : (
-            <li>
-              <a
-                href={item.href}
-                class:list={['nav-link', { active: current === item.label.toLowerCase() }]}
-              >
-                {item.label}
-              </a>
-            </li>
-          ),
-        )
-      }
-    </ul>
-
     <div class="nav-actions">
       {site.shopDomain && (
         <button class="nav-cart" data-cart-toggle aria-label="Open cart">
           Cart (<span data-cart-count>0</span>)
         </button>
       )}
-      <a
-        class="nav-link nav-ig"
-        href={site.instagram}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Wawa on Instagram"
-        set:html={igSvg}
-      />
       <button
         class="nav-burger"
         data-menu-toggle
@@ -80,11 +30,13 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
         <span class="nav-burger-bar"></span>
       </button>
     </div>
-    </div>
   </div>
 
-  <!-- Mobile menu — full-screen panel with a Products drill-down (mobile only) -->
-  <div id="mobile-menu" class="m-menu" aria-hidden="true">
+  <!-- Dim the page behind the menu drawer; click to dismiss -->
+  <div class="m-overlay" data-menu-close></div>
+
+  <!-- Menu — right-side drawer with a Products drill-down -->
+  <div id="mobile-menu" class="m-menu" tabindex="-1" aria-hidden="true">
       <!-- Root level -->
       <section class="m-panel m-panel-root" data-panel="root">
         <nav class="m-list" aria-label="Menu">
@@ -111,7 +63,14 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
           }
         </nav>
         <div class="m-foot">
-          <a href={site.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href={site.instagram} target="_blank" rel="noopener noreferrer">
+          <svg class="m-foot-ig" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="5" stroke="currentColor" stroke-width="1.6" />
+            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6" />
+            <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" />
+          </svg>
+          Instagram
+        </a>
         </div>
       </section>
 
@@ -172,25 +131,28 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     filter: brightness(0) invert(1);
   }
   .nav-inner {
+    position: relative;
     height: var(--bar-h);
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  /* with the menu open the bar must sit above the dim overlay (a child of #nav)
+     and carry its own surface, so it reads as a solid header the drawer hangs
+     from instead of a greyed-out strip */
+  #nav.menu-open .nav-inner {
+    z-index: 95;
+    background: var(--cream);
   }
   .nav-logo img {
     height: 22px;
     width: auto;
     display: block;
   }
-  .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-  }
   .nav-actions {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
   }
   .nav-cart {
     display: inline-flex;
@@ -209,35 +171,9 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
   .nav-cart:hover {
     opacity: 1;
   }
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    list-style: none;
-  }
-  .nav-links li {
-    display: flex;
-  }
-  .nav-link {
-    display: flex;
-    align-items: center;
-    font-size: 0.85rem;
-    letter-spacing: 0.04em;
-    color: var(--ink);
-    opacity: 0.75;
-    transition: opacity 0.25s;
-  }
-  .nav-link:hover,
-  .nav-link.active {
-    opacity: 1;
-  }
-  .nav-ig svg {
-    display: block;
-  }
-
-  /* hamburger — hidden on desktop, shown on mobile */
+  /* single hamburger menu at every breakpoint */
   .nav-burger {
-    display: none;
+    display: block;
     position: relative;
     width: 24px;
     height: 16px;
@@ -269,74 +205,47 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     transform: translateY(-4.25px) rotate(-45deg);
   }
 
-  /* desktop dropdown */
-  .has-dropdown {
-    position: relative;
-  }
-  /* transparent bridge over the button→menu gap so the hover isn't lost
-     while the cursor travels down to the menu */
-  .has-dropdown::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    height: 14px;
-  }
-  .dropdown {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%) translateY(6px);
-    min-width: 168px;
-    list-style: none;
-    background: var(--cream);
-    border: 1px solid var(--rule);
-    padding: 0.5rem 0;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
-  }
-  .has-dropdown:hover .dropdown,
-  .has-dropdown:focus-within .dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(2px);
-  }
-  .dropdown li {
-    display: block;
-  }
-  .dropdown a {
-    display: block;
-    padding: 0.5rem 1.25rem;
-    font-size: 0.85rem;
-    color: var(--ink);
-    opacity: 0.75;
-    white-space: nowrap;
-    transition: opacity 0.2s, background 0.2s;
-  }
-  .dropdown a:hover {
-    opacity: 1;
-    background: color-mix(in srgb, var(--warm) 8%, var(--cream));
-  }
-
-  /* ── mobile menu (hidden on desktop) ── */
-  .m-menu {
-    display: none;
+  /* ── drill-down menu: right-side drawer, like the cart ── */
+  .m-overlay {
     position: fixed;
-    inset: calc(var(--bar-h) + env(safe-area-inset-top)) 0 0 0;
+    inset: 0;
+    z-index: 88;
+    background: color-mix(in srgb, var(--ink) 48%, transparent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease);
+  }
+  #nav.menu-open .m-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .m-menu {
+    display: block;
+    position: fixed;
+    /* -1px so the drawer's top edge tucks under the bar's bottom rule
+       instead of leaving a doubled hairline */
+    top: calc(var(--bar-h) + env(safe-area-inset-top) - 1px);
+    right: 0;
+    bottom: 0;
+    width: min(90vw, 408px);
     z-index: 90;
     background: var(--cream);
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
     overflow: hidden; /* the track slides horizontally */
-    opacity: 0;
-    transform: translateY(-6px);
+    transform: translateX(100%);
     pointer-events: none;
-    transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+    transition: transform 0.4s var(--ease);
   }
   #nav.menu-open .m-menu {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
     pointer-events: auto;
+  }
+  /* the drawer takes initial focus (for the trap) but is a container, not a
+     control — never ring it */
+  .m-menu:focus,
+  .m-menu:focus-visible {
+    outline: none;
   }
   /* Two stacked panels that slide horizontally — classic drill-down. The root
      sits at rest; the sub waits off the right edge until Products is tapped. */
@@ -461,20 +370,21 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     gap: 0.45rem;
   }
   .m-foot a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
     font-size: 1.4rem;
     font-weight: var(--fw-light);
     letter-spacing: 0.01em;
     line-height: 1.1;
     color: var(--ink);
   }
+  .m-foot-ig {
+    width: 22px;
+    height: 22px;
+  }
 
   @media (max-width: 768px) {
-    .nav-links {
-      display: none;
-    }
-    .nav-ig {
-      display: none; /* lives in the mobile menu footer instead */
-    }
     .nav-actions {
       gap: 1.25rem;
     }
@@ -484,12 +394,6 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     .nav-cart {
       font-size: 0.8rem;
       letter-spacing: 0.03em;
-    }
-    .nav-burger {
-      display: block;
-    }
-    .m-menu {
-      display: block;
     }
   }
 
@@ -513,7 +417,6 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
   const nav = document.getElementById('nav');
   const menu = document.getElementById('mobile-menu');
   const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
-  const firstRow = menu?.querySelector<HTMLElement>('.m-panel-root .m-row');
   let releaseTrap: (() => void) | null = null;
 
   // ── hamburger menu ──
@@ -525,7 +428,9 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
     toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     lockScroll(open);
     if (open) {
-      releaseTrap = trapFocus(nav, firstRow);
+      // focus the drawer itself, not the first row, so no row shows a
+      // highlight on open; Tab still cycles within the trap
+      releaseTrap = trapFocus(nav, menu);
     } else {
       releaseTrap?.();
       releaseTrap = null;
@@ -536,6 +441,10 @@ const igSvg = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-
 
   toggle?.addEventListener('click', () =>
     setMenu(!nav?.classList.contains('menu-open')),
+  );
+  // click the dimmed backdrop to dismiss
+  nav?.querySelector('[data-menu-close]')?.addEventListener('click', () =>
+    setMenu(false),
   );
   menu?.querySelector('[data-drill]')?.addEventListener('click', () =>
     nav?.classList.add('menu-sub'),

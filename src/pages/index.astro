@@ -26,7 +26,6 @@ const featured = await getFeatured();
     </video>
     <div class="wrap hero-grid">
       <div class="hero-content">
-        <p class="hero-label fade-in">Wawa Surfboards</p>
         <h1 class="fade-in">Honouring<br />surfing's<br />heritage.</h1>
         <p class="hero-sub fade-in">
           Traditional wooden surfboards. Made by hand, shaped by nature.
@@ -56,8 +55,8 @@ const featured = await getFeatured();
   <section id="range-home">
     <div class="wrap">
       <div class="section-head fade-in">
-        <p class="label">The range</p>
-        <h2>Our products.</h2>
+        <p class="label">Our range</p>
+        <h2>Categories.</h2>
       </div>
       <div class="product-grid">
         {disciplines.map((d) => <CategoryCard discipline={d} />)}
@@ -70,7 +69,7 @@ const featured = await getFeatured();
     <div class="wrap">
       <div class="section-head fade-in">
         <p class="label">Favourites</p>
-        <h2>Most ridden.</h2>
+        <h2>Best sellers.</h2>
       </div>
       <div class="product-grid">
         {featured.map((p) => <ProductCard product={p} />)}
@@ -174,9 +173,6 @@ const featured = await getFeatured();
       display: none;
     }
   }
-  .hero-label {
-    margin-bottom: 1.5rem;
-  }
   #hero h1 {
     font-size: clamp(3rem, 9vw, 7rem);
     margin-bottom: 1.5rem;
@@ -226,25 +222,45 @@ const featured = await getFeatured();
   /* full-bleed catalog grid: breaks out of the wrap to span the viewport edge
      to edge. cells draw their own right + bottom rules (see ProductCard); the
      container supplies only the top + left frame. */
+  /* on the home page the catalog rows scroll horizontally — a full-bleed,
+     snap-scrolling rail. cards keep their own hairlines; the container draws
+     the top + left frame. card width is set with :global() because the cards
+     live in their own component scope, out of reach of a plain child selector. */
   .product-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
     margin-inline: calc(50% - 50vw);
     border-top: 1px solid var(--rule);
     border-left: 1px solid var(--rule);
+    /* overflow-x scroll forces the y-axis to clip too; 1px of bottom padding
+       keeps the cards' own bottom hairline inside the scrollport */
+    padding-bottom: 1px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
-  @media (max-width: 900px) {
-    .product-grid {
-      grid-template-columns: repeat(3, 1fr);
+  .product-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .product-grid > :global(*) {
+    flex: 0 0 66%;
+    scroll-snap-align: start;
+  }
+  @media (min-width: 560px) {
+    .product-grid > :global(*) {
+      flex-basis: 40%;
     }
   }
-  @media (max-width: 520px) {
-    .product-grid {
-      grid-template-columns: repeat(2, 1fr);
+  @media (min-width: 900px) {
+    .product-grid > :global(*) {
+      /* not a clean divisor of 100% — leaves a sliver of the next card so the
+         rail always reads as scrollable */
+      flex-basis: 22%;
     }
   }
   .section-foot {
     margin-top: 3rem;
+    text-align: center;
   }
 
   /* perks strip: full-bleed hairline band. mobile-first — stacked with
