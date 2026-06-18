@@ -24,7 +24,7 @@
   --bar-h: 66px; /* top bar: logo + cart (+ burger on mobile) */
   --nav-h: var(--bar-h); /* full header height — pages offset content by this */
   --wrap-pad: 2rem;
-  --footer-h: 440px; /* reveal footer panel height; main reserves this space */
+  --footer-h: 360px; /* reveal footer panel height; main reserves this space */
 
   /* motion */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -36,6 +36,6 @@
     --bar-h: 52px;
     --nav-h: var(--bar-h);
     --wrap-pad: 1.25rem;
-    --footer-h: 340px;
+    --footer-h: 280px;
   }
 }

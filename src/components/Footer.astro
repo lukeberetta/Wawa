@@ -4,6 +4,20 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer" aria-label="Site footer">
+  <video
+    class="footer-video"
+    autoplay
+    muted
+    loop
+    playsinline
+    webkit-playsinline
+    preload="auto"
+    poster="/hero-poster.jpg"
+    aria-hidden="true"
+  >
+    <source src="/hero.mp4" type="video/mp4" />
+    <source src="/hero.webm" type="video/webm" />
+  </video>
   <div class="footer-inner wrap">
     <p class="f-statement">Made by hand,<br />shaped by nature.</p>
     <p class="f-meta">© {year} {site.name}</p>
@@ -24,69 +38,84 @@ const year = new Date().getFullYear();
     display: flex;
     align-items: stretch;
   }
+  /* hero video as the footer backdrop, behind the darkening gradient — same
+     treatment as #hero so the two video panels read identically */
+  .footer-video {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.74) contrast(1.55) saturate(1.25);
+    /* promote to a GPU layer — iOS Safari otherwise freezes a CSS-filtered
+       <video> on its first frame (see #hero) */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
   .site-footer::before {
     content: '';
     position: absolute;
     inset: 0;
+    z-index: 1;
     /* fallback for browsers without color-mix (Safari <16.2) */
     background: linear-gradient(
       180deg,
-      rgba(26, 20, 16, 0.78),
-      rgba(26, 20, 16, 0.9)
+      rgba(26, 20, 16, 0.38),
+      rgba(26, 20, 16, 0.56)
     );
     background: linear-gradient(
       180deg,
-      color-mix(in srgb, var(--ink) 78%, transparent),
-      color-mix(in srgb, var(--ink) 90%, transparent)
+      color-mix(in srgb, var(--ink) 38%, transparent),
+      color-mix(in srgb, var(--ink) 56%, transparent)
     );
   }
   .footer-inner {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3rem;
+    gap: 1.25rem;
     text-align: center;
     padding-bottom: env(safe-area-inset-bottom);
   }
 
-  /* the brand statement — softened, not stark white */
+  /* brand statement — same cream as the hero headline, a touch smaller */
   .f-statement {
-    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
     line-height: 1;
     letter-spacing: -0.01em;
-    color: color-mix(in srgb, var(--cream) 82%, transparent);
+    color: var(--cream);
   }
   .f-meta {
     font-size: 0.78rem;
     color: color-mix(in srgb, var(--cream) 48%, transparent);
   }
 
-  /* ── scroll-linked reveal ──
-     `--reveal` (0–1) is driven by JS from scroll position: the text fades up
-     into the photo as the footer is uncovered, and back out on scroll up.
-     No-JS / fallback keeps the content fully visible. */
+  /* ── scroll-linked blur-in ──
+     `--reveal` (0–1) is driven by JS from scroll position: the text sharpens
+     and fades in as the footer is uncovered, and blurs back out on scroll up.
+     No-JS / fallback keeps the content fully visible and sharp. */
   .footer-inner > * {
     opacity: var(--reveal, 1);
-    transform: translateY(calc((1 - var(--reveal, 1)) * 30px));
-    will-change: opacity, transform;
+    filter: blur(calc((1 - var(--reveal, 1)) * 12px));
+    will-change: opacity, filter;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .footer-inner > * {
       opacity: 1;
-      transform: none;
-      transition: none;
+      filter: none;
     }
   }
 </style>
 
 <script>
-  // Drive `--reveal` (0–1) from scroll position: the footer text fades up into
-  // the photo as the fixed footer is uncovered, and back out on scroll up.
+  // Drive `--reveal` (0–1) from scroll position: the footer text sharpens and
+  // fades in as the fixed footer is uncovered, and blurs back out on scroll up.
   const footer = document.querySelector<HTMLElement>('.site-footer');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -104,7 +133,7 @@ const year = new Date().getFullYear();
       // scrollY is cheap and reflow-free — the only thing read while scrolling.
       const remaining = docH - winH - window.scrollY;
       // Finish the reveal over the first 70% of the footer uncovering, so the
-      // text reaches full opacity before the absolute scroll bottom — on mobile
+      // text reaches full clarity before the absolute scroll bottom — on mobile
       // the last pixels are often unreachable (browser chrome / rubber-banding).
       const p = Math.min(Math.max(1 - remaining / (fh * 0.7), 0), 1);
       footer.style.setProperty('--reveal', p.toFixed(3));
