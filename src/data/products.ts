@@ -29,6 +29,20 @@ export const products: Product[] = [
     priceRange: { minVariantPrice: zar('16500.00') },
     images: [studio('fish-front', 'Wawa Classic Fish, deck'), studio('fish-back', 'Wawa Classic Fish, hull')],
     featured: true,
+    // Sample spec copy — replace with the client's real values. Two blocks:
+    // performance, then build.
+    specs: [
+      [
+        { label: 'Best For', value: 'Small to large waves' },
+        { label: 'Board Feel', value: 'Fast and loose' },
+        { label: 'Skill Level', value: "Step up, step down — this one's for everyone" },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
   },
   {
     id: 'mock/gun-fish',
