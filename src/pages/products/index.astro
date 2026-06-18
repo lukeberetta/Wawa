@@ -20,29 +20,51 @@ for (const d of disciplines) {
   }
 }
 
+// Which disciplines each category belongs to — lets the sheet show only the
+// categories relevant to the active discipline (a sub-filter within it). Every
+// button is rendered server-side (so it keeps Astro's scoped styles) and just
+// shown/hidden per discipline; `all` shows the full union.
+const catDiscs: Record<string, string[]> = Object.fromEntries(
+  categories.map((c) => [c, disciplines.filter((d) => d.categories.includes(c)).map((d) => d.handle)]),
+);
+
 const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0;
+
+// Header copy per lens — the title + intro swap to match the active discipline
+// (or category) so the page reads as a real collection, not a static catalog.
+const headerCopy: Record<string, { title: string; sub: string }> = {
+  all: {
+    title: 'The full range.',
+    sub: 'Every craft we make, in one place. Shaped by hand from paulownia timber in Muizenberg.',
+  },
+  ...Object.fromEntries(
+    disciplines.map((d) => [d.handle, { title: `${d.title}.`, sub: d.intro ?? d.blurb }]),
+  ),
+};
 ---
 
 <Layout title="Shop · Wawa Surfboards" description="The full Wawa range — surf, foil, kite, skate, body & belly and accessories, shaped by hand from timber." current="products">
+  <!-- Primary lens: discipline pills, pinned directly below the nav. The
+       wrapper clears the fixed nav at rest; the band then sticks under it. -->
+  <div class="disc-band-wrap">
+    <nav class="disc-band" aria-label="Filter by discipline">
+      <div class="disc-band-inner wrap">
+        <button class="disc-pill" data-discipline="all" aria-pressed="true">All</button>
+        {disciplines.map((d) => (
+          <button class="disc-pill" data-discipline={d.handle} aria-pressed="false">{d.title}</button>
+        ))}
+      </div>
+    </nav>
+  </div>
+
   <header class="shop-header">
     <div class="wrap">
       <p class="label fade-in">Shop</p>
-      <h1 class="fade-in">The full range.</h1>
-      <p class="shop-sub fade-in">
-        Every craft we make, in one place. Shaped by hand from paulownia timber in Muizenberg.
-      </p>
+      <h1 class="fade-in" data-shop-title>{headerCopy.all.title}</h1>
+      <p class="shop-sub fade-in" data-shop-sub>{headerCopy.all.sub}</p>
     </div>
   </header>
-
-  <!-- Primary lens: discipline. Horizontal scroll on narrow screens. -->
-  <nav class="disc-band" aria-label="Filter by discipline">
-    <div class="disc-band-inner wrap">
-      <button class="disc-pill" data-discipline="all" aria-pressed="true">All</button>
-      {disciplines.map((d) => (
-        <button class="disc-pill" data-discipline={d.handle} aria-pressed="false">{d.title}</button>
-      ))}
-    </div>
-  </nav>
+  <script type="application/json" id="shop-copy" set:html={JSON.stringify(headerCopy)} is:inline></script>
 
   <section id="shop">
     <div class="wrap">
@@ -96,7 +118,7 @@ const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0
         <div class="sheet-opts" data-cat-group>
           <button class="sheet-opt is-active" data-category="all" aria-pressed="true">All categories</button>
           {categories.map((c) => (
-            <button class="sheet-opt" data-category={c} aria-pressed="false">{c}</button>
+            <button class="sheet-opt" data-category={c} data-disc={catDiscs[c].join(' ')} aria-pressed="false">{c}</button>
           ))}
         </div>
       </div>
@@ -110,7 +132,7 @@ const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0
 
 <style>
   .shop-header {
-    padding-top: calc(var(--nav-h) + env(safe-area-inset-top) + var(--space-xl));
+    padding-top: var(--space-xl);
     padding-bottom: var(--space-lg);
   }
   .shop-header h1 {
@@ -123,19 +145,26 @@ const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0
     font-size: var(--fs-lead);
   }
 
-  /* discipline pills band */
+  /* discipline pills band — fixed directly under the nav, always on screen.
+     The wrapper reserves nav + band height so the header below clears both. */
+  .disc-band-wrap {
+    --disc-band-h: 3.1rem;
+    height: calc(var(--nav-h) + env(safe-area-inset-top) + var(--disc-band-h));
+  }
   .disc-band {
-    position: sticky;
+    position: fixed;
     top: calc(var(--nav-h) + env(safe-area-inset-top));
+    left: 0;
+    right: 0;
     z-index: 50;
     background: color-mix(in srgb, var(--warm) 12%, var(--cream));
-    border-block: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
   }
   .disc-band-inner {
     display: flex;
     gap: var(--space-xs);
     align-items: center;
-    height: 3.1rem;
+    height: var(--disc-band-h);
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
@@ -170,7 +199,7 @@ const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0
   }
 
   #shop {
-    padding-bottom: var(--space-section);
+    padding-bottom: 0;
   }
   .shop-toolbar {
     display: flex;
@@ -422,11 +451,32 @@ const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0
   const countEls = Array.from(document.querySelectorAll<HTMLElement>('[data-count]'));
   const emptyEl = document.querySelector<HTMLElement>('[data-empty]');
   const dot = document.querySelector<HTMLElement>('[data-filter-dot]');
+  const titleEl = document.querySelector<HTMLElement>('[data-shop-title]');
+  const subEl = document.querySelector<HTMLElement>('[data-shop-sub]');
+  const copy: Record<string, { title: string; sub: string }> = JSON.parse(
+    document.getElementById('shop-copy')?.textContent || '{}',
+  );
   const discPills = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-discipline]'));
   const sortBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-sort]'));
-  const catBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-category]'));
+  const catGroup = document.querySelector<HTMLElement>('[data-cat-group]');
 
   const state = { discipline: 'all', category: 'all', sort: 'featured' };
+
+  // Show only the category options relevant to the active discipline (buttons
+  // are server-rendered to keep their scoped styles; we just toggle them). The
+  // whole group hides when a discipline has no categories (e.g. Skate).
+  function renderCats(disc: string) {
+    if (!catGroup) return;
+    let any = false;
+    catGroup.querySelectorAll<HTMLButtonElement>('[data-category]').forEach((b) => {
+      const c = b.dataset.category || 'all';
+      const show = c === 'all' || disc === 'all' || (b.dataset.disc || '').split(' ').includes(disc);
+      b.hidden = !show;
+      if (show && c !== 'all') any = true;
+    });
+    const group = catGroup.closest<HTMLElement>('.sheet-group');
+    if (group) group.hidden = !any;
+  }
 
   // ── URL sync ──────────────────────────────────
   function readUrl() {
@@ -463,7 +513,7 @@ const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0
     });
     sorted.forEach((el) => grid?.appendChild(el));
 
-    // filter: discipline OR category lens (selecting one clears the other)
+    // filter: discipline scope, then category sub-filter within it
     let visible = 0;
     for (const el of items) {
       const okDisc = state.discipline === 'all' || el.dataset.discipline === state.discipline;
@@ -474,8 +524,21 @@ const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0
       if (show) visible++;
     }
 
-    countEls.forEach((el) => (el.textContent = `${visible} ${visible === 1 ? 'piece' : 'pieces'}`));
+    const noun = visible === 1 ? 'piece' : 'pieces';
+    countEls.forEach((el) => (el.textContent = `${visible} ${noun}`));
     if (emptyEl) emptyEl.hidden = visible > 0;
+
+    // contextual header — discipline copy, category count, or the full-range default
+    if (titleEl && subEl) {
+      if (state.category !== 'all') {
+        titleEl.textContent = `${state.category}.`;
+        subEl.textContent = `${visible} ${noun} in ${state.category}.`;
+      } else {
+        const c = copy[state.discipline] ?? copy.all;
+        titleEl.textContent = c.title;
+        subEl.textContent = c.sub;
+      }
+    }
     if (dot) dot.hidden = state.discipline === 'all' && state.category === 'all' && state.sort === 'featured';
 
     // reflect control states
@@ -488,7 +551,7 @@ const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0
       b.classList.toggle('is-active', on);
       b.setAttribute('aria-pressed', String(on));
     });
-    catBtns.forEach((b) => {
+    catGroup?.querySelectorAll<HTMLButtonElement>('[data-category]').forEach((b) => {
       const on = b.dataset.category === state.category;
       b.classList.toggle('is-active', on);
       b.setAttribute('aria-pressed', String(on));
@@ -499,7 +562,8 @@ const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0
   discPills.forEach((b) =>
     b.addEventListener('click', () => {
       state.discipline = b.dataset.discipline || 'all';
-      state.category = 'all'; // discipline and category are alternative lenses
+      state.category = 'all'; // category resets — it's scoped to the discipline
+      renderCats(state.discipline);
       writeUrl(true);
       apply();
     }),
@@ -511,19 +575,20 @@ const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0
       apply();
     }),
   );
-  catBtns.forEach((b) =>
-    b.addEventListener('click', () => {
-      state.category = b.dataset.category || 'all';
-      if (state.category !== 'all') state.discipline = 'all';
-      writeUrl(true);
-      apply();
-    }),
-  );
+  // category buttons are rebuilt per discipline, so delegate from the group
+  catGroup?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-category]');
+    if (!btn) return;
+    state.category = btn.dataset.category || 'all';
+    writeUrl(true);
+    apply();
+  });
   document.querySelectorAll('[data-reset]').forEach((b) =>
     b.addEventListener('click', () => {
       state.discipline = 'all';
       state.category = 'all';
       state.sort = 'featured';
+      renderCats('all');
       writeUrl(true);
       apply();
     }),
@@ -532,6 +597,7 @@ const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0
   // back / forward restores the filtered view
   window.addEventListener('popstate', () => {
     readUrl();
+    renderCats(state.discipline);
     apply();
   });
 
@@ -568,5 +634,6 @@ const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0
 
   // init from URL (deep links / refresh land filtered)
   readUrl();
+  renderCats(state.discipline);
   apply();
 </script>

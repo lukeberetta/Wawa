@@ -7,7 +7,6 @@
  */
 import { site } from '@/lib/site';
 import { disciplines } from '@/lib/catalog';
-const year = new Date().getFullYear();
 ---
 
 <section class="footer-nav" aria-label="Site links">
@@ -40,7 +39,6 @@ const year = new Date().getFullYear();
         </ul>
       </div>
     </nav>
-    <p class="fn-legal">© {year} {site.name}. Shaped by hand in {site.location}.</p>
   </div>
 </section>
 
@@ -48,6 +46,9 @@ const year = new Date().getFullYear();
   /* sits at the very bottom of main, on the cream surface, framed by a top
      hairline; the curtain footer reveals below it on scroll */
   .footer-nav {
+    /* pull up 1px so this top hairline overlaps the preceding block's bottom
+       rule instead of stacking into a doubled 2px line */
+    margin-top: -1px;
     border-top: 1px solid var(--rule);
     padding: var(--space-2xl) 0 var(--space-xl);
   }
@@ -82,13 +83,6 @@ const year = new Date().getFullYear();
   }
   .fn-place {
     font-size: var(--fs-lead);
-    color: var(--muted);
-  }
-  .fn-legal {
-    margin-top: var(--space-2xl);
-    padding-top: var(--space-lg);
-    border-top: 1px solid var(--rule);
-    font-size: var(--fs-caption);
     color: var(--muted);
   }
 </style>
