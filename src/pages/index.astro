@@ -113,6 +113,11 @@ const featured = await getFeatured();
     height: 100%;
     object-fit: cover;
     filter: brightness(0.74) contrast(1.55) saturate(1.25);
+    /* Force a compositor layer. iOS Safari can render a CSS-filtered <video> as
+       a frozen first frame (decodes but never repaints); promoting it to the
+       GPU path keeps the footage live. No visual change. */
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
   #hero::before {
     content: '';
@@ -270,19 +275,54 @@ const featured = await getFeatured();
 </style>
 
 <script>
-  // Some browsers (Safari, low-power modes) ignore the autoplay attribute.
-  // Force muted playback and retry on the first ready/interaction signal.
+  // Some browsers (iOS Safari, low-power modes) ignore the autoplay attribute.
+  // Be relentless about muted inline playback without ever throwing.
   const v = document.querySelector<HTMLVideoElement>('.hero-video');
   if (v) {
+    // iOS honours muted inline autoplay only when these are unambiguous — pin
+    // them as properties *and* attributes before the first play() attempt.
     v.muted = true;
-    const play = () => v.play().catch(() => {});
+    v.defaultMuted = true;
+    v.playsInline = true;
+    v.setAttribute('muted', '');
+    v.setAttribute('playsinline', '');
+
+    let playing = false;
+    const play = () => {
+      if (playing) return;
+      const p = v.play();
+      if (p && typeof p.then === 'function') {
+        p.then(() => { playing = true; }).catch(() => {});
+      }
+    };
+
+    // Try now, then again every time the element gains data — iOS routinely
+    // rejects the first call before anything is buffered.
     play();
-    v.addEventListener('canplay', play, { once: true });
+    ['loadedmetadata', 'loadeddata', 'canplay', 'canplaythrough'].forEach((e) =>
+      v.addEventListener(e, play),
+    );
+    // Timed nudges cover a buffer finishing without firing a fresh event.
+    [200, 600, 1200, 2500].forEach((t) => setTimeout(play, t));
+
+    // Resume after the tab/app returns to the foreground.
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) play();
     });
-    ['touchstart', 'pointerdown', 'scroll'].forEach((e) =>
+
+    // Last resort where autoplay is gated (Low Power Mode): the first real
+    // gesture unlocks it.
+    ['touchstart', 'pointerdown', 'scroll', 'click'].forEach((e) =>
       window.addEventListener(e, play, { once: true, passive: true }),
     );
+
+    // Scrolled back into view but paused? Kick it again.
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((ents) =>
+        ents.forEach((en) => {
+          if (en.isIntersecting && v.paused) { playing = false; play(); }
+        }),
+      ).observe(v);
+    }
   }
 </script>
