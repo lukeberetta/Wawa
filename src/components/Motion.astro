@@ -1,6 +1,5 @@
 ---
-// Lenis smooth scroll + scroll-reveal observer.
-// Honors prefers-reduced-motion (Lenis skipped, reveals shown immediately).
+// Lenis smooth scroll. Honors prefers-reduced-motion (Lenis skipped).
 ---
 
 <script>
@@ -19,43 +18,5 @@
       requestAnimationFrame(raf);
     };
     requestAnimationFrame(raf);
-  }
-
-  // ── Reveal on scroll ───────────────────────────
-  const els = document.querySelectorAll<HTMLElement>('.fade-in');
-  if (reduce || !('IntersectionObserver' in window)) {
-    els.forEach((el) => el.classList.add('is-visible'));
-  } else {
-    const io = new IntersectionObserver(
-      (entries) => {
-        // Elements that cross into view together (a grid, a stacked block) get a
-        // gentle position-sorted cascade rather than popping in unison. A lone
-        // element entering on scroll gets no delay. Capped so a large batch never
-        // drags the last item in late.
-        const shown = entries.filter((e) => e.isIntersecting);
-        shown
-          .sort((a, b) => {
-            const ra = a.boundingClientRect;
-            const rb = b.boundingClientRect;
-            return ra.top - rb.top || ra.left - rb.left;
-          })
-          .forEach((e, i) => {
-            const el = e.target as HTMLElement;
-            if (shown.length > 1) {
-              el.style.transitionDelay = `${Math.min(i, 7) * 55}ms`;
-              // Drop the delay once revealed so it can't colour later transitions.
-              el.addEventListener(
-                'transitionend',
-                () => (el.style.transitionDelay = ''),
-                { once: true },
-              );
-            }
-            el.classList.add('is-visible');
-            io.unobserve(el);
-          });
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
-    );
-    els.forEach((el) => io.observe(el));
   }
 </script>

@@ -180,17 +180,6 @@ h3 {
   }
 }
 
-/* ── Scroll reveal ─────────────────────────────── */
-.fade-in {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
-}
-.fade-in.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
 /* Wireframe placeholder — stands in for imagery while the site structure is
    being worked out. A flat neutral box; keep any sizing/aspect from the
    element's own class. Remove once real images land. */
@@ -206,9 +195,5 @@ h3 {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
-  }
-  .fade-in {
-    opacity: 1;
-    transform: none;
   }
 }
