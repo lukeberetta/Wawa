@@ -5,6 +5,13 @@ export interface Props {
   current?: string;
 }
 const { current } = Astro.props;
+
+// Pages flag their section via `current` (e.g. "products"); the Shop row/link
+// is the entry point for that whole section, so treat either name as active.
+const isActive = (label: string) => {
+  const key = label.toLowerCase();
+  return current === key || (key === 'shop' && current === 'products');
+};
 ---
 
 <nav id="nav">
@@ -14,6 +21,20 @@ const { current } = Astro.props;
     </a>
 
     <div class="nav-actions">
+      <!-- Persistent commerce entry: Shop always visible; Story/Press fold in
+           on wider screens. Mobile keeps just Shop · Cart · menu. -->
+      <a
+        class:list={['nav-link', 'nav-link-shop', { active: isActive('Shop') }]}
+        href="/products"
+      >
+        Shop
+      </a>
+      <a class:list={['nav-link', 'nav-link-wide', { active: isActive('Story') }]} href="/story">
+        Story
+      </a>
+      <a class:list={['nav-link', 'nav-link-wide', { active: isActive('Press') }]} href="/press">
+        Press
+      </a>
       {site.shopDomain && (
         <button class="nav-cart" data-cart-toggle aria-label="Open cart">
           Cart (<span data-cart-count>0</span>)
@@ -44,7 +65,7 @@ const { current } = Astro.props;
             site.nav.map((item) =>
               item.dropdown ? (
                 <button
-                  class:list={['m-row', { active: current === item.label.toLowerCase() }]}
+                  class:list={['m-row', { active: isActive(item.label) }]}
                   data-drill
                   aria-label={`${item.label} — view categories`}
                 >
@@ -53,7 +74,7 @@ const { current } = Astro.props;
                 </button>
               ) : (
                 <a
-                  class:list={['m-row', { active: current === item.label.toLowerCase() }]}
+                  class:list={['m-row', { active: isActive(item.label) }]}
                   href={item.href}
                 >
                   <span>{item.label}</span>
@@ -79,7 +100,10 @@ const { current } = Astro.props;
         <button class="m-back" data-back>
           <span class="m-back-arrow" aria-hidden="true"></span> Back
         </button>
-        <nav class="m-list" aria-label="Products categories">
+        <nav class="m-list" aria-label="Shop categories">
+          <a class="m-row" href="/products">
+            <span>All products</span>
+          </a>
           {disciplines.map((d) => (
             <a class="m-row" href={`/products/${d.handle}`}>
               <span>{d.title}</span>
@@ -140,7 +164,7 @@ const { current } = Astro.props;
     padding: 0;
     cursor: pointer;
     font-family: inherit;
-    font-size: 0.85rem;
+    font-size: var(--fs-caption);
     letter-spacing: 0.04em;
     color: var(--ink);
     opacity: 0.75;
@@ -148,6 +172,30 @@ const { current } = Astro.props;
   }
   .nav-cart:hover {
     opacity: 1;
+  }
+  /* persistent text links in the bar — same quiet weight as the cart label */
+  .nav-link {
+    font-size: var(--fs-caption);
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    opacity: 0.75;
+    transition: opacity 0.25s var(--ease), color 0.25s var(--ease);
+  }
+  .nav-link:hover {
+    opacity: 1;
+  }
+  .nav-link.active {
+    opacity: 1;
+    color: var(--warm);
+  }
+  /* Story / Press only earn bar space on wider screens; phones keep Shop only */
+  .nav-link-wide {
+    display: none;
+  }
+  @media (min-width: 900px) {
+    .nav-link-wide {
+      display: inline-flex;
+    }
   }
   /* single hamburger menu at every breakpoint */
   .nav-burger {
@@ -370,7 +418,8 @@ const { current } = Astro.props;
     .nav-logo img {
       height: 18px;
     }
-    .nav-cart {
+    .nav-cart,
+    .nav-link {
       font-size: 0.8rem;
       letter-spacing: 0.03em;
     }

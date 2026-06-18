@@ -67,7 +67,7 @@ const jsonLd = {
   <article class="pdp">
     <div class="wrap">
       <nav class="crumbs fade-in" aria-label="Breadcrumb">
-        <a href="/products">Products</a>
+        <a href="/products">Shop</a>
         <span aria-hidden="true">/</span>
         <a href={disciplineHref}>{product.productType}</a>
         <span aria-hidden="true">/</span>
@@ -88,7 +88,7 @@ const jsonLd = {
             <p class="info-price">{price}</p>
             <p class="info-desc">{product.description}</p>
 
-            <div class="info-actions">
+            <div class="info-actions" data-buy-anchor>
               {
                 buyable ? (
                   <button
@@ -171,6 +171,36 @@ const jsonLd = {
         )
       }
       <img class="lb-img" alt="" />
+    </div>
+
+    <!-- Sticky buy bar — reveals once the inline action scrolls out of view,
+         keeping the price + CTA in the thumb zone (Apple PDP pattern). -->
+    <div class="pdp-bar" data-buy-bar aria-hidden="true">
+      <div class="wrap pdp-bar-inner">
+        <div class="pdp-bar-meta">
+          <span class="pdp-bar-title">{product.title}</span>
+          <span class="pdp-bar-price">{price}</span>
+        </div>
+        {
+          buyable ? (
+            <button
+              class="pdp-bar-action"
+              data-add-to-cart
+              data-variant-id={product.variantId}
+              data-handle={product.handle}
+              data-title={product.title}
+              data-price={product.priceRange.minVariantPrice.amount}
+              data-image={lead.url}
+            >
+              Add to cart
+            </button>
+          ) : (
+            <a class="pdp-bar-action" href={enquire} target="_blank" rel="noopener noreferrer">
+              Enquire
+            </a>
+          )
+        }
+      </div>
     </div>
 
     {
@@ -319,6 +349,78 @@ const jsonLd = {
     color: var(--muted);
     margin-top: 0.85rem;
     max-width: 44ch;
+  }
+
+  /* ── Sticky buy bar ── */
+  .pdp-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100; /* under the cart drawer/overlay (125/126) */
+    background: var(--cream);
+    border-top: 1px solid var(--rule);
+    transform: translateY(100%);
+    transition: transform 0.35s var(--ease);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pdp-bar.show {
+    transform: translateY(0);
+  }
+  .pdp-bar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    min-height: 4rem;
+    padding-block: 0.6rem;
+  }
+  .pdp-bar-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+  .pdp-bar-title {
+    font-size: var(--fs-caption);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pdp-bar-price {
+    font-size: 0.78rem;
+    color: var(--warm);
+  }
+  .pdp-bar-action {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1.6rem;
+    font-family: inherit;
+    font-size: var(--fs-eyebrow);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    cursor: pointer;
+    transition: opacity 0.2s var(--ease);
+  }
+  .pdp-bar-action:hover {
+    opacity: 0.85;
+  }
+  /* desktop keeps the inline action in view via the sticky info column —
+     the bar is a mobile thumb-zone affordance only */
+  @media (min-width: 900px) {
+    .pdp-bar {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pdp-bar {
+      transition: none;
+    }
   }
 
   .specs {
@@ -513,6 +615,23 @@ const jsonLd = {
     lb.classList.remove('open');
     lockScroll(false);
     setTimeout(() => { if (!lb.classList.contains('open')) lb.hidden = true; }, 300);
+  }
+
+  // ── Sticky buy bar ──
+  // Reveal the bar once the inline action has scrolled out of view above the
+  // fold; hide it again when the inline action is back on screen.
+  const buyBar = document.querySelector<HTMLElement>('[data-buy-bar]');
+  const buyAnchor = document.querySelector<HTMLElement>('[data-buy-anchor]');
+  if (buyBar && buyAnchor && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const show = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+        buyBar.classList.toggle('show', show);
+        buyBar.setAttribute('aria-hidden', String(!show));
+      },
+      { threshold: 0 },
+    );
+    io.observe(buyAnchor);
   }
 
   zoomBtn?.addEventListener('click', open);

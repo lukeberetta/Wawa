@@ -132,10 +132,34 @@ h3 {
 }
 
 .label {
-  font-size: 0.75rem;
+  font-size: var(--fs-eyebrow);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+/* ── Scroll reveal ─────────────────────────────── */
+/* `.fade-in` is sprinkled across every page as an entrance hook. The hidden
+   start state arms only when `html.js` is set (flagged before paint in
+   Layout), so without JS — or under reduced motion — content stays visible and
+   nothing hides behind a dead hook. An IntersectionObserver (Motion.astro)
+   adds `.in` as each element scrolls into view, settling it up into place. */
+html.js .fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  will-change: opacity, transform;
+}
+html.js .fade-in.in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js .fade-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 .link-arrow {

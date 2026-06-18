@@ -1,0 +1,94 @@
+---
+/**
+ * In-flow sitemap band — the last block of <main>, so it scrolls normally and
+ * then the fixed curtain Footer reveals beneath it. Gives the site the real
+ * wayfinding it was missing (footer had zero links) without diluting the
+ * "Made by hand, shaped by nature" brand moment.
+ */
+import { site } from '@/lib/site';
+import { disciplines } from '@/lib/catalog';
+const year = new Date().getFullYear();
+---
+
+<section class="footer-nav" aria-label="Site links">
+  <div class="wrap footer-nav-inner">
+    <nav class="fn-cols" aria-label="Footer">
+      <div class="fn-col">
+        <p class="label fn-head">Shop</p>
+        <ul>
+          <li><a href="/products">All products</a></li>
+          {disciplines.map((d) => (
+            <li><a href={`/products/${d.handle}`}>{d.title}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div class="fn-col">
+        <p class="label fn-head">Visit</p>
+        <ul>
+          <li><a href="/story">Story</a></li>
+          <li><a href="/cafe">Cafe</a></li>
+          <li><a href="/press">Press</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="fn-col fn-col-reach">
+        <p class="label fn-head">Reach us</p>
+        <ul>
+          <li><a href={site.instagram} target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          <li><a href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+          <li class="fn-place">{site.location}</li>
+        </ul>
+      </div>
+    </nav>
+    <p class="fn-legal">© {year} {site.name}. Shaped by hand in {site.location}.</p>
+  </div>
+</section>
+
+<style>
+  /* sits at the very bottom of main, on the cream surface, framed by a top
+     hairline; the curtain footer reveals below it on scroll */
+  .footer-nav {
+    border-top: 1px solid var(--rule);
+    padding: var(--space-2xl) 0 var(--space-xl);
+  }
+  .fn-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl) var(--space-lg);
+  }
+  /* third column drops below on phones, then all three sit in a row ≥600 */
+  @media (min-width: 600px) {
+    .fn-cols {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .fn-head {
+    margin-bottom: var(--space-md);
+  }
+  .fn-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  .fn-col a {
+    font-size: var(--fs-lead);
+    font-weight: var(--fw-light);
+    color: var(--ink);
+    transition: color 0.2s var(--ease);
+  }
+  .fn-col a:hover {
+    color: var(--warm);
+  }
+  .fn-place {
+    font-size: var(--fs-lead);
+    color: var(--muted);
+  }
+  .fn-legal {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--rule);
+    font-size: var(--fs-caption);
+    color: var(--muted);
+  }
+</style>

@@ -132,10 +132,10 @@ const year = new Date().getFullYear();
       ticking = false;
       // scrollY is cheap and reflow-free — the only thing read while scrolling.
       const remaining = docH - winH - window.scrollY;
-      // Finish the reveal over the first 70% of the footer uncovering, so the
+      // Finish the reveal over the first 60% of the footer uncovering, so the
       // text reaches full clarity before the absolute scroll bottom — on mobile
       // the last pixels are often unreachable (browser chrome / rubber-banding).
-      const p = Math.min(Math.max(1 - remaining / (fh * 0.7), 0), 1);
+      const p = Math.min(Math.max(1 - remaining / (fh * 0.6), 0), 1);
       footer.style.setProperty('--reveal', p.toFixed(3));
     };
     const onScroll = () => {
@@ -154,6 +154,12 @@ const year = new Date().getFullYear();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', remeasure);
     window.addEventListener('load', remeasure);
+    // Filtering products changes the document height without firing `resize`,
+    // which would leave docH stale and freeze the reveal. Watch body size so
+    // any layout shift (filter, image load) re-measures.
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(remeasure).observe(document.body);
+    }
     remeasure();
   }
 </script>

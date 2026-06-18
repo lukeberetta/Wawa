@@ -1,115 +1,572 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import { disciplines } from '@/lib/catalog';
+import ProductCard from '@/components/ProductCard.astro';
+import { disciplines, getProducts, slug } from '@/lib/catalog';
+import type { Product } from '@/lib/types';
+
+// The shop-all hub — the catalog front door the store was missing. Lists every
+// product across disciplines; discipline pills + a Filter & Sort sheet narrow
+// it down, all driven from the URL so a filtered view is shareable and the back
+// button restores it.
+const products = await getProducts();
+
+// Category union, in discipline order, limited to tags that actually have a
+// product — no dead filters.
+const present = new Set(products.flatMap((p) => p.tags));
+const categories: string[] = [];
+for (const d of disciplines) {
+  for (const c of d.categories) {
+    if (present.has(c) && !categories.includes(c)) categories.push(c);
+  }
+}
+
+const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0;
 ---
 
-<Layout
-  title="Products · Wawa Surfboards"
-  description="The full Wawa range: surf, foil, kite, skate, body & belly and accessories. Handcrafted wooden craft from Muizenberg, Cape Town."
-  current="products"
->
-  <header class="page-header">
+<Layout title="Shop · Wawa Surfboards" description="The full Wawa range — surf, foil, kite, skate, body & belly and accessories, shaped by hand from timber." current="products">
+  <header class="shop-header">
     <div class="wrap">
-      <p class="label fade-in">Products</p>
-      <h1 class="fade-in">The full<br />range.</h1>
-      <p class="page-header-sub fade-in">
-        Choose any of our surf, foil, kite and finless craft to read more. Leaning on the stiff
-        flex, torsion and strength of wood &mdash; with mostly recycled EPS and XPS foam &mdash; our
-        boards offer a wave-riding experience of profound purity and unbridled, gratuitous fun.
+      <p class="label fade-in">Shop</p>
+      <h1 class="fade-in">The full range.</h1>
+      <p class="shop-sub fade-in">
+        Every craft we make, in one place. Shaped by hand from paulownia timber in Muizenberg.
       </p>
     </div>
   </header>
 
-  <!-- RANGE -->
-  <section id="range">
-    <div class="wrap">
-      <ul class="discipline-list">
-        {
-          disciplines.map((d) => (
-            <li>
-              <a href={`/products/${d.handle}`}>
-                <span class="arrow fade-in">→</span>
-                <div class="disc-inner fade-in">
-                  <h3>{d.title}</h3>
-                  <p>{d.blurb}</p>
-                </div>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+  <!-- Primary lens: discipline. Horizontal scroll on narrow screens. -->
+  <nav class="disc-band" aria-label="Filter by discipline">
+    <div class="disc-band-inner wrap">
+      <button class="disc-pill" data-discipline="all" aria-pressed="true">All</button>
+      {disciplines.map((d) => (
+        <button class="disc-pill" data-discipline={d.handle} aria-pressed="false">{d.title}</button>
+      ))}
+    </div>
+  </nav>
 
-      <div class="range-img wf-ph fade-in" role="presentation"></div>
+  <section id="shop">
+    <div class="wrap">
+      <div class="shop-toolbar">
+        <p class="shop-count" data-count aria-live="polite">{products.length} pieces</p>
+        <button class="shop-filter-btn" data-sheet-open aria-haspopup="dialog">
+          Filter &amp; Sort
+          <span class="shop-filter-dot" data-filter-dot hidden aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="product-grid" data-grid>
+        {products.map((p, i) => (
+          <div
+            class="grid-item"
+            data-discipline={slug(p.productType)}
+            data-tags={p.tags.join('|')}
+            data-price={priceOf(p)}
+            data-featured={p.featured ? '1' : '0'}
+            data-index={i}
+          >
+            <ProductCard product={p} />
+          </div>
+        ))}
+      </div>
+
+      <p class="shop-empty" data-empty hidden>
+        Nothing here yet in this combination. <button class="shop-reset" data-reset>Clear filters</button>
+      </p>
     </div>
   </section>
+
+  <!-- Filter & Sort sheet — bottom drawer (reuses the drawer mechanics) -->
+  <div class="sheet-overlay" data-sheet-close hidden></div>
+  <aside class="sheet" id="filter-sheet" role="dialog" aria-modal="true" aria-label="Filter and sort" aria-hidden="true">
+    <header class="sheet-head">
+      <h2>Filter &amp; Sort</h2>
+      <button class="sheet-close" data-sheet-close aria-label="Close">&times;</button>
+    </header>
+    <div class="sheet-body" data-lenis-prevent>
+      <div class="sheet-group">
+        <p class="label sheet-label">Sort</p>
+        <div class="sheet-opts" data-sort-group>
+          <button class="sheet-opt is-active" data-sort="featured" aria-pressed="true">Featured</button>
+          <button class="sheet-opt" data-sort="price-asc" aria-pressed="false">Price · low to high</button>
+          <button class="sheet-opt" data-sort="price-desc" aria-pressed="false">Price · high to low</button>
+        </div>
+      </div>
+      <div class="sheet-group">
+        <p class="label sheet-label">Category</p>
+        <div class="sheet-opts" data-cat-group>
+          <button class="sheet-opt is-active" data-category="all" aria-pressed="true">All categories</button>
+          {categories.map((c) => (
+            <button class="sheet-opt" data-category={c} aria-pressed="false">{c}</button>
+          ))}
+        </div>
+      </div>
+    </div>
+    <footer class="sheet-foot">
+      <button class="sheet-reset" data-reset>Clear all</button>
+      <button class="sheet-apply" data-sheet-close>Show <span data-count>{products.length}</span></button>
+    </footer>
+  </aside>
 </Layout>
 
 <style>
-  .page-header {
-    padding: calc(var(--nav-h) + 5rem) 0 3rem;
+  .shop-header {
+    padding-top: calc(var(--nav-h) + env(safe-area-inset-top) + var(--space-xl));
+    padding-bottom: var(--space-lg);
   }
-  .page-header h1 {
-    font-size: clamp(2.6rem, 7vw, 5rem);
-    margin: 1rem 0;
+  .shop-header h1 {
+    font-size: var(--fs-h1);
+    margin: var(--space-sm) 0;
   }
-  .page-header-sub {
-    max-width: 52ch;
+  .shop-sub {
+    max-width: 44ch;
     color: var(--muted);
-    font-size: 1.05rem;
+    font-size: var(--fs-lead);
   }
-  .range-img {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
+
+  /* discipline pills band */
+  .disc-band {
+    position: sticky;
+    top: calc(var(--nav-h) + env(safe-area-inset-top));
+    z-index: 50;
+    background: color-mix(in srgb, var(--warm) 12%, var(--cream));
+    border-block: 1px solid var(--rule);
+  }
+  .disc-band-inner {
+    display: flex;
+    gap: var(--space-xs);
+    align-items: center;
+    height: 3.1rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .disc-band-inner::-webkit-scrollbar {
+    display: none;
+  }
+  .disc-pill {
+    flex: 0 0 auto;
+    font-family: inherit;
+    font-size: var(--fs-eyebrow);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--muted);
+    background: none;
     border: 1px solid var(--rule);
-    margin-top: 3rem;
+    border-radius: var(--radius-pill);
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s var(--ease), background 0.2s var(--ease),
+      border-color 0.2s var(--ease);
   }
-  #range {
-    padding-bottom: 4rem;
+  .disc-pill:hover {
+    color: var(--ink);
+    border-color: var(--ink);
   }
-  .discipline-list {
-    list-style: none;
-    display: grid;
-    /* 6 disciplines: 3 cols → exactly 2 full rows, no empty cells */
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--rule);
-    border: 1px solid var(--rule);
+  .disc-pill[aria-pressed='true'] {
+    color: var(--cream);
+    background: var(--ink);
+    border-color: var(--ink);
   }
-  @media (max-width: 900px) {
-    .discipline-list {
-      grid-template-columns: repeat(2, 1fr);
-    }
+
+  #shop {
+    padding-bottom: var(--space-section);
   }
-  @media (max-width: 560px) {
-    .discipline-list {
-      grid-template-columns: 1fr;
-    }
+  .shop-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) 0;
   }
-  .discipline-list a {
-    display: block;
-    background: var(--cream);
-    padding: 1.75rem;
-    height: 100%;
+  .shop-count {
+    font-size: var(--fs-caption);
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .shop-filter-btn {
     position: relative;
-    transition: background 0.3s var(--ease);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: inherit;
+    font-size: var(--fs-caption);
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-pill);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s var(--ease);
   }
-  .discipline-list a:hover {
-    background: color-mix(in srgb, var(--warm) 7%, var(--cream));
+  .shop-filter-btn:hover {
+    border-color: var(--ink);
   }
-  .discipline-list h3 {
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
+  .shop-filter-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--warm);
   }
-  .discipline-list p {
+  .shop-filter-dot[hidden] {
+    display: none;
+  }
+
+  /* full-bleed hairline grid: cells own their right + bottom rules
+     (ProductCard); container draws the top + left frame */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-inline: calc(50% - 50vw);
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+  }
+  .grid-item {
+    min-width: 0;
+  }
+  .grid-item[hidden] {
+    display: none;
+  }
+  @media (min-width: 600px) {
+    .product-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (min-width: 900px) {
+    .product-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .shop-empty {
     color: var(--muted);
-    font-size: 0.9rem;
-    max-width: 34ch;
+    font-size: var(--fs-lead);
+    padding: var(--space-2xl) 0;
+    text-align: center;
   }
-  .discipline-list .arrow {
-    position: absolute;
-    top: 1.75rem;
-    right: 1.75rem;
-    color: var(--warm);
+  .shop-empty[hidden] {
+    display: none;
+  }
+  .shop-reset,
+  .sheet-reset {
+    font-family: inherit;
+    font-size: inherit;
+    color: var(--ink);
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--rule);
+    padding: 0 0 1px;
+    cursor: pointer;
+  }
+  .shop-reset:hover,
+  .sheet-reset:hover {
+    border-color: var(--ink);
+  }
+
+  /* ── Filter & Sort sheet ── bottom drawer ── */
+  .sheet-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 120;
+    background: color-mix(in srgb, var(--ink) 48%, transparent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease);
+  }
+  .sheet-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .sheet-overlay[hidden] {
+    display: none;
+  }
+  .sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 121;
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+    max-height: 85dvh;
+    background: var(--cream);
+    border-top: 1px solid var(--rule);
+    transform: translateY(100%);
+    transition: transform 0.4s var(--ease);
+  }
+  .sheet.open {
+    transform: translateY(0);
+  }
+  /* roomier, framed panel on larger screens */
+  @media (min-width: 600px) {
+    .sheet {
+      left: auto;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: min(90vw, 408px);
+      max-height: none;
+      border-top: 0;
+      border-left: 1px solid var(--rule);
+      transform: translateX(100%);
+    }
+    .sheet.open {
+      transform: translateX(0);
+    }
+  }
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) var(--wrap-pad);
+    border-bottom: 1px solid var(--rule);
+  }
+  .sheet-head h2 {
+    font-size: var(--fs-caption);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: var(--fw-light);
+  }
+  .sheet-close {
+    background: none;
+    border: 0;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s var(--ease);
+  }
+  .sheet-close:hover {
+    color: var(--ink);
+  }
+  .sheet-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: var(--space-lg) var(--wrap-pad);
+  }
+  .sheet-group + .sheet-group {
+    margin-top: var(--space-xl);
+  }
+  .sheet-label {
+    margin-bottom: var(--space-md);
+  }
+  .sheet-opts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+  }
+  .sheet-opt {
+    font-family: inherit;
+    font-size: var(--fs-caption);
+    letter-spacing: 0.02em;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-pill);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: color 0.2s var(--ease), background 0.2s var(--ease),
+      border-color 0.2s var(--ease);
+  }
+  .sheet-opt:hover {
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+  .sheet-opt.is-active {
+    color: var(--cream);
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .sheet-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--wrap-pad) calc(var(--space-md) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--rule);
+  }
+  .sheet-apply {
+    flex: 1;
+    font-family: inherit;
+    font-size: var(--fs-eyebrow);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    padding: 0.9rem;
+    cursor: pointer;
+    transition: opacity 0.2s var(--ease);
+  }
+  .sheet-apply:hover {
+    opacity: 0.85;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sheet,
+    .sheet-overlay {
+      transition: none;
+    }
   }
 </style>
+
+<script>
+  import { lockScroll } from '@/lib/scrollLock';
+  import { trapFocus } from '@/lib/focusTrap';
+
+  const grid = document.querySelector<HTMLElement>('[data-grid]');
+  const items = grid ? Array.from(grid.querySelectorAll<HTMLElement>('.grid-item')) : [];
+  const countEls = Array.from(document.querySelectorAll<HTMLElement>('[data-count]'));
+  const emptyEl = document.querySelector<HTMLElement>('[data-empty]');
+  const dot = document.querySelector<HTMLElement>('[data-filter-dot]');
+  const discPills = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-discipline]'));
+  const sortBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-sort]'));
+  const catBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-category]'));
+
+  const state = { discipline: 'all', category: 'all', sort: 'featured' };
+
+  // ── URL sync ──────────────────────────────────
+  function readUrl() {
+    const q = new URLSearchParams(location.search);
+    state.discipline = q.get('discipline') || 'all';
+    state.category = q.get('category') || 'all';
+    state.sort = q.get('sort') || 'featured';
+  }
+  function writeUrl(push = false) {
+    const q = new URLSearchParams();
+    if (state.discipline !== 'all') q.set('discipline', state.discipline);
+    if (state.category !== 'all') q.set('category', state.category);
+    if (state.sort !== 'featured') q.set('sort', state.sort);
+    const url = q.toString() ? `${location.pathname}?${q}` : location.pathname;
+    history[push ? 'pushState' : 'replaceState'](null, '', url);
+  }
+
+  // ── Apply ─────────────────────────────────────
+  function apply() {
+    // sort: reorder the DOM so the visual order matches (featured keeps the
+    // original index order; price uses the numeric data-price, POA last)
+    const sorted = [...items].sort((a, b) => {
+      if (state.sort === 'featured') {
+        const fa = a.dataset.featured === '1' ? 0 : 1;
+        const fb = b.dataset.featured === '1' ? 0 : 1;
+        if (fa !== fb) return fa - fb;
+        return Number(a.dataset.index) - Number(b.dataset.index);
+      }
+      const pa = Number(a.dataset.price) || 0;
+      const pb = Number(b.dataset.price) || 0;
+      const ka = pa > 0 ? pa : state.sort === 'price-asc' ? Infinity : -Infinity;
+      const kb = pb > 0 ? pb : state.sort === 'price-asc' ? Infinity : -Infinity;
+      return state.sort === 'price-asc' ? ka - kb : kb - ka;
+    });
+    sorted.forEach((el) => grid?.appendChild(el));
+
+    // filter: discipline OR category lens (selecting one clears the other)
+    let visible = 0;
+    for (const el of items) {
+      const okDisc = state.discipline === 'all' || el.dataset.discipline === state.discipline;
+      const okCat =
+        state.category === 'all' || (el.dataset.tags || '').split('|').includes(state.category);
+      const show = okDisc && okCat;
+      el.hidden = !show;
+      if (show) visible++;
+    }
+
+    countEls.forEach((el) => (el.textContent = `${visible} ${visible === 1 ? 'piece' : 'pieces'}`));
+    if (emptyEl) emptyEl.hidden = visible > 0;
+    if (dot) dot.hidden = state.discipline === 'all' && state.category === 'all' && state.sort === 'featured';
+
+    // reflect control states
+    discPills.forEach((b) => {
+      const on = b.dataset.discipline === state.discipline;
+      b.setAttribute('aria-pressed', String(on));
+    });
+    sortBtns.forEach((b) => {
+      const on = b.dataset.sort === state.sort;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+    catBtns.forEach((b) => {
+      const on = b.dataset.category === state.category;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+  }
+
+  // ── Controls ──────────────────────────────────
+  discPills.forEach((b) =>
+    b.addEventListener('click', () => {
+      state.discipline = b.dataset.discipline || 'all';
+      state.category = 'all'; // discipline and category are alternative lenses
+      writeUrl(true);
+      apply();
+    }),
+  );
+  sortBtns.forEach((b) =>
+    b.addEventListener('click', () => {
+      state.sort = b.dataset.sort || 'featured';
+      writeUrl();
+      apply();
+    }),
+  );
+  catBtns.forEach((b) =>
+    b.addEventListener('click', () => {
+      state.category = b.dataset.category || 'all';
+      if (state.category !== 'all') state.discipline = 'all';
+      writeUrl(true);
+      apply();
+    }),
+  );
+  document.querySelectorAll('[data-reset]').forEach((b) =>
+    b.addEventListener('click', () => {
+      state.discipline = 'all';
+      state.category = 'all';
+      state.sort = 'featured';
+      writeUrl(true);
+      apply();
+    }),
+  );
+
+  // back / forward restores the filtered view
+  window.addEventListener('popstate', () => {
+    readUrl();
+    apply();
+  });
+
+  // ── Sheet ─────────────────────────────────────
+  const sheet = document.getElementById('filter-sheet');
+  const sheetOverlay = document.querySelector<HTMLElement>('.sheet-overlay');
+  const closeBtn = document.querySelector<HTMLButtonElement>('.sheet-close');
+  let releaseTrap: (() => void) | null = null;
+
+  function setSheet(open: boolean) {
+    if (!sheet || !sheetOverlay) return;
+    sheet.setAttribute('aria-hidden', String(!open));
+    sheet.classList.toggle('open', open);
+    sheetOverlay.classList.toggle('open', open);
+    lockScroll(open);
+    if (open) {
+      sheetOverlay.hidden = false;
+      releaseTrap = trapFocus(sheet, closeBtn);
+    } else {
+      releaseTrap?.();
+      releaseTrap = null;
+      setTimeout(() => {
+        if (!sheet.classList.contains('open')) sheetOverlay.hidden = true;
+      }, 300);
+    }
+  }
+  document.querySelector('[data-sheet-open]')?.addEventListener('click', () => setSheet(true));
+  document.querySelectorAll('[data-sheet-close]').forEach((b) =>
+    b.addEventListener('click', () => setSheet(false)),
+  );
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setSheet(false);
+  });
+
+  // init from URL (deep links / refresh land filtered)
+  readUrl();
+  apply();
+</script>

@@ -1,6 +1,7 @@
 ---
 import type { Product } from '@/lib/types';
 import { formatPrice, slug } from '@/lib/catalog';
+import { site } from '@/lib/site';
 
 export interface Props {
   product: Product;
@@ -8,13 +9,32 @@ export interface Props {
 const { product } = Astro.props;
 const price = formatPrice(product);
 const href = `/products/${slug(product.productType)}/${product.handle}`;
+// Buyable only with stock + a variant id + a configured shop — mirrors the PDP.
+// These get a quick-add straight from the card; everything else links to the PDP.
+const buyable = product.availableForSale && !!product.variantId && !!site.shopDomain;
+const lead = product.images[0]?.url ?? '';
 ---
 
 <article class="card fade-in">
   <div class="card-media">
-    <img class="face" src="/img/fish-front.jpg" alt="" loading="lazy" />
-    <img class="face back" src="/img/fish-back.jpg" alt="" loading="lazy" />
+    <!-- wireframe placeholder — real deck/hull shots drop in here later -->
     <a class="card-link" href={href} aria-label={`View the ${product.title}`}></a>
+    {
+      buyable && (
+        <button
+          class="card-add"
+          data-add-to-cart
+          data-variant-id={product.variantId}
+          data-handle={product.handle}
+          data-title={product.title}
+          data-price={product.priceRange.minVariantPrice.amount}
+          data-image={lead}
+          aria-label={`Add ${product.title} to cart`}
+        >
+          Add to cart
+        </button>
+      )
+    }
   </div>
   <div class="card-meta">
     <h3><a href={href}>{product.title}</a></h3>
@@ -46,6 +66,7 @@ const href = `/products/${slug(product.productType)}/${product.handle}`;
     width: 100%;
     aspect-ratio: 3 / 4;
     flex-shrink: 0;
+    /* the placeholder tone itself, until photography lands */
     background: color-mix(in srgb, var(--warm) 8%, var(--cream));
     overflow: hidden;
   }
@@ -55,21 +76,46 @@ const href = `/products/${slug(product.productType)}/${product.handle}`;
     display: block;
     z-index: 1;
   }
-  .face {
+
+  /* ── Quick add ──
+     A thumb-friendly button that lets buyable items go straight to the cart
+     without a PDP visit. On pointer devices it rests hidden and rises on hover;
+     on touch (no hover) it stays visible so it's always tappable. Sits above
+     the full-card link (z-index) so the tap lands on the button, not the link. */
+  .card-add {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: opacity 0.5s var(--ease);
+    left: 0.6rem;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    z-index: 2;
+    font-family: inherit;
+    font-size: var(--fs-eyebrow);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    padding: 0.7rem;
+    cursor: pointer;
+    transition: opacity 0.25s var(--ease), transform 0.25s var(--ease),
+      background 0.2s var(--ease);
   }
-  /* front view at rest; the back view fades in on hover */
-  .back {
-    opacity: 0;
+  .card-add:hover {
+    background: color-mix(in srgb, var(--ink) 85%, var(--warm));
   }
-  .card-media:hover .back {
-    opacity: 1;
+  /* pointer devices: tuck it away until the card is hovered/focused */
+  @media (hover: hover) {
+    .card-add {
+      opacity: 0;
+      transform: translateY(0.4rem);
+    }
+    .card-media:hover .card-add,
+    .card-add:focus-visible {
+      opacity: 1;
+      transform: none;
+    }
   }
+
   /* meta sits inside the cell, divided from the image by a single hairline —
      the grid lines continue straight through the row. one consistent column
      rhythm: title leads, category eyebrow, then price — same on every device. */
@@ -108,7 +154,7 @@ const href = `/products/${slug(product.productType)}/${product.handle}`;
     color: var(--muted);
   }
   .card-price {
-    font-size: 0.75rem;
+    font-size: var(--fs-caption);
     letter-spacing: 0.02em;
     color: var(--warm);
     white-space: nowrap;
@@ -118,9 +164,6 @@ const href = `/products/${slug(product.productType)}/${product.handle}`;
     .card-meta {
       gap: 0.15rem;
       padding: 0.85rem 0.9rem 1rem;
-    }
-    .card-meta h3 {
-      font-size: 1.1rem;
     }
   }
 </style>

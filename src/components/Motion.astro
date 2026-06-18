@@ -19,4 +19,24 @@
     };
     requestAnimationFrame(raf);
   }
+
+  // ── Scroll reveal ──────────────────────────────
+  // Reveal `.fade-in` elements as they enter the viewport (CSS holds the start
+  // state under html.js; see global.css). Under reduced motion the CSS already
+  // shows them, so we do nothing. Reveal is one-way — unobserve once shown.
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        }
+      },
+      // fire a little before the element's top edge reaches the fold
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
+    );
+    document.querySelectorAll<HTMLElement>('.fade-in').forEach((el) => io.observe(el));
+  }
 </script>

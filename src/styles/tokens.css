@@ -20,11 +20,48 @@
   --fw-light: 300;
   --fw-regular: 400;
 
+  /* Fluid type scale — one source of truth for every size on the site.
+     Each step grows fluidly between a mobile floor and a desktop cap, so
+     headings no longer carry an ad-hoc clamp() per file. Built around the
+     single PolySans weight: hierarchy comes from size + tracking, not weight. */
+  --fs-eyebrow: 0.75rem; /* .label uppercase eyebrows */
+  --fs-caption: 0.85rem; /* nav links, prices, fine print */
+  --fs-body: 1rem;
+  --fs-lead: clamp(1.05rem, 1rem + 0.4vw, 1.25rem); /* intros, subheads */
+  --fs-quote: clamp(1.4rem, 1.1rem + 1.6vw, 2.3rem); /* pull quotes */
+  --fs-h3: clamp(1.3rem, 1.1rem + 1vw, 1.5rem);
+  --fs-h2: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+  --fs-h1: clamp(2.4rem, 1.6rem + 4vw, 5rem);
+  --fs-display: clamp(2.8rem, 1.8rem + 5vw, 6rem); /* hero only */
+
+  /* Spacing scale — replaces per-file rem/clamp pads so vertical rhythm stays
+     consistent. --space-section is the standard gap between page sections. */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --space-section: clamp(3.5rem, 9vw, 6rem);
+
   /* layout */
   --bar-h: 66px; /* top bar: logo + cart (+ burger on mobile) */
   --nav-h: var(--bar-h); /* full header height — pages offset content by this */
   --wrap-pad: 2rem;
-  --footer-h: 360px; /* reveal footer panel height; main reserves this space */
+  --footer-h: 420px; /* reveal footer panel height; main reserves this space */
+  --radius-pill: 100px;
+
+  /* Breakpoints — the site is mobile-first: base styles target phones and
+     min-width queries scale up. Standard set (CSS vars can't be used inside
+     @media, so this is a convention, not tokens):
+       600px  — large phone / small tablet
+       900px  — tablet / small laptop
+       1200px — desktop
+     Migrate any remaining desktop-first max-width blocks to these as files
+     are touched. */
 
   /* motion */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -36,6 +73,6 @@
     --bar-h: 52px;
     --nav-h: var(--bar-h);
     --wrap-pad: 1.25rem;
-    --footer-h: 280px;
+    --footer-h: 320px;
   }
 }

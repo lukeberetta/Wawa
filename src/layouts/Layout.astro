@@ -1,6 +1,7 @@
 ---
 import '@/styles/global.css';
 import Nav from '@/components/Nav.astro';
+import FooterNav from '@/components/FooterNav.astro';
 import Footer from '@/components/Footer.astro';
 import Motion from '@/components/Motion.astro';
 import Cart from '@/components/Cart.astro';
@@ -32,6 +33,10 @@ const ogImage = `${site.url}/og-image.jpg`;
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#1a1410" />
+
+    <!-- Flag JS early (before paint) so the .fade-in reveal only arms when it
+         can actually be driven — no-JS keeps all content visible. -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
 
     <!-- iOS / Android standalone: Add to Home Screen launches chrome-free -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -77,6 +82,7 @@ const ogImage = `${site.url}/og-image.jpg`;
     <Nav current={current} />
     <main id="main">
       <slot />
+      <FooterNav />
       <div id="footer-sentinel" aria-hidden="true"></div>
     </main>
     <Footer />

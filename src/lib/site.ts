@@ -11,9 +11,9 @@ export const site = {
   // hosted checkout). Use the store's primary/custom domain or *.myshopify.com.
   // Empty = checkout disabled (items fall back to Enquire). Fill after import.
   shopDomain: 'wawawave.myshopify.com',
-  // `children` (built from disciplines in Nav.astro) makes this a dropdown.
+  // `dropdown` (disciplines drilled in Nav.astro) makes Shop a two-level row.
   nav: [
-    { href: '/products', label: 'Products', dropdown: true },
+    { href: '/products', label: 'Shop', dropdown: true },
     { href: '/cafe', label: 'Cafe' },
     { href: '/story', label: 'Story' },
     { href: '/press', label: 'Press' },

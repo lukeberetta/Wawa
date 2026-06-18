@@ -174,11 +174,11 @@ const featured = await getFeatured();
     }
   }
   #hero h1 {
-    font-size: clamp(2.8rem, 8vw, 6rem);
+    font-size: var(--fs-display);
     margin-bottom: 2.25rem;
   }
   .hero-sub {
-    font-size: 1.25rem;
+    font-size: var(--fs-lead);
     color: color-mix(in srgb, var(--cream) 75%, transparent);
     max-width: 32ch;
     margin-bottom: 2rem;
@@ -188,14 +188,14 @@ const featured = await getFeatured();
   }
 
   #pullquote {
-    padding: clamp(3.5rem, 9vw, 6rem) 0;
+    padding: var(--space-section) 0;
     border-bottom: 1px solid var(--rule);
   }
   #pullquote .label {
     margin-bottom: 1.5rem;
   }
   .quote-text {
-    font-size: clamp(1.4rem, 3.2vw, 2.3rem);
+    font-size: var(--fs-quote);
     max-width: 30ch;
     line-height: 1.15;
   }
@@ -206,17 +206,17 @@ const featured = await getFeatured();
   }
 
   #range-home {
-    padding: 5rem 0 1rem;
+    padding: var(--space-section) 0 var(--space-sm);
   }
 
   #featured-home {
-    padding: 5rem 0;
+    padding: var(--space-section) 0;
   }
   .section-head {
-    margin-bottom: 3rem;
+    margin-bottom: var(--space-xl);
   }
   .section-head h2 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: var(--fs-h2);
     margin-top: 0.75rem;
   }
   /* full-bleed catalog grid: breaks out of the wrap to span the viewport edge

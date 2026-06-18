@@ -143,19 +143,19 @@ const cats = discipline.categories.filter((c: string) => present.has(c));
   }
 
   .page-header {
-    padding: 3rem 0;
+    padding: var(--space-xl) 0;
   }
   .page-header h1 {
-    font-size: clamp(2.6rem, 7vw, 5rem);
-    margin: 1rem 0;
+    font-size: var(--fs-h1);
+    margin: var(--space-sm) 0;
   }
   .page-header-sub {
     max-width: 44ch;
     color: var(--muted);
-    font-size: 1.05rem;
+    font-size: var(--fs-lead);
   }
   #range {
-    padding-bottom: 5rem;
+    padding-bottom: var(--space-section);
   }
   .hero-img {
     width: 100%;
