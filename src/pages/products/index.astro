@@ -456,7 +456,7 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
   const copy: Record<string, { title: string; sub: string }> = JSON.parse(
     document.getElementById('shop-copy')?.textContent || '{}',
   );
-  const discPills = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-discipline]'));
+  const discPills = Array.from(document.querySelectorAll<HTMLButtonElement>('.disc-pill'));
   const sortBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-sort]'));
   const catGroup = document.querySelector<HTMLElement>('[data-cat-group]');
 
