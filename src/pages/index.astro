@@ -26,12 +26,12 @@ const featured = await getFeatured();
     </video>
     <div class="wrap hero-grid">
       <div class="hero-content">
-        <h1 class="fade-in">Honouring<br />surfing's<br />heritage.</h1>
+        <h1 class="fade-in">Made slowly.<br />Ridden forever.</h1>
         <p class="hero-sub fade-in">
-          Traditional wooden surfboards.<br />Made by hand, shaped by nature.
+          A return to how surfboards were meant to be built, and how they were meant to feel.
         </p>
         <a href="/products" class="link-arrow fade-in">
-          Explore the range <span class="arrow">→</span>
+          Find your board <span class="arrow">→</span>
         </a>
       </div>
     </div>
@@ -264,6 +264,14 @@ const featured = await getFeatured();
   .section-foot {
     margin-top: 3rem;
     text-align: center;
+  }
+  /* no fade-up entrance on the home carousels — heads, foot and cards sit
+     in place. (ProductCard's .fade-in is global, hence :global) */
+  html.js #range-home :global(.fade-in),
+  html.js #featured-home :global(.fade-in) {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 
   /* perks strip: full-bleed hairline band. mobile-first — stacked with
