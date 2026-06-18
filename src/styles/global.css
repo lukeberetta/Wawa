@@ -190,6 +190,14 @@ h3 {
   transform: none;
 }
 
+/* Wireframe placeholder — stands in for imagery while the site structure is
+   being worked out. A flat neutral box; keep any sizing/aspect from the
+   element's own class. Remove once real images land. */
+.wf-ph {
+  background: color-mix(in srgb, var(--warm) 7%, var(--cream));
+  border: 1px solid var(--rule);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

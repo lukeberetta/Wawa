@@ -4,13 +4,10 @@ export interface Props {
   video: Video;
 }
 const { video } = Astro.props;
-// hqdefault always exists; thumbnail loads lazily, iframe only on click.
-const thumb = `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`;
 ---
 
 <article class="video fade-in">
-  <button class="video-frame" data-id={video.id} aria-label={`Play ${video.title}`}>
-    <img src={thumb} alt={video.title} loading="lazy" width="480" height="360" />
+  <button class="video-frame wf-ph" data-id={video.id} aria-label={`Play ${video.title}`}>
     <span class="play" aria-hidden="true">▶</span>
   </button>
   <div class="video-meta">
@@ -27,7 +24,7 @@ const thumb = `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`;
     aspect-ratio: 16 / 9;
     padding: 0;
     border: 1px solid var(--rule);
-    background: var(--ink);
+    background: color-mix(in srgb, var(--warm) 7%, var(--cream));
     cursor: pointer;
     overflow: hidden;
   }

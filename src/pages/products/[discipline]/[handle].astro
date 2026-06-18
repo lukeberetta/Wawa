@@ -75,34 +75,9 @@ const jsonLd = {
       </nav>
 
       <div class="pdp-grid">
-        <!-- Gallery -->
+        <!-- Gallery (wireframe placeholder while imagery is pending) -->
         <section class="gallery fade-in" aria-label={`${product.title} images`}>
-          <button
-            type="button"
-            class="gallery-main"
-            data-zoom
-            aria-label={`Zoom ${product.title} image`}
-          >
-            <img id="pdp-main" src={lead.url} alt={lead.altText} width="900" height="1200" />
-          </button>
-          {
-            images.length > 1 && (
-              <div class="gallery-thumbs" role="group" aria-label="Choose image">
-                {images.map((im, i) => (
-                  <button
-                    type="button"
-                    class="thumb"
-                    data-src={im.url}
-                    data-alt={im.altText}
-                    aria-label={`Show image ${i + 1} of ${images.length}`}
-                    aria-pressed={i === 0 ? 'true' : 'false'}
-                  >
-                    <img src={im.url} alt="" loading="lazy" />
-                  </button>
-                ))}
-              </div>
-            )
-          }
+          <div class="gallery-main wf-ph" role="presentation"></div>
         </section>
 
         <!-- Info -->
@@ -257,7 +232,6 @@ const jsonLd = {
     background: color-mix(in srgb, var(--warm) 8%, var(--cream));
     border: 1px solid var(--rule);
     overflow: hidden;
-    cursor: zoom-in;
   }
   .gallery-main img {
     width: 100%;

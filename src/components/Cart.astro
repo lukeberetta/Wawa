@@ -168,10 +168,10 @@ const enabled = !!site.shopDomain;
   .cart-lines :global(.cart-line:last-child) {
     border-bottom: none;
   }
-  .cart-lines :global(.cart-line img) {
+  .cart-lines :global(.cart-line-img) {
+    flex: none;
     width: 52px;
     height: 64px;
-    object-fit: cover;
     border: 1px solid var(--rule);
     background: color-mix(in srgb, var(--warm) 8%, var(--cream));
   }
@@ -337,7 +337,7 @@ const enabled = !!site.shopDomain;
           .map(
             (l) => `
             <div class="cart-line" data-line="${l.variantId}">
-              <img src="${l.image}" alt="" loading="lazy" />
+              <span class="cart-line-img wf-ph"></span>
               <div>
                 <div class="cart-line-title">${l.title}</div>
                 <div class="cart-line-price">${formatZAR(l.price)}</div>

@@ -9,7 +9,6 @@ export interface Props {
 const { product } = Astro.props;
 const price = formatPrice(product);
 const front = product.images[0];
-const back = product.images[1] ?? product.images[0];
 const href = `/products/${slug(product.productType)}/${product.handle}`;
 const enquire = whatsappLink(`Hi Wawa, I'm interested in the ${product.title}.`);
 // Buyable when in stock with a variant id and a configured shop domain;
@@ -22,10 +21,7 @@ const hasPrice = price !== 'Enquire';
 
 <article class="card fade-in">
   <div class="card-media">
-    <a class="card-link" href={href} aria-label={`View the ${product.title}`}>
-      <img class="face front" src={front.url} alt={front.altText} loading="lazy" />
-      <img class="face back" src={back.url} alt={back.altText} loading="lazy" aria-hidden="true" />
-    </a>
+    <a class="card-link" href={href} aria-label={`View the ${product.title}`}></a>
     <div class="card-overlay">
       {hasPrice && <span class="overlay-price">{price}</span>}
       {buyable ? (

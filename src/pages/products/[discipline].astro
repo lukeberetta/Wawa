@@ -53,12 +53,7 @@ const cats = discipline.categories.filter((c: string) => present.has(c));
   {
     discipline.hero && products.length === 0 && (
       <div class="wrap">
-        <img
-          class="hero-img fade-in"
-          src={`/img/catalog/${discipline.hero}.jpg`}
-          alt={`Wawa ${discipline.title}`}
-          loading="lazy"
-        />
+        <div class="hero-img wf-ph fade-in" role="presentation"></div>
       </div>
     )
   }

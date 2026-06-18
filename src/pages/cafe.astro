@@ -21,7 +21,7 @@ import { site } from '@/lib/site';
 
   <section id="cafe-hero">
     <div class="wrap">
-      <img class="hero fade-in" src="/img/catalog/cafe-3.jpg" alt="The Wawa cafe in Muizenberg" loading="lazy" />
+      <div class="hero wf-ph fade-in" role="presentation"></div>
     </div>
   </section>
 
@@ -42,8 +42,8 @@ import { site } from '@/lib/site';
       </div>
 
       <div class="gallery fade-in">
-        <img src="/img/catalog/cafe-2.jpg" alt="Coffee and cake at Wawa" loading="lazy" />
-        <img src="/img/catalog/cafe-1.jpg" alt="Inside the Wawa cafe" loading="lazy" />
+        <div class="wf-ph" role="presentation"></div>
+        <div class="wf-ph" role="presentation"></div>
       </div>
     </div>
   </section>
@@ -90,10 +90,8 @@ import { site } from '@/lib/site';
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.25rem;
   }
-  .gallery img {
+  .gallery .wf-ph {
     width: 100%;
     aspect-ratio: 4 / 3;
-    object-fit: cover;
-    border: 1px solid var(--rule);
   }
 </style>
