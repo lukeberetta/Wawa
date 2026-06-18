@@ -35,7 +35,7 @@ import { disciplines } from '@/lib/catalog';
         <ul>
           <li><a href={site.instagram} target="_blank" rel="noopener noreferrer">Instagram</a></li>
           <li><a href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
-          <li class="fn-place">{site.location}</li>
+          <li><a class="fn-place" href="https://maps.app.goo.gl/Jwke2sXBTwRAiVhn6" target="_blank" rel="noopener noreferrer">{site.location}</a></li>
         </ul>
       </div>
     </nav>
@@ -81,8 +81,12 @@ import { disciplines } from '@/lib/catalog';
   .fn-col a:hover {
     color: var(--warm);
   }
-  .fn-place {
-    font-size: var(--fs-lead);
-    color: var(--muted);
+  /* location reads as the accent so it stands out as the "find us" link
+     (selector matches .fn-col a's specificity so it actually wins) */
+  .fn-col a.fn-place {
+    color: var(--warm);
+  }
+  .fn-col a.fn-place:hover {
+    color: var(--ink);
   }
 </style>
