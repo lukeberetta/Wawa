@@ -38,7 +38,7 @@ const enquire = whatsappLink(`Hi Wawa, I'm interested in the ${product.title}.`)
 const images = product.images;
 const lead = images[0];
 const category = product.tags[0];
-const disciplineHref = `/products/${slug(product.productType)}`;
+const disciplineHref = `/products?discipline=${slug(product.productType)}`;
 
 // SEO: Product structured data (offer only when buyable, else nothing to price).
 const jsonLd = {

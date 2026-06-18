@@ -17,7 +17,7 @@ import { disciplines } from '@/lib/catalog';
         <ul>
           <li><a href="/products">All products</a></li>
           {disciplines.map((d) => (
-            <li><a href={`/products/${d.handle}`}>{d.title}</a></li>
+            <li><a href={`/products?discipline=${d.handle}`}>{d.title}</a></li>
           ))}
         </ul>
       </div>

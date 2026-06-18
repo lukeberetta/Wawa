@@ -5,7 +5,7 @@ export interface Props {
   discipline: Discipline;
 }
 const { discipline } = Astro.props;
-const href = `/products/${discipline.handle}`;
+const href = `/products?discipline=${discipline.handle}`;
 // Only treat hero as an image when it's a real asset path (leading slash).
 // Placeholder ids like "foil-hero" stay as the wireframe box, no broken icon.
 const heroSrc = discipline.hero?.startsWith('/') ? discipline.hero : null;

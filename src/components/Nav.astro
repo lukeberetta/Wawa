@@ -105,7 +105,7 @@ const isActive = (label: string) => {
             <span>All products</span>
           </a>
           {disciplines.map((d) => (
-            <a class="m-row" href={`/products/${d.handle}`}>
+            <a class="m-row" href={`/products?discipline=${d.handle}`}>
               <span>{d.title}</span>
             </a>
           ))}
