@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import ProductCard from '@/components/ProductCard.astro';
+import CategoryCard from '@/components/CategoryCard.astro';
 import { getFeatured, disciplines } from '@/lib/catalog';
 
 const featured = await getFeatured();
@@ -42,10 +43,10 @@ const featured = await getFeatured();
     <div class="wrap">
       <p class="label fade-in">Honouring the source</p>
       <p class="quote-text fade-in">
-        Way out on the split ends of surfing's fringe sits an anachronistic little wooden
-        surfboard company, built on quality, respect for our roots and a belief in the
+        &ldquo;Way out on the split ends of surfing&rsquo;s fringe sits an anachronistic little
+        wooden surfboard company, built on quality, respect for our roots and a belief in the
         sanctity of nature. We shape boards and surf craft inspired by the intuited
-        hydrodynamic genius of the ancient Hawaiian board builders.
+        hydrodynamic genius of the ancient Hawaiian board builders.&rdquo;
       </p>
       <p class="quote-attr fade-in">Cobus Joubert, Founder</p>
     </div>
@@ -58,21 +59,9 @@ const featured = await getFeatured();
         <p class="label">The range</p>
         <h2>Our products.</h2>
       </div>
-      <ul class="discipline-list">
-        {
-          disciplines.map((d) => (
-            <li>
-              <a href={`/products/${d.handle}`}>
-                <span class="arrow fade-in">→</span>
-                <div class="disc-inner fade-in">
-                  <h3>{d.title}</h3>
-                  <p>{d.blurb}</p>
-                </div>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+      <div class="product-grid">
+        {disciplines.map((d) => <CategoryCard discipline={d} />)}
+      </div>
     </div>
   </section>
 
@@ -175,7 +164,7 @@ const featured = await getFeatured();
   }
 
   #pullquote {
-    padding: clamp(6rem, 16vw, 11rem) 0;
+    padding: clamp(3.5rem, 9vw, 6rem) 0;
     border-bottom: 1px solid var(--rule);
   }
   #pullquote .label {
@@ -184,7 +173,7 @@ const featured = await getFeatured();
   .quote-text {
     font-size: clamp(1.4rem, 3.2vw, 2.3rem);
     max-width: 30ch;
-    line-height: 1.3;
+    line-height: 1.15;
   }
   .quote-attr {
     margin-top: 1.5rem;
@@ -194,64 +183,6 @@ const featured = await getFeatured();
 
   #range-home {
     padding: 5rem 0 1rem;
-  }
-  .discipline-list {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--rule);
-    border: 1px solid var(--rule);
-  }
-  @media (max-width: 900px) {
-    .discipline-list {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  @media (max-width: 560px) {
-    .discipline-list {
-      grid-template-columns: 1fr;
-    }
-    .discipline-list a {
-      padding: 1.1rem 1.25rem;
-    }
-    .discipline-list h3 {
-      font-size: 1.15rem;
-      margin-bottom: 0.25rem;
-    }
-    .discipline-list p {
-      font-size: 0.85rem;
-    }
-    .discipline-list .arrow {
-      top: 1.1rem;
-      right: 1.25rem;
-    }
-  }
-  .discipline-list a {
-    display: block;
-    background: var(--cream);
-    padding: 1.75rem;
-    height: 100%;
-    position: relative;
-    transition: background 0.3s var(--ease);
-  }
-  .discipline-list a:hover {
-    background: color-mix(in srgb, var(--warm) 7%, var(--cream));
-  }
-  .discipline-list h3 {
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
-  }
-  .discipline-list p {
-    color: var(--muted);
-    font-size: 0.9rem;
-    max-width: 34ch;
-  }
-  .discipline-list .arrow {
-    position: absolute;
-    top: 1.75rem;
-    right: 1.75rem;
-    color: var(--warm);
   }
 
   #featured-home {
@@ -264,15 +195,24 @@ const featured = await getFeatured();
     font-size: clamp(2rem, 5vw, 3.5rem);
     margin-top: 0.75rem;
   }
+  /* full-bleed catalog grid: breaks out of the wrap to span the viewport edge
+     to edge. cells draw their own right + bottom rules (see ProductCard); the
+     container supplies only the top + left frame. */
   .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    gap: 2.5rem 1.75rem;
+    grid-template-columns: repeat(4, 1fr);
+    margin-inline: calc(50% - 50vw);
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+  }
+  @media (max-width: 900px) {
+    .product-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
   @media (max-width: 520px) {
     .product-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1.75rem 1rem;
+      grid-template-columns: repeat(2, 1fr);
     }
   }
   .section-foot {

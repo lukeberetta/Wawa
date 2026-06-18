@@ -121,7 +121,8 @@ h3 {
 /* ── Layout helpers ────────────────────────────── */
 .wrap {
   width: 100%;
-  max-width: var(--wrap-max);
+  /* full-bleed container: content runs the full viewport width, held off the
+     edges only by the side padding (mobile-first — no fixed max-width cap) */
   margin-inline: auto;
   /* env() guards against the notch eating content in landscape (viewport-fit=cover) */
   padding-inline: max(

@@ -23,7 +23,6 @@
   /* layout */
   --bar-h: 66px; /* top bar: logo + cart (+ burger on mobile) */
   --nav-h: var(--bar-h); /* full header height — pages offset content by this */
-  --wrap-max: 1280px;
   --wrap-pad: 2rem;
   --footer-h: 440px; /* reveal footer panel height; main reserves this space */
 
