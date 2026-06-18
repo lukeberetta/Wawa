@@ -37,12 +37,15 @@ const featured = await getFeatured();
     </div>
   </section>
 
-  <!-- PULL QUOTE -->
+  <!-- BRAND STATEMENT -->
   <section id="pullquote">
     <div class="wrap">
+      <p class="label fade-in">Honouring the source</p>
       <p class="quote-text fade-in">
-        “Centuries ago, the first Polynesian surfers carved their boards from native timber, guided
-        by instinct, respect and a connection to the ocean. At Wawa, that spirit lives on.”
+        Way out on the split ends of surfing's fringe sits an anachronistic little wooden
+        surfboard company, built on quality, respect for our roots and a belief in the
+        sanctity of nature. We shape boards and surf craft inspired by the intuited
+        hydrodynamic genius of the ancient Hawaiian board builders.
       </p>
       <p class="quote-attr fade-in">Cobus Joubert, Founder</p>
     </div>
@@ -174,6 +177,9 @@ const featured = await getFeatured();
   #pullquote {
     padding: clamp(6rem, 16vw, 11rem) 0;
     border-bottom: 1px solid var(--rule);
+  }
+  #pullquote .label {
+    margin-bottom: 1.5rem;
   }
   .quote-text {
     font-size: clamp(1.4rem, 3.2vw, 2.3rem);
