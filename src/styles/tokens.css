@@ -10,7 +10,8 @@
   --muted: #7d7168;
   --rule: #b8b0a6;
   --warm: #9c7d5e;
-  --accent: #ffa200;
+  /* brighter, more saturated warm — for accents that need to pop */
+  --accent: #bc854e;
 
   /* type */
   /* system-ui carries the brief moment before PolySans swaps in — no webfont
