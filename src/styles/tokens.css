@@ -10,6 +10,7 @@
   --muted: #7d7168;
   --rule: #b8b0a6;
   --warm: #9c7d5e;
+  --accent: #ffa200;
 
   /* type */
   /* system-ui carries the brief moment before PolySans swaps in — no webfont
@@ -32,7 +33,7 @@
   --fs-h3: clamp(1.3rem, 1.1rem + 1vw, 1.5rem);
   --fs-h2: clamp(2rem, 1.4rem + 3vw, 3.5rem);
   --fs-h1: clamp(2.4rem, 1.6rem + 4vw, 5rem);
-  --fs-display: clamp(2.8rem, 1.8rem + 5vw, 6rem); /* hero only */
+  --fs-display: clamp(2.4rem, 1.5rem + 4.4vw, 6rem); /* hero only */
 
   /* Spacing scale — replaces per-file rem/clamp pads so vertical rhythm stays
      consistent. --space-section is the standard gap between page sections. */

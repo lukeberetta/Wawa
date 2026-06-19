@@ -11,12 +11,14 @@ export interface Props {
   title?: string;
   description?: string;
   current?: string;
+  overlay?: boolean;
 }
 
 const {
   title = `${site.name} · ${site.location}`,
   description = site.description,
   current,
+  overlay = false,
 } = Astro.props;
 
 const ogImage = `${site.url}/og-image.jpg`;
@@ -79,7 +81,7 @@ const ogImage = `${site.url}/og-image.jpg`;
 
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
-    <Nav current={current} />
+    <Nav current={current} overlay={overlay} />
     <main id="main">
       <slot />
       <FooterNav />

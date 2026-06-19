@@ -7,7 +7,7 @@ import { getFeatured, disciplines } from '@/lib/catalog';
 const featured = await getFeatured();
 ---
 
-<Layout current="home">
+<Layout current="home" overlay={true}>
   <!-- HERO -->
   <section id="hero">
     <video
@@ -26,10 +26,7 @@ const featured = await getFeatured();
     </video>
     <div class="wrap hero-grid">
       <div class="hero-content">
-        <h1 class="fade-in">Made slowly.<br />Ridden forever.</h1>
-        <p class="hero-sub fade-in">
-          A return to how surfboards were meant to be built, and how they were meant to feel.
-        </p>
+        <h1 class="fade-in">A return to how surfboards were meant to be built, <span class="accent">and felt.</span></h1>
         <a href="/products" class="link-arrow fade-in">
           Find your board <span class="arrow">→</span>
         </a>
@@ -118,8 +115,9 @@ const featured = await getFeatured();
     min-height: 100vh;
     min-height: 100dvh;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     padding-top: var(--nav-h);
+    padding-bottom: clamp(2.5rem, 6vh, 5rem);
     /* poster doubles as the load + reduced-motion fallback behind the video */
     background: var(--ink) url('/hero-poster.jpg') center / cover no-repeat;
     color: var(--cream);
@@ -175,6 +173,8 @@ const featured = await getFeatured();
   }
   #hero h1 {
     font-size: var(--fs-display);
+    line-height: 1.04;
+    max-width: 15ch;
     margin-bottom: 2.25rem;
   }
   .hero-sub {
@@ -182,6 +182,9 @@ const featured = await getFeatured();
     color: color-mix(in srgb, var(--cream) 75%, transparent);
     max-width: 32ch;
     margin-bottom: 2rem;
+  }
+  #hero h1 .accent {
+    color: var(--accent);
   }
   #hero .link-arrow {
     color: var(--cream);

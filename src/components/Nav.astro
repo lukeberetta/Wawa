@@ -3,8 +3,9 @@ import { site } from '@/lib/site';
 import { disciplines } from '@/lib/catalog';
 export interface Props {
   current?: string;
+  overlay?: boolean;
 }
-const { current } = Astro.props;
+const { current, overlay = false } = Astro.props;
 
 // Pages flag their section via `current` (e.g. "products"); the Shop row/link
 // is the entry point for that whole section, so treat either name as active.
@@ -14,7 +15,7 @@ const isActive = (label: string) => {
 };
 ---
 
-<nav id="nav">
+<nav id="nav" class:list={{ overlay }}>
   <div class="nav-inner wrap">
     <a href="/" class="nav-logo" aria-label="Wawa Surfboards home">
       <img src="/logotype.svg" alt="Wawa" width="92" height="24" />
@@ -131,6 +132,25 @@ const isActive = (label: string) => {
     border-bottom: 1px solid var(--rule);
     transition: background 0.3s var(--ease), border-color 0.3s var(--ease),
       height 0.3s var(--ease);
+  }
+  /* Over the hero (homepage) the bar floats transparent with cream marks until
+     the page scrolls past the fold, then settles into the solid cream header. */
+  #nav.overlay:not(.scrolled):not(.menu-open) {
+    background: transparent;
+    border-bottom-color: transparent;
+  }
+  #nav.overlay:not(.scrolled):not(.menu-open) .nav-link,
+  #nav.overlay:not(.scrolled):not(.menu-open) .nav-cart {
+    color: var(--cream);
+  }
+  #nav.overlay:not(.scrolled):not(.menu-open) .nav-link.active {
+    color: var(--cream);
+  }
+  #nav.overlay:not(.scrolled):not(.menu-open) .nav-burger {
+    color: var(--cream);
+  }
+  #nav.overlay:not(.scrolled):not(.menu-open) .nav-logo img {
+    filter: brightness(0) invert(1);
   }
   .nav-inner {
     position: relative;
