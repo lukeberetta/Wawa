@@ -37,6 +37,16 @@
       // fire a little before the element's top edge reaches the fold
       { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
     );
-    document.querySelectorAll<HTMLElement>('.fade-in').forEach((el) => io.observe(el));
+    document.querySelectorAll<HTMLElement>('.fade-in').forEach((el) => {
+      // Above-the-fold elements (e.g. the hero CTA) can land inside the
+      // observer's -8% bottom margin and never fire on load, leaving them stuck
+      // hidden. Reveal anything already in the real viewport up front.
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        el.classList.add('in');
+      } else {
+        io.observe(el);
+      }
+    });
   }
 </script>
