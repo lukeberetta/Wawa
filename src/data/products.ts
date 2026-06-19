@@ -29,8 +29,7 @@ export const products: Product[] = [
     priceRange: { minVariantPrice: zar('16500.00') },
     images: [studio('fish-front', 'Wawa Classic Fish, deck'), studio('fish-back', 'Wawa Classic Fish, hull')],
     featured: true,
-    // Sample spec copy — replace with the client's real values. Two blocks:
-    // performance, then build.
+    // Spec table. Two blocks: performance, then build.
     specs: [
       [
         { label: 'Best For', value: 'Small to large waves' },
@@ -55,6 +54,18 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('17000.00') },
     images: [img('gun-fish-front', 'Wawa Gun Fish, deck'), img('gun-fish-back', 'Wawa Gun Fish, hull')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Medium to overhead waves' },
+        { label: 'Board Feel', value: 'Drive and hold' },
+        { label: 'Skill Level', value: 'Intermediate to advanced' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
   },
   {
     id: 'mock/mini-simmons',
@@ -68,6 +79,18 @@ export const products: Product[] = [
     priceRange: { minVariantPrice: zar('15000.00') },
     images: [img('simmons-front', 'Wawa Mini-Simmons, deck'), img('simmons-back', 'Wawa Mini-Simmons, hull')],
     featured: true,
+    specs: [
+      [
+        { label: 'Best For', value: 'Small to medium waves' },
+        { label: 'Board Feel', value: 'Quick and planing' },
+        { label: 'Skill Level', value: 'Beginner to advanced' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
   },
   {
     id: 'mock/paipo',
@@ -80,6 +103,18 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('9000.00') },
     images: [img('paipo-front', 'Wawa Paipo, top'), img('paipo-back', 'Wawa Paipo, base')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Punchy beach breaks' },
+        { label: 'Board Feel', value: 'Short and fast' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Finned or finless' },
+      ],
+    ],
   },
 
   // ── SURF · Mid ───────────────────────────────
@@ -95,6 +130,18 @@ export const products: Product[] = [
     priceRange: { minVariantPrice: zar('16500.00') },
     images: [studio('mid-front', 'Wawa Speed Egg, deck'), studio('mid-back', 'Wawa Speed Egg, hull')],
     featured: true,
+    specs: [
+      [
+        { label: 'Best For', value: 'Small to overhead waves' },
+        { label: 'Board Feel', value: 'Smooth and fast' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
   },
   {
     id: 'mock/long-fish',
@@ -108,6 +155,18 @@ export const products: Product[] = [
     priceRange: { minVariantPrice: zar('18000.00') },
     images: [img('long-fish-front', 'Wawa Long Fish, deck'), img('long-fish-back', 'Wawa Long Fish, hull')],
     featured: true,
+    specs: [
+      [
+        { label: 'Best For', value: 'Hip-high to overhead' },
+        { label: 'Board Feel', value: 'Flowing and fast' },
+        { label: 'Skill Level', value: 'Intermediate' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
   },
 
   // ── SURF · Long ──────────────────────────────
@@ -123,6 +182,18 @@ export const products: Product[] = [
     priceRange: { minVariantPrice: zar('28500.00') },
     images: [img('pig-longboard-front', 'Wawa Model P, deck'), img('pig-longboard-back', 'Wawa Model P, hull')],
     featured: true,
+    specs: [
+      [
+        { label: 'Best For', value: 'Small to medium waves' },
+        { label: 'Board Feel', value: 'Trim and turn' },
+        { label: 'Skill Level', value: 'Intermediate to advanced' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
   },
   {
     id: 'mock/model-t',
@@ -135,6 +206,18 @@ export const products: Product[] = [
     availableForSale: true,
     priceRange: { minVariantPrice: zar('28500.00') },
     images: [studio('longboard-front', 'Wawa Model T, deck'), studio('longboard-back', 'Wawa Model T, hull')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Small to medium waves' },
+        { label: 'Board Feel', value: 'Smooth and controlled' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Timber & cork over EPS' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
   },
 
   // ── SURF · Finless ───────────────────────────
@@ -150,6 +233,18 @@ export const products: Product[] = [
     priceRange: { minVariantPrice: zar('12000.00') },
     images: [studio('alaia-front', 'Wawa Alaia, top'), studio('alaia-back', 'Wawa Alaia, base')],
     featured: true,
+    specs: [
+      [
+        { label: 'Best For', value: 'Clean, open faces' },
+        { label: 'Board Feel', value: 'Fast and slippery' },
+        { label: 'Skill Level', value: 'Advanced' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Solid timber' },
+        { label: 'Finish', value: 'Oiled' },
+      ],
+    ],
   },
 
   // ── FOIL ─────────────────────────────────────
@@ -164,6 +259,18 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('19000.00') },
     images: [img('foil-prone-front', 'Wawa prone foilboard, deck'), img('foil-prone-back', 'Wawa prone foilboard, hull')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Open-ocean swell' },
+        { label: 'Board Feel', value: 'Stable then loose' },
+        { label: 'Skill Level', value: 'Intermediate to advanced' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Speed skin' },
+      ],
+    ],
   },
   {
     id: 'mock/foil-wave',
@@ -177,6 +284,18 @@ export const products: Product[] = [
     priceRange: { minVariantPrice: zar('20000.00') },
     images: [img('foil-wave-front', 'Wawa wave foilboard, deck'), img('foil-wave-back', 'Wawa wave foilboard, hull')],
     featured: true,
+    specs: [
+      [
+        { label: 'Best For', value: 'Open-ocean swell' },
+        { label: 'Board Feel', value: 'Light and lively' },
+        { label: 'Skill Level', value: 'Intermediate to advanced' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Timber & cork' },
+        { label: 'Finish', value: 'Speed skin' },
+      ],
+    ],
   },
   {
     id: 'mock/foil-wing',
@@ -189,6 +308,18 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('20000.00') },
     images: [img('foil-wing-front', 'Wawa wing foilboard, deck'), img('foil-wing-back', 'Wawa wing foilboard, hull')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Wind and wing' },
+        { label: 'Board Feel', value: 'Stable and forgiving' },
+        { label: 'Skill Level', value: 'Beginner to intermediate' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Speed skin' },
+      ],
+    ],
   },
   {
     id: 'mock/foil-custom',
@@ -201,6 +332,18 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('22000.00') },
     images: [img('foil-custom-front', 'Wawa custom foilboard, deck'), img('foil-custom-back', 'Wawa custom foilboard, hull')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Your discipline' },
+        { label: 'Board Feel', value: 'Built to spec' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Timber over recycled foam, cork rails' },
+        { label: 'Finish', value: 'Speed skin' },
+      ],
+    ],
   },
 
   // ── KITE ─────────────────────────────────────
@@ -215,6 +358,18 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('14000.00') },
     images: [img('kite-tomo-front', 'Wawa Tomo kiteboard, deck'), img('kite-tomo-back', 'Wawa Tomo kiteboard, base')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Strong wind' },
+        { label: 'Board Feel', value: 'Fast and direct' },
+        { label: 'Skill Level', value: 'Intermediate to advanced' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Timber & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
   },
   {
     id: 'mock/kite-trick',
@@ -227,6 +382,18 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('14000.00') },
     images: [img('kite-trick-front', 'Wawa Trick kiteboard, deck'), img('kite-trick-back', 'Wawa Trick kiteboard, base')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Flat water and chop' },
+        { label: 'Board Feel', value: 'Lively and snappy' },
+        { label: 'Skill Level', value: 'Intermediate to advanced' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
   },
   {
     id: 'mock/kite-vlieer',
@@ -239,6 +406,18 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('15000.00') },
     images: [img('kite-vlieer-front', 'Wawa Vlieer kiteboard, deck'), img('kite-vlieer-back', 'Wawa Vlieer kiteboard, base')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Flat water and small swell' },
+        { label: 'Board Feel', value: 'Smooth and damp' },
+        { label: 'Skill Level', value: 'Intermediate' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Timber & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
   },
 
   // ── SKATE ────────────────────────────────────
@@ -253,6 +432,18 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('4500.00') },
     images: [img('wooden-cruiser-front', 'Wawa wooden cruiser, top'), img('wooden-cruiser-back', 'Wawa wooden cruiser, base')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Flat days and cruising' },
+        { label: 'Board Feel', value: 'Warm and lively' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
   },
 
   // ── BODY & BELLY ─────────────────────────────
@@ -268,6 +459,18 @@ export const products: Product[] = [
     priceRange: { minVariantPrice: zar('1200.00') },
     images: [studio('handslide-front', 'Wawa Handslide, top'), studio('handslide-back', 'Wawa Handslide, base')],
     featured: true,
+    specs: [
+      [
+        { label: 'Best For', value: 'Any wave' },
+        { label: 'Board Feel', value: 'Fast and direct' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
   },
   {
     id: 'mock/bellyboard',
@@ -280,6 +483,18 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('6000.00') },
     images: [studio('bodyboard-front', 'Wawa Bellyboard, deck'), studio('bodyboard-back', 'Wawa Bellyboard, hull')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Punchy beach breaks' },
+        { label: 'Board Feel', value: 'Fast and direct' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia veneer over recycled foam, cork rails' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
   },
 
   // ── ACCESSORIES ──────────────────────────────
@@ -295,6 +510,18 @@ export const products: Product[] = [
     variantId: '41267104809024',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [img('beach-bats-front', 'Wawa wood and cork beach bats'), img('beach-bats-back', 'Wawa beach bats, detail')],
+    specs: [
+      [
+        { label: 'Used For', value: 'Beach games' },
+        { label: 'In the Set', value: 'Two bats, ball, gift card & beach bag' },
+        { label: 'For', value: 'All ages' },
+      ],
+      [
+        { label: 'Material', value: 'Birch & cork' },
+        { label: 'Finish', value: 'Beeswax & oil' },
+        { label: 'Made In', value: 'Cape Town' },
+      ],
+    ],
   },
   {
     id: 'mock/cotton-duck-cover',
@@ -308,6 +535,17 @@ export const products: Product[] = [
     variantId: '41267104841792',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [img('boardbag-front', 'Wawa cotton duck board cover'), img('boardbag-back', 'Wawa board cover, detail')],
+    specs: [
+      [
+        { label: 'Used For', value: 'Storage & travel' },
+        { label: 'Protects From', value: 'UV, heat & everyday knocks' },
+        { label: 'Fits', value: 'Single board' },
+      ],
+      [
+        { label: 'Material', value: 'Cotton-duck canvas' },
+        { label: 'Weave', value: 'Heavy-duty plain weave' },
+      ],
+    ],
   },
   {
     id: 'mock/geoprene-jacket',
@@ -321,6 +559,18 @@ export const products: Product[] = [
     variantId: '41267104874560',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [img('wetsuit-front', 'Wawa Geoprene wetsuit jacket'), img('wetsuit-back', 'Wawa wetsuit jacket, detail')],
+    specs: [
+      [
+        { label: 'Used For', value: 'Summer swells' },
+        { label: 'Thickness', value: '2mm' },
+        { label: 'Features', value: 'Front zip, padded chest' },
+      ],
+      [
+        { label: 'Material', value: 'Japanese Yamamoto rubber' },
+        { label: 'Finish', value: 'Glossy Sealskin' },
+        { label: 'Made In', value: 'Cape Town' },
+      ],
+    ],
   },
   {
     id: 'mock/fins',
@@ -334,6 +584,16 @@ export const products: Product[] = [
     variantId: '41267104907328',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [img('fins-front', 'Wawa timber fins'), img('fins-back', 'Wawa fins, detail')],
+    specs: [
+      [
+        { label: 'Used For', value: 'Driving your Wawa board' },
+        { label: 'Configurations', value: 'Keels, singles & 2+1 sets' },
+      ],
+      [
+        { label: 'Material', value: 'Timber & cork' },
+        { label: 'Finish', value: 'Hand-finished' },
+      ],
+    ],
   },
   {
     id: 'mock/wax-comb',
@@ -347,6 +607,15 @@ export const products: Product[] = [
     variantId: '41267104940096',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [img('wax-comb', 'Wawa wooden wax comb')],
+    specs: [
+      [
+        { label: 'Used For', value: 'Combing bumps & scraping old wax' },
+      ],
+      [
+        { label: 'Material', value: 'Offcut paulownia & cork' },
+        { label: 'Finish', value: 'Hand-shaped & sealed' },
+      ],
+    ],
   },
   {
     id: 'mock/art-prints',
@@ -360,6 +629,15 @@ export const products: Product[] = [
     variantId: '41267104972864',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [img('art-prints-front', 'Wawa poster print'), img('art-prints-back', 'Wawa art print, detail')],
+    specs: [
+      [
+        { label: 'Used For', value: 'Wall art' },
+        { label: 'Subject', value: 'Timber, ocean & the craft' },
+      ],
+      [
+        { label: 'Format', value: 'Original artwork & prints' },
+      ],
+    ],
   },
   {
     id: 'mock/myo-experience',
@@ -373,5 +651,16 @@ export const products: Product[] = [
     variantId: '41267105005632',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [img('myo-experience-front', 'Wawa make your own surfboard experience'), img('myo-experience-back', 'Wawa shaping workshop, detail')],
+    specs: [
+      [
+        { label: 'Used For', value: 'Shaping your own surfboard' },
+        { label: 'Format', value: 'Seven 3-hour sessions' },
+        { label: 'Location', value: 'Our workshop' },
+      ],
+      [
+        { label: 'You Build', value: 'Timber & cork board, blank to seal' },
+        { label: 'Also', value: 'Available as a gift card' },
+      ],
+    ],
   },
 ];
