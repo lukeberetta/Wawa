@@ -34,7 +34,7 @@ export const products: Product[] = [
       [
         { label: 'Best For', value: 'Small to large waves' },
         { label: 'Board Feel', value: 'Fast and loose' },
-        { label: 'Skill Level', value: "Step up, step down — this one's for everyone" },
+        { label: 'Skill Level', value: "Step up, step down, this one's for everyone" },
       ],
       [
         { label: 'Designer', value: 'Cobus Joubert' },
@@ -48,7 +48,7 @@ export const products: Product[] = [
     handle: 'gun-fish',
     title: 'Gun Fish',
     description:
-      'A higher-performance twin. Inspired by 1970s Steve Lis designs, the Gun Fish drives from the centre. The tapered tail holds speed in medium to overhead surf, with tight pivot and strong drive off the bottom. Domed or bevelled deck.',
+      'A higher-performance fish, drawing on Skip Frye, Larry Gephart and Steve Lis. It drives from the centre, and the tapered tail delivers speed and effortless flow in medium to overhead surf. Strong hold, tight pivot and powerful projection. Domed or bevelled deck.',
     productType: 'Surf',
     tags: ['Short'],
     availableForSale: false,
@@ -89,30 +89,6 @@ export const products: Product[] = [
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
         { label: 'Finish', value: 'Matte' },
-      ],
-    ],
-  },
-  {
-    id: 'mock/paipo',
-    handle: 'paipo',
-    title: 'Paipo',
-    description:
-      'Along with the alaia, the wave-riding craft of pre-contact Hawaii. Short, wide and fast, the punk rock of surfing. Finned (after boards ridden by Valentine Chang) or finless, in four models: the Bullet, the Godfather, Dr. Strangelove and Purple Haze.',
-    productType: 'Surf',
-    tags: ['Short', 'Finless'],
-    availableForSale: false,
-    priceRange: { minVariantPrice: zar('9000.00') },
-    images: [img('paipo-front', 'Wawa Paipo, top'), img('paipo-back', 'Wawa Paipo, base')],
-    specs: [
-      [
-        { label: 'Best For', value: 'Punchy beach breaks' },
-        { label: 'Board Feel', value: 'Short and fast' },
-        { label: 'Skill Level', value: 'All levels' },
-      ],
-      [
-        { label: 'Designer', value: 'Cobus Joubert' },
-        { label: 'Material', value: 'Paulownia & cork' },
-        { label: 'Finish', value: 'Finned or finless' },
       ],
     ],
   },
@@ -215,6 +191,31 @@ export const products: Product[] = [
       [
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Timber & cork over EPS' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
+
+  {
+    id: 'mock/model-l',
+    handle: 'model-l-longboard',
+    title: 'Model L Longboard',
+    description:
+      'Our ultra high-performance log, built for speed, control and modern manoeuvres in a classic outline. Thinner, with more rocker and less volume than the Model T and Model P, so it handles steeper waves and tighter pockets with ease. A responsive 2+1 fin setup, foiled rails, a refined nose scoop and a fast double concave into a vee tail. The plan shape and foil hold their line on late drops. A true speedster, small surf to serious.',
+    productType: 'Surf',
+    tags: ['Long'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: zar('30000.00') },
+    images: [img('model-l-front', 'Wawa Model L, deck'), img('model-l-back', 'Wawa Model L, hull')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Small surf to serious' },
+        { label: 'Board Feel', value: 'Fast and responsive' },
+        { label: 'Skill Level', value: 'Advanced' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
         { label: 'Finish', value: 'Matte' },
       ],
     ],
@@ -447,6 +448,30 @@ export const products: Product[] = [
   },
 
   // ── BODY & BELLY ─────────────────────────────
+  {
+    id: 'mock/paipo',
+    handle: 'paipo',
+    title: 'Paipo',
+    description:
+      'Along with the alaia, the wave-riding craft of pre-contact Hawaii. Short, wide and fast, the punk rock of surfing, ridden finned after the boards of Valentine Chang or finless. Four models: the Bullet, a fast prone bodyboard ridden with swim fins; the Godfather, a wide planing hull built purely for speed; Dr. Strangelove, a tiny solid-wood mini Simmons with twin keels and a kicked nose for steep drops; and Purple Haze, a one-off shaped from Himalayan timber that turns purple once oiled.',
+    productType: 'Body & Belly',
+    tags: ['Paipo'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: zar('9000.00') },
+    images: [img('paipo-front', 'Wawa Paipo, top'), img('paipo-back', 'Wawa Paipo, base')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Punchy beach breaks' },
+        { label: 'Board Feel', value: 'Short and fast' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Finned or finless' },
+      ],
+    ],
+  },
   {
     id: 'mock/handslide',
     handle: 'handslide',
