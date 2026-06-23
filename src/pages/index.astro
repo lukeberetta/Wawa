@@ -3,8 +3,26 @@ import Layout from '@/layouts/Layout.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import CategoryCard from '@/components/CategoryCard.astro';
 import { getFeatured, disciplines } from '@/lib/catalog';
+import { site } from '@/lib/site';
 
 const featured = await getFeatured();
+
+// Instagram mosaic. `area` maps each tile to a named cell in the desktop grid
+// (see #instagram CSS); `feat` is the large 2×2 centre and the only tile that
+// carries an overlay caption. Stand-in imagery from /img until a real IG feed
+// is wired; alt left empty (decorative — the link already announces itself).
+// DOM order is tuned for the mobile flow (feat is full-width, so it must land on
+// an even boundary to avoid leaving a hole). Desktop ignores order — it places
+// by named grid-area. Tiles are .wf-ph placeholders for now (wireframe phase).
+const igTiles = [
+  { area: 'a', feat: false, caption: 'In the workshop.' },
+  { area: 'b', feat: false, caption: 'Fresh off the rack.' },
+  { area: 'feat', feat: true, caption: 'Paulownia, by hand, in Muizenberg.' },
+  { area: 'c', feat: false, caption: 'Coffee and shavings.' },
+  { area: 'd', feat: false, caption: 'Muizenberg mornings.' },
+  { area: 'e', feat: false, caption: 'The Wawa cafe.' },
+  { area: 'f', feat: false, caption: 'Sawdust and salt.' },
+];
 ---
 
 <Layout current="home" overlay={true}>
@@ -73,6 +91,46 @@ const featured = await getFeatured();
       </div>
       <div class="section-foot fade-in">
         <a href="/products" class="link-arrow">View all products <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM -->
+  <section id="instagram">
+    <div class="wrap">
+      <div class="section-head fade-in">
+        <p class="label">Instagram</p>
+        <h2>From the feed.</h2>
+      </div>
+    </div>
+    <div class="ig-grid fade-in">
+      {igTiles.map((t) => (
+        <a
+          href={site.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          class:list={['ig-tile', 'wf-ph', `ig-tile--${t.area}`, { 'ig-tile--feat': t.feat }]}
+          aria-label="View on Instagram"
+        >
+          {t.caption && (
+            <div class="ig-caption">
+              <p class="ig-caption-text">{t.caption}</p>
+              <p class="ig-caption-src">From Instagram</p>
+            </div>
+          )}
+          <svg class="ig-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" />
+          </svg>
+        </a>
+      ))}
+    </div>
+    <div class="wrap">
+      <div class="section-foot fade-in">
+        <a href={site.instagram} target="_blank" rel="noopener noreferrer" class="link-arrow">
+          Follow along <span class="arrow">→</span>
+        </a>
       </div>
     </div>
   </section>
@@ -275,6 +333,111 @@ const featured = await getFeatured();
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  /* instagram mosaic: editorial tile wall. mobile is a plain 2-up grid; desktop
+     becomes a named-area mosaic with one large 2×2 feature tile. tiles are .wf-ph
+     placeholders for now — swap in real <img> once imagery lands. */
+  #instagram {
+    padding: var(--space-section) 0;
+    border-top: 1px solid var(--rule);
+  }
+  /* tight hairline grid, same frame treatment as .product-grid: the container
+     draws the top + left rule, each tile draws its own right + bottom rule, so
+     internal lines never double up. */
+  .ig-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-inline: calc(50% - 50vw);
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+  }
+  .ig-tile {
+    position: relative;
+    display: block;
+    aspect-ratio: 1;
+    overflow: hidden;
+    color: var(--cream);
+    /* override .wf-ph's full border with single right + bottom hairlines */
+    border: 0;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  /* mobile: feature spans the full width on its own row so the 2-up flow never
+     leaves a hole. */
+  .ig-tile--feat {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 10;
+  }
+  .ig-glyph {
+    position: absolute;
+    right: 0.85rem;
+    bottom: 0.85rem;
+    width: 22px;
+    height: 22px;
+    color: var(--ink);
+    opacity: 0.55;
+    pointer-events: none;
+    transition: color 0.35s var(--ease), opacity 0.35s var(--ease);
+  }
+  /* caption + gradient are hidden until hover, then fade up over the tile */
+  .ig-caption {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 1;
+    padding: 1.25rem 1.25rem 1.5rem;
+    background: linear-gradient(180deg, transparent, rgba(26, 20, 16, 0.78));
+    color: var(--cream);
+    opacity: 0;
+    transition: opacity 0.35s var(--ease);
+    pointer-events: none;
+  }
+  @media (hover: hover) {
+    .ig-tile:hover .ig-caption {
+      opacity: 1;
+    }
+    /* glyph flips to cream over the dark gradient while the caption is up */
+    .ig-tile:hover .ig-glyph {
+      color: var(--cream);
+      opacity: 0.92;
+      filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.45));
+    }
+  }
+  .ig-caption-text {
+    font-size: 1.05rem;
+    line-height: 1.25;
+    max-width: 22ch;
+  }
+  .ig-caption-src {
+    margin-top: 0.6rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+  @media (min-width: 768px) {
+    .ig-grid {
+      grid-template-columns: repeat(4, 1fr);
+      /* fixed, viewport-scaled row tracks. cells fill their track (object-fit
+         cover) instead of carrying their own aspect-ratio, so heights line up
+         and there are no gaps. feature spans two rows → naturally 2× tall. */
+      grid-template-rows: repeat(3, clamp(160px, 17vw, 300px));
+      grid-template-areas:
+        'a b c d'
+        'a feat feat d'
+        'e feat feat f';
+    }
+    /* tiles flow into named cells only at desktop; on mobile the grid-area names
+       are absent and tiles fall back to plain 2-up flow order. clearing
+       aspect-ratio lets each tile stretch to its grid track. */
+    .ig-tile { aspect-ratio: auto; }
+    .ig-tile--a { grid-area: a; }
+    .ig-tile--b { grid-area: b; }
+    .ig-tile--c { grid-area: c; }
+    .ig-tile--d { grid-area: d; }
+    .ig-tile--e { grid-area: e; }
+    .ig-tile--f { grid-area: f; }
+    .ig-tile--feat { grid-area: feat; }
   }
 
   /* perks strip: full-bleed hairline band. mobile-first — stacked with
