@@ -69,14 +69,6 @@ export function setQty(variantId: string, qty: number): void {
   write(lines);
 }
 
-export function remove(variantId: string): void {
-  setQty(variantId, 0);
-}
-
-export function clear(): void {
-  write([]);
-}
-
 /** Subscribe to cart changes (same tab via CustomEvent, other tabs via storage). */
 export function onChange(cb: (lines: CartLine[]) => void): void {
   window.addEventListener(EVT, (e) => cb((e as CustomEvent<CartLine[]>).detail));

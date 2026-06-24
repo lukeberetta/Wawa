@@ -19,10 +19,6 @@ export async function getFeatured(): Promise<Product[]> {
   return mockProducts.filter((p) => p.featured);
 }
 
-export async function getProduct(handle: string): Promise<Product | undefined> {
-  return mockProducts.find((p) => p.handle === handle);
-}
-
 /** Stable slug: lowercase, drop punctuation, collapse to single hyphens. */
 export function slug(s: string): string {
   return s
@@ -30,10 +26,6 @@ export function slug(s: string): string {
     .replace(/&/g, ' ')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
-}
-
-export async function getByDiscipline(handle: string): Promise<Product[]> {
-  return mockProducts.filter((p) => slug(p.productType) === handle);
 }
 
 export { disciplines };
