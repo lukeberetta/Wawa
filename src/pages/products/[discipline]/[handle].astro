@@ -285,14 +285,23 @@ const jsonLd = {
     background: var(--ink);
     transform: scale(1.15);
   }
-  /* desktop: keep the image grand but stop it filling the whole viewport */
+  /* desktop: full-bleed scroll gallery — square slides sized by height, laid
+     flush across the full viewport width so neighbouring images peek in with no
+     side or middle gaps; the rail reads as scrollable. */
   @media (min-width: 900px) {
-    .carousel {
-      max-width: 880px;
-      margin-inline: auto;
+    .car-slide {
+      flex: 0 0 auto;
+      scroll-snap-align: center;
     }
     .slide-media {
-      aspect-ratio: 5 / 6;
+      /* 1:1, height-driven so the section never exceeds 70vh */
+      width: auto;
+      height: 70vh;
+      aspect-ratio: 1 / 1;
+    }
+    /* peeking neighbours signal the rail is scrollable — dots are redundant */
+    .car-dots {
+      display: none;
     }
   }
 
