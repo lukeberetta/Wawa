@@ -102,16 +102,16 @@ const year = new Date().getFullYear();
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--cream);
-    background: transparent;
-    border: 1px solid color-mix(in srgb, var(--cream) 55%, transparent);
+    background: rgba(255, 255, 255, 0.12);
+    border: 0;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     padding: 0.85rem 1.6rem;
     cursor: pointer;
-    transition: background 0.2s var(--ease), color 0.2s var(--ease), gap 0.3s var(--ease);
+    transition: background 0.2s var(--ease), gap 0.3s var(--ease);
   }
   .f-order:hover {
-    background: var(--cream);
-    color: var(--ink);
-    border-color: var(--cream);
+    background: rgba(255, 255, 255, 0.2);
     gap: 0.9rem;
   }
   .f-meta {
