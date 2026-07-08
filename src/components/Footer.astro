@@ -20,6 +20,9 @@ const year = new Date().getFullYear();
   </video>
   <div class="footer-inner wrap">
     <p class="f-statement">Made slowly.<br />Ridden forever.</p>
+    <button class="f-order" type="button" data-order>
+      Order a board <span aria-hidden="true">→</span>
+    </button>
     <p class="f-meta">© {year} {site.name}</p>
   </div>
 </footer>
@@ -89,6 +92,27 @@ const year = new Date().getFullYear();
     line-height: 1;
     letter-spacing: -0.01em;
     color: var(--cream);
+  }
+  .f-order {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: inherit;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: transparent;
+    border: 1px solid color-mix(in srgb, var(--cream) 55%, transparent);
+    padding: 0.85rem 1.6rem;
+    cursor: pointer;
+    transition: background 0.2s var(--ease), color 0.2s var(--ease), gap 0.3s var(--ease);
+  }
+  .f-order:hover {
+    background: var(--cream);
+    color: var(--ink);
+    border-color: var(--cream);
+    gap: 0.9rem;
   }
   .f-meta {
     font-size: 0.78rem;

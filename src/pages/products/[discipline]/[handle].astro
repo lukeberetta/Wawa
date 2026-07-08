@@ -2,7 +2,7 @@
 import Layout from '@/layouts/Layout.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import { disciplines, getProducts, slug, formatPrice } from '@/lib/catalog';
-import { site, whatsappLink } from '@/lib/site';
+import { site } from '@/lib/site';
 import type { Product, Discipline } from '@/lib/types';
 
 export async function getStaticPaths() {
@@ -33,7 +33,6 @@ const price = formatPrice(product);
 const hasPrice = price !== 'Enquire';
 // Mirror ProductCard: buyable only with stock + variant id + a configured shop.
 const buyable = product.availableForSale && !!product.variantId && !!site.shopDomain;
-const enquire = whatsappLink(`Hi Wawa, I'm interested in the ${product.title}.`);
 
 const images = product.images;
 const lead = images[0];
@@ -113,14 +112,15 @@ const jsonLd = {
                     Add to cart
                   </button>
                 ) : (
-                  <a
+                  <button
                     class="pdp-action"
-                    href={enquire}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    data-order
+                    data-order-discipline={slug(product.productType)}
+                    data-order-category={category}
+                    data-order-title={product.title}
                   >
                     Enquire on WhatsApp
-                  </a>
+                  </button>
                 )
               }
               {
@@ -189,9 +189,15 @@ const jsonLd = {
               Add to cart
             </button>
           ) : (
-            <a class="pdp-bar-action" href={enquire} target="_blank" rel="noopener noreferrer">
+            <button
+              class="pdp-bar-action"
+              data-order
+              data-order-discipline={slug(product.productType)}
+              data-order-category={category}
+              data-order-title={product.title}
+            >
               Enquire
-            </a>
+            </button>
           )
         }
       </div>

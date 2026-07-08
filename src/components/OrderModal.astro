@@ -1,0 +1,470 @@
+---
+/**
+ * Global "Order a board" modal. Collects the customer-suppliable slice of the
+ * WAWA Surf Craft Order Sheet (rider + top board fields), then hands off to a
+ * pre-filled WhatsApp chat — WhatsApp is the phase-1 order channel. Every field
+ * is optional; empty fields (and empty sections) are dropped from the message.
+ *
+ * Opened via delegated clicks on any [data-order] element. A trigger may carry
+ * data-order-discipline / data-order-category / data-order-title to pre-fill the
+ * board selects from a product (PDP). Mounted once in Layout.astro, next to the
+ * cart drawer, whose overlay/panel + focus-trap + scroll-lock idiom this mirrors.
+ */
+import { disciplines, slug } from '@/lib/catalog';
+
+// Board disciplines only — accessories aren't made-to-order builds.
+const boardDisciplines = disciplines.filter((d) => d.handle !== 'accessories');
+// discipline handle -> sub-categories, for client-side sub-category repopulation.
+const categoryMap = Object.fromEntries(
+  boardDisciplines.map((d) => [d.handle, d.categories]),
+);
+const skills = ['Beginner', 'Intermediate', 'Advanced', 'Pro'];
+const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'Not sure'];
+---
+
+<div class="order-overlay" hidden></div>
+<div
+  id="order-modal"
+  class="order-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="order-title"
+  aria-hidden="true"
+>
+  <div class="order-panel">
+    <header class="order-head">
+      <h2 id="order-title">Start your board</h2>
+      <button class="order-close" type="button" aria-label="Close">&times;</button>
+    </header>
+
+    <form class="order-body" data-order-form data-lenis-prevent>
+      <p class="order-intro">
+        Tell us what you're after. Everything's optional — the more you share,
+        the better we can shape it. Sends straight to us on WhatsApp.
+      </p>
+
+      <fieldset class="order-group">
+        <legend class="label">Board</legend>
+        <div class="order-grid">
+          <label class="order-field">
+            <span>Discipline</span>
+            <select name="discipline" data-order-discipline>
+              <option value="">Select…</option>
+              {boardDisciplines.map((d) => (
+                <option value={d.handle} data-title={d.title}>{d.title}</option>
+              ))}
+            </select>
+          </label>
+          <label class="order-field" data-subcat-field>
+            <span>Type</span>
+            <select name="subcategory" data-order-subcategory>
+              <option value="">Select…</option>
+            </select>
+          </label>
+          <label class="order-field">
+            <span>Length</span>
+            <input type="text" name="length" placeholder="e.g. 5'8&quot;" autocomplete="off" />
+          </label>
+          <label class="order-field">
+            <span>Fin setup</span>
+            <select name="finSetup">
+              <option value="">Select…</option>
+              {finSetups.map((f) => <option value={f}>{f}</option>)}
+            </select>
+          </label>
+          <label class="order-field order-field-wide">
+            <span>Wave you surf most</span>
+            <input type="text" name="wave" placeholder="Beachbreak, point, mushy…" autocomplete="off" />
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="order-group">
+        <legend class="label">You</legend>
+        <div class="order-grid">
+          <label class="order-field order-field-wide">
+            <span>Name</span>
+            <input type="text" name="name" autocomplete="name" />
+          </label>
+          <label class="order-field">
+            <span>Height</span>
+            <input type="text" name="height" placeholder="e.g. 180cm" autocomplete="off" />
+          </label>
+          <label class="order-field">
+            <span>Weight</span>
+            <input type="text" name="weight" placeholder="e.g. 75kg" autocomplete="off" />
+          </label>
+          <label class="order-field">
+            <span>Age</span>
+            <input type="text" name="age" inputmode="numeric" autocomplete="off" />
+          </label>
+          <label class="order-field">
+            <span>Skill level</span>
+            <select name="skill">
+              <option value="">Select…</option>
+              {skills.map((s) => <option value={s}>{s}</option>)}
+            </select>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="order-group">
+        <legend class="label">Anything else</legend>
+        <label class="order-field order-field-wide">
+          <span class="order-sr">Notes</span>
+          <textarea name="additional" rows="3" placeholder="Colours, timeline, references, questions…"></textarea>
+        </label>
+      </fieldset>
+
+      <div class="order-actions">
+        <button class="order-submit" type="submit">
+          Send on WhatsApp <span aria-hidden="true">→</span>
+        </button>
+        <button class="order-submit order-submit-ghost" type="button" data-order-email>
+          Send by email
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <script type="application/json" data-order-categories set:html={JSON.stringify(categoryMap)}></script>
+</div>
+
+<style>
+  .order-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 127;
+    background: color-mix(in srgb, var(--ink) 48%, transparent);
+    opacity: 0;
+    transition: opacity 0.3s var(--ease);
+  }
+  .order-overlay.open {
+    opacity: 1;
+  }
+  .order-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 128;
+    display: grid;
+    place-items: center;
+    padding: 1.25rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s var(--ease);
+  }
+  .order-modal.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .order-panel {
+    width: min(92vw, 480px);
+    max-height: min(88dvh, 760px);
+    display: flex;
+    flex-direction: column;
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    transform: translateY(14px) scale(0.98);
+    transition: transform 0.4s var(--ease);
+  }
+  .order-modal.open .order-panel {
+    transform: translateY(0) scale(1);
+  }
+  .order-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid var(--rule);
+    flex: none;
+  }
+  .order-head h2 {
+    font-size: var(--fs-h3);
+    font-weight: var(--fw-light);
+    letter-spacing: 0.01em;
+  }
+  .order-close {
+    background: none;
+    border: 0;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 0 0.1rem;
+    transition: color 0.2s var(--ease);
+  }
+  .order-close:hover {
+    color: var(--ink);
+  }
+  .order-body {
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 1.25rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .order-intro {
+    font-size: 0.9rem;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+  .order-group {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .order-group .label {
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+  .order-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem 1rem;
+  }
+  .order-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .order-field-wide {
+    grid-column: 1 / -1;
+  }
+  .order-field > span {
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+  }
+  .order-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .order-field input,
+  .order-field select,
+  .order-field textarea {
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    border-radius: 0;
+    padding: 0.6rem 0.7rem;
+    width: 100%;
+    transition: border-color 0.2s var(--ease);
+  }
+  .order-field textarea {
+    resize: vertical;
+    min-height: 4.5rem;
+  }
+  .order-field input:focus,
+  .order-field select:focus,
+  .order-field textarea:focus {
+    outline: none;
+    border-color: var(--warm);
+    box-shadow: 0 0 0 1px var(--warm);
+  }
+  .order-field select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+      linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position: calc(100% - 15px) 55%, calc(100% - 10px) 55%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 1.75rem;
+  }
+  .order-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .order-submit {
+    flex: 1 1 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    font-family: inherit;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--ink);
+    border: 1px solid var(--ink);
+    padding: 0.95rem 1.5rem;
+    cursor: pointer;
+    transition: opacity 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease);
+  }
+  .order-submit:hover {
+    opacity: 0.85;
+  }
+  .order-submit-ghost {
+    color: var(--ink);
+    background: transparent;
+    border-color: var(--rule);
+  }
+  .order-submit-ghost:hover {
+    opacity: 1;
+    background: var(--ink);
+    color: var(--cream);
+    border-color: var(--ink);
+  }
+
+  @media (max-width: 480px) {
+    .order-grid {
+      grid-template-columns: 1fr;
+    }
+    .order-field-wide {
+      grid-column: auto;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .order-overlay,
+    .order-modal,
+    .order-panel {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { lockScroll } from '@/lib/scrollLock';
+  import { trapFocus } from '@/lib/focusTrap';
+  import { whatsappLink, site } from '@/lib/site';
+
+  const modal = document.getElementById('order-modal');
+  const overlay = document.querySelector<HTMLDivElement>('.order-overlay');
+  const panel = modal?.querySelector<HTMLDivElement>('.order-panel');
+  const form = modal?.querySelector<HTMLFormElement>('[data-order-form]');
+  const closeBtn = modal?.querySelector<HTMLButtonElement>('.order-close');
+  const discEl = modal?.querySelector<HTMLSelectElement>('[data-order-discipline]');
+  const subEl = modal?.querySelector<HTMLSelectElement>('[data-order-subcategory]');
+  const subField = modal?.querySelector<HTMLLabelElement>('[data-subcat-field]');
+  const catData = modal?.querySelector<HTMLScriptElement>('[data-order-categories]');
+  const categoryMap: Record<string, string[]> = catData ? JSON.parse(catData.textContent || '{}') : {};
+
+  // Product title from the trigger (PDP), appended to the board line for context.
+  let productTitle = '';
+  let releaseTrap: (() => void) | null = null;
+
+  function setOpen(open: boolean) {
+    if (!modal || !overlay) return;
+    modal.setAttribute('aria-hidden', String(!open));
+    modal.classList.toggle('open', open);
+    overlay.classList.toggle('open', open);
+    lockScroll(open);
+    if (open) {
+      overlay.hidden = false;
+      releaseTrap = trapFocus(modal, discEl);
+    } else {
+      releaseTrap?.();
+      releaseTrap = null;
+      setTimeout(() => {
+        if (!modal.classList.contains('open')) overlay.hidden = true;
+      }, 300);
+    }
+  }
+
+  // Repopulate the sub-category select for the selected discipline. Keeps the
+  // current value if it's still valid; hides the field when there are none.
+  function syncSubcategories(preselect?: string) {
+    if (!discEl || !subEl || !subField) return;
+    const cats = categoryMap[discEl.value] || [];
+    const keep = preselect ?? subEl.value;
+    subEl.innerHTML =
+      '<option value="">Select…</option>' +
+      cats.map((c) => `<option value="${c}">${c}</option>`).join('');
+    subEl.value = cats.includes(keep) ? keep : '';
+    subField.hidden = cats.length === 0;
+  }
+
+  function prefillFrom(el: HTMLElement) {
+    const d = el.dataset;
+    productTitle = d.orderTitle || '';
+    if (discEl && d.orderDiscipline && categoryMap[d.orderDiscipline]) {
+      discEl.value = d.orderDiscipline;
+    }
+    syncSubcategories(d.orderCategory);
+  }
+
+  discEl?.addEventListener('change', () => syncSubcategories());
+  syncSubcategories(); // initial state (no discipline chosen)
+
+  // Compose the WhatsApp message from filled fields, dropping empties and any
+  // section whose fields are all blank. Labels mirror the paper order sheet.
+  function buildMessage(): string {
+    if (!form) return '';
+    const v = (name: string) =>
+      (form.elements.namedItem(name) as HTMLInputElement | null)?.value.trim() || '';
+
+    const discSel = discEl?.selectedOptions[0];
+    const discLabel = discSel?.dataset.title || discSel?.value || '';
+    const sub = v('subcategory');
+    let typeLine = [discLabel, sub].filter(Boolean).join(' — ');
+    if (productTitle) typeLine = typeLine ? `${typeLine} · ${productTitle}` : productTitle;
+
+    const board = [
+      ['Type', typeLine],
+      ['Length', v('length')],
+      ['Fin setup', v('finSetup')],
+      ['Favourite wave', v('wave')],
+    ].filter(([, val]) => val);
+
+    const rider = [
+      ['Name', v('name')],
+      ['Height', v('height')],
+      ['Weight', v('weight')],
+      ['Age', v('age')],
+      ['Skill', v('skill')],
+    ].filter(([, val]) => val);
+
+    const lines: string[] = ["Hi Wawa, I'd like to order a board."];
+    if (board.length) {
+      lines.push('', '— Board —', ...board.map(([k, val]) => `${k}: ${val}`));
+    }
+    if (rider.length) {
+      lines.push('', '— Rider —', ...rider.map(([k, val]) => `${k}: ${val}`));
+    }
+    const notes = v('additional');
+    if (notes) lines.push('', `Notes: ${notes}`);
+    return lines.join('\n');
+  }
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    window.open(whatsappLink(buildMessage()), '_blank', 'noopener');
+    setOpen(false);
+  });
+
+  // Secondary channel: same brief, opened as a pre-filled email draft.
+  modal?.querySelector('[data-order-email]')?.addEventListener('click', () => {
+    const body = encodeURIComponent(buildMessage());
+    const subject = encodeURIComponent('Board order — Wawa Surfboards');
+    window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`;
+    setOpen(false);
+  });
+
+  // ── Open / close ──
+  document.addEventListener('click', (e) => {
+    const trigger = (e.target as HTMLElement).closest<HTMLElement>('[data-order]');
+    if (trigger) {
+      e.preventDefault();
+      prefillFrom(trigger);
+      setOpen(true);
+    }
+  });
+  closeBtn?.addEventListener('click', () => setOpen(false));
+  overlay?.addEventListener('click', () => setOpen(false));
+  // A click on the modal backdrop (outside the panel) also dismisses.
+  modal?.addEventListener('click', (e) => {
+    if (panel && !panel.contains(e.target as Node)) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('open')) setOpen(false);
+  });
+</script>
