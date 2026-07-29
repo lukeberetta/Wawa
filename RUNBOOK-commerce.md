@@ -30,7 +30,7 @@ npx tsx scripts/gen-shopify-csv.ts > shopify-products.csv   # accessories only
 ```
 
 - Products → **Import** → upload `shopify-products.csv`.
-- Images are fetched by URL from the live site (wawa.lukeberetta.com) — no
+- Images are fetched by URL from the live site (wawawave.com) — no
   manual upload.
 - Replace the **R999 placeholder prices** with real client pricing
   (in `src/data/products.ts` and re-import, or edit in admin).

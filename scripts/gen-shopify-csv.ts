@@ -16,7 +16,7 @@
 
 import { products } from '../src/data/products';
 
-const ORIGIN = 'https://wawa.lukeberetta.com';
+const ORIGIN = 'https://wawawave.com';
 const VENDOR = 'Wawa';
 
 const HEADERS = [

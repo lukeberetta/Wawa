@@ -1,7 +1,7 @@
 /** Global site constants. WhatsApp is the phase-1 order channel (no cart yet). */
 export const site = {
   name: 'Wawa Surfboards',
-  url: 'https://wawa.lukeberetta.com',
+  url: 'https://wawawave.com',
   location: 'Muizenberg, Cape Town',
   description:
     'Traditional wooden surfboards handcrafted in Muizenberg, Cape Town. Custom builds shaped from paulownia timber by Wawa Surfboards.',
