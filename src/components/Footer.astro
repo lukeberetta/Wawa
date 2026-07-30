@@ -194,5 +194,8 @@ const year = new Date().getFullYear();
 
   const v = document.querySelector<HTMLVideoElement>('.footer-video');
   // Footer sits behind the page on every route — only load as it comes up.
-  if (v) ambientVideo(v, { name: 'hero' });
+  // The footer itself is position:fixed and so always "intersects" the
+  // viewport; the sentinel at the end of <main> is what actually approaches
+  // as the user nears the bottom.
+  if (v) ambientVideo(v, { name: 'hero', watch: document.getElementById('footer-sentinel') });
 </script>

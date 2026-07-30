@@ -16,6 +16,13 @@ type Options = {
   name: string;
   /** Start loading this far before the element scrolls into view. */
   rootMargin?: string;
+  /**
+   * Element to observe instead of the video itself. A `position: fixed` video
+   * (the footer) always intersects the viewport geometrically — paint order is
+   * irrelevant to IntersectionObserver — so it needs a sentinel in the normal
+   * document flow to know when it is actually being uncovered.
+   */
+  watch?: Element | null;
 };
 
 /** Data Saver, a 2G-class connection, or reduced-motion: keep the poster. */
@@ -29,7 +36,11 @@ function frugal(): boolean {
   );
 }
 
-export function ambientVideo(v: HTMLVideoElement, { name, rootMargin = '200px' }: Options): void {
+export function ambientVideo(
+  v: HTMLVideoElement,
+  { name, rootMargin = '200px', watch }: Options,
+): void {
+  const target = watch ?? v;
   // iOS honours muted inline autoplay only when these are unambiguous — pin them
   // as properties *and* attributes before the first play() attempt.
   v.muted = true;
@@ -39,6 +50,10 @@ export function ambientVideo(v: HTMLVideoElement, { name, rootMargin = '200px' }
   v.setAttribute('playsinline', '');
 
   let playing = false;
+  // The browser pauses ambient video on its own (backgrounded tab, Low Power
+  // Mode, offscreen element). Track it, or `playing` goes stale as `true` and
+  // every later play() attempt early-returns against a frozen frame.
+  v.addEventListener('pause', () => { playing = false; });
 
   /**
    * Seconds of contiguous buffer ahead of the playhead. Starting on the first
@@ -104,13 +119,16 @@ export function ambientVideo(v: HTMLVideoElement, { name, rootMargin = '200px' }
     setTimeout(() => { clearInterval(relax); play(true); }, 20000);
 
     // A stall mid-loop: pause, let the buffer rebuild, resume on the next
-    // progress event rather than grinding through it frame by frame.
-    v.addEventListener('waiting', () => { playing = false; });
+    // progress event rather than grinding through it frame by frame. (The
+    // pause listener above resets `playing`.)
+    v.addEventListener('waiting', () => { v.pause(); });
   };
 
   // Wait for the element to approach the viewport, then for the page to finish
   // its critical work. Without IntersectionObserver, just wait for load.
+  let near = false;
   const whenIdle = () => {
+    near = true;
     if (document.readyState === 'complete') attach();
     else window.addEventListener('load', attach, { once: true });
   };
@@ -126,7 +144,7 @@ export function ambientVideo(v: HTMLVideoElement, { name, rootMargin = '200px' }
       },
       { rootMargin },
     );
-    io.observe(v);
+    io.observe(target);
   } else {
     whenIdle();
   }
@@ -141,12 +159,16 @@ export function ambientVideo(v: HTMLVideoElement, { name, rootMargin = '200px' }
       ents.forEach((en) => {
         if (en.isIntersecting && v.paused) { playing = false; play(); }
       }),
-    ).observe(v);
+    ).observe(target);
   }
 
-  // Last resort where autoplay is gated (iOS Low Power Mode): the first real
-  // gesture both attaches and unlocks.
+  // Last resort where autoplay is gated (iOS Low Power Mode): a real gesture
+  // unlocks playback — but only once the viewport gate has fired, otherwise
+  // the first scroll on any page would start the download and defeat the
+  // lazy-load entirely. Not `once`: a gesture that lands before `near` must
+  // not use up the fallback.
+  const unlock = () => { if (near) attach(); };
   ['touchstart', 'pointerdown', 'scroll', 'click'].forEach((e) =>
-    window.addEventListener(e, attach, { once: true, passive: true }),
+    window.addEventListener(e, unlock, { passive: true }),
   );
 }
