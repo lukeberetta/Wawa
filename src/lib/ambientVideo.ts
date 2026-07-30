@@ -71,8 +71,12 @@ export function ambientVideo(v: HTMLVideoElement, { name, rootMargin = '200px' }
     if (v.querySelector('source')) return play();
 
     const suffix = window.matchMedia('(max-width: 820px)').matches ? '-mobile' : '';
-    // webm first — smaller where it's supported; Safari falls through to mp4.
-    for (const [ext, type] of [['webm', 'video/webm'], ['mp4', 'video/mp4']] as const) {
+    // H.264 first, and it will win everywhere — that is the point. The browser
+    // takes the first *supported* source, and VP9 has no hardware decoder on
+    // most Apple silicon, so leading with webm buys a slightly smaller file and
+    // pays for it with a software decode that visibly judders on a full-bleed
+    // video carrying a CSS filter. webm stays as a fallback that nothing reaches.
+    for (const [ext, type] of [['mp4', 'video/mp4'], ['webm', 'video/webm']] as const) {
       const s = document.createElement('source');
       s.src = `/${name}${suffix}.${ext}`;
       s.type = type;
@@ -85,10 +89,19 @@ export function ambientVideo(v: HTMLVideoElement, { name, rootMargin = '200px' }
     ['loadeddata', 'canplay', 'canplaythrough', 'progress'].forEach((e) =>
       v.addEventListener(e, () => play()),
     );
-    // iOS often never reaches readyState 4 for an offscreen muted video and
-    // reports a thin buffer regardless, so give the gate a deadline: after 6s,
-    // play with whatever we have rather than leaving a frozen poster.
-    setTimeout(() => play(true), 6000);
+    // iOS often never reaches readyState 4 for an offscreen muted video, so the
+    // gate needs a deadline — but forcing playback on a thin buffer just
+    // reintroduces the judder. Relax the requirement over time instead: from 6s
+    // accept a couple of seconds of buffer, and only give up and play regardless
+    // at 20s, by which point a still poster is the worse of the two failures.
+    let relax = 0;
+    setTimeout(() => {
+      relax = window.setInterval(() => {
+        if (playing) return clearInterval(relax);
+        if (buffered() >= 2) { clearInterval(relax); play(true); }
+      }, 1000);
+    }, 6000);
+    setTimeout(() => { clearInterval(relax); play(true); }, 20000);
 
     // A stall mid-loop: pause, let the buffer rebuild, resume on the next
     // progress event rather than grinding through it frame by frame.
