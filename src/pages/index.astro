@@ -30,20 +30,22 @@ const igTiles = [
 <Layout current="home" overlay={true}>
   <!-- HERO -->
   <section id="hero">
+    <!-- The poster is the LCP image and paints on its own. Sources are attached
+         by script after `load`, so 2.6MB of video never competes with first
+         paint — see the hero-video script below for the size + opt-out rules.
+         No source elements here: with them present the browser starts
+         fetching regardless of `preload`. -->
     <video
       class="hero-video"
-      autoplay
       muted
       loop
       playsinline
       webkit-playsinline
-      preload="auto"
+      preload="none"
       poster="/hero-poster.jpg"
       aria-hidden="true"
-    >
-      <source src="/hero.mp4" type="video/mp4" />
-      <source src="/hero.webm" type="video/webm" />
-    </video>
+      data-hero-video
+    ></video>
     <div class="wrap hero-grid">
       <div class="hero-content">
         <h1 class="fade-in">A return to how surfboards were meant to be built, <span class="accent">and felt.</span></h1>
@@ -515,54 +517,9 @@ const igTiles = [
 </style>
 
 <script>
-  // Some browsers (iOS Safari, low-power modes) ignore the autoplay attribute.
-  // Be relentless about muted inline playback without ever throwing.
+  import { ambientVideo } from '@/lib/ambientVideo';
+
   const v = document.querySelector<HTMLVideoElement>('.hero-video');
-  if (v) {
-    // iOS honours muted inline autoplay only when these are unambiguous — pin
-    // them as properties *and* attributes before the first play() attempt.
-    v.muted = true;
-    v.defaultMuted = true;
-    v.playsInline = true;
-    v.setAttribute('muted', '');
-    v.setAttribute('playsinline', '');
-
-    let playing = false;
-    const play = () => {
-      if (playing) return;
-      const p = v.play();
-      if (p && typeof p.then === 'function') {
-        p.then(() => { playing = true; }).catch(() => {});
-      }
-    };
-
-    // Try now, then again every time the element gains data — iOS routinely
-    // rejects the first call before anything is buffered.
-    play();
-    ['loadedmetadata', 'loadeddata', 'canplay', 'canplaythrough'].forEach((e) =>
-      v.addEventListener(e, play),
-    );
-    // Timed nudges cover a buffer finishing without firing a fresh event.
-    [200, 600, 1200, 2500].forEach((t) => setTimeout(play, t));
-
-    // Resume after the tab/app returns to the foreground.
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) play();
-    });
-
-    // Last resort where autoplay is gated (Low Power Mode): the first real
-    // gesture unlocks it.
-    ['touchstart', 'pointerdown', 'scroll', 'click'].forEach((e) =>
-      window.addEventListener(e, play, { once: true, passive: true }),
-    );
-
-    // Scrolled back into view but paused? Kick it again.
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver((ents) =>
-        ents.forEach((en) => {
-          if (en.isIntersecting && v.paused) { playing = false; play(); }
-        }),
-      ).observe(v);
-    }
-  }
+  // Hero is above the fold, so it attaches as soon as the page settles.
+  if (v) ambientVideo(v, { name: 'hero', rootMargin: '0px' });
 </script>

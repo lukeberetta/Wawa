@@ -3,7 +3,7 @@
 /* ── Fonts ─────────────────────────────────────── */
 @font-face {
   font-family: 'PolySans';
-  src: url('/fonts/PolySans-Neutral.otf') format('opentype');
+  src: url('/fonts/PolySans-Neutral.woff2') format('woff2');
   font-weight: 300 400;
   font-display: swap;
 }

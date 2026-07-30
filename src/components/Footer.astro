@@ -4,19 +4,20 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer" aria-label="Site footer">
+  <!-- The footer is fixed behind the page and sits on all 41 routes, so it must
+       never cost anything up front: no source elements (their presence starts
+       a fetch whatever `preload` says) and the poster carries the panel until
+       the script attaches a source as the footer nears the viewport. -->
   <video
     class="footer-video"
-    autoplay
     muted
     loop
     playsinline
     webkit-playsinline
-    preload="auto"
+    preload="none"
     poster="/hero-poster.jpg"
     aria-hidden="true"
   >
-    <source src="/hero.mp4" type="video/mp4" />
-    <source src="/hero.webm" type="video/webm" />
   </video>
   <div class="footer-inner wrap">
     <p class="f-statement">Made slowly.<br />Ridden forever.</p>
@@ -186,4 +187,12 @@ const year = new Date().getFullYear();
     }
     remeasure();
   }
+</script>
+
+<script>
+  import { ambientVideo } from '@/lib/ambientVideo';
+
+  const v = document.querySelector<HTMLVideoElement>('.footer-video');
+  // Footer sits behind the page on every route — only load as it comes up.
+  if (v) ambientVideo(v, { name: 'hero' });
 </script>
