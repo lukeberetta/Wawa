@@ -118,10 +118,21 @@ export function ambientVideo(
     }, 6000);
     setTimeout(() => { clearInterval(relax); play(true); }, 20000);
 
-    // A stall mid-loop: pause, let the buffer rebuild, resume on the next
-    // progress event rather than grinding through it frame by frame. (The
-    // pause listener above resets `playing`.)
-    v.addEventListener('waiting', () => { v.pause(); });
+    // A stall mid-loop: pause, let the buffer rebuild, then resume, rather
+    // than grinding through it frame by frame. Safari also fires `waiting`
+    // spuriously at the loop seam with a full buffer — pausing there would
+    // freeze the loop for good, because a fully buffered file emits no further
+    // `progress` events to resume on. So: only a genuinely dry buffer pauses,
+    // and the resume is polled rather than event-driven.
+    let rebuild = 0;
+    v.addEventListener('waiting', () => {
+      if (buffered() >= 1) return;
+      v.pause();
+      clearInterval(rebuild);
+      rebuild = window.setInterval(() => {
+        if (playing || buffered() >= 2) { clearInterval(rebuild); play(true); }
+      }, 500);
+    });
   };
 
   // Wait for the element to approach the viewport, then for the page to finish
