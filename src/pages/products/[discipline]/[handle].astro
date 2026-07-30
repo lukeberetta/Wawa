@@ -72,8 +72,21 @@ const jsonLd = {
     <section class="gallery fade-in" aria-label={`${product.title} images`}>
       <div class="carousel" data-carousel>
         <ul class="car-track" data-car-track data-lenis-prevent>
-          {Array.from({ length: slideCount }).map(() => (
-            <li class="car-slide"><div class="slide-media wf-ph" role="presentation" /></li>
+          {Array.from({ length: slideCount }).map((_, i) => (
+            <li class="car-slide">
+              {images[i] ? (
+                <img
+                  class="slide-media slide-img"
+                  src={images[i].url}
+                  alt={images[i].altText ?? product.title}
+                  width="1086"
+                  height="1448"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                />
+              ) : (
+                <div class="slide-media wf-ph" role="presentation" />
+              )}
+            </li>
           ))}
         </ul>
         {slideCount > 1 && (
@@ -266,6 +279,11 @@ const jsonLd = {
     aspect-ratio: 4 / 5;
     border: 1px solid var(--rule);
     background: color-mix(in srgb, var(--warm) 8%, var(--cream));
+  }
+  .slide-img {
+    display: block;
+    height: auto;
+    object-fit: cover;
   }
   /* dots float over the foot of the image, centred */
   .car-dots {

@@ -8,11 +8,31 @@ export interface Props {
 const { product } = Astro.props;
 const price = formatPrice(product);
 const href = `/products/${slug(product.productType)}/${product.handle}`;
+// Every product has a lead image — its own deck shot, or the empty-room plate.
+const front = product.images[0];
+// Hull shot cross-fades in on hover, so only products with a real pair get one.
+// Decorative — the deck img already names the product, so it's aria-hidden.
+const back = product.images[1];
+const frontAlt = front?.altText ?? product.title;
 ---
 
 <article class="card fade-in">
   <div class="card-media">
-    <!-- wireframe placeholder — real deck/hull shots drop in here later -->
+    {/* wireframe placeholder — real deck/hull shots drop in here later */}
+    {front && (
+      <img class="card-img" src={front.url} alt={frontAlt} loading="lazy" width="1086" height="1448" />
+    )}
+    {back && (
+      <img
+        class="card-img card-img-back"
+        src={back.url}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        width="1086"
+        height="1448"
+      />
+    )}
     <a class="card-link" href={href} aria-label={`View the ${product.title}`}></a>
   </div>
   <div class="card-meta">
@@ -48,6 +68,33 @@ const href = `/products/${slug(product.productType)}/${product.handle}`;
     /* the placeholder tone itself, until photography lands */
     background: color-mix(in srgb, var(--warm) 8%, var(--cream));
     overflow: hidden;
+  }
+  .card-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* deck → hull cross-fade. gated on `hover: hover` so touch devices never get
+     stuck showing the hull after a tap, and driven by :focus-within too so a
+     keyboard tab onto the card link reveals the same shot. */
+  .card-img-back {
+    opacity: 0;
+  }
+  @media (hover: hover) {
+    .card-img-back {
+      transition: opacity 0.45s var(--ease);
+    }
+    .card-media:hover .card-img-back,
+    .card-media:focus-within .card-img-back {
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card-img-back {
+      transition: none;
+    }
   }
   .card-link {
     position: absolute;

@@ -18,3 +18,6 @@ node_modules/
 
 # generated Shopify import (regenerate via scripts/gen-shopify-csv.ts)
 shopify-products.csv
+
+# image originals (webp exports live in public/img)
+assets-src/
