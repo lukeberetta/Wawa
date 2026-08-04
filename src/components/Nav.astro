@@ -22,19 +22,13 @@ const isActive = (label: string) => {
     </a>
 
     <div class="nav-actions">
-      <!-- Persistent commerce entry: Shop always visible; Story/Press fold in
-           on wider screens. Mobile keeps just Shop · Cart · menu. -->
+      <!-- Persistent commerce entry at every breakpoint: Shop · Cart · menu.
+           Story/Press live in the drawer only. -->
       <a
         class:list={['nav-link', 'nav-link-shop', { active: isActive('Shop') }]}
         href="/products"
       >
         Shop
-      </a>
-      <a class:list={['nav-link', 'nav-link-wide', { active: isActive('Story') }]} href="/story">
-        Story
-      </a>
-      <a class:list={['nav-link', 'nav-link-wide', { active: isActive('Press') }]} href="/press">
-        Press
       </a>
       {site.shopDomain && (
         <button class="nav-cart" data-cart-toggle aria-label="Open cart">
@@ -207,15 +201,6 @@ const isActive = (label: string) => {
   .nav-link.active {
     opacity: 1;
     color: var(--warm);
-  }
-  /* Story / Press only earn bar space on wider screens; phones keep Shop only */
-  .nav-link-wide {
-    display: none;
-  }
-  @media (min-width: 900px) {
-    .nav-link-wide {
-      display: inline-flex;
-    }
   }
   /* single hamburger menu at every breakpoint */
   .nav-burger {
