@@ -21,7 +21,15 @@ import { site } from '@/lib/site';
 
   <section id="cafe-hero">
     <div class="wrap">
-      <div class="hero wf-ph fade-in" role="presentation"></div>
+      <img
+        class="hero fade-in"
+        src="/img/cafe/shop-interior.webp"
+        alt="Wooden Wawa boards racked along the wall of the Muizenberg shop"
+        width="1600"
+        height="1066"
+        fetchpriority="high"
+        decoding="async"
+      />
     </div>
   </section>
 
@@ -42,8 +50,22 @@ import { site } from '@/lib/site';
       </div>
 
       <div class="gallery fade-in">
-        <div class="wf-ph" role="presentation"></div>
-        <div class="wf-ph" role="presentation"></div>
+        <img
+          src="/img/cafe/counter.webp"
+          alt="Behind the counter at the Wawa cafe, boards and wetsuits either side"
+          width="1100"
+          height="1650"
+          loading="lazy"
+          decoding="async"
+        />
+        <img
+          src="/img/cafe/wetsuits.webp"
+          alt="Wawa Geoprene wetsuit jackets hanging on a rail in the workshop"
+          width="1100"
+          height="1650"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
     </div>
   </section>
@@ -63,7 +85,11 @@ import { site } from '@/lib/site';
     font-size: 1.05rem;
   }
   .hero {
+    display: block;
     width: 100%;
+    /* height:auto would let the 3:2 source set its own ratio — pin 16/9 so the
+       attrs only serve as the pre-load placeholder */
+    height: auto;
     aspect-ratio: 16 / 9;
     object-fit: cover;
     border: 1px solid var(--rule);
@@ -90,8 +116,13 @@ import { site } from '@/lib/site';
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.25rem;
   }
-  .gallery .wf-ph {
+  /* both gallery frames are portrait shots — a 3/4 slot keeps them uncropped
+     top-to-bottom instead of squeezing them into a landscape box */
+  .gallery img {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border: 1px solid var(--rule);
   }
 </style>

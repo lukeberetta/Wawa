@@ -17,11 +17,11 @@ const zar = (amount: string) => ({ amount, currencyCode: 'ZAR' });
  * set. Only shot products carry a set; everything else gets `soon()`, the same
  * room with nothing in it, so an unshot product reads as staged-and-waiting
  * rather than broken. Promoting a product is a one-line swap once its pair lands
- * in /img as `<name>-front.webp` / `<name>-back.webp`.
+ * in /img/product as `<name>-front.webp` / `<name>-back.webp`.
  */
 const studioSet = (name: string) => ({
-  front: (alt: string) => ({ url: `/img/${name}-front.webp`, altText: alt }),
-  back: (alt: string) => ({ url: `/img/${name}-back.webp`, altText: alt }),
+  front: (alt: string) => ({ url: `/img/product/${name}-front.webp`, altText: alt }),
+  back: (alt: string) => ({ url: `/img/product/${name}-back.webp`, altText: alt }),
 });
 const fish = studioSet('fish');
 const mid = studioSet('mid');
@@ -30,7 +30,7 @@ const bodyboard = studioSet('bodyboard');
 
 /** Empty-room plate for anything not yet photographed. One image, so no hover swap. */
 const soon = (title: string) => [
-  { url: '/img/background.webp', altText: `${title} — photography coming soon` },
+  { url: '/img/product/background.webp', altText: `${title} — photography coming soon` },
 ];
 
 export const products: Product[] = [
