@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import PageHero from '@/components/PageHero.astro';
 import VideoCard from '@/components/VideoCard.astro';
 import { videos } from '@/data/videos';
 import { getCollection } from 'astro:content';
@@ -17,24 +18,27 @@ const source = (p: (typeof posts)[number]) => p.data.publication ?? 'Wawa Journa
   title="Press · Wawa Surfboards"
   description="Letters, essays and stories from the Wawa workshop: surfing history, sustainable craft and the people behind the boards."
   current="press"
+  overlay={true}
 >
-  <header class="page-header">
-    <div class="wrap">
-      <p class="label fade-in">Press</p>
-      <h1 class="fade-in">Words &amp;<br />film.</h1>
-      <p class="page-header-sub fade-in">
-        Wawa in the surf press: features, interviews and films about the boards, the workshop and
-        the people behind them.
-      </p>
-    </div>
-  </header>
+  <PageHero
+    src="/img/press/barrel-ride.webp"
+    alt="A surfer crouched inside a teal barrel on a wooden board, shot from the water"
+    width={2200}
+    height={1470}
+  >
+    Words about the wood, <span class="accent">film from the water.</span>
+  </PageHero>
 
   <!-- FILMS -->
   <section id="films">
     <div class="wrap">
       <div class="section-head fade-in">
-        <p class="label">Watch</p>
-        <h2>On film.</h2>
+        <p class="label">Press</p>
+        <h2>Words &amp;<br />film.</h2>
+        <p class="section-lead">
+          Wawa in the surf press: features, interviews and films about the boards, the workshop and
+          the people behind them.
+        </p>
       </div>
       <div class="video-grid">
         {videos.map((video) => <VideoCard video={video} />)}
@@ -72,27 +76,22 @@ const source = (p: (typeof posts)[number]) => p.data.publication ?? 'Wawa Journa
 </Layout>
 
 <style>
-  .page-header {
-    padding: calc(var(--nav-h) + 5rem) 0 3rem;
-  }
-  .page-header h1 {
-    font-size: clamp(2.6rem, 7vw, 5rem);
-    margin: 1rem 0;
-  }
-  .page-header-sub {
-    max-width: 44ch;
-    color: var(--muted);
-    font-size: 1.05rem;
-  }
+  /* label, title, body — the same three beats the story and cafe pages run on */
   .section-head {
     margin-bottom: 2.5rem;
   }
   .section-head h2 {
-    font-size: clamp(1.8rem, 4.5vw, 2.8rem);
-    margin-top: 0.5rem;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    margin-top: 0.75rem;
   }
+  .section-lead {
+    margin-top: 1.5rem;
+    max-width: 44ch;
+  }
+  /* the hero runs to the viewport edge, so the first section opens on its own
+     section pad */
   #films {
-    padding-bottom: 4rem;
+    padding: var(--space-section) 0 4rem;
   }
   .video-grid {
     display: grid;
