@@ -33,11 +33,11 @@ const source = (p: (typeof posts)[number]) => p.data.publication ?? 'Wawa Journa
   <section id="films">
     <div class="wrap">
       <div class="section-head fade-in">
-        <p class="label">Press</p>
-        <h2>Words &amp;<br />film.</h2>
+        <p class="label">Watch</p>
+        <h2>On film.</h2>
         <p class="section-lead">
-          Wawa in the surf press: features, interviews and films about the boards, the workshop and
-          the people behind them.
+          Documentary crews and surf channels who came to Muizenberg, filmed the workshop, and
+          followed the boards into the water.
         </p>
       </div>
       <div class="video-grid">
@@ -51,11 +51,15 @@ const source = (p: (typeof posts)[number]) => p.data.publication ?? 'Wawa Journa
       <div class="section-head fade-in">
         <p class="label">Read</p>
         <h2>In words.</h2>
+        <p class="section-lead">
+          Features and interviews from the surf press, alongside letters and essays written in the
+          workshop.
+        </p>
       </div>
       <ul class="post-list">
         {
           posts.map((post) => (
-            <li class="fade-in">
+            <li class="fade-in" id={`post-${post.id}`}>
               <a href={`/press/${post.id}`}>
                 <p class="post-pub">
                   {source(post)}
@@ -107,6 +111,9 @@ const source = (p: (typeof posts)[number]) => p.data.publication ?? 'Wawa Journa
   }
   .post-list li {
     border-top: 1px solid var(--rule);
+    /* the back link lands on a row by id — clear the fixed header, and leave a
+       little air so the row doesn't sit jammed under it */
+    scroll-margin-top: calc(var(--nav-h) + 2rem);
   }
   .post-list li:first-child {
     border-top: none;

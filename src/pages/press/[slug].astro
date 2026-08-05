@@ -21,17 +21,20 @@ const fmtDate = (d: Date) =>
   <article>
     <header class="post-header">
       <div class="wrap">
-        <a href="/press" class="back fade-in">← Press</a>
-        <p class="post-date fade-in">
-          {post.data.publication ?? 'Wawa Journal'} · {fmtDate(post.data.date)}
-        </p>
-        <h1 class="fade-in">{post.data.title}</h1>
-        <p class="post-author fade-in">Words by {post.data.author}</p>
+        <div class="measure">
+          {/* back to this article's own row in the list, not the top of it */}
+          <a href={`/press#post-${post.id}`} class="back fade-in">← Press</a>
+          <p class="post-date fade-in">
+            {post.data.publication ?? 'Wawa Journal'} · {fmtDate(post.data.date)}
+          </p>
+          <h1 class="fade-in">{post.data.title}</h1>
+          <p class="post-author fade-in">Words by {post.data.author}</p>
+        </div>
       </div>
     </header>
 
     <div class="wrap">
-      <div class="prose fade-in">
+      <div class="measure prose fade-in">
         <Content />
       </div>
     </div>
@@ -60,16 +63,20 @@ const fmtDate = (d: Date) =>
   }
   .post-header h1 {
     font-size: clamp(2rem, 5.5vw, 3.6rem);
-    max-width: 18ch;
   }
   .post-author {
     margin-top: 1rem;
     color: var(--muted);
     font-size: 0.9rem;
   }
-  .prose {
+  /* One measure for the whole article — the standfirst, the title and the body
+     all set to the same column and centred together, so nothing sits out on the
+     page's left edge while the text runs down the middle. */
+  .measure {
     max-width: 62ch;
-    margin: 0 auto;
+    margin-inline: auto;
+  }
+  .prose {
     padding-bottom: 5rem;
   }
   .prose :global(p) {
