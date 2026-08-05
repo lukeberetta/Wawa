@@ -7,6 +7,12 @@ export const site = {
     'Traditional wooden surfboards handcrafted in Muizenberg, Cape Town. Custom builds shaped from paulownia timber by Wawa Surfboards.',
   whatsapp: '27823723142',
   email: 'surfboards@wawawave.com',
+  // PLACEHOLDER HOURS — confirm with the shop before these go live.
+  hours: [
+    { days: 'Monday – Friday', time: '7:00 – 16:00' },
+    { days: 'Saturday', time: '7:00 – 14:00' },
+    { days: 'Sunday', time: '8:00 – 13:00' },
+  ],
   instagram: 'https://www.instagram.com/wawa_surfboards/',
   // Shopify shop domain for cart-permalink checkout (Yoco runs on Shopify's
   // hosted checkout). Use the store's primary/custom domain or *.myshopify.com.

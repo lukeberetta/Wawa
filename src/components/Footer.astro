@@ -99,17 +99,21 @@ const year = new Date().getFullYear();
     font-size: 0.78rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--cream);
-    background: rgba(255, 255, 255, 0.12);
+    /* solid cream, not a translucent wash — the footer sits over video, and a
+       filled button is the one thing on the panel that shouldn't shift with
+       whatever frame is behind it */
+    color: var(--ink);
+    background: var(--cream);
     border: 0;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     padding: 0.85rem 1.6rem;
+    /* on top of .footer-inner's gap — the one filled element on the panel
+       needs air around it, not the same rhythm as two lines of text */
+    margin-block: 0.5rem;
     cursor: pointer;
-    transition: background 0.2s var(--ease), gap 0.3s var(--ease);
+    transition: opacity 0.2s var(--ease), gap 0.3s var(--ease);
   }
   .f-order:hover {
-    background: rgba(255, 255, 255, 0.2);
+    opacity: 0.85;
     gap: 0.9rem;
   }
   .f-meta {

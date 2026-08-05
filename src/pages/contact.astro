@@ -20,9 +20,43 @@ const wa = whatsappLink('Hi Wawa, I’d like to talk about a board.');
         <a class="btn ghost" href="mailto:surfboards@wawawave.com">Email us <span class="arrow">→</span></a>
       </div>
 
-      <div class="contact-img wf-ph fade-in" role="presentation"></div>
     </div>
   </header>
+
+  <!-- OPENING TIMES — a photographic band rather than a panel: the door is the
+       thing you're being told to walk through. Same scrim + cream type as the
+       page heroes, at a shorter height since it carries a list, not a display
+       line. -->
+  <section id="hours">
+    <img
+      class="hours-img"
+      src="/img/contact/workshop-door.webp"
+      alt=""
+      width={2200}
+      height={1650}
+      loading="lazy"
+      decoding="async"
+    />
+    <div class="wrap">
+      <div class="hours-content fade-in">
+        <p class="label">Visit</p>
+        <h2>Opening times.</h2>
+        <dl class="hours-list">
+          {
+            site.hours.map((h) => (
+              <div class="hours-row">
+                <dt>{h.days}</dt>
+                <dd>{h.time}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <p class="hours-note">
+          {site.location}. The workshop runs through the day — knock if the coffee is on.
+        </p>
+      </div>
+    </div>
+  </section>
 </Layout>
 
 <style>
@@ -38,15 +72,19 @@ const wa = whatsappLink('Hi Wawa, I’d like to talk about a board.');
     color: var(--muted);
     font-size: 1.05rem;
   }
+  /* mobile-first: the two actions stack full-width, so each is a whole thumb
+     target rather than a short pill floating on a wide row */
   .actions {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 1rem;
     margin-top: 2.5rem;
   }
   .btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    width: 100%;
     gap: 0.6rem;
     background: var(--ink);
     color: var(--cream);
@@ -62,11 +100,83 @@ const wa = whatsappLink('Hi Wawa, I’d like to talk about a board.');
     color: var(--ink);
     border-color: var(--rule);
   }
-  .contact-img {
+  /* after the .btn rules, not before — a media query adds no specificity, so
+     `width: auto` only wins if it comes later in the sheet */
+  @media (min-width: 600px) {
+    .actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .btn {
+      width: auto;
+    }
+  }
+  /* ── Opening times ── full-bleed photographic band ── */
+  #hours {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    min-height: clamp(420px, 60vh, 620px);
+    padding: var(--space-2xl) 0;
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .hours-img {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    height: 100%;
     object-fit: cover;
-    border: 1px solid var(--rule);
-    margin-top: 3.5rem;
+    /* mirrored so the door sits opposite the copy instead of behind it */
+    transform: scaleX(-1);
+  }
+  /* same two-stop wash the heroes use, so cream type holds over any frame */
+  #hours::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(26, 20, 16, 0.55), rgba(26, 20, 16, 0.66));
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ink) 45%, transparent),
+      color-mix(in srgb, var(--ink) 62%, transparent)
+    );
+  }
+  #hours .wrap {
+    position: relative;
+    z-index: 2;
+  }
+  #hours .label {
+    color: color-mix(in srgb, var(--cream) 70%, transparent);
+  }
+  #hours h2 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    margin: 0.75rem 0 2rem;
+  }
+  .hours-list {
+    /* the measure is the list, not the column: days and times sit on the two
+       edges of a narrow block so the times read as a column of their own */
+    max-width: 26rem;
+    border-top: 1px solid color-mix(in srgb, var(--cream) 30%, transparent);
+  }
+  .hours-row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding: 0.85rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--cream) 30%, transparent);
+  }
+  .hours-row dd {
+    /* tabular figures keep the times aligned down the column */
+    font-variant-numeric: tabular-nums;
+  }
+  .hours-note {
+    margin-top: 1.5rem;
+    max-width: 34ch;
+    font-size: var(--fs-caption);
+    color: color-mix(in srgb, var(--cream) 75%, transparent);
   }
 </style>

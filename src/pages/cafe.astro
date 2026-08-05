@@ -4,22 +4,22 @@ import Gallery from '@/components/Gallery.astro';
 import PageHero from '@/components/PageHero.astro';
 import { site } from '@/lib/site';
 
-// The room, opening on the window seat and the counter, with the machine and
+// The room, opening on the counter and the window seat, with the machine and
 // the board wall further in.
 const room = [
+  {
+    src: '/img/cafe/counter.webp',
+    alt: 'Behind the counter at the Wawa cafe, boards and wetsuits either side',
+    width: 1100,
+    height: 1650,
+    caption: 'Lenny pulls the best coffee in Muizenberg. Ask anyone.',
+  },
   {
     src: '/img/cafe/window-seat.webp',
     alt: 'A customer on a stool at the window counter with a coffee, Muizenberg outside',
     width: 1000,
     height: 1500,
     caption: 'The window seat, and the whole of Main Road going past it.',
-  },
-  {
-    src: '/img/cafe/counter.webp',
-    alt: 'Behind the counter at the Wawa cafe, boards and wetsuits either side',
-    width: 1100,
-    height: 1650,
-    caption: 'Boards on one side, wetsuits on the other.',
   },
   {
     src: '/img/cafe/wetsuits.webp',
@@ -33,7 +33,7 @@ const room = [
     alt: 'Barista pulling a shot on the red espresso machine, boards on the wall behind',
     width: 1800,
     height: 1350,
-    caption: 'The machine runs from first light.',
+    caption: 'Come for the coffee, stay for Lenny’s chat.',
   },
   {
     src: '/img/cafe/board-wall.webp',
