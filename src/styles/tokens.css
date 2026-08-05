@@ -56,6 +56,14 @@
   --footer-h: 420px; /* reveal footer panel height; main reserves this space */
   --radius-pill: 100px;
 
+  /* Editorial 2-column grid (see .grid-2 in global.css). One track definition
+     for copy, leads and image pairs alike, so every block on a page shares the
+     same centre seam and outer edge instead of each picking its own measure.
+     --grid-max caps it: .wrap is full-bleed, and two uncapped columns run to a
+     120ch line on a wide display. */
+  --grid-gap: 2.5rem;
+  --grid-max: 72rem;
+
   /* Breakpoints — the site is mobile-first: base styles target phones and
      min-width queries scale up. Standard set (CSS vars can't be used inside
      @media, so this is a convention, not tokens):

@@ -9,7 +9,17 @@
 
   // ── Smooth scroll ──────────────────────────────
   if (!reduce) {
-    const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    const lenis = new Lenis({
+      duration: 1.1,
+      smoothWheel: true,
+      // Hand every horizontal gesture straight back to the browser. Lenis only
+      // treats a wheel burst as horizontal when deltaY is exactly 0, and a
+      // trackpad swipe never is — so a sideways flick over a rail was being
+      // preventDefault()ed and turned into page scroll, which cuts the rail's
+      // native inertia and reads as catching. Returning false here skips
+      // Lenis entirely for those events; vertical scroll is untouched.
+      virtualScroll: ({ deltaX, deltaY }) => Math.abs(deltaX) < Math.abs(deltaY),
+    });
     // Exposed so the shared scroll lock (drawers) can stop/start Lenis instead
     // of fighting it — see src/lib/scrollLock.ts.
     window.lenis = lenis;

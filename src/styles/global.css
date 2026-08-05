@@ -131,6 +131,43 @@ h3 {
   );
 }
 
+/* The editorial 2-column grid. Every stacked block on a story-style page uses
+   this same declaration — copy columns, section heads and image pairs — so the
+   centre seam and the right edge land on the same two x-positions down the
+   whole page. Don't re-declare columns, gap or max-width locally: that is what
+   produced four different measures on the story page. Collapses to one column
+   below 900px. */
+.grid-2 {
+  display: grid;
+  /* one column on phones */
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--grid-gap);
+  max-width: var(--grid-max);
+}
+/* Two explicit tracks, not `auto-fit`: auto-fit packs as many 280px columns as
+   fit, which is three at this max-width — that made `.col-1` a third of the
+   grid and left every two-child block with an empty trailing track. */
+@media (min-width: 900px) {
+  .grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* Children opt into a track. `.col-1` measures to the first column and stops at
+   the centre seam — that's where leads and standfirsts belong. Display headings
+   take `.col-span` instead: at tablet widths a column is narrow enough to wrap
+   them mid-phrase, and their right edge is a rag nobody reads as misalignment. */
+.grid-2 > .col-1 {
+  grid-column: 1;
+}
+.grid-2 > .col-span {
+  grid-column: 1 / -1;
+}
+/* Head blocks stack a heading above its lead, where the column gap is far too
+   much air between the two. Rows close up; the elements' own margins space them. */
+.grid-2.rows-tight {
+  row-gap: 0;
+}
+
 .label {
   font-size: var(--fs-eyebrow);
   letter-spacing: 0.18em;
@@ -153,6 +190,11 @@ html.js .fade-in {
 html.js .fade-in.in {
   opacity: 1;
   transform: none;
+  /* Release the hint once the reveal is done. The class is never removed, so a
+     standing `will-change` would keep every revealed block on its own
+     compositor layer for the life of the page — on a full-bleed carousel
+     that's a viewport-sized layer Safari then repaints on each scroll frame. */
+  will-change: auto;
 }
 @media (prefers-reduced-motion: reduce) {
   html.js .fade-in {

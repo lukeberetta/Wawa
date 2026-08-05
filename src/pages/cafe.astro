@@ -1,128 +1,114 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import Gallery from '@/components/Gallery.astro';
+import PageHero from '@/components/PageHero.astro';
 import { site } from '@/lib/site';
+
+// The room, opening on the window seat and the counter, with the machine and
+// the board wall further in.
+const room = [
+  {
+    src: '/img/cafe/window-seat.webp',
+    alt: 'A customer on a stool at the window counter with a coffee, Muizenberg outside',
+    width: 1000,
+    height: 1500,
+    caption: 'The window seat, and the whole of Main Road going past it.',
+  },
+  {
+    src: '/img/cafe/counter.webp',
+    alt: 'Behind the counter at the Wawa cafe, boards and wetsuits either side',
+    width: 1100,
+    height: 1650,
+    caption: 'Boards on one side, wetsuits on the other.',
+  },
+  {
+    src: '/img/cafe/wetsuits.webp',
+    alt: 'Wawa Geoprene wetsuit jackets hanging on a rail in the workshop',
+    width: 1100,
+    height: 1650,
+    caption: 'Geoprene jackets, on the rail and ready for the 14°C mornings.',
+  },
+  {
+    src: '/img/cafe/barista.webp',
+    alt: 'Barista pulling a shot on the red espresso machine, boards on the wall behind',
+    width: 1800,
+    height: 1350,
+    caption: 'The machine runs from first light.',
+  },
+  {
+    src: '/img/cafe/board-wall.webp',
+    alt: 'A wall of finished paulownia surfboards standing in the Wawa shop',
+    width: 1800,
+    height: 1200,
+    caption: 'Everything on the wall is for sale, and everything on the wall gets surfed.',
+  },
+];
 ---
 
 <Layout
   title="Cafe · Wawa Surfboards"
   description="Coffee, cake and wooden boards in Muizenberg. The Wawa cafe, where the workshop meets the water."
   current="cafe"
+  overlay={true}
 >
-  <header class="page-header">
-    <div class="wrap">
-      <p class="label fade-in">Cafe</p>
-      <h1 class="fade-in">Coffee, cake<br />and craft.</h1>
-      <p class="page-header-sub fade-in">
-        Where the workshop meets the water. Pull up a stool, watch the timber take shape, and start
-        the day the Muizenberg way: slow and salty.
-      </p>
-    </div>
-  </header>
-
-  <section id="cafe-hero">
-    <div class="wrap">
-      <img
-        class="hero fade-in"
-        src="/img/cafe/shop-interior.webp"
-        alt="Wooden Wawa boards racked along the wall of the Muizenberg shop"
-        width="1600"
-        height="1066"
-        fetchpriority="high"
-        decoding="async"
-      />
-    </div>
-  </section>
+  <PageHero
+    src="/img/cafe/storefront.webp"
+    alt="The Wawa Workshop shopfront in Muizenberg, a surfer walking past with a wooden board"
+    width={2200}
+    height={1467}
+  >
+    Where the workshop <span class="accent">meets the water.</span>
+  </PageHero>
 
   <section id="cafe-body">
     <div class="wrap">
-      <div class="cols fade-in">
+      <div class="sec-head fade-in">
+        <p class="label">Cafe</p>
+        <h2>Coffee, cake<br />and craft.</h2>
+      </div>
+
+      <div class="cols grid-2 fade-in">
         <div>
-          <h2>Good coffee, honest cake</h2>
           <p>
-            A working surfboard workshop and a café under one roof. Locally roasted coffee, cake made
-            in-house, and the smell of sawdust and salt. No rush. Surf time runs slow.
+            Start the day the Muizenberg way: slow and salty. A working surfboard workshop and a café
+            under one roof, with locally roasted coffee, cake made in-house, and the smell of sawdust
+            and salt. No rush. Surf time runs slow.
           </p>
         </div>
         <div>
-          <h2>Find us</h2>
-          <p>{site.location}. Open from early, every surfable day. Order a coffee and watch the boards take shape.</p>
+          <p>
+            Find us at {site.location}. Open from early, every surfable day. Order a coffee and watch
+            the boards take shape.
+          </p>
         </div>
       </div>
+    </div>
 
-      <div class="gallery fade-in">
-        <img
-          src="/img/cafe/counter.webp"
-          alt="Behind the counter at the Wawa cafe, boards and wetsuits either side"
-          width="1100"
-          height="1650"
-          loading="lazy"
-          decoding="async"
-        />
-        <img
-          src="/img/cafe/wetsuits.webp"
-          alt="Wawa Geoprene wetsuit jackets hanging on a rail in the workshop"
-          width="1100"
-          height="1650"
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
+    <div class="wrap">
+      <Gallery shots={room} label="Photographs from inside the Wawa cafe" />
     </div>
   </section>
 </Layout>
 
 <style>
-  .page-header {
-    padding: calc(var(--nav-h) + 5rem) 0 3rem;
-  }
-  .page-header h1 {
-    font-size: clamp(2.6rem, 7vw, 5rem);
-    margin: 1rem 0;
-  }
-  .page-header-sub {
-    max-width: 46ch;
-    color: var(--muted);
-    font-size: 1.05rem;
-  }
-  .hero {
-    display: block;
-    width: 100%;
-    /* height:auto would let the 3:2 source set its own ratio — pin 16/9 so the
-       attrs only serve as the pre-load placeholder */
-    height: auto;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border: 1px solid var(--rule);
-  }
+  /* the hero runs to the viewport edge, so the body opens on its own section
+     pad; it closes on the rail, which needs no space under it */
   #cafe-body {
-    padding: 3.5rem 0 5rem;
+    padding: var(--space-section) 0 0;
   }
+  /* label, title, body — the same three beats the story page runs on */
+  .sec-head {
+    margin-bottom: 2.5rem;
+  }
+  .sec-head h2 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    margin-top: 0.75rem;
+  }
+  /* tracks come from .grid-2 */
   .cols {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2.5rem;
-    max-width: 56rem;
     margin-bottom: 3rem;
   }
-  .cols h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
-  }
   .cols p {
-    color: var(--muted);
-  }
-  .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
-  }
-  /* both gallery frames are portrait shots — a 3/4 slot keeps them uncropped
-     top-to-bottom instead of squeezing them into a landscape box */
-  .gallery img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
-    border: 1px solid var(--rule);
+    color: var(--ink);
   }
 </style>

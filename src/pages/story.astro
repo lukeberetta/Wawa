@@ -1,23 +1,110 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import Gallery from '@/components/Gallery.astro';
+import PageHero from '@/components/PageHero.astro';
+
+// Two rails, one per half of the story: what happens in the workshop, and what
+// it's all for. Mixed orientations are deliberate — see Gallery.
+const making = [
+  {
+    src: '/img/story/sanding.webp',
+    alt: 'A shaper in a dust mask sanding a paulownia deck under a workshop window',
+    width: 1124,
+    height: 1500,
+    caption: 'Every board is finished by hand, whatever cut the blank.',
+  },
+  {
+    src: '/img/story/workshop-two.webp',
+    alt: 'Two shapers working a board together in the Wawa workshop',
+    width: 1800,
+    height: 1200,
+    caption: 'Muizenberg workshop. Timber stacked to the roof.',
+  },
+  {
+    src: '/img/story/cork-rail.webp',
+    alt: 'Cork rail and inlaid pin line on the nose of a wooden board',
+    width: 1800,
+    height: 1440,
+    caption: 'Cork rails, and a pin line borrowed from the 1960s.',
+  },
+  {
+    src: '/img/story/fin-boxes.webp',
+    alt: 'Underside of a finished board showing three fin boxes and the swallow mark',
+    width: 1800,
+    height: 1201,
+    caption: 'Three boxes, and the swallow underneath.',
+  },
+  {
+    src: '/img/story/skate-deck.webp',
+    alt: 'A shaper holding a finished wooden cruiser deck in the workshop',
+    width: 1800,
+    height: 1200,
+    caption: 'Flat spells get their own timber.',
+  },
+];
+
+const sea = [
+  {
+    src: '/img/story/misty-shore.webp',
+    alt: 'A lone paddler on a glassy, misted shorebreak at dawn',
+    width: 2200,
+    height: 1650,
+    caption: 'The reason for all of it.',
+  },
+  {
+    src: '/img/story/bodysurf-barrel.webp',
+    alt: 'A bodysurfer deep inside a teal barrel on a handplane',
+    width: 1800,
+    height: 1160,
+    caption: 'No board, no leash, no rush.',
+  },
+  {
+    src: '/img/story/board-on-rock.webp',
+    alt: 'A wooden board standing upright on a rock in sea mist',
+    width: 1800,
+    height: 1207,
+    caption: 'Standing in the mist, waiting on the tide.',
+  },
+  {
+    src: '/img/story/lineup-above.webp',
+    alt: 'A surfer trimming across a green wall, seen from the cliff above',
+    width: 1400,
+    height: 1382,
+    caption: 'Trimming a green wall, seen from the path above.',
+  },
+  {
+    src: '/img/story/green-doors.webp',
+    alt: 'A paulownia longboard leaning against a whitewashed wall between green garage doors',
+    width: 1800,
+    height: 1197,
+    caption: 'Between sessions.',
+  },
+];
 ---
 
-<Layout title="Story · Wawa Surfboards" current="story">
-  <header class="page-header">
-    <div class="wrap">
-      <p class="label fade-in">Story</p>
-      <h1 class="fade-in">A return<br />to origin.</h1>
-    </div>
-  </header>
+<Layout title="Story · Wawa Surfboards" current="story" overlay={true}>
+  <PageHero
+    src="/img/story/founder-planing.webp"
+    alt="Cobus Joubert working a plane down the rail of a paulownia board"
+    width={2200}
+    height={1466}
+  >
+    Every board starts as timber, <span class="accent">and answers to the sea.</span>
+  </PageHero>
 
   <section class="prose">
     <div class="wrap">
-      <div class="cols fade-in">
+      <div class="sec-head fade-in">
+        <p class="label">Story</p>
+        <h2>A return<br />to origin.</h2>
+      </div>
+
+      <div class="cols grid-2 fade-in">
         <div>
           <p>
-            Wawa was founded in 2010 by Cobus Joubert, its owner and shaper. The name is itself an
-            African timber, and a contraction of Wood And WAves, the two things every board is made
-            from.
+            Wawa was founded in 2010 by Cobus Joubert, owner and shaper, in Muizenberg. The name is
+            itself an African timber, and a contraction of Wood And WAves — the two things every
+            board is made from.
           </p>
           <p>
             For Cobus, the ocean has always been both playground and teacher. His earliest memories
@@ -25,12 +112,12 @@ import Layout from '@/layouts/Layout.astro';
             a welcome escape from working holidays harvesting pears, apples and peaches under a hot
             Klein Karoo sun.
           </p>
-        </div>
-        <div>
           <p>
             While studying at Stellenbosch, a sports injury nudged him from windsurfing to surfing,
             and sparked a fascination with the surfboard as an object of design and emotion.
           </p>
+        </div>
+        <div>
           <p>
             He shaped his first board in 2000. It was a challenging, formative experiment, and it
             led him away from polyurethane, polyresin and fibreglass towards wood, a material that
@@ -40,39 +127,38 @@ import Layout from '@/layouts/Layout.astro';
         </div>
       </div>
 
-      <div class="story-img wf-ph fade-in" role="presentation"></div>
     </div>
   </section>
 
   <!-- CRAFT -->
   <section id="craft">
     <div class="wrap">
-      <div class="craft-head fade-in">
+      <div class="sec-head fade-in">
         <p class="label">Craft</p>
         <h2>Old school,<br />modern tech.</h2>
-        <p class="craft-lead">
-          Driven to blend performance with sustainability, every craft carries the hydrodynamic
-          genius and longevity unique to timber. When living nature, in the form of Paulownia,
-          features and functions as intended, the work is complete.
-        </p>
       </div>
 
-      <div class="cols fade-in">
+      <div class="cols grid-2 fade-in">
         <div>
+          <p>
+            Driven to blend performance with sustainability, every craft carries the hydrodynamic
+            genius and longevity unique to timber. When living nature, in the form of Paulownia,
+            features and functions as intended, the work is complete.
+          </p>
           <p>
             After 15 years of shaping foam by hand, we’ve digitised most of our designs. Our CNC
             partner cuts the raw foam shapes from the digital blueprints we’ve refined over years of
             experimentation. Once the blanks return to our workshop, the real work begins: the
             woodwork and cork detailing that give every board its warmth, texture and character.
           </p>
+        </div>
+        <div>
           <p>
             The paulownia timber, light but resilient, forms the body of the board, its fine grain
             full of subtle patterns that shift and deepen with time. Along the rails, carbonised and
             natural cork trace clean lines of contrast, a nod to the pin lines of 1960s and ’70s surf
             craft.
           </p>
-        </div>
-        <div>
           <p>
             The nose and tail are finished in hardwood for strength, so each board holds up to the
             sea. Some riders choose a wash of watercolours, painted to echo the ocean’s moods: muted
@@ -85,105 +171,82 @@ import Layout from '@/layouts/Layout.astro';
           </p>
         </div>
       </div>
+
+      <div class="story-rail">
+        <Gallery shots={making} label="Photographs from the Wawa workshop" />
+      </div>
     </div>
   </section>
 
   <!-- PLANET -->
   <section id="planet">
     <div class="wrap">
-      <div class="planet-head fade-in">
+      <div class="sec-head fade-in">
         <p class="label">Planet</p>
         <h2>The sea,<br />our heritage.</h2>
-        <p class="planet-lead">
-          What we make can harm the ocean or help it. We depend on the surf and the ecosystems around
-          it, so the sea guides every decision in the Wawa workshop.
-        </p>
       </div>
 
-      <div class="cols fade-in">
+      <div class="cols grid-2 fade-in">
         <div>
-          <h3>Wood is good</h3>
           <p>
-            Wood is renewable, and it makes people care. You look after a wooden board instead of
-            throwing it away. When the material does its job and still looks alive, the work is done.
+            What we make can harm the ocean or help it. We depend on the surf and the ecosystems
+            around it, so the sea guides every decision in the Wawa workshop.
+          </p>
+          <p>
+            Wood is good. It’s renewable, and it makes people care. You look after a wooden board
+            instead of throwing it away. When the material does its job and still looks alive, the
+            work is done.
           </p>
         </div>
         <div>
-          <h3>Less is more</h3>
           <p>
-            No fiberglass or resin: both toxic, both dead weight. Our timber is waterproof and
-            warp-resistant. Each board is shaped by hand with the rider and conditions in mind, with
-            CNC precision available for consistency on repeat orders.
+            Less is more. No fiberglass or resin: both toxic, both dead weight. Our timber is
+            waterproof and warp-resistant. Each board is shaped by hand with the rider and conditions
+            in mind, with CNC precision available for consistency on repeat orders.
           </p>
         </div>
       </div>
 
-      <div class="story-img wf-ph fade-in" role="presentation"></div>
+      <div class="story-rail">
+        <Gallery shots={sea} label="Photographs of Wawa boards in the water" />
+      </div>
     </div>
   </section>
 </Layout>
 
 <style>
-  .page-header {
-    padding: calc(var(--nav-h) + 5rem) 0 3rem;
-  }
-  .page-header h1 {
-    font-size: clamp(2.6rem, 7vw, 5rem);
-    margin-top: 1rem;
-  }
+  /* the hero runs to the viewport edge, so the prose opens on its own section pad */
   .prose {
-    padding-bottom: 5rem;
+    padding: var(--space-section) 0 5rem;
   }
-  .cols {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2.5rem;
-    max-width: 60rem;
-  }
+  /* tracks come from .grid-2 */
   .cols p {
     margin-bottom: 1.1rem;
     color: var(--ink);
   }
-  .story-img {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border: 1px solid var(--rule);
+  /* the rail carries its own bleed and ratio — this only sets it off the copy */
+  .story-rail {
     margin-top: 3rem;
   }
 
+  /* Both sections close on a full-bleed rail, and the rail is the divider —
+     so they carry no bottom padding and the section below draws no rule.
+     #craft keeps its top rule: the block above it is copy, not photography. */
   #craft,
   #planet {
-    padding: 4rem 0 5rem;
-    border-top: 1px solid var(--rule);
+    padding: 4rem 0 0;
   }
   #craft {
-    padding-bottom: 4rem;
+    border-top: 1px solid var(--rule);
   }
-  .craft-head,
-  .planet-head {
+  /* Every section head is the same three beats and nothing else: label, title,
+     body. No standfirst in its own colour and no subheads inside the columns —
+     the leads and the old h3s now read as the opening lines of the body copy. */
+  .sec-head {
     margin-bottom: 2.5rem;
   }
-  .craft-head h2,
-  .planet-head h2 {
+  .sec-head h2 {
     font-size: clamp(2rem, 5vw, 3.2rem);
-    margin: 0.75rem 0 1.5rem;
-  }
-  .craft-lead {
-    max-width: 56ch;
-    color: var(--muted);
-    font-size: 1.05rem;
-  }
-  #craft .cols {
-    max-width: 62rem;
-  }
-  .planet-lead {
-    max-width: 52ch;
-    color: var(--muted);
-    font-size: 1.05rem;
-  }
-  .cols h3 {
-    font-size: 1.3rem;
-    margin-bottom: 0.6rem;
+    margin-top: 0.75rem;
   }
 </style>

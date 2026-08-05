@@ -1,0 +1,345 @@
+---
+/**
+ * Editorial photo carousel — the same swipe gallery the PDP uses, reused on the
+ * story and cafe pages so a rail of photographs reads the same wherever it
+ * appears. Full-bleed track, slides shy of full width so the next frame peeks
+ * in, dots on mobile; on desktop the slides are height-driven and the peeking
+ * neighbours make the dots redundant.
+ *
+ * Frames crop to a house ratio (4:5 mobile, 1:1 desktop) rather than keeping
+ * each photo's own — an even rail is the point, and the caption sits inside the
+ * frame, which needs a predictable bottom edge.
+ */
+export interface Shot {
+  src: string;
+  alt: string;
+  /** intrinsic pixels — reserves the box before the file lands */
+  width: number;
+  height: number;
+  /** required: every frame carries its caption — see the scrim in .slide-cap */
+  caption: string;
+}
+export interface Props {
+  shots: Shot[];
+  /** the first rail above the fold loads its opening frames immediately */
+  eager?: boolean;
+  /** names the gallery for screen readers */
+  label: string;
+}
+const { shots, eager = false, label } = Astro.props;
+---
+
+<section class="gallery fade-in" aria-label={label}>
+  <div class="carousel" data-carousel>
+    {/* No data-lenis-prevent: it prevents Lenis on both axes, so a vertical
+        scroll over the rail dropped to native while the rest of the page stayed
+        smoothed — the two desync and the page jerks as the cursor crosses in and
+        out. Horizontal gestures are already handed to the browser in Motion. */}
+    <ul class="car-track" data-car-track>
+      {
+        shots.map((s, i) => (
+          <li class="car-slide">
+            <figure class="slide-frame">
+              <img
+                class="slide-media"
+                src={s.src}
+                alt={s.alt}
+                width={s.width}
+                height={s.height}
+                loading={eager && i < 2 ? 'eager' : 'lazy'}
+                fetchpriority={eager && i === 0 ? 'high' : undefined}
+                decoding="async"
+              />
+              <figcaption class="slide-cap">
+                <span>{s.caption}</span>
+              </figcaption>
+            </figure>
+          </li>
+        ))
+      }
+    </ul>
+    {
+      shots.length > 1 && (
+        <div class="car-dots" data-car-dots role="tablist" aria-label="Choose image">
+          {shots.map((_, i) => (
+            <button
+              class:list={['car-dot', { 'is-active': i === 0 }]}
+              data-i={i}
+              aria-label={`Show image ${i + 1}`}
+            />
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  /* ── Carousel ── full-bleed swipe gallery with dots (mirrors the PDP) ── */
+  .gallery {
+    margin-inline: calc(50% - 50vw);
+  }
+  .carousel {
+    position: relative;
+  }
+  .car-track {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    /* no scroll-snap: the rail scrolls free, so a drag lands where it's thrown
+       and nothing pulls the frames around under the pointer */
+    /* lock the gesture to the horizontal axis — a diagonal swipe shouldn't drag
+       the page while the rail is moving */
+    touch-action: pan-x;
+    /* don't hand the overscroll back to the page (and to Lenis) at either end */
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .car-track::-webkit-scrollbar {
+    display: none;
+  }
+  /* slides sit shy of full width so the neighbouring image peeks in */
+  .car-slide {
+    flex: 0 0 92%;
+    min-width: 0;
+  }
+  /* overlap adjacent borders so the seam stays a single hairline, not 2px */
+  .car-slide + .car-slide {
+    margin-left: -1px;
+  }
+  .slide-frame {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    background: color-mix(in srgb, var(--warm) 8%, var(--cream));
+  }
+  .slide-media {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    /* the rail is dragged by the pointer — never hand the browser its own
+       drag-the-picture gesture, which cancels ours the moment it starts */
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+  /* pointer affordance: the rail is grabbable, so say so */
+  @media (hover: hover) and (pointer: fine) {
+    .car-track {
+      cursor: grab;
+    }
+    .car-track.is-dragging {
+      cursor: grabbing;
+      /* stop the caption text selecting as the drag crosses it */
+      user-select: none;
+    }
+  }
+  /* caption sits in the frame on its own scrim — same treatment as the
+     Instagram tiles, but always up: these rails are read, not hovered */
+  .slide-cap {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 1;
+    padding: 2.5rem 1.25rem 1.5rem;
+    background: linear-gradient(180deg, transparent, rgba(26, 20, 16, 0.78));
+    color: var(--cream);
+    font-size: 1.05rem;
+    line-height: 1.25;
+    pointer-events: none;
+  }
+  .slide-cap span {
+    display: block;
+    max-width: 26ch;
+  }
+  /* dots float over the foot of the image, centred */
+  .car-dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .car-dot {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    /* cream over the scrim, not ink — these dots sit on photography */
+    background: color-mix(in srgb, var(--cream) 45%, transparent);
+    cursor: pointer;
+    transition: background 0.25s var(--ease), transform 0.25s var(--ease);
+  }
+  .car-dot.is-active {
+    background: var(--cream);
+    transform: scale(1.15);
+  }
+  /* desktop: full-bleed scroll gallery — square slides sized by height, laid
+     flush across the full viewport width so neighbouring images peek in with no
+     side or middle gaps; the rail reads as scrollable. */
+  @media (min-width: 900px) {
+    .car-slide {
+      flex: 0 0 auto;
+    }
+    .slide-media {
+      /* 1:1, height-driven so the section never exceeds 70vh */
+      width: auto;
+      height: 70vh;
+      aspect-ratio: 1 / 1;
+    }
+    /* peeking neighbours signal the rail is scrollable — dots are redundant */
+    .car-dots {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // ── Carousel ── free-scrolling track, drag momentum and dot indicators. A
+  // page can carry more than one rail (the story page has two), so every
+  // instance is wired.
+  document.querySelectorAll<HTMLElement>('.gallery [data-carousel]').forEach((carousel) => {
+    const track = carousel.querySelector<HTMLElement>('[data-car-track]');
+    const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>('.car-dot'));
+    if (!track) return;
+
+    const slides = Array.from(track.children) as HTMLElement[];
+    const setActive = (i: number) =>
+      dots.forEach((d, n) => d.classList.toggle('is-active', n === i));
+
+    // centre slide i in the track (slides are < full width, so don't assume
+    // clientWidth steps)
+    const centreOn = (i: number) => {
+      const s = slides[i];
+      if (!s) return;
+      track.scrollTo({
+        left: s.offsetLeft - (track.clientWidth - s.offsetWidth) / 2,
+        behavior: 'smooth',
+      });
+    };
+
+    // dot → snap to that slide
+    dots.forEach((d, i) =>
+      d.addEventListener('click', () => {
+        centreOn(i);
+        setActive(i);
+      }),
+    );
+
+    // ── Drag to scroll ── mouse only: touch already has native panning, and
+    // a pointer drag there would double up on it.
+    let dragging = false;
+    let startX = 0;
+    let startScroll = 0;
+    let moved = 0;
+    // velocity in px/frame, carried out of the drag as momentum
+    let velocity = 0;
+    let lastX = 0;
+    let lastT = 0;
+    let glide = 0;
+
+    track.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      cancelAnimationFrame(glide);
+      dragging = true;
+      moved = 0;
+      velocity = 0;
+      startX = lastX = e.clientX;
+      lastT = performance.now();
+      startScroll = track.scrollLeft;
+      track.classList.add('is-dragging');
+      track.setPointerCapture(e.pointerId);
+    });
+
+    track.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      moved = Math.max(moved, Math.abs(dx));
+      track.scrollLeft = startScroll - dx;
+
+      // sample the throw speed, smoothed so one stuttery frame near the end of
+      // the gesture doesn't decide the whole glide
+      const now = performance.now();
+      const dt = now - lastT;
+      if (dt > 0) {
+        const v = ((e.clientX - lastX) / dt) * 16; // px per 60fps frame
+        velocity = velocity * 0.7 + v * 0.3;
+        lastX = e.clientX;
+        lastT = now;
+      }
+    });
+
+    const endDrag = (e: PointerEvent) => {
+      if (!dragging) return;
+      dragging = false;
+      if (track.hasPointerCapture(e.pointerId)) track.releasePointerCapture(e.pointerId);
+
+      // carry the throw, then simply stop where the friction leaves it
+      const decay = () => {
+        velocity *= 0.94;
+        if (Math.abs(velocity) < 0.4) {
+          track.classList.remove('is-dragging');
+          return;
+        }
+        const before = track.scrollLeft;
+        track.scrollLeft = before - velocity;
+        // hit either end — no point coasting into a wall
+        if (track.scrollLeft === before) {
+          track.classList.remove('is-dragging');
+          return;
+        }
+        glide = requestAnimationFrame(decay);
+      };
+      glide = requestAnimationFrame(decay);
+    };
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+
+    // a drag that ended over a link or dot shouldn't also count as a click
+    track.addEventListener(
+      'click',
+      (e) => {
+        if (moved > 4) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      },
+      true,
+    );
+
+    // belt and braces for Safari, which still starts a native image drag from
+    // a mousedown that pointer capture has already claimed
+    track.addEventListener('dragstart', (e) => e.preventDefault());
+
+    // reflect the active dot as the track is swiped — pick the slide whose
+    // centre is nearest the track's centre
+    let raf = 0;
+    track.addEventListener(
+      'scroll',
+      () => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          raf = 0;
+          const centre = track.scrollLeft + track.clientWidth / 2;
+          let best = 0;
+          let bestDist = Infinity;
+          slides.forEach((s, i) => {
+            const dist = Math.abs(s.offsetLeft + s.offsetWidth / 2 - centre);
+            if (dist < bestDist) {
+              bestDist = dist;
+              best = i;
+            }
+          });
+          setActive(best);
+        });
+      },
+      { passive: true },
+    );
+  });
+</script>

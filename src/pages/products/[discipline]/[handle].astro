@@ -71,7 +71,11 @@ const jsonLd = {
          real deck/hull shots land (one slide per product image). -->
     <section class="gallery fade-in" aria-label={`${product.title} images`}>
       <div class="carousel" data-carousel>
-        <ul class="car-track" data-car-track data-lenis-prevent>
+        {/* No data-lenis-prevent: it prevents Lenis on both axes, so a vertical
+            scroll over the carousel dropped to native while the rest of the page
+            stayed smoothed, and the page jerked as the cursor crossed in and out.
+            Horizontal gestures are handed to the browser in Motion.astro. */}
+        <ul class="car-track" data-car-track>
           {Array.from({ length: slideCount }).map((_, i) => (
             <li class="car-slide">
               {images[i] ? (
