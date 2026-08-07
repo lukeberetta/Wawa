@@ -7,12 +7,16 @@ import Motion from '@/components/Motion.astro';
 import Cart from '@/components/Cart.astro';
 import OrderModal from '@/components/OrderModal.astro';
 import { site } from '@/lib/site';
+import { organization, website } from '@/lib/schema';
 
 export interface Props {
   title?: string;
   description?: string;
   current?: string;
   overlay?: boolean;
+  /** Extra JSON-LD nodes (Product, Article, BreadcrumbList) merged into the
+   *  page's `@graph` alongside the always-present Organization + WebSite. */
+  schema?: Record<string, unknown>[];
 }
 
 const {
@@ -20,6 +24,7 @@ const {
   description = site.description,
   current,
   overlay = false,
+  schema = [],
 } = Astro.props;
 
 // Share card: an 1800s engraving of Hawaiian surfers — the alaia/paipo lineage
@@ -28,6 +33,14 @@ const ogImage = new URL('/og-image.jpg', site.url).href;
 const ogImageAlt = 'Engraving of Hawaiian surfers riding a wave on wooden boards';
 // Per-page, so a shared product link doesn't preview as the homepage.
 const canonical = new URL(Astro.url.pathname, site.url).href;
+
+// One `@graph` per page. Organization carries the SERP logo and the shop's
+// address/hours; WebSite is what lets Google print "Wawa Surfboards" as the
+// site name instead of the bare domain.
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': [organization(), website(), ...schema],
+};
 ---
 
 <!doctype html>
@@ -75,10 +88,17 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content={ogImageAlt} />
 
-    <!-- Icons -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <!-- Icons. Google renders a result favicon at 48px and only considers
+         icons that are square and a multiple of 48 — the old set topped out at
+         32px, which is why the SERP fell back to a generic globe. 16/32 are the
+         single-W monogram (browser tabs), 48+ the full wordmark tile. -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
     <!-- Preload the one brand face so text settles on PolySans without a
@@ -90,6 +110,8 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
       type="font/woff2"
       crossorigin
     />
+
+    <script type="application/ld+json" set:html={JSON.stringify(graph)} is:inline />
   </head>
 
   <body>

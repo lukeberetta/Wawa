@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
+import { article, breadcrumbs } from '@/lib/schema';
 
 export async function getStaticPaths() {
   const posts = await getCollection('journal');
@@ -11,12 +12,27 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 const fmtDate = (d: Date) =>
   d.toLocaleDateString('en-ZA', { year: 'numeric', month: 'long' });
+
+// Straight from the request so the Article URL matches the canonical exactly.
+const path = Astro.url.pathname;
+const schema = [
+  article({
+    headline: post.data.title,
+    description: post.data.excerpt,
+    path,
+    datePublished: post.data.date,
+    author: post.data.author,
+    publication: post.data.publication,
+  }),
+  breadcrumbs([{ name: 'Press', path: '/press' }, { name: post.data.title }]),
+];
 ---
 
 <Layout
   title={`${post.data.title} · Wawa Press`}
   description={post.data.excerpt}
   current="press"
+  schema={schema}
 >
   <article>
     <header class="post-header">

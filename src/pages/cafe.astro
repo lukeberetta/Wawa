@@ -3,6 +3,7 @@ import Layout from '@/layouts/Layout.astro';
 import Gallery from '@/components/Gallery.astro';
 import PageHero from '@/components/PageHero.astro';
 import { site } from '@/lib/site';
+import { breadcrumbs } from '@/lib/schema';
 
 // The room, opening on the counter and the window seat, with the machine and
 // the board wall further in.
@@ -50,6 +51,7 @@ const room = [
   description="Coffee, cake and wooden boards in Muizenberg. The Wawa cafe, where the workshop meets the water."
   current="cafe"
   overlay={true}
+  schema={[breadcrumbs([{ name: 'Cafe' }])]}
 >
   <PageHero
     src="/img/cafe/storefront.webp"

@@ -2,6 +2,7 @@
 import Layout from '@/layouts/Layout.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import { disciplines, getProducts, slug } from '@/lib/catalog';
+import { breadcrumbs } from '@/lib/schema';
 import type { Product } from '@/lib/types';
 
 // The shop-all hub — the catalog front door the store was missing. Lists every
@@ -43,7 +44,7 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
 };
 ---
 
-<Layout title="Shop · Wawa Surfboards" description="The full Wawa range — surf, foil, kite, skate, body & belly and accessories, shaped by hand from timber." current="products">
+<Layout title="Shop · Wawa Surfboards" description="The full Wawa range — surf, foil, kite, skate, body & belly and accessories, shaped by hand from timber." current="products" schema={[breadcrumbs([{ name: 'Shop' }])]}>
   <!-- Primary lens: discipline pills, pinned directly below the nav. The
        wrapper clears the fixed nav at rest; the band then sticks under it. -->
   <div class="disc-band-wrap">

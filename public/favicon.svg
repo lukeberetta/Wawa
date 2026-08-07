@@ -1,0 +1,13 @@
+<!-- Favicon mark: the WAWA wordmark rebuilt as SOLID polygons on an ink tile.
+     public/logo.svg is a hairline outline drawing — correct on the page, but it
+     dissolves into grey at the 48px Google renders a search-result favicon at.
+     Geometry traced from logo.svg; the 16/32px PNGs drop to a single-W monogram. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#1a1410"/>
+  <g fill="#f5f0e8" transform="translate(56,213) scale(2.123) translate(-33.3,-107)">
+    <polygon points="36,107 100.28,107 83.4,145.2 68.18,120.35 52.96,145.2"/>
+    <polygon points="112.8,108.5 129.68,147.35 95.93,147.35"/>
+    <polygon points="125.33,107 189.53,107 172.66,145.2 157.43,120.35 142.21,145.2"/>
+    <polygon points="202.05,108.5 218.93,147.35 185.18,147.35"/>
+  </g>
+</svg>

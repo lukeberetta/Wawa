@@ -4,6 +4,7 @@ import PageHero from '@/components/PageHero.astro';
 import VideoCard from '@/components/VideoCard.astro';
 import { videos } from '@/data/videos';
 import { getCollection } from 'astro:content';
+import { breadcrumbs } from '@/lib/schema';
 
 const posts = (await getCollection('journal')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
@@ -19,6 +20,7 @@ const source = (p: (typeof posts)[number]) => p.data.publication ?? 'Wawa Journa
   description="Letters, essays and stories from the Wawa workshop: surfing history, sustainable craft and the people behind the boards."
   current="press"
   overlay={true}
+  schema={[breadcrumbs([{ name: 'Press' }])]}
 >
   <PageHero
     src="/img/press/barrel-ride.webp"

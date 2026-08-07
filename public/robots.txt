@@ -1,0 +1,9 @@
+# Wawa Surfboards — https://wawawave.com
+# Everything is public brand/catalog content; nothing here is worth hiding.
+# Note the favicons and og-image must stay crawlable: Google will not show a
+# site logo or share card it cannot fetch.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://wawawave.com/sitemap-index.xml

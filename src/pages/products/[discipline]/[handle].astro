@@ -3,6 +3,7 @@ import Layout from '@/layouts/Layout.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import { disciplines, getProducts, slug, formatPrice } from '@/lib/catalog';
 import { site } from '@/lib/site';
+import { ORG_ID, abs, breadcrumbs } from '@/lib/schema';
 import type { Product, Discipline } from '@/lib/types';
 
 export async function getStaticPaths() {
@@ -42,29 +43,48 @@ const slideCount = Math.max(images.length, 3);
 const category = product.tags[0];
 const disciplineHref = `/products?discipline=${slug(product.productType)}`;
 
-// SEO: Product structured data (offer only when buyable, else nothing to price).
-const jsonLd = {
-  '@context': 'https://schema.org',
+// SEO: Product structured data.
+//
+// `offers` is deliberately withheld until real prices land — every price in
+// src/data/products.ts is still the R999 import placeholder, and an offer node
+// puts that number straight into the search result. Flip PRICES_ARE_REAL once
+// the catalog is priced and the offer block starts emitting.
+const PRICES_ARE_REAL = false;
+const emitOffer = PRICES_ARE_REAL && buyable;
+
+const productSchema = {
   '@type': 'Product',
+  '@id': `${abs(Astro.url.pathname)}#product`,
   name: product.title,
   description: product.description,
-  image: images.map((i) => new URL(i.url, site.url).href),
+  image: images.map((i) => abs(i.url)),
+  category: product.productType,
   brand: { '@type': 'Brand', name: site.name },
-  ...(buyable && {
+  manufacturer: { '@id': ORG_ID },
+  ...(emitOffer && {
     offers: {
       '@type': 'Offer',
+      url: abs(Astro.url.pathname),
       price: product.priceRange.minVariantPrice.amount,
       priceCurrency: product.priceRange.minVariantPrice.currencyCode,
       availability: 'https://schema.org/InStock',
+      seller: { '@id': ORG_ID },
     },
   }),
 };
+
+const crumbs = breadcrumbs([
+  { name: 'Shop', path: '/products' },
+  { name: discipline?.title ?? product.productType, path: disciplineHref },
+  { name: product.title },
+]);
 ---
 
 <Layout
   title={`${product.title} · Wawa Surfboards`}
   description={product.description}
   current="products"
+  schema={[productSchema, crumbs]}
 >
   <article class="pdp">
     <!-- Full-bleed image carousel — swipe + dots. Wireframe placeholders until
@@ -237,8 +257,6 @@ const jsonLd = {
       )
     }
   </article>
-
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
 </Layout>
 
 <style>

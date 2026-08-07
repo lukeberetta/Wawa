@@ -1,11 +1,34 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { site, whatsappLink } from '@/lib/site';
+import { ORG_ID, breadcrumbs } from '@/lib/schema';
 
 const wa = whatsappLink('Hi Wawa, I’d like to talk about a board.');
+
+// One-line address, so the workshop's NAP details read the same on the page as
+// they do in the LocalBusiness markup — Google cross-checks the two.
+const { street, locality, region, postalCode } = site.address;
+const addressLine = `${street}, ${locality}, ${region}, ${postalCode}`;
+const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  `${site.name}, ${addressLine}`,
+)}`;
+
+const schema = [
+  {
+    '@type': 'ContactPage',
+    name: 'Contact Wawa Surfboards',
+    mainEntity: { '@id': ORG_ID },
+  },
+  breadcrumbs([{ name: 'Contact' }]),
+];
 ---
 
-<Layout title="Contact · Wawa Surfboards" current="contact">
+<Layout
+  title="Contact · Wawa Surfboards"
+  description="Talk to the Wawa workshop about a custom wooden board. 166-168 Main Rd, Muizenberg, Cape Town — WhatsApp, email or knock on the door."
+  current="contact"
+  schema={schema}
+>
   <header class="page-header">
     <div class="wrap">
       <p class="label fade-in">Contact</p>
@@ -52,7 +75,8 @@ const wa = whatsappLink('Hi Wawa, I’d like to talk about a board.');
           }
         </dl>
         <p class="hours-note">
-          {site.location}. The workshop runs through the day — knock if the coffee is on.
+          <a class="hours-address" href={mapLink}>{addressLine}</a>. The workshop runs through the
+          day — knock if the coffee is on.
         </p>
       </div>
     </div>
@@ -178,5 +202,17 @@ const wa = whatsappLink('Hi Wawa, I’d like to talk about a board.');
     max-width: 34ch;
     font-size: var(--fs-caption);
     color: color-mix(in srgb, var(--cream) 75%, transparent);
+  }
+  /* The address sits at full cream against the dimmed note around it — it's the
+     one line on the page someone is hunting for. */
+  .hours-address {
+    color: var(--cream);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in srgb, var(--cream) 45%, transparent);
+  }
+  .hours-address:hover {
+    text-decoration-color: var(--cream);
   }
 </style>
