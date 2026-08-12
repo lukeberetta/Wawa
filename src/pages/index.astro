@@ -7,6 +7,16 @@ import { site } from '@/lib/site';
 
 const featured = await getFeatured();
 
+// Home grid runs in its own order: Surf leads (it's the craft), accessories is
+// pulled up to second because it's the only discipline with live checkout. Nav,
+// footer and the products pills keep the plain `disciplines` order, so this
+// stays local. Any handle left out of the list falls to the end.
+const HOME_ORDER = ['surf', 'accessories', 'foil', 'skate', 'kite', 'body-belly'];
+const homeDisciplines = [...disciplines].sort(
+  (a, b) =>
+    (HOME_ORDER.indexOf(a.handle) + 1 || Infinity) - (HOME_ORDER.indexOf(b.handle) + 1 || Infinity),
+);
+
 // Instagram mosaic. `area` maps each tile to a named cell in the desktop grid
 // (see #instagram CSS); `feat` is the large 2×2 centre. Stand-in imagery from
 // /img/insta until a real IG feed is wired; alt is empty (decorative — the link
@@ -78,7 +88,7 @@ const igTiles = [
         <h2>Categories.</h2>
       </div>
       <div class="product-grid">
-        {disciplines.map((d) => <CategoryCard discipline={d} />)}
+        {homeDisciplines.map((d) => <CategoryCard discipline={d} />)}
       </div>
     </div>
   </section>
