@@ -27,6 +27,7 @@ const fish = studioSet('fish');
 const mid = studioSet('mid');
 const alaia = studioSet('alaia');
 const bodyboard = studioSet('bodyboard');
+const long = studioSet('long');
 
 /** Empty-room plate for anything not yet photographed. One image, so no hover swap. */
 const soon = (title: string) => [
@@ -175,7 +176,6 @@ export const products: Product[] = [
     availableForSale: true,
     priceRange: { minVariantPrice: zar('28500.00') },
     images: soon('Wawa Model P'),
-    featured: true,
     specs: [
       [
         { label: 'Best For', value: 'Small to medium waves' },
@@ -199,7 +199,8 @@ export const products: Product[] = [
     tags: ['Long'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('28500.00') },
-    images: soon('Wawa Model T'),
+    images: [long.front('Wawa Model T Longboard, deck'), long.back('Wawa Model T Longboard, hull')],
+    featured: true,
     specs: [
       [
         { label: 'Best For', value: 'Small to medium waves' },
