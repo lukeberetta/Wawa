@@ -28,6 +28,7 @@ const mid = studioSet('mid');
 const alaia = studioSet('alaia');
 const bodyboard = studioSet('bodyboard');
 const long = studioSet('long');
+const gunFish = studioSet('gun-fish');
 
 /** Empty-room plate for anything not yet photographed. One image, so no hover swap. */
 const soon = (title: string) => [
@@ -72,7 +73,8 @@ export const products: Product[] = [
     tags: ['Short'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('17000.00') },
-    images: soon('Wawa Gun Fish'),
+    images: [gunFish.front('Wawa Gun Fish, deck'), gunFish.back('Wawa Gun Fish, hull')],
+    featured: true,
     specs: [
       [
         { label: 'Best For', value: 'Medium to overhead waves' },
@@ -97,7 +99,6 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('15000.00') },
     images: soon('Wawa Mini-Simmons'),
-    featured: true,
     specs: [
       [
         { label: 'Best For', value: 'Small to medium waves' },
