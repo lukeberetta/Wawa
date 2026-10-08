@@ -2,7 +2,7 @@
 title: "Building a Sustainable Future, While Surfing"
 author: "Wawa"
 date: 2013-01-01
-excerpt: "At Wawa we believe in being a ‘localist’, being proudly local and supporting the local community. Not too long ago our shopping habits were very different from what they are today. We…"
+excerpt: "Why knowing who makes the things we buy matters, and how supporting local makers helps a community thrive."
 category: essay
 ---
 

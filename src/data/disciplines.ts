@@ -10,7 +10,7 @@ export const disciplines: Discipline[] = [
     title: 'Surf',
     blurb: 'Shaped from timber: fish, mid-lengths, logs and finless craft.',
     intro:
-      'Shapes built by surfers. Paulownia over recycled foam cores with cork rails, light and lively. From the Classic Fish to the Alaia, every outline carries a piece of surfing’s lineage.',
+      'Shapes built by surfers, from timber over foam cores with cork rails to solid-wood alaias. From the Classic Fish to the Alaia, every outline carries a piece of surfing’s lineage.',
     hero: '/img/category/surf.webp',
     categories: ['Short', 'Mid', 'Long', 'Finless', 'Custom'],
   },
@@ -19,7 +19,7 @@ export const disciplines: Discipline[] = [
     title: 'Foil',
     blurb: 'Prone, wave, wing and custom foil builds.',
     intro:
-      'Over time the ocean works the paulownia and cork exterior into a textured “speed skin” that cuts drag and adds lift, in water and in air. Prone, wave, wing and custom builds.',
+      'Paulownia and cork foilboards for prone, wave and wing riding. Choose a shape or talk to us about a custom build for your weight, conditions and foil setup.',
     hero: '/img/category/foil.webp',
     categories: ['Prone', 'Wave', 'Wing', 'Custom'],
   },
@@ -45,17 +45,17 @@ export const disciplines: Discipline[] = [
     title: 'Body & Belly',
     blurb: 'Bodysurf handplanes, bellyboards, paipos and boogies.',
     intro:
-      'One of the best ways to learn the rhythm of the ocean is to strip it all back. No board to paddle and no pop-up. Just you, the wave and the feel. Handslides, bellyboards and paipos.',
+      'Get closer to the wave with handplanes, bellyboards and paipos. From bodysurfing to prone riding, small craft bring a different feel to a familiar break.',
     hero: '/img/category/body-belly.webp',
     categories: ['Bodysurf', 'Bellyboard', 'Paipo', 'Skimboard'],
   },
   {
     handle: 'accessories',
     title: 'Accessories',
-    blurb: 'Fins, wetsuits, board bags, wax combs, art and gift cards.',
+    blurb: 'Fins, wetsuits, board bags, wax combs, clothing, bags, art and gift cards.',
     intro:
-      'Everything around the board, made the same way. Yamamoto wetsuit jackets, cotton-duck covers, wood-and-cork beach bats, timber fins and gift cards.',
+      'Fins, covers, wetsuit jackets and everyday essentials for time in and around the water. Explore Yamamoto wetsuit jackets, cotton-duck covers, wood-and-cork beach bats and more.',
     hero: '/img/category/accessories.webp',
-    categories: ['Fins', 'Wetsuits', 'Boardbag', 'Wax Combs', 'Beach Bats', 'Art', 'Gift Cards'],
+    categories: ['Fins', 'Wetsuits', 'Boardbag', 'Bags', 'Clothing', 'Wax Combs', 'Beach Bats', 'Art', 'Gift Cards'],
   },
 ];

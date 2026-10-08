@@ -2,11 +2,9 @@
 title: "Sodom and Cremora, Where Angels Fear the Bread"
 author: "Andrew Strode"
 date: 2013-06-01
-excerpt: "written by Andrew Strode Don’t choose an airline on the fact that its named after your favourite fruit. I did and with gravity’s hand still clutching blindly at the air behind us…"
+excerpt: "Andrew Strode heads home for summer, finding warm-water barrels and new wave-riding craft in fallen timber."
 category: essay
 ---
-
-written by Andrew Strode
 
 Don’t choose an airline on the fact that its named after your favourite fruit. I did and with gravity’s hand still clutching blindly at the air behind us, our plane began vibrating like Mrs Godzilla’s sex toy caught in a power surge and I was left checking my pockets for a long lost and presumed dead god. 
 

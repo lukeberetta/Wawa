@@ -2,7 +2,7 @@
 title: "Wood is Good"
 author: "Anton Louw"
 date: 2012-11-01
-excerpt: "Should we envy the beginner surfer? Sure, he’s looking stupid as he ploughs into the trough… but that guy has so much stoke ahead of him. While surf shops fold and shapers moonlight, Wawa has gone out on its own path."
+excerpt: "Anton Louw visits Wawa to explore alaias, paipos and handplanes, and the joy of approaching familiar waves in a different way."
 category: press
 publication: "ZigZag Magazine"
 ---
@@ -39,13 +39,3 @@ Their latest project is using Agave stems as the raw material.  Agave is the c
 Adaptation.  The essence of evolution and the key to survival in nature and business.  While surf shops fold, and shapers are forced to moonlight, these guys have gone out on their own path.  It’s a risk, but then nothing great was ever achieved by persisting with the norm.  Indeed, you can approach the surf craft as an evolutionary tale.  It began with a single, simple origin and soon branched into new species.  Some died quickly, others remained on the sideline, a few were wildly successful.  But, in this, the landscape changed and so boards needed to change with it.  While, wawa doesn’t seek to overthrow the dominant species, they see the opportunity on the lesser surfed fringes.  As competition in the centre of surfing increases, both for waves and board sales, those out on the edge are branching out and away and finding new ways to enjoy different waves.  I haven’t surfed Muizenberg in years, it’s just not my cup of weak milky tea.  But with a Paipo under my arm, it’s like an espresso jolt and the ‘Berg can offer me stoke again.
 
 They’re also using the foam off-cuts from Stubbs and gluing these together to make new blanks which can then be used to make a recycled and buoyant core for the Alaias and Paipos.  Cobus also tells me there are some more projects on the horizon, but we’ll have to wait and see what these might be.
-
- 
- 
-By not knowing, and not demanding to know, we are trusting that what we are paying for has been produced fairly and safely, but we are in fact leaving this up to chance. As most products these days are imported, we are not only buying something 'blindly', but we also seem to forget that by importing we’re increasing our environmental impact, as well as effectively exporting our money. As consumers we have more control over what is available to us to buy than we might think. As consumers we collectively choose to keep products and services available on the market as we create the demand. However we often seem to forget this incredible power that we have. With this power we can control the economy and also create jobs, by the simple act of being a ‘localist’. 
-
-By buying locally we not only contribute to our own communities immediate economy, but we are also ensuring that our communities 'spirits' and unique qualities live on. 
-
-There’s something really nice about personally knowing the carpenter that made the chair that you sit on everyday, you know he took his time to create it with love and care, and these qualities matter. You also hope and are pretty sure that the money that went to him will be circulated back into the local community. For a sustainable future we need to start caring for our local community and that means supporting the businesses within it too. 
-
-Be proudly local, support local businesses and let’s grow our local community together.

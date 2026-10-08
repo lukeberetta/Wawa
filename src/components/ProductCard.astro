@@ -20,8 +20,16 @@ const frontAlt = front?.altText ?? product.title;
   <div class="card-media">
     {/* wireframe placeholder — real deck/hull shots drop in here later */}
     {front && (
-      <img class="card-img" src={front.url} alt={frontAlt} loading="lazy" width="1086" height="1448" />
+      <img
+        class:list={['card-img', { 'is-placeholder': front.placeholder }]}
+        src={front.url}
+        alt={frontAlt}
+        loading="lazy"
+        width="1086"
+        height="1448"
+      />
     )}
+    {front?.placeholder && <span class="soon-label" aria-hidden="true">Coming soon</span>}
     {back && (
       <img
         class="card-img card-img-back"
@@ -75,6 +83,24 @@ const frontAlt = front?.altText ?? product.title;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  /* empty-room plate: soften it so it reads as "not shot yet", not as a photo.
+     scaled up a touch so the blur doesn't bleed a pale halo in at the edges */
+  .card-img.is-placeholder {
+    filter: blur(6px) brightness(0.6);
+    transform: scale(1.04);
+  }
+  .soon-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--cream);
+    pointer-events: none;
   }
   /* deck → hull cross-fade. gated on `hover: hover` so touch devices never get
      stuck showing the hull after a tap, and driven by :focus-within too so a

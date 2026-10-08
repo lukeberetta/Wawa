@@ -63,20 +63,23 @@ const schema = [
     <div class="wrap">
       <div class="hours-content fade-in">
         <p class="label">Visit</p>
-        <h2>Opening times.</h2>
-        <dl class="hours-list">
-          {
-            site.hours.map((h) => (
-              <div class="hours-row">
-                <dt>{h.days}</dt>
-                <dd>{h.time}</dd>
-              </div>
-            ))
-          }
-        </dl>
+        <h2>{site.hoursConfirmed ? 'Opening times.' : 'Visit the workshop.'}</h2>
+        {site.hoursConfirmed ? (
+          <dl class="hours-list">
+            {
+              site.hours.map((h) => (
+                <div class="hours-row">
+                  <dt>{h.days}</dt>
+                  <dd>{h.time}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        ) : (
+          <p class="hours-note">Message us on <a href={wa} target="_blank" rel="noopener noreferrer">WhatsApp</a> to check opening times before you visit.</p>
+        )}
         <p class="hours-note">
-          <a class="hours-address" href={mapLink}>{addressLine}</a>. The workshop runs through the
-          day — knock if the coffee is on.
+          <a class="hours-address" href={mapLink}>{addressLine}</a>. Come by for coffee and a closer look at the boards.
         </p>
       </div>
     </div>

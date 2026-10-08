@@ -29,10 +29,22 @@ const alaia = studioSet('alaia');
 const bodyboard = studioSet('bodyboard');
 const long = studioSet('long');
 const gunFish = studioSet('gun-fish');
+const woodIsGood = studioSet('wood-is-good-tee');
+const tote = studioSet('tote');
+const carryall = studioSet('carryall');
+const cruiser = studioSet('cruiser');
+const foilWave = studioSet('foil-wave');
+const foilProne = studioSet('foil-prone');
+const kiteTomo = studioSet('kite-tomo');
+const prints = studioSet('prints');
+const geoprene = studioSet('geoprene');
+const wetsuitSling = studioSet('wetsuit-sling');
+const crestTee = studioSet('crest-tee');
+const swallowTee = studioSet('swallow-tee');
 
 /** Empty-room plate for anything not yet photographed. One image, so no hover swap. */
 const soon = (title: string) => [
-  { url: '/img/product/background.webp', altText: `${title} — photography coming soon` },
+  { url: '/img/product/background.webp', altText: `${title} — photography coming soon`, placeholder: true },
 ];
 
 export const products: Product[] = [
@@ -42,7 +54,7 @@ export const products: Product[] = [
     handle: 'classic-fish',
     title: 'Classic Fish',
     description:
-      'Fast and loose, the fish was the most progressive board to come out of the 1960s shortboard revolution. A Steve Lis-inspired shape with Larry Gephart keel fins, and one of the most versatile designs you can pack for J-Bay, Buffels or Bali. Domed or bevelled deck.',
+      'Fast and loose, with roots in the 1960s shortboard revolution. A Steve Lis-inspired shape with Larry Gephart keel fins, and one of the most versatile designs you can pack for J-Bay, Buffels or Bali. Domed or bevelled deck.',
     productType: 'Surf',
     tags: ['Short'],
     availableForSale: true,
@@ -54,7 +66,7 @@ export const products: Product[] = [
       [
         { label: 'Best For', value: 'Small to large waves' },
         { label: 'Board Feel', value: 'Fast and loose' },
-        { label: 'Skill Level', value: "Step up, step down, this one's for everyone" },
+        { label: 'Skill Level', value: 'Ask us about sizing for your experience' },
       ],
       [
         { label: 'Designer', value: 'Cobus Joubert' },
@@ -119,7 +131,7 @@ export const products: Product[] = [
     handle: 'speed-egg',
     title: 'Speed Egg',
     description:
-      'Born from the late-1960s shortboard revolution and refined by Skip Frye and Steve Lis. A flat rocker and low rails make a fast, smooth single-fin that paddles and duck-dives easily. Built for tight pocket turns, deep bottom turns and long, drawn-out lines.',
+      'Born from the late-1960s shortboard revolution and refined by Skip Frye and Steve Lis. A flat rocker and low rails make a fast, smooth single-fin. Talk to us about dimensions to suit your paddling and the waves you ride. Built for tight pocket turns, deep bottom turns and long, drawn-out lines.',
     productType: 'Surf',
     tags: ['Mid'],
     availableForSale: true,
@@ -130,7 +142,7 @@ export const products: Product[] = [
       [
         { label: 'Best For', value: 'Small to overhead waves' },
         { label: 'Board Feel', value: 'Smooth and fast' },
-        { label: 'Skill Level', value: 'All levels' },
+        { label: 'Skill Level', value: 'Ask us about sizing for your experience' },
       ],
       [
         { label: 'Designer', value: 'Cobus Joubert' },
@@ -274,12 +286,12 @@ export const products: Product[] = [
     handle: 'foil-prone',
     title: 'Prone Foilboard',
     description:
-      'A compact prone deck for paddling into swell and flying. Over time the ocean works the paulownia-and-cork shell into a textured “speed skin” that cuts drag and adds lift, in water and in air. Stable on the belly, loose once it lifts.',
+      'A compact prone deck with a paulownia-and-cork shell, built for paddling into swell and getting onto the foil. Talk to us about dimensions and compatibility with your foil setup.',
     productType: 'Foil',
     tags: ['Prone'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('19000.00') },
-    images: soon('Wawa prone foilboard'),
+    images: [foilProne.front('Wawa Prone Foilboard, deck'), foilProne.back('Wawa Prone Foilboard, hull with foil tracks')],
     specs: [
       [
         { label: 'Best For', value: 'Open-ocean swell' },
@@ -303,7 +315,7 @@ export const products: Product[] = [
     tags: ['Wave'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('20000.00') },
-    images: soon('Wawa wave foilboard'),
+    images: [foilWave.front('Wawa Wave Foilboard, deck'), foilWave.back('Wawa Wave Foilboard, hull with foil tracks')],
     featured: true,
     specs: [
       [
@@ -323,7 +335,7 @@ export const products: Product[] = [
     handle: 'foil-wing',
     title: 'Wing Foilboard',
     description:
-      'For wind and wing. A forgiving, stable platform in the same paulownia-and-cork build, sized to get up early and stay locked in. The “speed skin” exterior cuts drag as the board breaks free of the water.',
+      'For wind and wing. A stable platform in paulownia and cork, sized for your weight, wind conditions and foil setup. Get in touch to discuss the right volume for your riding.',
     productType: 'Foil',
     tags: ['Wing'],
     availableForSale: false,
@@ -378,7 +390,7 @@ export const products: Product[] = [
     tags: ['Tomo'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('14000.00') },
-    images: soon('Wawa Tomo kiteboard'),
+    images: [kiteTomo.front('Wawa Tomo Kiteboard, deck'), kiteTomo.back('Wawa Tomo Kiteboard, hull with fins')],
     specs: [
       [
         { label: 'Best For', value: 'Strong wind' },
@@ -452,7 +464,8 @@ export const products: Product[] = [
     tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('4500.00') },
-    images: soon('Wawa wooden cruiser'),
+    // one shot so far — no back, so no hover swap
+    images: [cruiser.front('Wawa Wooden Cruiser, deck')],
     specs: [
       [
         { label: 'Best For', value: 'Flat days and cruising' },
@@ -473,7 +486,7 @@ export const products: Product[] = [
     handle: 'paipo',
     title: 'Paipo',
     description:
-      'Along with the alaia, the wave-riding craft of pre-contact Hawaii. Short, wide and fast, the punk rock of surfing, ridden finned after the boards of Valentine Chang or finless. Four models: the Bullet, a fast prone bodyboard ridden with swim fins; the Godfather, a wide planing hull built purely for speed; Dr. Strangelove, a tiny solid-wood mini Simmons with twin keels and a kicked nose for steep drops; and Purple Haze, a one-off shaped from Himalayan timber that turns purple once oiled.',
+      'Short, wide and fast: the punk rock of surfing, with roots in Hawaiian wave riding. Choose finned or finless. The Bullet is a prone bodyboard ridden with swim fins. The Godfather is a wide planing hull built for speed. Dr. Strangelove is a small solid-wood Mini-Simmons with twin keels and a kicked nose. Purple Haze is a one-off timber shape. Ask us about each model’s construction and availability.',
     productType: 'Body & Belly',
     tags: ['Paipo'],
     availableForSale: false,
@@ -497,7 +510,7 @@ export const products: Product[] = [
     handle: 'handslide',
     title: 'Handslide',
     description:
-      'Strip it all back and bodysurf. No board to paddle, no pop-up, just you, the wave and the feel. Made locally by bodysurfers, built to last and suited to every level. Every wave feels overhead, barrels everywhere. Get closer to the wave. Kick. Laugh.',
+      'Strip it all back and bodysurf. A small handplane made locally by bodysurfers, with no pop-up between you and the wave. Ask us about choosing a shape for your experience and conditions. Get closer to the wave. Kick. Laugh.',
     productType: 'Body & Belly',
     tags: ['Bodysurf'],
     availableForSale: true,
@@ -506,7 +519,7 @@ export const products: Product[] = [
     featured: true,
     specs: [
       [
-        { label: 'Best For', value: 'Any wave' },
+        { label: 'Best For', value: 'Bodysurfing' },
         { label: 'Board Feel', value: 'Fast and direct' },
         { label: 'Skill Level', value: 'All levels' },
       ],
@@ -548,7 +561,7 @@ export const products: Product[] = [
     handle: 'beach-bats',
     title: 'Wood & Cork Beach Bats',
     description:
-      'Made in Cape Town from sustainably sourced birch and natural cork. Light but strong: the layered timber adds stiffness while the cork core gives a lively spring, so you get less power per hit and more control. Sealed with a beeswax-and-oil blend. Set of two bats, ball, gift card and a calico beach bag.',
+      'Made in Cape Town from sustainably sourced birch and natural cork. Light but strong: the layered timber adds stiffness while the cork core gives a lively spring, so you get less power per hit and more control. Sealed with a beeswax-and-oil blend. Set of two bats, a ball and a calico beach bag.',
     productType: 'Accessories',
     tags: ['Beach Bats'],
     availableForSale: true,
@@ -558,7 +571,7 @@ export const products: Product[] = [
     specs: [
       [
         { label: 'Used For', value: 'Beach games' },
-        { label: 'In the Set', value: 'Two bats, ball, gift card & beach bag' },
+        { label: 'In the Set', value: 'Two bats, ball & calico beach bag' },
         { label: 'For', value: 'All ages' },
       ],
       [
@@ -601,19 +614,56 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Wetsuits'],
     availableForSale: true,
-    variantId: '41267104874560',
+    // One Shopify variant per size — the old single variant (41267104874560)
+    // is replaced once the S/M/L variants exist in the store.
+    variants: [
+      { title: 'S', id: '' },
+      { title: 'M', id: '' },
+      { title: 'L', id: '' },
+    ],
     priceRange: { minVariantPrice: zar('999.00') },
-    images: soon('Wawa Geoprene wetsuit jacket'),
+    // one shot so far — no back, so no hover swap
+    images: [geoprene.front('Wawa Geoprene wetsuit jacket, front zip')],
     specs: [
       [
         { label: 'Used For', value: 'Summer swells' },
         { label: 'Thickness', value: '2mm' },
         { label: 'Features', value: 'Front zip, padded chest' },
+        { label: 'Sizes', value: 'S, M, L' },
       ],
       [
         { label: 'Material', value: 'Japanese Yamamoto rubber' },
         { label: 'Finish', value: 'Glossy Sealskin' },
         { label: 'Made In', value: 'Cape Town' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/wetsuit-sling',
+    handle: 'waxed-canvas-wetsuit-sling',
+    title: 'Waxed Canvas Wetsuit Sling',
+    description:
+      'A waxed-canvas sling for a wet wetsuit and everything else from the session. Rope drawstring closed with a timber toggle, a stitched Wawa patch, and rope straps to carry it home over the shoulder. In olive or tan.',
+    productType: 'Accessories',
+    tags: ['Bags'],
+    availableForSale: true,
+    // One Shopify variant per colour — "Coming soon" until the ids exist.
+    optionName: 'Colour',
+    variants: [
+      { title: 'Olive', id: '' },
+      { title: 'Tan', id: '' },
+    ],
+    priceRange: { minVariantPrice: zar('999.00') },
+    // one shot so far (both colours together) — no back, so no hover swap
+    images: [wetsuitSling.front('Wawa waxed canvas wetsuit slings in olive and tan')],
+    specs: [
+      [
+        { label: 'Used For', value: 'Carrying a wet wetsuit' },
+        { label: 'Closure', value: 'Rope drawstring & timber toggle' },
+        { label: 'Colours', value: 'Olive, tan' },
+      ],
+      [
+        { label: 'Material', value: 'Waxed canvas' },
       ],
     ],
   },
@@ -663,6 +713,141 @@ export const products: Product[] = [
     ],
   },
   {
+    id: 'mock/wood-is-good-tee',
+    handle: 'wood-is-good-tee',
+    title: 'Wood Is Good Tee',
+    description:
+      'A navy crew-neck tee carrying the Wood Is Good surfer: small on the chest, drawn large across the back in white and ocean blue. From the Wawa workshop in Cape Town.',
+    productType: 'Accessories',
+    tags: ['Clothing'],
+    availableForSale: true,
+    // Shopify variant ids land here once the product is created in the store —
+    // until every size has one, the PDP shows the sizes but holds the cart.
+    variants: [
+      { title: 'XS', id: '' },
+      { title: 'S', id: '' },
+      { title: 'M', id: '' },
+      { title: 'L', id: '' },
+      { title: 'XL', id: '' },
+    ],
+    priceRange: { minVariantPrice: zar('999.00') },
+    images: [
+      woodIsGood.front('Wawa Wood Is Good tee in navy, chest print'),
+      woodIsGood.back('Wawa Wood Is Good tee in navy, back print'),
+    ],
+    specs: [
+      [
+        { label: 'Colour', value: 'Navy' },
+        { label: 'Print', value: 'Left chest & full back' },
+        { label: 'Sizes', value: 'XS, S, M, L, XL' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/crest-tee',
+    handle: 'cape-town-crest-tee',
+    title: 'Cape Town Crest Tee',
+    description:
+      'A navy crew-neck tee carrying the Wawa crest: a board through the waves, palms either side, Cape Town underneath. Small on the chest, large across the back, in aqua.',
+    productType: 'Accessories',
+    tags: ['Clothing'],
+    availableForSale: true,
+    // Shopify variant ids land here once the product is created in the store.
+    variants: [
+      { title: 'XS', id: '' },
+      { title: 'S', id: '' },
+      { title: 'M', id: '' },
+      { title: 'L', id: '' },
+      { title: 'XL', id: '' },
+    ],
+    priceRange: { minVariantPrice: zar('999.00') },
+    images: [
+      crestTee.front('Wawa Cape Town Crest tee in navy, chest print'),
+      crestTee.back('Wawa Cape Town Crest tee in navy, back print'),
+    ],
+    specs: [
+      [
+        { label: 'Colour', value: 'Navy' },
+        { label: 'Print', value: 'Left chest & full back' },
+        { label: 'Sizes', value: 'XS, S, M, L, XL' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/swallow-tee',
+    handle: 'swallow-tee',
+    title: 'Swallow Tee',
+    description:
+      'A navy crew-neck tee with a single aqua badge on the chest: a swallow in a hand-drawn circle, lettered Lis Vos, Wawa and Cape Town. Plain back.',
+    productType: 'Accessories',
+    tags: ['Clothing'],
+    availableForSale: true,
+    // Shopify variant ids land here once the product is created in the store.
+    variants: [
+      { title: 'XS', id: '' },
+      { title: 'S', id: '' },
+      { title: 'M', id: '' },
+      { title: 'L', id: '' },
+      { title: 'XL', id: '' },
+    ],
+    priceRange: { minVariantPrice: zar('999.00') },
+    images: [
+      swallowTee.front('Wawa Swallow tee in navy, chest badge'),
+      swallowTee.back('Wawa Swallow tee in navy, plain back'),
+    ],
+    specs: [
+      [
+        { label: 'Colour', value: 'Navy' },
+        { label: 'Print', value: 'Left chest' },
+        { label: 'Sizes', value: 'XS, S, M, L, XL' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/canvas-tote',
+    handle: 'canvas-tote',
+    title: 'Canvas Tote',
+    description:
+      'A natural canvas tote with long shoulder straps, printed in ocean blue with the Wawa crest: a board through the waves, palms either side, Cape Town underneath.',
+    productType: 'Accessories',
+    tags: ['Bags'],
+    availableForSale: true,
+    // variantId lands once the product is created in Shopify — "Coming soon" until then
+    priceRange: { minVariantPrice: zar('999.00') },
+    // one shot so far — no back, so no hover swap
+    images: [tote.front('Wawa canvas tote with the blue Cape Town crest')],
+    specs: [
+      [
+        { label: 'Colour', value: 'Natural with blue print' },
+        { label: 'Print', value: 'Wawa Cape Town crest' },
+        { label: 'Straps', value: 'Long, over the shoulder' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/canvas-carryall',
+    handle: 'canvas-carryall',
+    title: 'Canvas Carryall',
+    description:
+      'The bigger bag. Natural canvas with olive and rust webbing running from the shoulder straps down the body, a rope-and-timber toggle to close the top, and the Wawa patch on the front. Big enough for a towel, a wetsuit and the day.',
+    productType: 'Accessories',
+    tags: ['Bags'],
+    availableForSale: true,
+    // variantId lands once the product is created in Shopify — "Coming soon" until then
+    priceRange: { minVariantPrice: zar('999.00') },
+    images: [
+      carryall.front('Wawa canvas carryall with olive and rust straps, patch side'),
+      carryall.back('Wawa canvas carryall, plain side'),
+    ],
+    specs: [
+      [
+        { label: 'Colour', value: 'Natural canvas, olive & rust straps' },
+        { label: 'Closure', value: 'Rope loop & timber toggle' },
+        { label: 'Detail', value: 'Wawa patch' },
+      ],
+    ],
+  },
+  {
     id: 'mock/art-prints',
     handle: 'posters-and-prints',
     title: 'Posters & Prints',
@@ -673,7 +858,10 @@ export const products: Product[] = [
     availableForSale: true,
     variantId: '41267104972864',
     priceRange: { minVariantPrice: zar('999.00') },
-    images: soon('Wawa poster print'),
+    images: [
+      prints.front('Framed engraving of surfers riding a breaking wave'),
+      prints.back('Framed woodcut of a surfer on a longboard'),
+    ],
     specs: [
       [
         { label: 'Used For', value: 'Wall art' },

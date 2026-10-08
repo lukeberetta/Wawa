@@ -356,7 +356,8 @@ const enabled = !!site.shopDomain;
       // ── Add to cart (delegated; ProductCard buttons) ──
       document.addEventListener('click', (e) => {
         const btn = (e.target as HTMLElement).closest<HTMLElement>('[data-add-to-cart]');
-        if (!btn) return;
+        // no id yet = a sized product with no size picked; the PDP handles it
+        if (!btn?.dataset.variantId) return;
         e.preventDefault();
         const d = btn.dataset;
         add({

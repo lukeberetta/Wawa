@@ -14,6 +14,9 @@ export interface ProductImage {
   altText: string;
   width?: number;
   height?: number;
+  /** Stand-in plate for an unphotographed product — rendered blurred with a
+   *  "Coming soon" label rather than as a real shot. */
+  placeholder?: boolean;
 }
 
 export interface Product {
@@ -27,6 +30,12 @@ export interface Product {
   /** Shopify variant id (numeric) for the cart-permalink checkout. Set on
    *  buyable items; absent on POA/Enquire boards. */
   variantId?: string;
+  /** Variants of a single Shopify option (size, colour…). When present the PDP
+   *  shows a picker and the chosen variant's id goes to the cart instead of `variantId`.
+   *  An empty id means the Shopify variant isn't created yet. */
+  variants?: { title: string; id: string }[];
+  /** Picker label for `variants` — Shopify's option name. Defaults to 'Size'. */
+  optionName?: string;
   priceRange: { minVariantPrice: Money };
   /** front + back for the flip-card; first = primary */
   images: ProductImage[];

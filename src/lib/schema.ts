@@ -81,12 +81,14 @@ export function organization() {
     ...(hasGeo && {
       geo: { '@type': 'GeoCoordinates', latitude: geo.lat, longitude: geo.lng },
     }),
-    openingHoursSpecification: site.hours.map((h) => ({
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: h.spec.dayOfWeek,
-      opens: h.spec.opens,
-      closes: h.spec.closes,
-    })),
+    ...(site.hoursConfirmed && {
+      openingHoursSpecification: site.hours.map((h) => ({
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: h.spec.dayOfWeek,
+        opens: h.spec.opens,
+        closes: h.spec.closes,
+      })),
+    }),
     areaServed: { '@type': 'Country', name: 'South Africa' },
   };
 }

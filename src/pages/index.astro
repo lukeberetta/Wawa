@@ -58,7 +58,7 @@ const igTiles = [
     ></video>
     <div class="wrap hero-grid">
       <div class="hero-content">
-        <h1 class="fade-in">A return to how surfboards were meant to be built, <span class="accent">and felt.</span></h1>
+        <h1 class="fade-in">Wooden surfboards. Shaped in Muizenberg. <span class="accent">Made to be felt.</span></h1>
         <a href="/products" class="link-arrow fade-in">
           Find your board <span class="arrow">→</span>
         </a>
@@ -85,7 +85,7 @@ const igTiles = [
     <div class="wrap">
       <div class="section-head fade-in">
         <p class="label">Our range</p>
-        <h2>Categories.</h2>
+        <h2>Find your craft.</h2>
       </div>
       <div class="product-grid">
         {homeDisciplines.map((d) => <CategoryCard discipline={d} />)}
@@ -98,7 +98,7 @@ const igTiles = [
     <div class="wrap">
       <div class="section-head fade-in">
         <p class="label">Featured</p>
-        <h2>Best sellers.</h2>
+        <h2>Featured shapes.</h2>
       </div>
       <div class="product-grid">
         {featured.map((p) => <ProductCard product={p} />)}
@@ -114,7 +114,7 @@ const igTiles = [
     <div class="wrap">
       <div class="section-head fade-in">
         <p class="label">Instagram</p>
-        <h2>From the feed.</h2>
+        <h2>Around the workshop.</h2>
       </div>
     </div>
     <div class="ig-grid fade-in">
@@ -130,7 +130,6 @@ const igTiles = [
           {t.caption && (
             <div class="ig-caption">
               <p class="ig-caption-text">{t.caption}</p>
-              <p class="ig-caption-src">From Instagram</p>
             </div>
           )}
           <svg class="ig-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

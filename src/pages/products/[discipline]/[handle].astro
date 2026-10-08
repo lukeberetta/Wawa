@@ -32,8 +32,19 @@ const { product, discipline, related } = Astro.props;
 
 const price = formatPrice(product);
 const hasPrice = price !== 'Enquire';
-// Mirror ProductCard: buyable only with stock + variant id + a configured shop.
-const buyable = product.availableForSale && !!product.variantId && !!site.shopDomain;
+// Sized products carry one variant id per size; the picker below hands the
+// chosen one to the add-to-cart buttons, so they start without an id.
+const variants = product.variants ?? [];
+const sized = variants.length > 0;
+// Buyable only with stock + variant id(s) + a configured shop.
+const buyable =
+  site.salesOpen &&
+  product.availableForSale &&
+  !!site.shopDomain &&
+  (sized ? variants.every((v) => v.id) : !!product.variantId);
+// An accessory without its Shopify ids yet is waiting, not made to order.
+const comingSoon = !buyable && product.productType === 'Accessories';
+const cartVariantId = sized ? '' : product.variantId;
 
 const images = product.images;
 const lead = images[0];
@@ -98,7 +109,19 @@ const crumbs = breadcrumbs([
         <ul class="car-track" data-car-track>
           {Array.from({ length: slideCount }).map((_, i) => (
             <li class="car-slide">
-              {images[i] ? (
+              {images[i]?.placeholder ? (
+                <div class="slide-media slide-soon">
+                  <img
+                    class="slide-img"
+                    src={images[i].url}
+                    alt={images[i].altText ?? product.title}
+                    width="1086"
+                    height="1448"
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                  />
+                  <span class="soon-label" aria-hidden="true">Coming soon</span>
+                </div>
+              ) : images[i] ? (
                 <img
                   class="slide-media slide-img"
                   src={images[i].url}
@@ -136,17 +159,36 @@ const crumbs = breadcrumbs([
 
             <div class="info-actions">
               {
+                sized && (
+                  <fieldset class="sizes" data-sizes>
+                    <legend class="sizes-legend">{product.optionName ?? 'Size'}</legend>
+                    <div class="sizes-row">
+                      {variants.map((v) => (
+                        <label class="size">
+                          <input type="radio" name="size" value={v.id} data-size={v.title} disabled={!buyable} />
+                          <span>{v.title}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                )
+              }
+              {
                 buyable ? (
                   <button
                     class="pdp-action"
                     data-add-to-cart
-                    data-variant-id={product.variantId}
+                    data-variant-id={cartVariantId}
                     data-handle={product.handle}
                     data-title={product.title}
                     data-price={product.priceRange.minVariantPrice.amount}
                     data-image={lead.url}
                   >
                     Add to cart
+                  </button>
+                ) : comingSoon ? (
+                  <button class="pdp-action" disabled>
+                    Coming soon
                   </button>
                 ) : (
                   <button
@@ -156,16 +198,16 @@ const crumbs = breadcrumbs([
                     data-order-category={category}
                     data-order-title={product.title}
                   >
-                    Enquire on WhatsApp
+                    Enquire about this board
                   </button>
                 )
               }
               {
-                !buyable && (
+                !buyable && !comingSoon && (
                   <p class="info-note">
                     {hasPrice
-                      ? 'Made to order — get in touch to start a build.'
-                      : 'Price on application. Made to order — get in touch for pricing and lead time.'}
+                      ? 'Made to order — ask us about your build and lead time.'
+                      : 'Made to order — ask us about pricing and lead time.'}
                   </p>
                 )
               }
@@ -217,13 +259,17 @@ const crumbs = breadcrumbs([
             <button
               class="pdp-bar-action"
               data-add-to-cart
-              data-variant-id={product.variantId}
+              data-variant-id={cartVariantId}
               data-handle={product.handle}
               data-title={product.title}
               data-price={product.priceRange.minVariantPrice.amount}
               data-image={lead.url}
             >
               Add to cart
+            </button>
+          ) : comingSoon ? (
+            <button class="pdp-bar-action" disabled>
+              Coming soon
             </button>
           ) : (
             <button
@@ -306,6 +352,30 @@ const crumbs = breadcrumbs([
     display: block;
     height: auto;
     object-fit: cover;
+  }
+  /* empty-room plate, blurred under a "Coming soon" label — the frame keeps the
+     slide's border + aspect, the image fills it and is clipped at the edge */
+  .slide-soon {
+    position: relative;
+    overflow: hidden;
+  }
+  .slide-soon .slide-img {
+    width: 100%;
+    height: 100%;
+    filter: blur(8px) brightness(0.6);
+    transform: scale(1.04);
+  }
+  .soon-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--cream);
+    pointer-events: none;
   }
   /* dots float over the foot of the image, centred */
   .car-dots {
@@ -393,6 +463,74 @@ const crumbs = breadcrumbs([
   }
   .pdp-action:hover {
     opacity: 0.85;
+  }
+  .pdp-action:disabled,
+  .pdp-bar-action:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  /* size picker — a row of square hairline chips; the chosen one fills ink */
+  .sizes {
+    border: 0;
+    margin: 0 0 1.25rem;
+    padding: 0;
+  }
+  .sizes-legend {
+    padding: 0;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .sizes-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .size {
+    position: relative;
+  }
+  .size input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .size span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.25rem;
+    height: 3.25rem;
+    padding-inline: 0.75rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    border: 1px solid var(--rule);
+    cursor: pointer;
+    transition: border-color 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease);
+  }
+  .size input:hover:not(:disabled) + span {
+    border-color: var(--ink);
+  }
+  .size input:checked + span {
+    color: var(--cream);
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .size input:focus-visible + span {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+  .size input:disabled + span {
+    color: var(--muted);
+    cursor: default;
+  }
+  /* add-to-cart pressed before a size was chosen */
+  .sizes.is-invalid .sizes-legend {
+    color: var(--ink);
+  }
+  .sizes.is-invalid .size span {
+    border-color: var(--ink);
   }
   .info-note {
     font-size: 0.82rem;
@@ -606,6 +744,32 @@ const crumbs = breadcrumbs([
         });
       },
       { passive: true },
+    );
+  }
+
+  // ── Sizes ── the chosen size's variant id (and a size-suffixed title for the
+  // cart line) is written onto every add-to-cart button. Pressed with no size
+  // picked, the button has no id — Cart.astro ignores it and we point at the
+  // picker instead.
+  const sizes = document.querySelector<HTMLFieldSetElement>('[data-sizes]');
+  if (sizes) {
+    const buttons = Array.from(document.querySelectorAll<HTMLElement>('[data-add-to-cart]'));
+    const baseTitle = buttons[0]?.dataset.title ?? '';
+    sizes.addEventListener('change', (e) => {
+      const input = e.target as HTMLInputElement;
+      sizes.classList.remove('is-invalid');
+      buttons.forEach((b) => {
+        b.dataset.variantId = input.value;
+        b.dataset.title = `${baseTitle} — ${input.dataset.size}`;
+      });
+    });
+    buttons.forEach((b) =>
+      b.addEventListener('click', () => {
+        if (b.dataset.variantId) return;
+        sizes.classList.add('is-invalid');
+        sizes.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        sizes.querySelector<HTMLInputElement>('input')?.focus({ preventScroll: true });
+      }),
     );
   }
 

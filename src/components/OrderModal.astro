@@ -39,8 +39,9 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
 
     <form class="order-body" data-order-form data-lenis-prevent>
       <p class="order-intro">
-        Tell us what you're after. Everything's optional — the more you share,
-        the better we can shape it. Sends straight to us on WhatsApp.
+        Tell us what you’d like to ride and where you surf. All fields are optional — share what
+        you know, and we’ll work out the details together. Continue to WhatsApp or open an email
+        draft to send your enquiry.
       </p>
 
       <fieldset class="order-group">
@@ -73,7 +74,7 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
             </select>
           </label>
           <label class="order-field order-field-wide">
-            <span>Wave you surf most</span>
+            <span>Waves you surf most</span>
             <input type="text" name="wave" placeholder="Beachbreak, point, mushy…" autocomplete="off" />
           </label>
         </div>
@@ -88,11 +89,11 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
           </label>
           <label class="order-field">
             <span>Height</span>
-            <input type="text" name="height" placeholder="e.g. 180cm" autocomplete="off" />
+            <input type="text" name="height" placeholder="e.g. 180 cm" autocomplete="off" />
           </label>
           <label class="order-field">
             <span>Weight</span>
-            <input type="text" name="weight" placeholder="e.g. 75kg" autocomplete="off" />
+            <input type="text" name="weight" placeholder="e.g. 75 kg" autocomplete="off" />
           </label>
           <label class="order-field">
             <span>Age</span>
@@ -118,10 +119,10 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
 
       <div class="order-actions">
         <button class="order-submit" type="submit">
-          Send on WhatsApp <span aria-hidden="true">→</span>
+          Continue to WhatsApp <span aria-hidden="true">→</span>
         </button>
         <button class="order-submit order-submit-ghost" type="button" data-order-email>
-          Send by email
+          Open email draft
         </button>
       </div>
     </form>
@@ -423,7 +424,7 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
       ['Skill', v('skill')],
     ].filter(([, val]) => val);
 
-    const lines: string[] = ["Hi Wawa, I'd like to order a board."];
+    const lines: string[] = ["Hi Wawa, I'd like to discuss a custom board."];
     if (board.length) {
       lines.push('', '— Board —', ...board.map(([k, val]) => `${k}: ${val}`));
     }
@@ -444,7 +445,7 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
   // Secondary channel: same brief, opened as a pre-filled email draft.
   modal?.querySelector('[data-order-email]')?.addEventListener('click', () => {
     const body = encodeURIComponent(buildMessage());
-    const subject = encodeURIComponent('Board order — Wawa Surfboards');
+    const subject = encodeURIComponent('Custom board enquiry — Wawa Surfboards');
     window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`;
     setOpen(false);
   });

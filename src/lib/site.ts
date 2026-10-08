@@ -4,14 +4,15 @@ export const site = {
   url: 'https://wawawave.com',
   location: 'Muizenberg, Cape Town',
   description:
-    'Traditional wooden surfboards handcrafted in Muizenberg, Cape Town. Custom builds shaped from paulownia timber by Wawa Surfboards.',
+    'Wooden surfboards and custom surf craft from Muizenberg, Cape Town. Explore Wawa’s paulownia and cork boards, solid-timber shapes and accessories.',
   /** Shown to search engines as the brand's short name (Google site-name pick). */
   shortName: 'Wawa',
   whatsapp: '27823723142',
   /** E.164, for tel: links and LocalBusiness `telephone`. */
   phone: '+27823723142',
   email: 'surfboards@wawawave.com',
-  // PLACEHOLDER HOURS — confirm with the shop before these go live.
+  // Provisional hours: set hoursConfirmed only after the shop confirms them.
+  hoursConfirmed: false,
   // `days`/`time` are the display strings; `spec` is the machine-readable pair
   // that feeds LocalBusiness `openingHoursSpecification` (schema.org day URLs,
   // 24h times). Keep the two in sync — they render from the same array.
@@ -53,6 +54,9 @@ export const site = {
   // hosted checkout). Use the store's primary/custom domain or *.myshopify.com.
   // Empty = checkout disabled (items fall back to Enquire). Fill after import.
   shopDomain: 'wawawave.myshopify.com',
+  // Master switch for add-to-cart. Off = every buyable item shows "Coming soon"
+  // (boards keep Enquire). Flip on once Yoco + real prices are live.
+  salesOpen: false,
   // `dropdown` (disciplines drilled in Nav.astro) makes Shop a two-level row.
   nav: [
     { href: '/products', label: 'Shop', dropdown: true },

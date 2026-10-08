@@ -33,3 +33,14 @@
 - [ ] Test full purchase end-to-end on wawawave.com once Yoco is live (mobile Safari + desktop)
 - [ ] 404 page check
 - [ ] Lighthouse/perf pass after real images land (webp sizes, lazy-loading)
+
+## Copy facts to confirm
+
+- [ ] Confirm workshop/café opening hours in `src/lib/site.ts`, then set `hoursConfirmed: true` to show them on Contact and in structured data.
+- [ ] Confirm founding milestones: the Story previously said 2010; the archived *Wood is Good* article says March 2011. The current Story omits the date pending confirmation.
+- [ ] Confirm construction for each board model, including core material, recycled content, finish and care. Add dimensions, fin compatibility and what is included where applicable.
+- [ ] Confirm rider guidance for each model and replace broad “All levels” claims with specific guidance where needed.
+- [ ] Confirm whether the beach bat set includes a redeemable gift card or a gift note; it is omitted from the current description pending confirmation.
+- [ ] Add actual build lead times once confirmed; do not estimate them in customer copy.
+- [ ] Check archived journal articles against the originals: duplicated local-craft endings and repeated header metadata have been removed; original article voices and quotations are preserved.
+- [ ] Validate foil “speed skin” performance claims before reintroducing them; drag and lift claims have been removed from category and product descriptions.

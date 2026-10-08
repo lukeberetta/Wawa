@@ -36,7 +36,7 @@ const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0
 const headerCopy: Record<string, { title: string; sub: string }> = {
   all: {
     title: 'The full range.',
-    sub: 'Every craft we make, in one place. Shaped by hand from paulownia timber in Muizenberg.',
+    sub: 'Surf craft, wooden cruisers and accessories from our Muizenberg workshop.',
   },
   ...Object.fromEntries(
     disciplines.map((d) => [d.handle, { title: `${d.title}.`, sub: d.intro ?? d.blurb }]),
@@ -44,7 +44,7 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
 };
 ---
 
-<Layout title="Shop · Wawa Surfboards" description="The full Wawa range — surf, foil, kite, skate, body & belly and accessories, shaped by hand from timber." current="products" schema={[breadcrumbs([{ name: 'Shop' }])]}>
+<Layout title="Shop · Wawa Surfboards" description="Explore Wawa surf, foil, kite, skate, body & belly craft and accessories from Muizenberg, Cape Town." current="products" schema={[breadcrumbs([{ name: 'Shop' }])]}>
   <!-- Primary lens: discipline pills, pinned directly below the nav. The
        wrapper clears the fixed nav at rest; the band then sticks under it. -->
   <div class="disc-band-wrap">
@@ -93,7 +93,7 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
       </div>
 
       <p class="shop-empty" data-empty hidden>
-        Nothing here yet in this combination. <button class="shop-reset" data-reset>Clear filters</button>
+        No products match these filters. <button class="shop-reset" data-reset>Clear filters</button>
       </p>
     </div>
   </section>
