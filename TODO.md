@@ -3,7 +3,7 @@
 ## Blocking (customers hit these today)
 
 - [ ] **Real prices.** 7 accessories still at R999 placeholder (`src/data/products.ts:554–695`). Customers can currently buy at wrong prices.
-- [ ] **Activate Yoco on Shopify checkout.** Checkout is live but payments won't capture until Yoco is enabled.
+- [ ] **Activate Yoco on Shopify checkout.** The Shopify domain is configured, but site sales remain disabled (`salesOpen: false`). Follow `RUNBOOK-commerce.md` to activate Yoco and verify a payment before opening sales.
 - [ ] **Product photography — 23 products still `soon()` placeholders** (`src/data/products.ts`): all guns/eggs/models, foilboards, kiteboards, cruiser, paipo, handslide, and every accessory. Only Classic Fish, Long Fish, alaia, bodyboard have real shots.
 - [ ] **Cart line thumbnails** — `Cart.astro:340` still renders a `.wf-ph` box instead of the product image.
 - [ ] **Product page gallery fallback** — `[handle].astro:87` shows a grey placeholder slide for imageless products; decide on a branded "photos coming" treatment or hide.

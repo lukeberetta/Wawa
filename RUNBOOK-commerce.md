@@ -4,8 +4,10 @@ Launch scope: the 7 **accessories** sell online. Boards stay on-site as
 "Enquire" (WhatsApp). The site stays static — checkout hands off to Shopify
 via a cart permalink, where **Yoco** is the payment provider.
 
-Commerce is gated by one switch: `site.shopDomain` in `src/lib/site.ts`.
-Empty = no cart UI anywhere. Set it (plus per-product variant IDs) to go live.
+The Shopify domain is configured as `wawawave.myshopify.com` in
+`src/lib/site.ts`. Sales remain disabled with `site.salesOpen: false` until
+payments, product prices, and shipping are verified. Products also need
+their Shopify variant IDs before they can be added to the cart.
 
 ---
 
@@ -16,6 +18,26 @@ Empty = no cart UI anywhere. Set it (plus per-product variant IDs) to go live.
 - **Client** installs the **Yoco** app and connects their Yoco merchant
   account (their bank/money — not us), then activates Yoco under
   Settings → Payments.
+
+### Yoco activation (account access required)
+
+Follow the [official Yoco Shopify setup guide](https://support.yoco.help/en/articles/164960-yoco-for-shopify).
+This is configured in the merchant accounts; no Yoco API keys or payment
+code are needed in this static site.
+
+1. Complete the client's Yoco business profile and verify that you are
+   signed into the correct business in the Yoco Web App.
+2. Open **Sales → e-Commerce integrations → Shopify → How to Connect**.
+3. Install the **Yoco Payments App** in the `wawawave.myshopify.com` Shopify
+   store and review its permissions.
+4. Return to Shopify's payments screen and select **Activate Yoco**.
+   Save any app setting changes.
+5. Confirm the correct business name appears on the Yoco payment page.
+6. Once prices and shipping are confirmed, arrange an authorized purchase
+   of at least **R2.00**, as recommended by Yoco. Verify the paid order in
+   Shopify and the transaction in Yoco, including confirmation emails.
+
+Activation and a successful payment have not been verified from this repo.
 
 ## 2. Store setup (Shopify admin)
 
@@ -58,7 +80,8 @@ npx tsx scripts/gen-shopify-csv.ts > shopify-products.csv   # accessories only
   (alongside `availableForSale`).
 
 A product becomes buyable only when it has `availableForSale: true` **and**
-a `variantId` **and** `shopDomain` is set — otherwise it stays Enquire.
+a `variantId` **and** `shopDomain` is set. Keep `salesOpen: false` until the
+launch checks pass; the sales switch controls the Coming soon treatment.
 
 ## 6. Verify + deploy
 
@@ -70,6 +93,8 @@ npm run build && npm run preview     # click Add to cart → drawer → Checkout
   and lands on Shopify's hosted checkout with Yoco available.
 - Deploy (Cloudflare Pages).
 - Do one **real** low-value test purchase (or Yoco test mode) end-to-end.
+- After Yoco activation, confirmed prices, shipping, and the payment check,
+  set `salesOpen: true` in `src/lib/site.ts`, build, and deploy to open sales.
 
 ## Later: headless (when boards sell online)
 
