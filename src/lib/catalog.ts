@@ -1,6 +1,7 @@
 import type { Product } from '@/lib/types';
 import { products as mockProducts } from '@/data/products';
 import { disciplines } from '@/data/disciplines';
+import { site } from '@/lib/site';
 
 /**
  * Catalog access layer. Today returns mock data; in phase 2 swap the body of
@@ -32,8 +33,11 @@ export function slug(s: string): string {
 
 export { disciplines };
 
-/** Format Storefront Money as a ZAR price string, or "Enquire" when POA. */
+/** Format Storefront Money as a ZAR price string, or "Enquire" when POA.
+ *  Accessories read "Coming soon" until sales open — their prices are still
+ *  placeholders, so none show before launch. */
 export function formatPrice(p: Product): string {
+  if (p.productType === 'Accessories' && !site.salesOpen) return 'Coming soon';
   const amt = Number(p.priceRange.minVariantPrice.amount);
   if (amt <= 0) return 'Enquire';
   // R25,000 — comma thousands, no decimals (not the en-ZA space/comma)

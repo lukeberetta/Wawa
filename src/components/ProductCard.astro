@@ -29,7 +29,10 @@ const frontAlt = front?.altText ?? product.title;
         height="1448"
       />
     )}
-    {front?.placeholder && <span class="soon-label" aria-hidden="true">Coming soon</span>}
+    {/* the price line already says it for unreleased accessories — don't say it twice */}
+    {front?.placeholder && price !== 'Coming soon' && (
+      <span class="soon-label" aria-hidden="true">Coming soon</span>
+    )}
     {back && (
       <img
         class="card-img card-img-back"

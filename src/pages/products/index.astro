@@ -1,7 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import ProductCard from '@/components/ProductCard.astro';
-import { disciplines, getProducts, slug } from '@/lib/catalog';
+import { disciplines, getProducts, slug, formatPrice } from '@/lib/catalog';
 import { breadcrumbs } from '@/lib/schema';
 import type { Product } from '@/lib/types';
 
@@ -29,7 +29,10 @@ const catDiscs: Record<string, string[]> = Object.fromEntries(
   categories.map((c) => [c, disciplines.filter((d) => d.categories.includes(c)).map((d) => d.handle)]),
 );
 
-const priceOf = (p: Product) => Number(p.priceRange.minVariantPrice.amount) || 0;
+// 0 = no public price (POA, or Coming soon before sales open) — sorts last and
+// keeps placeholder prices out of the markup.
+const priceOf = (p: Product) =>
+  formatPrice(p) === 'Coming soon' ? 0 : Number(p.priceRange.minVariantPrice.amount) || 0;
 
 // Header copy per lens — the title + intro swap to match the active discipline
 // (or category) so the page reads as a real collection, not a static catalog.
@@ -84,7 +87,6 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
             data-discipline={slug(p.productType)}
             data-tags={p.tags.join('|')}
             data-price={priceOf(p)}
-            data-featured={p.featured ? '1' : '0'}
             data-index={i}
           >
             <ProductCard product={p} />
@@ -109,7 +111,7 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
       <div class="sheet-group">
         <p class="label sheet-label">Sort</p>
         <div class="sheet-opts" data-sort-group>
-          <button class="sheet-opt is-active" data-sort="featured" aria-pressed="true">Featured</button>
+          <button class="sheet-opt is-active" data-sort="featured" aria-pressed="true">Default</button>
           <button class="sheet-opt" data-sort="price-asc" aria-pressed="false">Price · low to high</button>
           <button class="sheet-opt" data-sort="price-desc" aria-pressed="false">Price · high to low</button>
         </div>
@@ -497,13 +499,11 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
 
   // ── Apply ─────────────────────────────────────
   function apply() {
-    // sort: reorder the DOM so the visual order matches (featured keeps the
-    // original index order; price uses the numeric data-price, POA last)
+    // sort: reorder the DOM so the visual order matches (the default keeps
+    // catalog order — homepage featured slots don't apply here; price uses the
+    // numeric data-price, unpriced last)
     const sorted = [...items].sort((a, b) => {
       if (state.sort === 'featured') {
-        const fa = a.dataset.featured === '1' ? 0 : 1;
-        const fb = b.dataset.featured === '1' ? 0 : 1;
-        if (fa !== fb) return fa - fb;
         return Number(a.dataset.index) - Number(b.dataset.index);
       }
       const pa = Number(a.dataset.price) || 0;

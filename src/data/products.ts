@@ -545,34 +545,6 @@ export const products: Product[] = [
 
   // ── ACCESSORIES ──────────────────────────────
   {
-    id: 'mock/beach-bats',
-    handle: 'beach-bats',
-    title: 'Wood & Cork Beach Bats',
-    description:
-      'Made in Cape Town from sustainably sourced birch and natural cork. Light but strong: the layered timber adds stiffness while the cork core gives a lively spring, so you get less power per hit and more control. Sealed with a beeswax-and-oil blend. Set of two bats, a ball and a calico beach bag.',
-    productType: 'Accessories',
-    tags: ['Beach Bats'],
-    availableForSale: true,
-    variantId: '41267104809024',
-    priceRange: { minVariantPrice: zar('999.00') },
-    images: [
-      beachBats.front('Wawa beach bat with red sun and blue waves, held against a sunlit plaster wall'),
-      beachBats.back('Wawa beach bat at an angle, showing the layered birch edge and cork grip'),
-    ],
-    specs: [
-      [
-        { label: 'Used For', value: 'Beach games' },
-        { label: 'In the Set', value: 'Two bats, ball & calico beach bag' },
-        { label: 'For', value: 'All ages' },
-      ],
-      [
-        { label: 'Material', value: 'Birch & cork' },
-        { label: 'Finish', value: 'Beeswax & oil' },
-        { label: 'Made In', value: 'Cape Town' },
-      ],
-    ],
-  },
-  {
     id: 'mock/cotton-duck-cover',
     handle: 'cotton-duck-cover',
     title: 'Cotton Duck Board Cover',
@@ -597,35 +569,47 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 'mock/geoprene-jacket',
-    handle: 'geoprene-jacket',
-    title: 'Geoprene Wetsuit Jacket',
+    id: 'mock/canvas-carryall',
+    handle: 'canvas-carryall',
+    title: 'Canvas Carryall',
     description:
-      'For summer swells, when you don’t want the full suit. Made in Cape Town from Japanese Yamamoto rubber: a 2mm jacket with super-stretch panels for a full range of movement. The glossy Sealskin finish soaks up sunlight to keep you warmer with less rubber. Front zip, padded chest for paddling.',
+      'The bigger bag. Natural canvas with olive and rust webbing running from the shoulder straps down the body, a rope-and-timber toggle to close the top, and the Wawa patch on the front. Big enough for a towel, a wetsuit and the day.',
     productType: 'Accessories',
-    tags: ['Wetsuits'],
+    tags: ['Bags'],
     availableForSale: true,
-    // One Shopify variant per size — the old single variant (41267104874560)
-    // is replaced once the S/M/L variants exist in the store.
-    variants: [
-      { title: 'S', id: '' },
-      { title: 'M', id: '' },
-      { title: 'L', id: '' },
-    ],
+    // variantId lands once the product is created in Shopify — "Coming soon" until then
     priceRange: { minVariantPrice: zar('999.00') },
-    // one shot so far — no back, so no hover swap
-    images: [geoprene.front('Wawa Geoprene wetsuit jacket, front zip')],
+    images: [
+      carryall.front('Wawa canvas carryall with olive and rust straps, patch side'),
+      carryall.back('Wawa canvas carryall, plain side'),
+    ],
+    featured: 3,
     specs: [
       [
-        { label: 'Used For', value: 'Summer swells' },
-        { label: 'Thickness', value: '2mm' },
-        { label: 'Features', value: 'Front zip, padded chest' },
-        { label: 'Sizes', value: 'S, M, L' },
+        { label: 'Colour', value: 'Natural canvas, olive & rust straps' },
+        { label: 'Closure', value: 'Rope loop & timber toggle' },
+        { label: 'Detail', value: 'Wawa patch' },
       ],
+    ],
+  },
+  {
+    id: 'mock/canvas-tote',
+    handle: 'canvas-tote',
+    title: 'Canvas Tote',
+    description:
+      'A natural canvas tote with long shoulder straps, printed in ocean blue with the Wawa crest: a board through the waves, palms either side, Cape Town underneath.',
+    productType: 'Accessories',
+    tags: ['Bags'],
+    availableForSale: true,
+    // variantId lands once the product is created in Shopify — "Coming soon" until then
+    priceRange: { minVariantPrice: zar('999.00') },
+    // one shot so far — no back, so no hover swap
+    images: [tote.front('Wawa canvas tote with the blue Cape Town crest')],
+    specs: [
       [
-        { label: 'Material', value: 'Japanese Yamamoto rubber' },
-        { label: 'Finish', value: 'Glossy Sealskin' },
-        { label: 'Made In', value: 'Cape Town' },
+        { label: 'Colour', value: 'Natural with blue print' },
+        { label: 'Print', value: 'Wawa Cape Town crest' },
+        { label: 'Straps', value: 'Long, over the shoulder' },
       ],
     ],
   },
@@ -681,33 +665,63 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 'mock/wood-is-good-tee',
-    handle: 'wood-is-good-tee',
-    title: 'Wood Is Good Tee',
+    id: 'mock/beach-bats',
+    handle: 'beach-bats',
+    title: 'Wood & Cork Beach Bats',
     description:
-      'A navy crew-neck tee carrying the Wood Is Good surfer: small on the chest, drawn large across the back in white and ocean blue. From the Wawa workshop in Cape Town.',
+      'Made in Cape Town from sustainably sourced birch and natural cork. Light but strong: the layered timber adds stiffness while the cork core gives a lively spring, so you get less power per hit and more control. Sealed with a beeswax-and-oil blend. Set of two bats, a ball and a calico beach bag.',
     productType: 'Accessories',
-    tags: ['Clothing'],
+    tags: ['Beach Bats'],
     availableForSale: true,
-    // Shopify variant ids land here once the product is created in the store —
-    // until every size has one, the PDP shows the sizes but holds the cart.
-    variants: [
-      { title: 'XS', id: '' },
-      { title: 'S', id: '' },
-      { title: 'M', id: '' },
-      { title: 'L', id: '' },
-      { title: 'XL', id: '' },
-    ],
+    variantId: '41267104809024',
     priceRange: { minVariantPrice: zar('999.00') },
     images: [
-      woodIsGood.front('Wawa Wood Is Good tee in navy, chest print'),
-      woodIsGood.back('Wawa Wood Is Good tee in navy, back print'),
+      beachBats.front('Wawa beach bat with red sun and blue waves, held against a sunlit plaster wall'),
+      beachBats.back('Wawa beach bat at an angle, showing the layered birch edge and cork grip'),
     ],
     specs: [
       [
-        { label: 'Colour', value: 'Navy' },
-        { label: 'Print', value: 'Left chest & full back' },
-        { label: 'Sizes', value: 'XS, S, M, L, XL' },
+        { label: 'Used For', value: 'Beach games' },
+        { label: 'In the Set', value: 'Two bats, ball & calico beach bag' },
+        { label: 'For', value: 'All ages' },
+      ],
+      [
+        { label: 'Material', value: 'Birch & cork' },
+        { label: 'Finish', value: 'Beeswax & oil' },
+        { label: 'Made In', value: 'Cape Town' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/geoprene-jacket',
+    handle: 'geoprene-jacket',
+    title: 'Geoprene Wetsuit Jacket',
+    description:
+      'For summer swells, when you don’t want the full suit. Made in Cape Town from Japanese Yamamoto rubber: a 2mm jacket with super-stretch panels for a full range of movement. The glossy Sealskin finish soaks up sunlight to keep you warmer with less rubber. Front zip, padded chest for paddling.',
+    productType: 'Accessories',
+    tags: ['Wetsuits'],
+    availableForSale: true,
+    // One Shopify variant per size — the old single variant (41267104874560)
+    // is replaced once the S/M/L variants exist in the store.
+    variants: [
+      { title: 'S', id: '' },
+      { title: 'M', id: '' },
+      { title: 'L', id: '' },
+    ],
+    priceRange: { minVariantPrice: zar('999.00') },
+    // one shot so far — no back, so no hover swap
+    images: [geoprene.front('Wawa Geoprene wetsuit jacket, front zip')],
+    specs: [
+      [
+        { label: 'Used For', value: 'Summer swells' },
+        { label: 'Thickness', value: '2mm' },
+        { label: 'Features', value: 'Front zip, padded chest' },
+        { label: 'Sizes', value: 'S, M, L' },
+      ],
+      [
+        { label: 'Material', value: 'Japanese Yamamoto rubber' },
+        { label: 'Finish', value: 'Glossy Sealskin' },
+        { label: 'Made In', value: 'Cape Town' },
       ],
     ],
   },
@@ -773,47 +787,33 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 'mock/canvas-tote',
-    handle: 'canvas-tote',
-    title: 'Canvas Tote',
+    id: 'mock/wood-is-good-tee',
+    handle: 'wood-is-good-tee',
+    title: 'Wood Is Good Tee',
     description:
-      'A natural canvas tote with long shoulder straps, printed in ocean blue with the Wawa crest: a board through the waves, palms either side, Cape Town underneath.',
+      'A navy crew-neck tee carrying the Wood Is Good surfer: small on the chest, drawn large across the back in white and ocean blue. From the Wawa workshop in Cape Town.',
     productType: 'Accessories',
-    tags: ['Bags'],
+    tags: ['Clothing'],
     availableForSale: true,
-    // variantId lands once the product is created in Shopify — "Coming soon" until then
-    priceRange: { minVariantPrice: zar('999.00') },
-    // one shot so far — no back, so no hover swap
-    images: [tote.front('Wawa canvas tote with the blue Cape Town crest')],
-    specs: [
-      [
-        { label: 'Colour', value: 'Natural with blue print' },
-        { label: 'Print', value: 'Wawa Cape Town crest' },
-        { label: 'Straps', value: 'Long, over the shoulder' },
-      ],
+    // Shopify variant ids land here once the product is created in the store —
+    // until every size has one, the PDP shows the sizes but holds the cart.
+    variants: [
+      { title: 'XS', id: '' },
+      { title: 'S', id: '' },
+      { title: 'M', id: '' },
+      { title: 'L', id: '' },
+      { title: 'XL', id: '' },
     ],
-  },
-  {
-    id: 'mock/canvas-carryall',
-    handle: 'canvas-carryall',
-    title: 'Canvas Carryall',
-    description:
-      'The bigger bag. Natural canvas with olive and rust webbing running from the shoulder straps down the body, a rope-and-timber toggle to close the top, and the Wawa patch on the front. Big enough for a towel, a wetsuit and the day.',
-    productType: 'Accessories',
-    tags: ['Bags'],
-    availableForSale: true,
-    // variantId lands once the product is created in Shopify — "Coming soon" until then
     priceRange: { minVariantPrice: zar('999.00') },
     images: [
-      carryall.front('Wawa canvas carryall with olive and rust straps, patch side'),
-      carryall.back('Wawa canvas carryall, plain side'),
+      woodIsGood.front('Wawa Wood Is Good tee in navy, chest print'),
+      woodIsGood.back('Wawa Wood Is Good tee in navy, back print'),
     ],
-    featured: 3,
     specs: [
       [
-        { label: 'Colour', value: 'Natural canvas, olive & rust straps' },
-        { label: 'Closure', value: 'Rope loop & timber toggle' },
-        { label: 'Detail', value: 'Wawa patch' },
+        { label: 'Colour', value: 'Navy' },
+        { label: 'Print', value: 'Left chest & full back' },
+        { label: 'Sizes', value: 'XS, S, M, L, XL' },
       ],
     ],
   },

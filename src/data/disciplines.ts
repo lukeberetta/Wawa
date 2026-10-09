@@ -56,6 +56,6 @@ export const disciplines: Discipline[] = [
     intro:
       'Fins, covers, wetsuit jackets and everyday essentials for time in and around the water. Explore Yamamoto wetsuit jackets, cotton-duck covers, wood-and-cork beach bats and more.',
     hero: '/img/category/accessories.webp',
-    categories: ['Fins', 'Wetsuits', 'Boardbag', 'Bags', 'Clothing', 'Wax Combs', 'Beach Bats', 'Art', 'Gift Cards'],
+    categories: ['Boardbag', 'Bags', 'Wax Combs', 'Beach Bats', 'Wetsuits', 'Clothing', 'Art', 'Gift Cards'],
   },
 ];

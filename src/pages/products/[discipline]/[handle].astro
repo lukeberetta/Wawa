@@ -252,7 +252,8 @@ const crumbs = breadcrumbs([
       <div class="wrap pdp-bar-inner">
         <div class="pdp-bar-meta">
           <span class="pdp-bar-title">{product.title}</span>
-          <span class="pdp-bar-price">{price}</span>
+          {/* coming-soon items: the button says it, so no price line */}
+          {!comingSoon && <span class="pdp-bar-price">{price}</span>}
         </div>
         {
           buyable ? (
