@@ -39,7 +39,8 @@ export interface Product {
   priceRange: { minVariantPrice: Money };
   /** front + back for the flip-card; first = primary */
   images: ProductImage[];
-  featured?: boolean;
+  /** Featured-products slot on the homepage, lowest first. Omit to leave off. */
+  featured?: number;
   /** PDP spec list, shown as a label/value table. Grouped: each inner array is
    *  a block, rendered with a gap between blocks (e.g. performance vs build). */
   specs?: { label: string; value: string }[][];

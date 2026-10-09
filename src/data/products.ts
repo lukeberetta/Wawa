@@ -41,6 +41,12 @@ const geoprene = studioSet('geoprene');
 const wetsuitSling = studioSet('wetsuit-sling');
 const crestTee = studioSet('crest-tee');
 const swallowTee = studioSet('swallow-tee');
+const beachBats = studioSet('beach-bats');
+const paipo = studioSet('paipo');
+const handslide = studioSet('handslide');
+const boardCover = studioSet('board-cover');
+const giftCard = studioSet('gift-card');
+const speedEgg = studioSet('speed-egg');
 
 /** Empty-room plate for anything not yet photographed. One image, so no hover swap. */
 const soon = (title: string) => [
@@ -60,7 +66,6 @@ export const products: Product[] = [
     availableForSale: true,
     priceRange: { minVariantPrice: zar('16500.00') },
     images: [fish.front('Wawa Classic Fish, deck'), fish.back('Wawa Classic Fish, hull')],
-    featured: true,
     // Spec table. Two blocks: performance, then build.
     specs: [
       [
@@ -86,7 +91,7 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('17000.00') },
     images: [gunFish.front('Wawa Gun Fish, deck'), gunFish.back('Wawa Gun Fish, hull')],
-    featured: true,
+    featured: 2,
     specs: [
       [
         { label: 'Best For', value: 'Medium to overhead waves' },
@@ -136,8 +141,11 @@ export const products: Product[] = [
     tags: ['Mid'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('16500.00') },
-    images: soon('Wawa Speed Egg'),
-    featured: true,
+    images: [
+      speedEgg.front('Wawa Speed Egg deck in paulownia with cork rails, leaning on a sunlit wall'),
+      speedEgg.back('Wawa Speed Egg bottom with single fin box'),
+    ],
+    featured: 4,
     specs: [
       [
         { label: 'Best For', value: 'Small to overhead waves' },
@@ -162,7 +170,6 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('18000.00') },
     images: [mid.front('Wawa Long Fish, deck'), mid.back('Wawa Long Fish, hull')],
-    featured: true,
     specs: [
       [
         { label: 'Best For', value: 'Hip-high to overhead' },
@@ -213,7 +220,6 @@ export const products: Product[] = [
     availableForSale: true,
     priceRange: { minVariantPrice: zar('28500.00') },
     images: [long.front('Wawa Model T Longboard, deck'), long.back('Wawa Model T Longboard, hull')],
-    featured: true,
     specs: [
       [
         { label: 'Best For', value: 'Small to medium waves' },
@@ -265,7 +271,6 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('12000.00') },
     images: [alaia.front('Wawa Alaia, top'), alaia.back('Wawa Alaia, base')],
-    featured: true,
     specs: [
       [
         { label: 'Best For', value: 'Clean, open faces' },
@@ -316,7 +321,7 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('20000.00') },
     images: [foilWave.front('Wawa Wave Foilboard, deck'), foilWave.back('Wawa Wave Foilboard, hull with foil tracks')],
-    featured: true,
+    featured: 6,
     specs: [
       [
         { label: 'Best For', value: 'Open-ocean swell' },
@@ -350,30 +355,6 @@ export const products: Product[] = [
       [
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
-        { label: 'Finish', value: 'Speed skin' },
-      ],
-    ],
-  },
-  {
-    id: 'mock/foil-custom',
-    handle: 'foil-custom',
-    title: 'Custom Foilboard',
-    description:
-      'Your dimensions, your discipline. Prone, wave or wing, shaped to your weight, wind and home break in timber over recycled foam with cork rails. Get in touch to start a build.',
-    productType: 'Foil',
-    tags: ['Custom'],
-    availableForSale: false,
-    priceRange: { minVariantPrice: zar('22000.00') },
-    images: soon('Wawa custom foilboard'),
-    specs: [
-      [
-        { label: 'Best For', value: 'Your discipline' },
-        { label: 'Board Feel', value: 'Built to spec' },
-        { label: 'Skill Level', value: 'All levels' },
-      ],
-      [
-        { label: 'Designer', value: 'Cobus Joubert' },
-        { label: 'Material', value: 'Timber over recycled foam, cork rails' },
         { label: 'Finish', value: 'Speed skin' },
       ],
     ],
@@ -491,7 +472,10 @@ export const products: Product[] = [
     tags: ['Paipo'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('9000.00') },
-    images: soon('Wawa Paipo'),
+    images: [
+      paipo.front('Four Wawa paipos leaning on a sunlit wall, painted PAIPO and octopus graphics'),
+      paipo.back('Four Wawa paipos showing their branded sides, solid timber grain'),
+    ],
     specs: [
       [
         { label: 'Best For', value: 'Punchy beach breaks' },
@@ -515,8 +499,11 @@ export const products: Product[] = [
     tags: ['Bodysurf'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('1200.00') },
-    images: soon('Wawa Handslide'),
-    featured: true,
+    images: [
+      handslide.front('Wawa handslide with red hand strap and burnt-in logo, held against a sunlit wall'),
+      handslide.back('Wawa handslide underside with floral inlay under resin, swallow tail'),
+    ],
+    featured: 1,
     specs: [
       [
         { label: 'Best For', value: 'Bodysurfing' },
@@ -541,6 +528,7 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('6000.00') },
     images: [bodyboard.front('Wawa Bellyboard, deck'), bodyboard.back('Wawa Bellyboard, hull')],
+    featured: 7,
     specs: [
       [
         { label: 'Best For', value: 'Punchy beach breaks' },
@@ -567,7 +555,10 @@ export const products: Product[] = [
     availableForSale: true,
     variantId: '41267104809024',
     priceRange: { minVariantPrice: zar('999.00') },
-    images: soon('Wawa wood and cork beach bats'),
+    images: [
+      beachBats.front('Wawa beach bat with red sun and blue waves, held against a sunlit plaster wall'),
+      beachBats.back('Wawa beach bat at an angle, showing the layered birch edge and cork grip'),
+    ],
     specs: [
       [
         { label: 'Used For', value: 'Beach games' },
@@ -592,7 +583,7 @@ export const products: Product[] = [
     availableForSale: true,
     variantId: '41267104841792',
     priceRange: { minVariantPrice: zar('999.00') },
-    images: soon('Wawa cotton duck board cover'),
+    images: [boardCover.front('Wawa cotton duck board cover with yellow and orange stripes, leaning on a sunlit wall')],
     specs: [
       [
         { label: 'Used For', value: 'Storage & travel' },
@@ -664,29 +655,6 @@ export const products: Product[] = [
       ],
       [
         { label: 'Material', value: 'Waxed canvas' },
-      ],
-    ],
-  },
-  {
-    id: 'mock/fins',
-    handle: 'fins',
-    title: 'Timber Fins',
-    description:
-      'Hand-finished timber and cork fins to match your Wawa board: keels, singles and 2+1 sets. Built from the same materials as the boards they drive.',
-    productType: 'Accessories',
-    tags: ['Fins'],
-    availableForSale: true,
-    variantId: '41267104907328',
-    priceRange: { minVariantPrice: zar('999.00') },
-    images: soon('Wawa timber fins'),
-    specs: [
-      [
-        { label: 'Used For', value: 'Driving your Wawa board' },
-        { label: 'Configurations', value: 'Keels, singles & 2+1 sets' },
-      ],
-      [
-        { label: 'Material', value: 'Timber & cork' },
-        { label: 'Finish', value: 'Hand-finished' },
       ],
     ],
   },
@@ -765,6 +733,7 @@ export const products: Product[] = [
       crestTee.front('Wawa Cape Town Crest tee in navy, chest print'),
       crestTee.back('Wawa Cape Town Crest tee in navy, back print'),
     ],
+    featured: 5,
     specs: [
       [
         { label: 'Colour', value: 'Navy' },
@@ -839,6 +808,7 @@ export const products: Product[] = [
       carryall.front('Wawa canvas carryall with olive and rust straps, patch side'),
       carryall.back('Wawa canvas carryall, plain side'),
     ],
+    featured: 3,
     specs: [
       [
         { label: 'Colour', value: 'Natural canvas, olive & rust straps' },
@@ -883,7 +853,7 @@ export const products: Product[] = [
     availableForSale: true,
     variantId: '41267105005632',
     priceRange: { minVariantPrice: zar('999.00') },
-    images: soon('Wawa make your own surfboard experience'),
+    images: [giftCard.front('Wawa gift card in engraved oak, held against a sunlit wall')],
     specs: [
       [
         { label: 'Used For', value: 'Shaping your own surfboard' },

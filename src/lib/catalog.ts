@@ -16,7 +16,9 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function getFeatured(): Promise<Product[]> {
-  return mockProducts.filter((p) => p.featured);
+  return mockProducts
+    .filter((p) => p.featured)
+    .sort((a, b) => a.featured! - b.featured!);
 }
 
 /** Stable slug: lowercase, drop punctuation, collapse to single hyphens. */
