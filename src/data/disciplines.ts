@@ -52,9 +52,9 @@ export const disciplines: Discipline[] = [
   {
     handle: 'accessories',
     title: 'Accessories',
-    blurb: 'Fins, wetsuits, board bags, wax combs, clothing, bags, art and gift cards.',
+    blurb: 'Wetsuit jackets, board covers, wax combs, clothing, bags, art and gift cards.',
     intro:
-      'Fins, covers, wetsuit jackets and everyday essentials for time in and around the water. Explore Yamamoto wetsuit jackets, cotton-duck covers, wood-and-cork beach bats and more.',
+      'Board covers, wetsuit jackets and everyday essentials for time in and around the water. Explore Yamamoto Geoprene jackets, cotton-duck covers, wood-and-cork beach bats and more.',
     hero: '/img/category/accessories.webp',
     categories: ['Boardbag', 'Bags', 'Wax Combs', 'Beach Bats', 'Wetsuits', 'Clothing', 'Art', 'Gift Cards'],
   },

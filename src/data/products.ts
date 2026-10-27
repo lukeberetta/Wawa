@@ -269,7 +269,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Finless'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('12000.00') },
+    priceRange: { minVariantPrice: zar('0.00') },
     images: [alaia.front('Wawa Alaia, top'), alaia.back('Wawa Alaia, base')],
     specs: [
       [
@@ -295,7 +295,7 @@ export const products: Product[] = [
     productType: 'Foil',
     tags: ['Prone'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('19000.00') },
+    priceRange: { minVariantPrice: zar('30000.00') },
     images: [foilProne.front('Wawa Prone Foilboard, deck'), foilProne.back('Wawa Prone Foilboard, hull with foil tracks')],
     specs: [
       [
@@ -444,7 +444,7 @@ export const products: Product[] = [
     productType: 'Skate',
     tags: [],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('4500.00') },
+    priceRange: { minVariantPrice: zar('0.00') },
     // one shot so far — no back, so no hover swap
     images: [cruiser.front('Wawa Wooden Cruiser, deck')],
     specs: [
@@ -471,7 +471,7 @@ export const products: Product[] = [
     productType: 'Body & Belly',
     tags: ['Paipo'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('9000.00') },
+    priceRange: { minVariantPrice: zar('0.00') },
     images: [
       paipo.front('Four Wawa paipos leaning on a sunlit wall, painted PAIPO and octopus graphics'),
       paipo.back('Four Wawa paipos showing their branded sides, solid timber grain'),
@@ -498,7 +498,7 @@ export const products: Product[] = [
     productType: 'Body & Belly',
     tags: ['Bodysurf'],
     availableForSale: true,
-    priceRange: { minVariantPrice: zar('1200.00') },
+    priceRange: { minVariantPrice: zar('0.00') },
     images: [
       handslide.front('Wawa handslide with red hand strap and burnt-in logo, held against a sunlit wall'),
       handslide.back('Wawa handslide underside with floral inlay under resin, swallow tail'),
@@ -526,7 +526,7 @@ export const products: Product[] = [
     productType: 'Body & Belly',
     tags: ['Bellyboard'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('6000.00') },
+    priceRange: { minVariantPrice: zar('0.00') },
     images: [bodyboard.front('Wawa Bellyboard, deck'), bodyboard.back('Wawa Bellyboard, hull')],
     featured: 7,
     specs: [
