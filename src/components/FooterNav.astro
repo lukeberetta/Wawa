@@ -7,6 +7,16 @@
  */
 import { site } from '@/lib/site';
 import { disciplines } from '@/lib/catalog';
+
+// Store policies live on Shopify (they're also linked from checkout); the site
+// must surface them too — ECTA wants returns/privacy reachable before purchase.
+const policy = (handle: string) => `https://${site.shopDomain}/policies/${handle}`;
+const policies = [
+  { handle: 'shipping-policy', label: 'Shipping' },
+  { handle: 'refund-policy', label: 'Returns' },
+  { handle: 'privacy-policy', label: 'Privacy' },
+  { handle: 'terms-of-service', label: 'Terms' },
+];
 ---
 
 <section class="footer-nav" aria-label="Site links">
@@ -38,6 +48,16 @@ import { disciplines } from '@/lib/catalog';
           <li><a class="fn-place" href="https://maps.app.goo.gl/Jwke2sXBTwRAiVhn6" target="_blank" rel="noopener noreferrer">{site.location}</a></li>
         </ul>
       </div>
+      {site.shopDomain && (
+        <div class="fn-col">
+          <p class="label fn-head">Help</p>
+          <ul>
+            {policies.map((p) => (
+              <li><a href={policy(p.handle)} target="_blank" rel="noopener noreferrer">{p.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      )}
     </nav>
   </div>
 </section>
@@ -57,10 +77,10 @@ import { disciplines } from '@/lib/catalog';
     grid-template-columns: 1fr 1fr;
     gap: var(--space-xl) var(--space-lg);
   }
-  /* third column drops below on phones, then all three sit in a row ≥600 */
+  /* two by two on phones, then all four sit in a row ≥600 */
   @media (min-width: 600px) {
     .fn-cols {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
     }
   }
   .fn-head {

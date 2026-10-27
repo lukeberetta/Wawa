@@ -7,14 +7,31 @@
  * cart permalink (Yoco runs on the hosted checkout).
  */
 import { site } from '@/lib/site';
+import { getProducts } from '@/lib/catalog';
 const enabled = !!site.shopDomain;
+
+// Current price per sellable variant. Carts live in localStorage, so a line
+// saved before a price change or a variant's removal would otherwise show a
+// stale subtotal, or break the whole checkout permalink on a dead id.
+const catalog: Record<string, number> = {};
+for (const p of await getProducts()) {
+  const base = Number(p.priceRange.minVariantPrice.amount);
+  if (p.variantId) catalog[p.variantId] = base;
+  for (const v of p.variants ?? []) if (v.id) catalog[v.id] = Number(v.price ?? base);
+}
 ---
 
 {
   enabled && (
     <>
       <div class="cart-overlay" hidden />
-      <aside id="cart-drawer" class="cart-drawer" aria-label="Cart" aria-hidden="true">
+      <aside
+        id="cart-drawer"
+        class="cart-drawer"
+        aria-label="Cart"
+        aria-hidden="true"
+        data-catalog={JSON.stringify(catalog)}
+      >
         <header class="cart-head">
           <h2>Cart <span class="cart-head-count">(<span data-cart-count>0</span>)</span></h2>
           <button class="cart-close" aria-label="Close cart">&times;</button>
@@ -281,6 +298,7 @@ const enabled = !!site.shopDomain;
         onChange,
         buildCheckoutUrl,
         formatZAR,
+        replaceLines,
         type CartLine,
       } from '@/lib/cart';
       import { lockScroll } from '@/lib/scrollLock';
@@ -406,6 +424,18 @@ const enabled = !!site.shopDomain;
           setTimeout(done, 320);
         }
       });
+
+      // ── Reconcile the saved cart with the current catalog ──
+      try {
+        const catalog: Record<string, number> = JSON.parse(drawer?.dataset.catalog || '{}');
+        const saved = getLines();
+        const fresh = saved
+          .filter((l) => l.variantId in catalog)
+          .map((l) => ({ ...l, price: catalog[l.variantId] }));
+        if (JSON.stringify(fresh) !== JSON.stringify(saved)) replaceLines(fresh);
+      } catch {
+        /* leave the cart as saved */
+      }
 
       onChange(render);
       render(getLines());

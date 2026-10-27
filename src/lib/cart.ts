@@ -69,6 +69,11 @@ export function setQty(variantId: string, qty: number): void {
   write(lines);
 }
 
+/** Overwrite every line at once (e.g. after reconciling with the catalog). */
+export function replaceLines(lines: CartLine[]): void {
+  write(lines);
+}
+
 /** Subscribe to cart changes (same tab via CustomEvent, other tabs via storage). */
 export function onChange(cb: (lines: CartLine[]) => void): void {
   window.addEventListener(EVT, (e) => cb((e as CustomEvent<CartLine[]>).detail));
