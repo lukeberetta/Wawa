@@ -64,7 +64,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Short'],
     availableForSale: true,
-    priceRange: { minVariantPrice: zar('16500.00') },
+    priceRange: { minVariantPrice: zar('17500.00') },
     images: [fish.front('Wawa Classic Fish, deck'), fish.back('Wawa Classic Fish, hull')],
     // Spec table. Two blocks: performance, then build.
     specs: [
@@ -89,7 +89,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Short'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('17000.00') },
+    priceRange: { minVariantPrice: zar('17500.00') },
     images: [gunFish.front('Wawa Gun Fish, deck'), gunFish.back('Wawa Gun Fish, hull')],
     featured: 2,
     specs: [
@@ -114,7 +114,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Short'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('15000.00') },
+    priceRange: { minVariantPrice: zar('17500.00') },
     images: soon('Wawa Mini-Simmons'),
     specs: [
       [
@@ -140,7 +140,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Mid'],
     availableForSale: true,
-    priceRange: { minVariantPrice: zar('16500.00') },
+    priceRange: { minVariantPrice: zar('19500.00') },
     images: [
       speedEgg.front('Wawa Speed Egg deck in paulownia with cork rails, leaning on a sunlit wall'),
       speedEgg.back('Wawa Speed Egg bottom with single fin box'),
@@ -168,7 +168,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Mid'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('18000.00') },
+    priceRange: { minVariantPrice: zar('19500.00') },
     images: [mid.front('Wawa Long Fish, deck'), mid.back('Wawa Long Fish, hull')],
     specs: [
       [
@@ -194,7 +194,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Long'],
     availableForSale: true,
-    priceRange: { minVariantPrice: zar('28500.00') },
+    priceRange: { minVariantPrice: zar('22500.00') },
     images: soon('Wawa Model P'),
     specs: [
       [
@@ -218,7 +218,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Long'],
     availableForSale: true,
-    priceRange: { minVariantPrice: zar('28500.00') },
+    priceRange: { minVariantPrice: zar('22500.00') },
     images: [long.front('Wawa Model T Longboard, deck'), long.back('Wawa Model T Longboard, hull')],
     specs: [
       [
@@ -243,7 +243,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Long'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('30000.00') },
+    priceRange: { minVariantPrice: zar('22500.00') },
     images: soon('Wawa Model L'),
     specs: [
       [
@@ -319,7 +319,7 @@ export const products: Product[] = [
     productType: 'Foil',
     tags: ['Wave'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('20000.00') },
+    priceRange: { minVariantPrice: zar('30000.00') },
     images: [foilWave.front('Wawa Wave Foilboard, deck'), foilWave.back('Wawa Wave Foilboard, hull with foil tracks')],
     featured: 6,
     specs: [
@@ -344,7 +344,7 @@ export const products: Product[] = [
     productType: 'Foil',
     tags: ['Wing'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('20000.00') },
+    priceRange: { minVariantPrice: zar('35000.00') },
     images: soon('Wawa wing foilboard'),
     specs: [
       [
@@ -370,7 +370,7 @@ export const products: Product[] = [
     productType: 'Kite',
     tags: ['Tomo'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('14000.00') },
+    priceRange: { minVariantPrice: zar('25000.00') },
     images: [kiteTomo.front('Wawa Tomo Kiteboard, deck'), kiteTomo.back('Wawa Tomo Kiteboard, hull with fins')],
     specs: [
       [
@@ -394,7 +394,7 @@ export const products: Product[] = [
     productType: 'Kite',
     tags: ['Trick'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('14000.00') },
+    priceRange: { minVariantPrice: zar('25000.00') },
     images: soon('Wawa Trick kiteboard'),
     specs: [
       [
@@ -418,7 +418,7 @@ export const products: Product[] = [
     productType: 'Kite',
     tags: ['Vlieer'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('15000.00') },
+    priceRange: { minVariantPrice: zar('25000.00') },
     images: soon('Wawa Vlieer kiteboard'),
     specs: [
       [
