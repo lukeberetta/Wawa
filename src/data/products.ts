@@ -553,12 +553,11 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Boardbag'],
     availableForSale: true,
-    // One Shopify variant per length — the old single variant (41267104841792)
-    // is replaced once these exist in the store.
+    // One Shopify variant per length.
     variants: [
-      { title: `5'0"`, id: '', price: '2250.00' },
-      { title: `7'0"`, id: '', price: '2950.00' },
-      { title: `9'6"`, id: '', price: '3500.00' },
+      { title: `5'0"`, id: '41464872206400', price: '2250.00' },
+      { title: `7'0"`, id: '41464872239168', price: '2950.00' },
+      { title: `9'6"`, id: '41464872271936', price: '3500.00' },
     ],
     priceRange: { minVariantPrice: zar('2250.00') },
     images: [boardCover.front('Wawa cotton duck board cover with yellow and orange stripes, leaning on a sunlit wall')],
@@ -584,7 +583,7 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Bags'],
     availableForSale: true,
-    // variantId lands once the product is created in Shopify — "Coming soon" until then
+    variantId: '41464872304704',
     priceRange: { minVariantPrice: zar('2500.00') },
     images: [
       carryall.front('Wawa canvas carryall with olive and rust straps, patch side'),
@@ -629,11 +628,11 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Bags'],
     availableForSale: true,
-    // One Shopify variant per colour — "Coming soon" until the ids exist.
+    // One Shopify variant per colour.
     optionName: 'Colour',
     variants: [
-      { title: 'Green', id: '' },
-      { title: 'Dusty Pink', id: '' },
+      { title: 'Green', id: '41464872337472' },
+      { title: 'Dusty Pink', id: '41464872370240' },
     ],
     priceRange: { minVariantPrice: zar('2500.00') },
     // one shot so far (both colours together) — no back, so no hover swap
@@ -658,12 +657,12 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Bags'],
     availableForSale: true,
-    // One Shopify variant per colour — "Coming soon" until the ids exist.
+    // One Shopify variant per colour.
     optionName: 'Colour',
     variants: [
-      { title: 'Blue', id: '' },
-      { title: 'Green', id: '' },
-      { title: 'Orange', id: '' },
+      { title: 'Blue', id: '41464872403008' },
+      { title: 'Green', id: '41464872435776' },
+      { title: 'Orange', id: '41464872468544' },
     ],
     priceRange: { minVariantPrice: zar('1500.00') },
     images: soon('Wawa regular canvas tog bag'),
@@ -737,12 +736,11 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Wetsuits'],
     availableForSale: true,
-    // One Shopify variant per size — the old single variant (41267104874560)
-    // is replaced once the S/M/L variants exist in the store.
+    // One Shopify variant per size.
     variants: [
-      { title: 'S', id: '' },
-      { title: 'M', id: '' },
-      { title: 'L', id: '' },
+      { title: 'S', id: '41464872501312' },
+      { title: 'M', id: '41464872534080' },
+      { title: 'L', id: '41464872566848' },
     ],
     priceRange: { minVariantPrice: zar('3500.00') },
     // one shot so far — no back, so no hover swap
@@ -770,13 +768,12 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Clothing'],
     availableForSale: true,
-    // Shopify variant ids land here once the product is created in the store.
     variants: [
-      { title: 'XS', id: '' },
-      { title: 'S', id: '' },
-      { title: 'M', id: '' },
-      { title: 'L', id: '' },
-      { title: 'XL', id: '' },
+      { title: 'XS', id: '41464872599616' },
+      { title: 'S', id: '41464872632384' },
+      { title: 'M', id: '41464872665152' },
+      { title: 'L', id: '41464872697920' },
+      { title: 'XL', id: '41464872730688' },
     ],
     priceRange: { minVariantPrice: zar('550.00') },
     images: [
@@ -801,13 +798,12 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Clothing'],
     availableForSale: true,
-    // Shopify variant ids land here once the product is created in the store.
     variants: [
-      { title: 'XS', id: '' },
-      { title: 'S', id: '' },
-      { title: 'M', id: '' },
-      { title: 'L', id: '' },
-      { title: 'XL', id: '' },
+      { title: 'XS', id: '41464872763456' },
+      { title: 'S', id: '41464872796224' },
+      { title: 'M', id: '41464872828992' },
+      { title: 'L', id: '41464872861760' },
+      { title: 'XL', id: '41464872894528' },
     ],
     priceRange: { minVariantPrice: zar('550.00') },
     images: [
@@ -831,14 +827,12 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Clothing'],
     availableForSale: true,
-    // Shopify variant ids land here once the product is created in the store —
-    // until every size has one, the PDP shows the sizes but holds the cart.
     variants: [
-      { title: 'XS', id: '' },
-      { title: 'S', id: '' },
-      { title: 'M', id: '' },
-      { title: 'L', id: '' },
-      { title: 'XL', id: '' },
+      { title: 'XS', id: '41464872927296' },
+      { title: 'S', id: '41464872960064' },
+      { title: 'M', id: '41464872992832' },
+      { title: 'L', id: '41464873025600' },
+      { title: 'XL', id: '41464873058368' },
     ],
     priceRange: { minVariantPrice: zar('550.00') },
     images: [
@@ -862,16 +856,15 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Art'],
     availableForSale: true,
-    // Paper prints and timber-framed, three sizes each. The old single variant
-    // (41267104972864) is replaced once these exist in the store.
+    // Paper prints and timber-framed, three sizes each.
     optionName: 'Format',
     variants: [
-      { title: 'A5 print', id: '', price: '450.00' },
-      { title: 'A4 print', id: '', price: '750.00' },
-      { title: 'A3 print', id: '', price: '950.00' },
-      { title: 'A5 framed', id: '', price: '1750.00' },
-      { title: 'A4 framed', id: '', price: '1950.00' },
-      { title: 'A3 framed', id: '', price: '2250.00' },
+      { title: 'A5 print', id: '41464873091136', price: '450.00' },
+      { title: 'A4 print', id: '41464873123904', price: '750.00' },
+      { title: 'A3 print', id: '41464873156672', price: '950.00' },
+      { title: 'A5 framed', id: '41464873189440', price: '1750.00' },
+      { title: 'A4 framed', id: '41464873222208', price: '1950.00' },
+      { title: 'A3 framed', id: '41464873254976', price: '2250.00' },
     ],
     priceRange: { minVariantPrice: zar('450.00') },
     images: [
@@ -898,11 +891,10 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Art'],
     availableForSale: true,
-    // Shopify variant ids land here once the product is created in the store.
     optionName: 'Format',
     variants: [
-      { title: 'A4 print', id: '', price: '950.00' },
-      { title: 'A4 framed', id: '', price: '3500.00' },
+      { title: 'A4 print', id: '41464873287744', price: '950.00' },
+      { title: 'A4 framed', id: '41464873320512', price: '3500.00' },
     ],
     priceRange: { minVariantPrice: zar('950.00') },
     images: soon('Spex wave photography print'),
@@ -927,13 +919,12 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Gift Cards'],
     availableForSale: true,
-    // Board price + 20% for the extra workshop time. The old single variant
-    // (41267105005632) is replaced once these exist in the store.
+    // Board price + 20% for the extra workshop time.
     optionName: 'Board',
     variants: [
-      { title: 'Short', id: '', price: '21000.00' },
-      { title: 'Mid-length', id: '', price: '23400.00' },
-      { title: 'Longboard', id: '', price: '27000.00' },
+      { title: 'Short', id: '41464873418816', price: '21000.00' },
+      { title: 'Mid-length', id: '41464873451584', price: '23400.00' },
+      { title: 'Longboard', id: '41464873484352', price: '27000.00' },
     ],
     priceRange: { minVariantPrice: zar('21000.00') },
     images: [giftCard.front('Wawa gift card in engraved oak, held against a sunlit wall')],

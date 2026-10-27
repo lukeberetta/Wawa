@@ -69,12 +69,10 @@ const disciplineHref = `/products?discipline=${slug(product.productType)}`;
 
 // SEO: Product structured data.
 //
-// `offers` is deliberately withheld until real prices land — every price in
-// src/data/products.ts is still the R999 import placeholder, and an offer node
-// puts that number straight into the search result. Flip PRICES_ARE_REAL once
-// the catalog is priced and the offer block starts emitting.
-const PRICES_ARE_REAL = false;
-const emitOffer = PRICES_ARE_REAL && buyable;
+// `offers` only for buyable items — they carry real prices. A product still on
+// the R999 import placeholder has no variant id, so it never gets one; an offer
+// node would put that number straight into the search result.
+const emitOffer = buyable;
 
 const productSchema = {
   '@type': 'Product',
