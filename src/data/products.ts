@@ -46,6 +46,7 @@ const paipo = studioSet('paipo');
 const handslide = studioSet('handslide');
 const boardCover = studioSet('board-cover');
 const giftCard = studioSet('gift-card');
+const waxComb = studioSet('wax-comb');
 const speedEgg = studioSet('speed-egg');
 
 /** Empty-room plate for anything not yet photographed. One image, so no hover swap. */
@@ -608,7 +609,7 @@ export const products: Product[] = [
     tags: ['Bags'],
     availableForSale: true,
     // variantId lands once the product is created in Shopify — "Coming soon" until then
-    priceRange: { minVariantPrice: zar('999.00') },
+    priceRange: { minVariantPrice: zar('250.00') },
     // one shot so far — no back, so no hover swap
     images: [tote.front('Wawa canvas tote with the blue Cape Town crest')],
     specs: [
@@ -688,7 +689,8 @@ export const products: Product[] = [
     availableForSale: true,
     variantId: '41267104940096',
     priceRange: { minVariantPrice: zar('120.00') },
-    images: soon('Wawa wooden wax comb'),
+    // one shot so far — no back, so no hover swap
+    images: [waxComb.front('Wawa wooden wax comb carved as a fish, held against a sunlit wall')],
     specs: [
       [
         { label: 'Used For', value: 'Combing bumps & scraping old wax' },
