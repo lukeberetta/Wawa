@@ -608,7 +608,7 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Bags'],
     availableForSale: true,
-    // variantId lands once the product is created in Shopify — "Coming soon" until then
+    variantId: '41464879448128',
     priceRange: { minVariantPrice: zar('250.00') },
     // one shot so far — no back, so no hover swap
     images: [tote.front('Wawa canvas tote with the blue Cape Town crest')],
