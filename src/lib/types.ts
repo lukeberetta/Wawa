@@ -32,8 +32,9 @@ export interface Product {
   variantId?: string;
   /** Variants of a single Shopify option (size, colour…). When present the PDP
    *  shows a picker and the chosen variant's id goes to the cart instead of `variantId`.
-   *  An empty id means the Shopify variant isn't created yet. */
-  variants?: { title: string; id: string }[];
+   *  An empty id means the Shopify variant isn't created yet. `price` overrides
+   *  `priceRange` for that variant; `priceRange` then holds the cheapest. */
+  variants?: { title: string; id: string; price?: string }[];
   /** Picker label for `variants` — Shopify's option name. Defaults to 'Size'. */
   optionName?: string;
   priceRange: { minVariantPrice: Money };

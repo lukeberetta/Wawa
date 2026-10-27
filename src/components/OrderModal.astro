@@ -6,8 +6,8 @@
  * is optional; empty fields (and empty sections) are dropped from the message.
  *
  * Opened via delegated clicks on any [data-order] element. A trigger may carry
- * data-order-discipline / data-order-category / data-order-title to pre-fill the
- * board selects from a product (PDP). Mounted once in Layout.astro, next to the
+ * data-order-discipline / data-order-category / data-order-title / data-order-build
+ * to pre-fill the board selects from a product (PDP). Mounted once in Layout.astro, next to the
  * cart drawer, whose overlay/panel + focus-trap + scroll-lock idiom this mirrors.
  */
 import { disciplines, slug } from '@/lib/catalog';
@@ -19,6 +19,7 @@ const categoryMap = Object.fromEntries(
   boardDisciplines.map((d) => [d.handle, d.categories]),
 );
 const skills = ['Beginner', 'Intermediate', 'Advanced', 'Pro'];
+const builds = ['We build it', 'Make it yourself (in our workshop, +20%)'];
 const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'Not sure'];
 ---
 
@@ -60,6 +61,12 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
             <span>Type</span>
             <select name="subcategory" data-order-subcategory>
               <option value="">Select…</option>
+            </select>
+          </label>
+          <label class="order-field order-field-wide">
+            <span>Build</span>
+            <select name="build" data-order-build>
+              {builds.map((b) => <option value={b}>{b}</option>)}
             </select>
           </label>
           <label class="order-field">
@@ -346,6 +353,7 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
   const discEl = modal?.querySelector<HTMLSelectElement>('[data-order-discipline]');
   const subEl = modal?.querySelector<HTMLSelectElement>('[data-order-subcategory]');
   const subField = modal?.querySelector<HTMLLabelElement>('[data-subcat-field]');
+  const buildEl = modal?.querySelector<HTMLSelectElement>('[data-order-build]');
   const catData = modal?.querySelector<HTMLScriptElement>('[data-order-categories]');
   const categoryMap: Record<string, string[]> = catData ? JSON.parse(catData.textContent || '{}') : {};
 
@@ -391,6 +399,11 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
       discEl.value = d.orderDiscipline;
     }
     syncSubcategories(d.orderCategory);
+    // PDP passes its picker's choice; option values start with the PDP labels.
+    if (buildEl) {
+      const match = Array.from(buildEl.options).find((o) => d.orderBuild && o.value.startsWith(d.orderBuild));
+      buildEl.selectedIndex = match ? match.index : 0;
+    }
   }
 
   discEl?.addEventListener('change', () => syncSubcategories());
@@ -411,6 +424,7 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
 
     const board = [
       ['Type', typeLine],
+      ['Build', v('build')],
       ['Length', v('length')],
       ['Fin setup', v('finSetup')],
       ['Favourite wave', v('wave')],

@@ -553,14 +553,21 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Boardbag'],
     availableForSale: true,
-    variantId: '41267104841792',
-    priceRange: { minVariantPrice: zar('999.00') },
+    // One Shopify variant per length — the old single variant (41267104841792)
+    // is replaced once these exist in the store.
+    variants: [
+      { title: `5'0"`, id: '', price: '2250.00' },
+      { title: `7'0"`, id: '', price: '2950.00' },
+      { title: `9'6"`, id: '', price: '3500.00' },
+    ],
+    priceRange: { minVariantPrice: zar('2250.00') },
     images: [boardCover.front('Wawa cotton duck board cover with yellow and orange stripes, leaning on a sunlit wall')],
     specs: [
       [
         { label: 'Used For', value: 'Storage & travel' },
         { label: 'Protects From', value: 'UV, heat & everyday knocks' },
         { label: 'Fits', value: 'Single board' },
+        { label: 'Sizes', value: `5'0", 7'0", 9'6"` },
       ],
       [
         { label: 'Material', value: 'Cotton-duck canvas' },
@@ -578,7 +585,7 @@ export const products: Product[] = [
     tags: ['Bags'],
     availableForSale: true,
     // variantId lands once the product is created in Shopify — "Coming soon" until then
-    priceRange: { minVariantPrice: zar('999.00') },
+    priceRange: { minVariantPrice: zar('2500.00') },
     images: [
       carryall.front('Wawa canvas carryall with olive and rust straps, patch side'),
       carryall.back('Wawa canvas carryall, plain side'),
@@ -614,31 +621,60 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 'mock/wetsuit-sling',
-    handle: 'waxed-canvas-wetsuit-sling',
-    title: 'Waxed Canvas Wetsuit Sling',
+    id: 'mock/tog-bag-large',
+    handle: 'canvas-tog-bag-large',
+    title: 'Canvas Tog Bag (Large)',
     description:
-      'A waxed-canvas sling for a wet wetsuit and everything else from the session. Rope drawstring closed with a timber toggle, a stitched Wawa patch, and rope straps to carry it home over the shoulder. In olive or tan.',
+      'A waxed army-canvas tog bag for a wet wetsuit and everything else from the session. Rope drawstring closed with a timber toggle, a stitched Wawa patch, and rope straps to carry it home over the shoulder. In green or dusty pink.',
     productType: 'Accessories',
     tags: ['Bags'],
     availableForSale: true,
     // One Shopify variant per colour — "Coming soon" until the ids exist.
     optionName: 'Colour',
     variants: [
-      { title: 'Olive', id: '' },
-      { title: 'Tan', id: '' },
+      { title: 'Green', id: '' },
+      { title: 'Dusty Pink', id: '' },
     ],
-    priceRange: { minVariantPrice: zar('999.00') },
+    priceRange: { minVariantPrice: zar('2500.00') },
     // one shot so far (both colours together) — no back, so no hover swap
-    images: [wetsuitSling.front('Wawa waxed canvas wetsuit slings in olive and tan')],
+    images: [wetsuitSling.front('Wawa large canvas tog bags in green and dusty pink')],
     specs: [
       [
         { label: 'Used For', value: 'Carrying a wet wetsuit' },
         { label: 'Closure', value: 'Rope drawstring & timber toggle' },
-        { label: 'Colours', value: 'Olive, tan' },
+        { label: 'Colours', value: 'Green, dusty pink' },
       ],
       [
-        { label: 'Material', value: 'Waxed canvas' },
+        { label: 'Material', value: 'Waxed army canvas' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/tog-bag-regular',
+    handle: 'canvas-tog-bag-regular',
+    title: 'Canvas Tog Bag (Regular)',
+    description:
+      'The smaller tog bag, in cotton canvas. Rope drawstring closed with a timber toggle, a stitched Wawa patch, and rope straps to carry it over the shoulder. In blue, green or orange.',
+    productType: 'Accessories',
+    tags: ['Bags'],
+    availableForSale: true,
+    // One Shopify variant per colour — "Coming soon" until the ids exist.
+    optionName: 'Colour',
+    variants: [
+      { title: 'Blue', id: '' },
+      { title: 'Green', id: '' },
+      { title: 'Orange', id: '' },
+    ],
+    priceRange: { minVariantPrice: zar('1500.00') },
+    images: soon('Wawa regular canvas tog bag'),
+    specs: [
+      [
+        { label: 'Used For', value: 'Everyday carry' },
+        { label: 'Closure', value: 'Rope drawstring & timber toggle' },
+        { label: 'Colours', value: 'Blue, green, orange' },
+      ],
+      [
+        { label: 'Material', value: 'Cotton canvas' },
       ],
     ],
   },
@@ -652,7 +688,7 @@ export const products: Product[] = [
     tags: ['Wax Combs'],
     availableForSale: true,
     variantId: '41267104940096',
-    priceRange: { minVariantPrice: zar('999.00') },
+    priceRange: { minVariantPrice: zar('120.00') },
     images: soon('Wawa wooden wax comb'),
     specs: [
       [
@@ -674,7 +710,7 @@ export const products: Product[] = [
     tags: ['Beach Bats'],
     availableForSale: true,
     variantId: '41267104809024',
-    priceRange: { minVariantPrice: zar('999.00') },
+    priceRange: { minVariantPrice: zar('2750.00') },
     images: [
       beachBats.front('Wawa beach bat with red sun and blue waves, held against a sunlit plaster wall'),
       beachBats.back('Wawa beach bat at an angle, showing the layered birch edge and cork grip'),
@@ -708,7 +744,7 @@ export const products: Product[] = [
       { title: 'M', id: '' },
       { title: 'L', id: '' },
     ],
-    priceRange: { minVariantPrice: zar('999.00') },
+    priceRange: { minVariantPrice: zar('3500.00') },
     // one shot so far — no back, so no hover swap
     images: [geoprene.front('Wawa Geoprene wetsuit jacket, front zip')],
     specs: [
@@ -742,7 +778,7 @@ export const products: Product[] = [
       { title: 'L', id: '' },
       { title: 'XL', id: '' },
     ],
-    priceRange: { minVariantPrice: zar('999.00') },
+    priceRange: { minVariantPrice: zar('550.00') },
     images: [
       crestTee.front('Wawa Cape Town Crest tee in navy, chest print'),
       crestTee.back('Wawa Cape Town Crest tee in navy, back print'),
@@ -773,7 +809,7 @@ export const products: Product[] = [
       { title: 'L', id: '' },
       { title: 'XL', id: '' },
     ],
-    priceRange: { minVariantPrice: zar('999.00') },
+    priceRange: { minVariantPrice: zar('550.00') },
     images: [
       swallowTee.front('Wawa Swallow tee in navy, chest badge'),
       swallowTee.back('Wawa Swallow tee in navy, plain back'),
@@ -804,7 +840,7 @@ export const products: Product[] = [
       { title: 'L', id: '' },
       { title: 'XL', id: '' },
     ],
-    priceRange: { minVariantPrice: zar('999.00') },
+    priceRange: { minVariantPrice: zar('550.00') },
     images: [
       woodIsGood.front('Wawa Wood Is Good tee in navy, chest print'),
       woodIsGood.back('Wawa Wood Is Good tee in navy, back print'),
@@ -826,8 +862,18 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Art'],
     availableForSale: true,
-    variantId: '41267104972864',
-    priceRange: { minVariantPrice: zar('999.00') },
+    // Paper prints and timber-framed, three sizes each. The old single variant
+    // (41267104972864) is replaced once these exist in the store.
+    optionName: 'Format',
+    variants: [
+      { title: 'A5 print', id: '', price: '450.00' },
+      { title: 'A4 print', id: '', price: '750.00' },
+      { title: 'A3 print', id: '', price: '950.00' },
+      { title: 'A5 framed', id: '', price: '1750.00' },
+      { title: 'A4 framed', id: '', price: '1950.00' },
+      { title: 'A3 framed', id: '', price: '2250.00' },
+    ],
+    priceRange: { minVariantPrice: zar('450.00') },
     images: [
       prints.front('Framed engraving of surfers riding a breaking wave'),
       prints.back('Framed woodcut of a surfer on a longboard'),
@@ -838,7 +884,37 @@ export const products: Product[] = [
         { label: 'Subject', value: 'Timber, ocean & the craft' },
       ],
       [
-        { label: 'Format', value: 'Original artwork & prints' },
+        { label: 'Format', value: 'Paper print or timber frame' },
+        { label: 'Sizes', value: 'A5, A4, A3' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/spex-prints',
+    handle: 'spex-wave-photography',
+    title: 'Spex Wave Photography',
+    description:
+      'Wave photography by Sacha Specker, “Spex”. A4 prints, each signed by the artist, on paper or framed in timber.',
+    productType: 'Accessories',
+    tags: ['Art'],
+    availableForSale: true,
+    // Shopify variant ids land here once the product is created in the store.
+    optionName: 'Format',
+    variants: [
+      { title: 'A4 print', id: '', price: '950.00' },
+      { title: 'A4 framed', id: '', price: '3500.00' },
+    ],
+    priceRange: { minVariantPrice: zar('950.00') },
+    images: soon('Spex wave photography print'),
+    specs: [
+      [
+        { label: 'Used For', value: 'Wall art' },
+        { label: 'Artist', value: 'Sacha Specker (Spex)' },
+        { label: 'Signed', value: 'By the artist' },
+      ],
+      [
+        { label: 'Format', value: 'Paper print or timber frame' },
+        { label: 'Size', value: 'A4' },
       ],
     ],
   },
@@ -851,8 +927,15 @@ export const products: Product[] = [
     productType: 'Accessories',
     tags: ['Gift Cards'],
     availableForSale: true,
-    variantId: '41267105005632',
-    priceRange: { minVariantPrice: zar('999.00') },
+    // Board price + 20% for the extra workshop time. The old single variant
+    // (41267105005632) is replaced once these exist in the store.
+    optionName: 'Board',
+    variants: [
+      { title: 'Short', id: '', price: '21000.00' },
+      { title: 'Mid-length', id: '', price: '23400.00' },
+      { title: 'Longboard', id: '', price: '27000.00' },
+    ],
+    priceRange: { minVariantPrice: zar('21000.00') },
     images: [giftCard.front('Wawa gift card in engraved oak, held against a sunlit wall')],
     specs: [
       [
@@ -862,6 +945,7 @@ export const products: Product[] = [
       ],
       [
         { label: 'You Build', value: 'Timber & cork board, blank to seal' },
+        { label: 'Boards', value: 'Short, mid-length, longboard' },
         { label: 'Also', value: 'Available as a gift card' },
       ],
     ],

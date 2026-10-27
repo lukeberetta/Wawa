@@ -1,7 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import ProductCard from '@/components/ProductCard.astro';
-import { disciplines, getProducts, slug, formatPrice } from '@/lib/catalog';
+import { disciplines, getProducts, slug, formatPrice, makeYourOwnPrice } from '@/lib/catalog';
 import { site } from '@/lib/site';
 import { ORG_ID, abs, breadcrumbs } from '@/lib/schema';
 import type { Product, Discipline } from '@/lib/types';
@@ -45,6 +45,19 @@ const buyable =
 // An accessory without its Shopify ids yet is waiting, not made to order.
 const comingSoon = !buyable && product.productType === 'Accessories';
 const cartVariantId = sized ? '' : product.variantId;
+// Boards (enquire-only) offer a "make it yourself" build — shaped by the
+// customer in our workshop at the board price + 20%. The choice re-prices the
+// buy bar and rides along into the enquiry.
+const isBoard = product.productType !== 'Accessories';
+const boardAmount = Number(product.priceRange.minVariantPrice.amount);
+const fromPrice = (n: number) => `From R${n.toLocaleString('en-US')}`;
+const builds = [
+  { value: 'We build it', price: hasPrice ? fromPrice(boardAmount) : price },
+  {
+    value: 'Make it yourself',
+    price: hasPrice ? fromPrice(makeYourOwnPrice(boardAmount)) : price,
+  },
+];
 
 const images = product.images;
 const lead = images[0];
@@ -165,8 +178,30 @@ const crumbs = breadcrumbs([
                     <div class="sizes-row">
                       {variants.map((v) => (
                         <label class="size">
-                          <input type="radio" name="size" value={v.id} data-size={v.title} disabled={!buyable} />
+                          <input
+                            type="radio"
+                            name="size"
+                            value={v.id}
+                            data-size={v.title}
+                            data-price={v.price ?? product.priceRange.minVariantPrice.amount}
+                            disabled={!buyable}
+                          />
                           <span>{v.title}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                )
+              }
+              {
+                isBoard && (
+                  <fieldset class="sizes" data-build>
+                    <legend class="sizes-legend">Build</legend>
+                    <div class="sizes-row">
+                      {builds.map((b, i) => (
+                        <label class="size">
+                          <input type="radio" name="build" value={b.value} data-price={b.price} checked={i === 0} />
+                          <span>{b.value}</span>
                         </label>
                       ))}
                     </div>
@@ -197,6 +232,7 @@ const crumbs = breadcrumbs([
                     data-order-discipline={slug(product.productType)}
                     data-order-category={category}
                     data-order-title={product.title}
+                    data-order-build={isBoard ? builds[0].value : undefined}
                   >
                     Enquire about this board
                   </button>
@@ -208,6 +244,7 @@ const crumbs = breadcrumbs([
                     {hasPrice
                       ? 'Made to order — ask us about your build and lead time.'
                       : 'Made to order — ask us about pricing and lead time.'}
+                    {isBoard && ' Make it yourself: shape it with us over seven 3-hour workshop sessions, for 20% more.'}
                   </p>
                 )
               }
@@ -279,6 +316,7 @@ const crumbs = breadcrumbs([
               data-order-discipline={slug(product.productType)}
               data-order-category={category}
               data-order-title={product.title}
+              data-order-build={isBoard ? builds[0].value : undefined}
             >
               Enquire
             </button>
@@ -748,21 +786,25 @@ const crumbs = breadcrumbs([
     );
   }
 
-  // ── Sizes ── the chosen size's variant id (and a size-suffixed title for the
-  // cart line) is written onto every add-to-cart button. Pressed with no size
+  // ── Sizes ── the chosen size's variant id, price (sizes can cost different
+  // amounts) and a size-suffixed title for the cart line are written onto every
+  // add-to-cart button; the buy bar's "From" price becomes the size's price. Pressed with no size
   // picked, the button has no id — Cart.astro ignores it and we point at the
   // picker instead.
   const sizes = document.querySelector<HTMLFieldSetElement>('[data-sizes]');
   if (sizes) {
     const buttons = Array.from(document.querySelectorAll<HTMLElement>('[data-add-to-cart]'));
     const baseTitle = buttons[0]?.dataset.title ?? '';
+    const barPrice = document.querySelector<HTMLElement>('.pdp-bar-price');
     sizes.addEventListener('change', (e) => {
       const input = e.target as HTMLInputElement;
       sizes.classList.remove('is-invalid');
       buttons.forEach((b) => {
         b.dataset.variantId = input.value;
         b.dataset.title = `${baseTitle} — ${input.dataset.size}`;
+        b.dataset.price = input.dataset.price;
       });
+      if (barPrice) barPrice.textContent = `R${Number(input.dataset.price).toLocaleString('en-US')}`;
     });
     buttons.forEach((b) =>
       b.addEventListener('click', () => {
@@ -772,6 +814,19 @@ const crumbs = breadcrumbs([
         sizes.querySelector<HTMLInputElement>('input')?.focus({ preventScroll: true });
       }),
     );
+  }
+
+  // ── Build ── "We build it" / "Make it yourself": re-price the buy bar and
+  // hand the choice to the enquiry buttons (OrderModal reads data-order-build).
+  const build = document.querySelector<HTMLFieldSetElement>('[data-build]');
+  if (build) {
+    const barPrice = document.querySelector<HTMLElement>('.pdp-bar-price');
+    const enquire = Array.from(document.querySelectorAll<HTMLElement>('[data-order][data-order-build]'));
+    build.addEventListener('change', (e) => {
+      const input = e.target as HTMLInputElement;
+      if (barPrice && input.dataset.price) barPrice.textContent = input.dataset.price;
+      enquire.forEach((b) => (b.dataset.orderBuild = input.value));
+    });
   }
 
   // ── Buy bar ── persistent, but tuck it away once the "More from" related

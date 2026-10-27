@@ -33,6 +33,12 @@ export function slug(s: string): string {
 
 export { disciplines };
 
+/** Shaping your own board in the workshop costs the board price plus 20%,
+ *  for the extra workshop time. Shared by board PDPs and the MYOS product. */
+export const MAKE_YOUR_OWN_MARKUP = 1.2;
+export const makeYourOwnPrice = (amount: string | number): number =>
+  Math.round(Number(amount) * MAKE_YOUR_OWN_MARKUP);
+
 /** Format Storefront Money as a ZAR price string, or "Enquire" when POA.
  *  Accessories read "Coming soon" until sales open — their prices are still
  *  placeholders, so none show before launch. */
@@ -45,6 +51,8 @@ export function formatPrice(p: Product): string {
     maximumFractionDigits: 0,
   }).format(amt);
   const price = `R${n}`;
-  // Boards are custom builds priced from a base; accessories are fixed.
-  return p.productType === 'Accessories' ? price : `From ${price}`;
+  // Boards are custom builds priced from a base; accessories are fixed,
+  // unless their variants are priced differently (sizes, framed or not).
+  const tiered = new Set(p.variants?.map((v) => Number(v.price ?? amt))).size > 1;
+  return p.productType === 'Accessories' && !tiered ? price : `From ${price}`;
 }
