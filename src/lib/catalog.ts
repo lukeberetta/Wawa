@@ -40,8 +40,7 @@ export const makeYourOwnPrice = (amount: string | number): number =>
   Math.round(Number(amount) * MAKE_YOUR_OWN_MARKUP);
 
 /** Format Storefront Money as a ZAR price string, or "Enquire" when POA.
- *  Accessories read "Coming soon" until sales open — their prices are still
- *  placeholders, so none show before launch. */
+ *  Accessories read "Coming soon" while sales are closed (salesOpen off). */
 export function formatPrice(p: Product): string {
   if (p.productType === 'Accessories' && !site.salesOpen) return 'Coming soon';
   const amt = Number(p.priceRange.minVariantPrice.amount);

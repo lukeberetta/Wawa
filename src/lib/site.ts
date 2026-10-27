@@ -56,7 +56,7 @@ export const site = {
   shopDomain: 'wawawave.myshopify.com',
   // Master switch for add-to-cart. Off = every buyable item shows "Coming soon"
   // (boards keep Enquire). Flip on once Yoco + real prices are live.
-  salesOpen: false,
+  salesOpen: true,
   // `dropdown` (disciplines drilled in Nav.astro) makes Shop a two-level row.
   nav: [
     { href: '/products', label: 'Shop', dropdown: true },
