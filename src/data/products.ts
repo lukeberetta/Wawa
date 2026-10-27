@@ -683,7 +683,7 @@ export const products: Product[] = [
     handle: 'wooden-wax-comb',
     title: 'Wooden Wax Comb',
     description:
-      'A wax comb made the same way as the boards, from offcut paulownia and cork, hand-shaped and sealed. Combs your bumps and scrapes old wax, and feels good in the hand. Small thing, same craft.',
+      'A wax comb carved from a solid-wood offcut in the shape of a fish, hand-finished and sealed. Combs your bumps and scrapes old wax, and feels good in the hand. Small thing, same craft.',
     productType: 'Accessories',
     tags: ['Wax Combs'],
     availableForSale: true,
@@ -696,8 +696,8 @@ export const products: Product[] = [
         { label: 'Used For', value: 'Combing bumps & scraping old wax' },
       ],
       [
-        { label: 'Material', value: 'Offcut paulownia & cork' },
-        { label: 'Finish', value: 'Hand-shaped & sealed' },
+        { label: 'Material', value: 'Solid-wood offcut' },
+        { label: 'Finish', value: 'Hand-carved & sealed' },
       ],
     ],
   },
