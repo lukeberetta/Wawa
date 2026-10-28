@@ -50,8 +50,10 @@ export function formatPrice(p: Product): string {
     maximumFractionDigits: 0,
   }).format(amt);
   const price = `R${n}`;
-  // Boards are custom builds priced from a base; accessories are fixed,
-  // unless their variants are priced differently (sizes, framed or not).
+  // Boards are custom builds priced from a base; accessories and anything
+  // sold online (has Shopify ids) are fixed, unless their variants are priced
+  // differently (sizes, framed or not).
   const tiered = new Set(p.variants?.map((v) => Number(v.price ?? amt))).size > 1;
-  return p.productType === 'Accessories' && !tiered ? price : `From ${price}`;
+  const online = Boolean(p.variantId) || Boolean(p.variants?.some((v) => v.id));
+  return (p.productType === 'Accessories' || online) && !tiered ? price : `From ${price}`;
 }

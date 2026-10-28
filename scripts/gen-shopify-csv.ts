@@ -62,6 +62,10 @@ const GRAMS: Record<string, number> = {
   'wood-is-good-tee': 300,
   'posters-and-prints': 400,
   'spex-wave-photography': 400,
+  'wooden-cruiser-deck': 2500,
+  'wooden-cruiser-complete': 4000,
+  paipo: 3500,
+  handslide: 800,
 };
 
 // Per-variant overrides where one product spans very different parcels
@@ -75,6 +79,8 @@ const VARIANT_GRAMS: Record<string, number> = {
   'posters-and-prints/A4 framed': 2500,
   'posters-and-prints/A3 framed': 4000,
   'spex-wave-photography/A4 framed': 2500,
+  'paipo/4ft': 4500,
+  'paipo/4ft, custom colour': 4500,
 };
 // Gift cards — nothing is posted, so checkout skips shipping.
 const NO_SHIPPING = new Set(['gift-card']);
@@ -89,8 +95,9 @@ const esc = (v: string | number): string => {
 
 const rows: string[][] = [HEADERS];
 
-// Launch scope: only accessories sell online. Boards stay on-site as Enquire
-// and are NOT imported to Shopify yet. Drop the filter when boards go live.
+// Launch scope: accessories plus the small craft below sell online. Boards
+// stay on-site as Enquire and are NOT imported to Shopify yet.
+const SMALL_CRAFT = new Set(['wooden-cruiser-deck', 'wooden-cruiser-complete', 'paipo', 'handslide']);
 // --new: skip products that already have Shopify variant ids.
 const onlyNew = process.argv.includes('--new');
 const inShopify = (p: (typeof products)[number]) =>
@@ -100,7 +107,7 @@ const inShopify = (p: (typeof products)[number]) =>
 const PLACEHOLDER = '999.00';
 const forImport = products.filter(
   (p) =>
-    p.productType === 'Accessories' &&
+    (p.productType === 'Accessories' || SMALL_CRAFT.has(p.handle)) &&
     p.priceRange.minVariantPrice.amount !== PLACEHOLDER &&
     !(onlyNew && inShopify(p)),
 );

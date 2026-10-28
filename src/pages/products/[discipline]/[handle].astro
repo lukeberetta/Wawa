@@ -55,7 +55,16 @@ const comingSoon = !buyable && product.productType === 'Accessories';
 const cartVariantId = product.customAmount ? defaultVariant?.id : sized ? '' : product.variantId;
 const cartTitle = product.customAmount ? `${product.title} — ${zarText(defaultAmount)}` : product.title;
 const cartPrice = product.customAmount ? String(defaultAmount) : product.priceRange.minVariantPrice.amount;
-const barPrice = product.customAmount ? zarText(defaultAmount) : price;
+// Enquire-only products with options: the picker is live (first option
+// preselected) and the choice re-prices the bar and goes into the enquiry.
+const enquireOptions = sized && !buyable && !comingSoon && !product.customAmount;
+const firstOption = enquireOptions ? variants[0] : undefined;
+const orderTitle = firstOption ? `${product.title} — ${firstOption.title}` : product.title;
+const barPrice = product.customAmount
+  ? zarText(defaultAmount)
+  : firstOption
+    ? zarText(Number(firstOption.price ?? product.priceRange.minVariantPrice.amount))
+    : price;
 // Surfboards (enquire-only) offer a "make it yourself" build — shaped by the
 // customer in our workshop at the board price + 20%. The choice re-prices the
 // buy bar and rides along into the enquiry. Not the alaia (finless, solid
@@ -212,7 +221,7 @@ const crumbs = breadcrumbs([
               }
               {
                 sized && !product.customAmount && (
-                  <fieldset class="sizes" data-sizes>
+                  <fieldset class="sizes" data-sizes data-title={product.title}>
                     <legend class="sizes-legend">{product.optionName ?? 'Size'}</legend>
                     <div class="sizes-row">
                       {variants.map((v) => (
@@ -223,7 +232,8 @@ const crumbs = breadcrumbs([
                             value={v.id}
                             data-size={v.title}
                             data-price={v.price ?? product.priceRange.minVariantPrice.amount}
-                            disabled={!buyable}
+                            checked={v === firstOption}
+                            disabled={!buyable && !enquireOptions}
                           />
                           <span>{v.title}</span>
                         </label>
@@ -270,7 +280,7 @@ const crumbs = breadcrumbs([
                     data-order
                     data-order-discipline={slug(product.productType)}
                     data-order-category={category}
-                    data-order-title={product.title}
+                    data-order-title={orderTitle}
                     data-order-build={selfBuild ? builds[0].value : undefined}
                   >
                     Enquire about this board
@@ -354,7 +364,7 @@ const crumbs = breadcrumbs([
               data-order
               data-order-discipline={slug(product.productType)}
               data-order-category={category}
-              data-order-title={product.title}
+              data-order-title={orderTitle}
               data-order-build={selfBuild ? builds[0].value : undefined}
             >
               Enquire
@@ -873,6 +883,10 @@ const crumbs = breadcrumbs([
   if (sizes) {
     const buttons = Array.from(document.querySelectorAll<HTMLElement>('[data-add-to-cart]'));
     const baseTitle = buttons[0]?.dataset.title ?? '';
+    // enquire-only options: the choice rides into the enquiry (OrderModal
+    // reads data-order-title)
+    const enquire = Array.from(document.querySelectorAll<HTMLElement>('[data-order][data-order-title]'));
+    const productTitle = sizes.dataset.title ?? '';
     const barPrice = document.querySelector<HTMLElement>('.pdp-bar-price');
     sizes.addEventListener('change', (e) => {
       const input = e.target as HTMLInputElement;
@@ -883,6 +897,7 @@ const crumbs = breadcrumbs([
         b.dataset.price = input.dataset.price;
       });
       if (barPrice) barPrice.textContent = `R${Number(input.dataset.price).toLocaleString('en-US')}`;
+      enquire.forEach((b) => (b.dataset.orderTitle = `${productTitle} — ${input.dataset.size}`));
     });
     buttons.forEach((b) =>
       b.addEventListener('click', () => {

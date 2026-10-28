@@ -36,5 +36,6 @@ export default defineConfig({
     '/products/body-belly': '/products?discipline=body-belly',
     '/products/accessories': '/products?discipline=accessories',
     '/products/body-belly/bellyboard': '/products/body-belly/bodyboard',
+    '/products/skate/wooden-cruiser': '/products/skate/wooden-cruiser-complete',
   },
 });

@@ -470,17 +470,44 @@ export const products: Product[] = [
 
   // ── SKATE ────────────────────────────────────
   {
-    id: 'mock/wooden-cruiser',
-    handle: 'wooden-cruiser',
-    title: 'Wooden Cruiser',
+    id: 'mock/wooden-cruiser-deck',
+    handle: 'wooden-cruiser-deck',
+    title: 'Wooden Cruiser Deck',
     description:
-      'For the days the sea goes flat. A wooden cruiser built from the same paulownia and cork as the boards, warm underfoot and lively through a turn, finished to age with salt and sun. Keep surfing when there’s no surf. Deck only (30–40") R2,750, or complete with trucks, wheels and bearings R6,000.',
+      'For the days the sea goes flat. A wooden cruiser built from the same paulownia and cork as the boards, warm underfoot and lively through a turn, finished to age with salt and sun. Keep surfing when there’s no surf. Deck only, 30–40": set it up with your own trucks, wheels and bearings.',
     productType: 'Skate',
     tags: [],
-    availableForSale: false,
+    availableForSale: true,
+    variantId: '41465789775936',
     priceRange: { minVariantPrice: zar('2750.00') },
     // one shot so far — no back, so no hover swap
     images: [cruiser.front('Wawa Wooden Cruiser, deck')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Flat days and cruising' },
+        { label: 'Board Feel', value: 'Warm and lively' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/wooden-cruiser-complete',
+    handle: 'wooden-cruiser-complete',
+    title: 'Wooden Cruiser Complete',
+    description:
+      'For the days the sea goes flat. A wooden cruiser built from the same paulownia and cork as the boards, warm underfoot and lively through a turn, finished to age with salt and sun. Keep surfing when there’s no surf. Ready to roll, 30–40": deck, trucks, wheels and bearings.',
+    productType: 'Skate',
+    tags: [],
+    availableForSale: true,
+    variantId: '41465789808704',
+    priceRange: { minVariantPrice: zar('6000.00') },
+    // one shot so far — no back, so no hover swap
+    images: [cruiser.front('Wawa Wooden Cruiser, complete')],
     specs: [
       [
         { label: 'Best For', value: 'Flat days and cruising' },
@@ -501,10 +528,17 @@ export const products: Product[] = [
     handle: 'paipo',
     title: 'Paipo',
     description:
-      'Short, wide and fast: the punk rock of surfing, with roots in Hawaiian wave riding. Choose finned or finless. The Bullet is a prone bodyboard ridden with swim fins. The Godfather is a wide planing hull built for speed. Dr. Strangelove is a small solid-wood Mini-Simmons with twin keels and a kicked nose. Purple Haze is a one-off timber shape. Ask us about each model’s construction and availability. 3ft R3,000, 4ft R4,000; custom colouring adds R750.',
+      'Short, wide and fast: the punk rock of surfing, with roots in Hawaiian wave riding. Choose finned or finless. The Bullet is a prone bodyboard ridden with swim fins. The Godfather is a wide planing hull built for speed. Dr. Strangelove is a small solid-wood Mini-Simmons with twin keels and a kicked nose. Purple Haze is a one-off timber shape. Ask us about each model’s construction and availability.',
     productType: 'Body & Belly',
     tags: ['Paipo'],
-    availableForSale: false,
+    availableForSale: true,
+    optionName: 'Size',
+    variants: [
+      { title: '3ft', id: '41465789841472', price: '3000.00' },
+      { title: '4ft', id: '41465789874240', price: '4000.00' },
+      { title: '3ft, custom colour', id: '41465789907008', price: '3750.00' },
+      { title: '4ft, custom colour', id: '41465789939776', price: '4750.00' },
+    ],
     priceRange: { minVariantPrice: zar('3000.00') },
     images: [
       paipo.front('Four Wawa paipos leaning on a sunlit wall, painted PAIPO and octopus graphics'),
@@ -528,10 +562,15 @@ export const products: Product[] = [
     handle: 'handslide',
     title: 'Handslide',
     description:
-      'Strip it all back and bodysurf. A small handplane made locally by bodysurfers, with no pop-up between you and the wave. Ask us about choosing a shape for your experience and conditions. Get closer to the wave. Kick. Laugh. With a red webbing hand strap R950, or an adjustable neoprene strap R1,950. Both come with a Wawa-branded calico bag.',
+      'Strip it all back and bodysurf. A small handplane made locally by bodysurfers, with no pop-up between you and the wave. Ask us about choosing a shape for your experience and conditions. Get closer to the wave. Kick. Laugh. Comes with a Wawa-branded calico bag.',
     productType: 'Body & Belly',
     tags: ['Bodysurf'],
     availableForSale: true,
+    optionName: 'Hand strap',
+    variants: [
+      { title: 'Red webbing', id: '41465789972544', price: '950.00' },
+      { title: 'Adjustable neoprene', id: '41465790005312', price: '1950.00' },
+    ],
     priceRange: { minVariantPrice: zar('950.00') },
     images: [
       handslide.front('Wawa handslide with red hand strap and burnt-in logo, held against a sunlit wall'),
