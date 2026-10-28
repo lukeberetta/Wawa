@@ -100,6 +100,7 @@ export const products: Product[] = [
     availableForSale: true,
     priceRange: { minVariantPrice: zar('17500.00') },
     images: [fish.front('Wawa Classic Fish, deck'), fish.back('Wawa Classic Fish, hull')],
+    featured: 2,
     // Spec table. Two blocks: performance, then build.
     specs: [
       [
@@ -125,7 +126,6 @@ export const products: Product[] = [
     availableForSale: false,
     priceRange: { minVariantPrice: zar('17500.00') },
     images: [gunFish.front('Wawa Gun Fish, deck'), gunFish.back('Wawa Gun Fish, hull')],
-    featured: 2,
     specs: [
       [
         { label: 'Best For', value: 'Medium to overhead waves' },
@@ -747,7 +747,7 @@ export const products: Product[] = [
     variantId: '41267104809024',
     priceRange: { minVariantPrice: zar('2750.00') },
     images: [
-      beachBats.front('Wawa beach bat with red sun and blue waves, held against a sunlit plaster wall'),
+      beachBats.front('Wawa beach bat with red sun and blue waves, held up in one hand'),
       beachBats.back('Wawa beach bat at an angle, showing the layered birch edge and cork grip'),
     ],
     specs: [

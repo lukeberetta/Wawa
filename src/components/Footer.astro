@@ -21,9 +21,9 @@ const year = new Date().getFullYear();
   </video>
   <div class="footer-inner wrap">
     <p class="f-statement">Made slowly.<br />Ridden forever.</p>
-    <button class="f-order" type="button" data-order>
-      Start a custom build <span aria-hidden="true">→</span>
-    </button>
+    <a class="f-order" href="/products">
+      Shop the workshop <span aria-hidden="true">→</span>
+    </a>
     <p class="f-meta">© {year} {site.name}</p>
   </div>
 </footer>
@@ -109,7 +109,7 @@ const year = new Date().getFullYear();
     /* on top of .footer-inner's gap — the one filled element on the panel
        needs air around it, not the same rhythm as two lines of text */
     margin-block: 0.5rem;
-    cursor: pointer;
+    text-decoration: none;
     transition: opacity 0.2s var(--ease), gap 0.3s var(--ease);
   }
   .f-order:hover {
