@@ -63,7 +63,7 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
               <option value="">Select…</option>
             </select>
           </label>
-          <label class="order-field order-field-wide">
+          <label class="order-field order-field-wide" data-build-field>
             <span>Build</span>
             <select name="build" data-order-build>
               {builds.map((b) => <option value={b}>{b}</option>)}
@@ -237,6 +237,10 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
     flex-direction: column;
     gap: 0.35rem;
   }
+  /* `display: flex` above would otherwise beat the [hidden] UA rule */
+  .order-field[hidden] {
+    display: none;
+  }
   .order-field-wide {
     grid-column: 1 / -1;
   }
@@ -354,6 +358,7 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
   const subEl = modal?.querySelector<HTMLSelectElement>('[data-order-subcategory]');
   const subField = modal?.querySelector<HTMLLabelElement>('[data-subcat-field]');
   const buildEl = modal?.querySelector<HTMLSelectElement>('[data-order-build]');
+  const buildField = modal?.querySelector<HTMLLabelElement>('[data-build-field]');
   const catData = modal?.querySelector<HTMLScriptElement>('[data-order-categories]');
   const categoryMap: Record<string, string[]> = catData ? JSON.parse(catData.textContent || '{}') : {};
 
@@ -390,6 +395,14 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
       cats.map((c) => `<option value="${c}">${c}</option>`).join('');
     subEl.value = cats.includes(keep) ? keep : '';
     subField.hidden = cats.length === 0;
+    syncBuild();
+  }
+
+  // "Make it yourself" is a surfboard option only — not the alaia (Finless),
+  // small craft, foil or kite boards.
+  function syncBuild() {
+    if (!discEl || !subEl || !buildField) return;
+    buildField.hidden = discEl.value !== 'surf' || subEl.value === 'Finless';
   }
 
   function prefillFrom(el: HTMLElement) {
@@ -407,6 +420,7 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
   }
 
   discEl?.addEventListener('change', () => syncSubcategories());
+  subEl?.addEventListener('change', syncBuild);
   syncSubcategories(); // initial state (no discipline chosen)
 
   // Compose the WhatsApp message from filled fields, dropping empties and any
@@ -424,7 +438,7 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
 
     const board = [
       ['Type', typeLine],
-      ['Build', v('build')],
+      ['Build', buildField?.hidden ? '' : v('build')],
       ['Length', v('length')],
       ['Fin setup', v('finSetup')],
       ['Favourite wave', v('wave')],

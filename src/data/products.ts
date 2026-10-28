@@ -303,7 +303,7 @@ export const products: Product[] = [
     productType: 'Surf',
     tags: ['Finless'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('0.00') },
+    priceRange: { minVariantPrice: zar('12000.00') },
     images: [alaia.front('Wawa Alaia, top'), alaia.back('Wawa Alaia, base')],
     specs: [
       [
@@ -474,11 +474,11 @@ export const products: Product[] = [
     handle: 'wooden-cruiser',
     title: 'Wooden Cruiser',
     description:
-      'For the days the sea goes flat. A wooden cruiser built from the same paulownia and cork as the boards, warm underfoot and lively through a turn, finished to age with salt and sun. Keep surfing when there’s no surf.',
+      'For the days the sea goes flat. A wooden cruiser built from the same paulownia and cork as the boards, warm underfoot and lively through a turn, finished to age with salt and sun. Keep surfing when there’s no surf. Deck only (30–40") R2,750, or complete with trucks, wheels and bearings R6,000.',
     productType: 'Skate',
     tags: [],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('0.00') },
+    priceRange: { minVariantPrice: zar('2750.00') },
     // one shot so far — no back, so no hover swap
     images: [cruiser.front('Wawa Wooden Cruiser, deck')],
     specs: [
@@ -501,11 +501,11 @@ export const products: Product[] = [
     handle: 'paipo',
     title: 'Paipo',
     description:
-      'Short, wide and fast: the punk rock of surfing, with roots in Hawaiian wave riding. Choose finned or finless. The Bullet is a prone bodyboard ridden with swim fins. The Godfather is a wide planing hull built for speed. Dr. Strangelove is a small solid-wood Mini-Simmons with twin keels and a kicked nose. Purple Haze is a one-off timber shape. Ask us about each model’s construction and availability.',
+      'Short, wide and fast: the punk rock of surfing, with roots in Hawaiian wave riding. Choose finned or finless. The Bullet is a prone bodyboard ridden with swim fins. The Godfather is a wide planing hull built for speed. Dr. Strangelove is a small solid-wood Mini-Simmons with twin keels and a kicked nose. Purple Haze is a one-off timber shape. Ask us about each model’s construction and availability. 3ft R3,000, 4ft R4,000; custom colouring adds R750.',
     productType: 'Body & Belly',
     tags: ['Paipo'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('0.00') },
+    priceRange: { minVariantPrice: zar('3000.00') },
     images: [
       paipo.front('Four Wawa paipos leaning on a sunlit wall, painted PAIPO and octopus graphics'),
       paipo.back('Four Wawa paipos showing their branded sides, solid timber grain'),
@@ -528,11 +528,11 @@ export const products: Product[] = [
     handle: 'handslide',
     title: 'Handslide',
     description:
-      'Strip it all back and bodysurf. A small handplane made locally by bodysurfers, with no pop-up between you and the wave. Ask us about choosing a shape for your experience and conditions. Get closer to the wave. Kick. Laugh.',
+      'Strip it all back and bodysurf. A small handplane made locally by bodysurfers, with no pop-up between you and the wave. Ask us about choosing a shape for your experience and conditions. Get closer to the wave. Kick. Laugh. With a red webbing hand strap R950, or an adjustable neoprene strap R1,950. Both come with a Wawa-branded calico bag.',
     productType: 'Body & Belly',
     tags: ['Bodysurf'],
     availableForSale: true,
-    priceRange: { minVariantPrice: zar('0.00') },
+    priceRange: { minVariantPrice: zar('950.00') },
     images: [
       handslide.front('Wawa handslide with red hand strap and burnt-in logo, held against a sunlit wall'),
       handslide.back('Wawa handslide underside with floral inlay under resin, swallow tail'),
@@ -560,7 +560,7 @@ export const products: Product[] = [
     productType: 'Body & Belly',
     tags: ['Bodyboard'],
     availableForSale: false,
-    priceRange: { minVariantPrice: zar('0.00') },
+    priceRange: { minVariantPrice: zar('6500.00') },
     images: [bodyboard.front('Wawa Bodyboard, deck'), bodyboard.back('Wawa Bodyboard, hull')],
     featured: 7,
     specs: [

@@ -56,10 +56,11 @@ const cartVariantId = product.customAmount ? defaultVariant?.id : sized ? '' : p
 const cartTitle = product.customAmount ? `${product.title} — ${zarText(defaultAmount)}` : product.title;
 const cartPrice = product.customAmount ? String(defaultAmount) : product.priceRange.minVariantPrice.amount;
 const barPrice = product.customAmount ? zarText(defaultAmount) : price;
-// Boards (enquire-only) offer a "make it yourself" build — shaped by the
+// Surfboards (enquire-only) offer a "make it yourself" build — shaped by the
 // customer in our workshop at the board price + 20%. The choice re-prices the
-// buy bar and rides along into the enquiry.
-const isBoard = product.productType !== 'Accessories';
+// buy bar and rides along into the enquiry. Not the alaia (finless, solid
+// timber) or any small craft, foil or kite board.
+const selfBuild = product.productType === 'Surf' && !product.tags.includes('Finless');
 const boardAmount = Number(product.priceRange.minVariantPrice.amount);
 const fromPrice = (n: number) => `From R${n.toLocaleString('en-US')}`;
 const builds = [
@@ -232,7 +233,7 @@ const crumbs = breadcrumbs([
                 )
               }
               {
-                isBoard && (
+                selfBuild && (
                   <fieldset class="sizes" data-build>
                     <legend class="sizes-legend">Build</legend>
                     <div class="sizes-row">
@@ -270,7 +271,7 @@ const crumbs = breadcrumbs([
                     data-order-discipline={slug(product.productType)}
                     data-order-category={category}
                     data-order-title={product.title}
-                    data-order-build={isBoard ? builds[0].value : undefined}
+                    data-order-build={selfBuild ? builds[0].value : undefined}
                   >
                     Enquire about this board
                   </button>
@@ -282,7 +283,7 @@ const crumbs = breadcrumbs([
                     {hasPrice
                       ? 'Made to order — ask us about your build and lead time.'
                       : 'Made to order — ask us about pricing and lead time.'}
-                    {isBoard && ' Make it yourself: shape it with us over seven 3-hour workshop sessions, for 20% more.'}
+                    {selfBuild && ' Make it yourself: shape it with us over seven 3-hour workshop sessions, for 20% more.'}
                   </p>
                 )
               }
@@ -354,7 +355,7 @@ const crumbs = breadcrumbs([
               data-order-discipline={slug(product.productType)}
               data-order-category={category}
               data-order-title={product.title}
-              data-order-build={isBoard ? builds[0].value : undefined}
+              data-order-build={selfBuild ? builds[0].value : undefined}
             >
               Enquire
             </button>
