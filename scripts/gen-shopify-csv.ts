@@ -62,8 +62,10 @@ const GRAMS: Record<string, number> = {
   'wood-is-good-tee': 300,
   'posters-and-prints': 400,
   'spex-wave-photography': 400,
-  'wooden-cruiser-deck': 2500,
-  'wooden-cruiser-complete': 4000,
+  'wooden-cruiser': 2500,
+  'wooden-surfskate': 2000,
+  alaia: 7000,
+  bodyboard: 3000,
   paipo: 3500,
   handslide: 800,
 };
@@ -79,6 +81,9 @@ const VARIANT_GRAMS: Record<string, number> = {
   'posters-and-prints/A4 framed': 2500,
   'posters-and-prints/A3 framed': 4000,
   'spex-wave-photography/A4 framed': 2500,
+  'wooden-cruiser/Complete': 4000,
+  'wooden-surfskate/Rounded tail, complete': 3500,
+  'wooden-surfskate/Swallow tail, complete': 3500,
   'paipo/4ft': 4500,
   'paipo/4ft, custom colour': 4500,
 };
@@ -97,7 +102,14 @@ const rows: string[][] = [HEADERS];
 
 // Launch scope: accessories plus the small craft below sell online. Boards
 // stay on-site as Enquire and are NOT imported to Shopify yet.
-const SMALL_CRAFT = new Set(['wooden-cruiser-deck', 'wooden-cruiser-complete', 'paipo', 'handslide']);
+const SMALL_CRAFT = new Set([
+  'wooden-cruiser',
+  'wooden-surfskate',
+  'paipo',
+  'handslide',
+  'alaia',
+  'bodyboard',
+]);
 // --new: skip products that already have Shopify variant ids.
 const onlyNew = process.argv.includes('--new');
 const inShopify = (p: (typeof products)[number]) =>

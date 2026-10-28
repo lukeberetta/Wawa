@@ -302,7 +302,8 @@ export const products: Product[] = [
       'If our paipos are punk rock, the alaia is Miles Davis. Thin, flat-rockered and sealed with oil, ridden standing and on a rail. It glides in a way foam can’t, a throwback to surfing’s Polynesian roots. Hand-shaped from solid timber since 2010. Four models: Classic, Trigger, Trick and Needle.',
     productType: 'Surf',
     tags: ['Finless'],
-    availableForSale: false,
+    availableForSale: true,
+    variantId: '41465932841024',
     priceRange: { minVariantPrice: zar('12000.00') },
     images: [alaia.front('Wawa Alaia, top'), alaia.back('Wawa Alaia, base')],
     specs: [
@@ -470,15 +471,19 @@ export const products: Product[] = [
 
   // ── SKATE ────────────────────────────────────
   {
-    id: 'mock/wooden-cruiser-deck',
-    handle: 'wooden-cruiser-deck',
-    title: 'Wooden Cruiser Deck',
+    id: 'mock/wooden-cruiser',
+    handle: 'wooden-cruiser',
+    title: 'Wooden Cruiser',
     description:
-      'For the days the sea goes flat. A wooden cruiser built from the same paulownia and cork as the boards, warm underfoot and lively through a turn, finished to age with salt and sun. Keep surfing when there’s no surf. Deck only, 30–40": set it up with your own trucks, wheels and bearings.',
+      'For the days the sea goes flat. A wooden cruiser built from the same paulownia and cork as the boards, warm underfoot and lively through a turn, finished to age with salt and sun. Keep surfing when there’s no surf. 30–40" long, as a deck on its own or complete with trucks, wheels and bearings.',
     productType: 'Skate',
     tags: [],
     availableForSale: true,
-    variantId: '41465789775936',
+    optionName: 'Setup',
+    variants: [
+      { title: 'Deck', id: '41465932873792', price: '2750.00' },
+      { title: 'Complete', id: '41465932906560', price: '6000.00' },
+    ],
     priceRange: { minVariantPrice: zar('2750.00') },
     // one shot so far — no back, so no hover swap
     images: [cruiser.front('Wawa Wooden Cruiser, deck')],
@@ -496,22 +501,27 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 'mock/wooden-cruiser-complete',
-    handle: 'wooden-cruiser-complete',
-    title: 'Wooden Cruiser Complete',
+    id: 'mock/wooden-surfskate',
+    handle: 'wooden-surfskate',
+    title: 'Wooden Surfskate',
     description:
-      'For the days the sea goes flat. A wooden cruiser built from the same paulownia and cork as the boards, warm underfoot and lively through a turn, finished to age with salt and sun. Keep surfing when there’s no surf. Ready to roll, 30–40": deck, trucks, wheels and bearings.',
+      'The cruiser’s shorter, surfier sibling. A 28–30" paulownia and cork deck for tight, flowing carves on flat days, with a rounded or swallow tail. Buy the deck on its own, or complete with trucks, wheels and bearings.',
     productType: 'Skate',
     tags: [],
     availableForSale: true,
-    variantId: '41465789808704',
-    priceRange: { minVariantPrice: zar('6000.00') },
-    // one shot so far — no back, so no hover swap
-    images: [cruiser.front('Wawa Wooden Cruiser, complete')],
+    optionName: 'Tail & setup',
+    variants: [
+      { title: 'Rounded tail, deck', id: '41465932939328', price: '2750.00' },
+      { title: 'Rounded tail, complete', id: '41465932972096', price: '6000.00' },
+      { title: 'Swallow tail, deck', id: '41465933004864', price: '2750.00' },
+      { title: 'Swallow tail, complete', id: '41465933037632', price: '6000.00' },
+    ],
+    priceRange: { minVariantPrice: zar('2750.00') },
+    images: soon('Wawa Wooden Surfskate'),
     specs: [
       [
-        { label: 'Best For', value: 'Flat days and cruising' },
-        { label: 'Board Feel', value: 'Warm and lively' },
+        { label: 'Best For', value: 'Flat days and carving' },
+        { label: 'Board Feel', value: 'Tight and surfy' },
         { label: 'Skill Level', value: 'All levels' },
       ],
       [
@@ -598,7 +608,8 @@ export const products: Product[] = [
       'Prone wave-riding craft in the paipo lineage: fast, direct and about as close to the wave as you can get. A full cork deck for grip and warmth underneath you, a recycled foam core, and a paulownia wood bottom. Lighter than it looks.',
     productType: 'Body & Belly',
     tags: ['Bodyboard'],
-    availableForSale: false,
+    availableForSale: true,
+    variantId: '41465933070400',
     priceRange: { minVariantPrice: zar('6500.00') },
     images: [bodyboard.front('Wawa Bodyboard, deck'), bodyboard.back('Wawa Bodyboard, hull')],
     featured: 7,
