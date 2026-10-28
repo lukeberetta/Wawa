@@ -48,6 +48,7 @@ const boardCover = studioSet('board-cover');
 const giftCard = studioSet('gift-card');
 const waxComb = studioSet('wax-comb');
 const speedEgg = studioSet('speed-egg');
+const spex = studioSet('spex');
 
 /** Empty-room plate for anything not yet photographed. One image, so no hover swap. */
 const soon = (title: string) => [
@@ -143,7 +144,7 @@ export const products: Product[] = [
     availableForSale: true,
     priceRange: { minVariantPrice: zar('19500.00') },
     images: [
-      speedEgg.front('Wawa Speed Egg deck in paulownia with cork rails, leaning on a sunlit wall'),
+      speedEgg.front('Wawa Speed Egg deck in paulownia with cork rails'),
       speedEgg.back('Wawa Speed Egg bottom with single fin box'),
     ],
     featured: 4,
@@ -899,7 +900,7 @@ export const products: Product[] = [
       { title: 'A4 framed', id: '41464873320512', price: '3500.00' },
     ],
     priceRange: { minVariantPrice: zar('950.00') },
-    images: soon('Spex wave photography print'),
+    images: [spex.front('Spex wave print in a timber frame')],
     specs: [
       [
         { label: 'Used For', value: 'Wall art' },
@@ -929,7 +930,7 @@ export const products: Product[] = [
       { title: 'Longboard', id: '41464873484352', price: '27000.00' },
     ],
     priceRange: { minVariantPrice: zar('21000.00') },
-    images: [giftCard.front('Wawa gift card in engraved oak, held against a sunlit wall')],
+    images: [giftCard.front('Wawa gift card in engraved oak, held in hand')],
     specs: [
       [
         { label: 'Used For', value: 'Shaping your own surfboard' },

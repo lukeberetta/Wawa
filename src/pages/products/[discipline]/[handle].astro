@@ -117,7 +117,7 @@ const crumbs = breadcrumbs([
             scroll over the carousel dropped to native while the rest of the page
             stayed smoothed, and the page jerked as the cursor crossed in and out.
             Horizontal gestures are handed to the browser in Motion.astro. */}
-        <ul class="car-track" data-car-track>
+        <ul class:list={['car-track', { 'has-more': slideCount > 3 }]} data-car-track>
           {Array.from({ length: slideCount }).map((_, i) => (
             <li class="car-slide">
               {images[i]?.placeholder ? (
@@ -126,21 +126,23 @@ const crumbs = breadcrumbs([
                     class="slide-img"
                     src={images[i].url}
                     alt={images[i].altText ?? product.title}
-                    width="1086"
-                    height="1448"
+                    width="1600"
+                    height="2000"
                     loading={i === 0 ? 'eager' : 'lazy'}
                   />
                   <span class="soon-label" aria-hidden="true">Coming soon</span>
                 </div>
               ) : images[i] ? (
-                <img
-                  class="slide-media slide-img"
-                  src={images[i].url}
-                  alt={images[i].altText ?? product.title}
-                  width="1086"
-                  height="1448"
-                  loading={i === 0 ? 'eager' : 'lazy'}
-                />
+                <div class="slide-media grain">
+                  <img
+                    class="slide-img"
+                    src={images[i].url}
+                    alt={images[i].altText ?? product.title}
+                    width="1600"
+                    height="2000"
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                  />
+                </div>
               ) : (
                 <div class="slide-media wf-ph" role="presentation" />
               )}
@@ -387,7 +389,8 @@ const crumbs = breadcrumbs([
   }
   .slide-img {
     display: block;
-    height: auto;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
   }
   /* empty-room plate, blurred under a "Coming soon" label — the frame keeps the
@@ -438,19 +441,18 @@ const crumbs = breadcrumbs([
     background: var(--ink);
     transform: scale(1.15);
   }
-  /* desktop: full-bleed scroll gallery — square slides sized by height, laid
-     flush across the full viewport width so neighbouring images peek in with no
-     side or middle gaps; the rail reads as scrollable. */
+  /* desktop: full-bleed 4:5 frames sized by width, never fewer than three
+     (slideCount pads with placeholders). Three split the viewport exactly — the
+     +2px offsets the -1px border overlaps so the row lands flush. A fourth or
+     more narrows the frames so the next one peeks in and the rail reads as
+     scrollable. */
   @media (min-width: 900px) {
     .car-slide {
-      flex: 0 0 auto;
-      scroll-snap-align: center;
+      flex: 0 0 calc((100% + 2px) / 3);
+      scroll-snap-align: start;
     }
-    .slide-media {
-      /* 1:1, height-driven so the section never exceeds 70vh */
-      width: auto;
-      height: 70vh;
-      aspect-ratio: 1 / 1;
+    .car-track.has-more .car-slide {
+      flex-basis: calc(100% / 3.25);
     }
     /* peeking neighbours signal the rail is scrollable — dots are redundant */
     .car-dots {
