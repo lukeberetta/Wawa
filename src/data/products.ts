@@ -556,7 +556,7 @@ export const products: Product[] = [
     handle: 'bodyboard',
     title: 'Bodyboard',
     description:
-      'Prone wave-riding craft in the paipo lineage: fast, direct and about as close to the wave as you can get. Paulownia veneer over a recycled foam core, finished with cork rails. Lighter than it looks.',
+      'Prone wave-riding craft in the paipo lineage: fast, direct and about as close to the wave as you can get. A full cork deck for grip and warmth underneath you, a recycled foam core, and a paulownia wood bottom. Lighter than it looks.',
     productType: 'Body & Belly',
     tags: ['Bodyboard'],
     availableForSale: false,
@@ -571,7 +571,7 @@ export const products: Product[] = [
       ],
       [
         { label: 'Designer', value: 'Cobus Joubert' },
-        { label: 'Material', value: 'Paulownia veneer over recycled foam, cork rails' },
+        { label: 'Material', value: 'Cork deck, recycled foam core, paulownia bottom' },
         { label: 'Finish', value: 'Matte' },
       ],
     ],
