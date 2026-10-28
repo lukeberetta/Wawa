@@ -39,6 +39,7 @@ const kiteTomo = studioSet('kite-tomo');
 const prints = studioSet('prints');
 const geoprene = studioSet('geoprene');
 const wetsuitSling = studioSet('wetsuit-sling');
+const togRegular = studioSet('tog-bag-regular');
 const crestTee = studioSet('crest-tee');
 const swallowTee = studioSet('swallow-tee');
 const beachBats = studioSet('beach-bats');
@@ -667,7 +668,8 @@ export const products: Product[] = [
       { title: 'Orange', id: '41464872468544' },
     ],
     priceRange: { minVariantPrice: zar('1500.00') },
-    images: soon('Wawa regular canvas tog bag'),
+    // one shot of the colours together — no back, so no hover swap
+    images: [togRegular.front('Wawa regular canvas tog bags in natural canvas with coloured bases')],
     specs: [
       [
         { label: 'Used For', value: 'Everyday carry' },
