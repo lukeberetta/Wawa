@@ -43,6 +43,7 @@ const HEADERS = [
   'Image Position',
   'Image Alt Text',
   'Status',
+  'Gift Card',
 ];
 
 // Estimated packed weights (grams) for Shopify's weight-band shipping rates.
@@ -61,7 +62,6 @@ const GRAMS: Record<string, number> = {
   'wood-is-good-tee': 300,
   'posters-and-prints': 400,
   'spex-wave-photography': 400,
-  'make-your-own-surfboard': 0,
 };
 
 // Per-variant overrides where one product spans very different parcels
@@ -76,8 +76,8 @@ const VARIANT_GRAMS: Record<string, number> = {
   'posters-and-prints/A3 framed': 4000,
   'spex-wave-photography/A4 framed': 2500,
 };
-// Workshop experiences — nothing is posted, so checkout skips shipping.
-const NO_SHIPPING = new Set(['make-your-own-surfboard']);
+// Gift cards — nothing is posted, so checkout skips shipping.
+const NO_SHIPPING = new Set(['gift-card']);
 
 const grams = (handle: string, variant?: string) =>
   String(VARIANT_GRAMS[`${handle}/${variant}`] ?? GRAMS[handle] ?? '');
@@ -114,10 +114,15 @@ for (const p of forImport) {
 
   // Sized/coloured products get one row per variant; the first carries the product.
   const variants = p.variants ?? [];
-  const options = variants.map((v) => v.title);
-  const optionName = p.optionName ?? 'Size';
+  // Gift cards: Shopify names the option "Denominations", valued "R 100.00".
+  const giftCard = Boolean(p.customAmount);
+  const options = variants.map((v) => (giftCard ? `R ${v.price}` : v.title));
+  const optionName = giftCard ? 'Denominations' : (p.optionName ?? 'Size');
   const ships = NO_SHIPPING.has(p.handle) ? 'FALSE' : 'TRUE';
   const priceOf = (i: number) => (priced ? (variants[i]?.price ?? amount) : '0.00');
+  // Gift cards import as Shopify gift-card products (variants = denominations),
+  // so the buyer gets a code redeemable on anything; they carry no tax.
+  const taxable = giftCard ? 'FALSE' : 'TRUE';
 
   // First row: full product + first image.
   rows.push([
@@ -138,11 +143,12 @@ for (const p of forImport) {
     grams(p.handle, options[0]),
     'kg',
     ships,
-    'TRUE',
+    taxable,
     img0?.url ? `${ORIGIN}${img0.url}` : '',
     img0?.url ? '1' : '',
     img0?.altText ?? '',
     'active',
+    giftCard ? 'TRUE' : 'FALSE',
   ]);
 
   // Further variants: Handle + option + variant columns.
@@ -158,7 +164,7 @@ for (const p of forImport) {
     r[14] = grams(p.handle, value);
     r[15] = 'kg';
     r[16] = ships;
-    r[17] = 'TRUE';
+    r[17] = taxable;
     rows.push(r);
   });
 

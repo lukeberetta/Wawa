@@ -36,6 +36,14 @@ const hasPrice = price !== 'Enquire';
 // chosen one to the add-to-cart buttons, so they start without an id.
 const variants = product.variants ?? [];
 const sized = variants.length > 0;
+// Gift card: the variants are amounts, picked by an amount field (snapped to the
+// nearest denomination) rather than a chip each. Starts on R1,000 so the
+// add-to-cart buttons carry an id from the outset.
+const amounts = product.customAmount ? variants.map((v) => Number(v.price)) : [];
+const amountStep = amounts.length > 1 ? amounts[1] - amounts[0] : 1;
+const defaultAmount = amounts.includes(1000) ? 1000 : amounts[0];
+const defaultVariant = variants.find((v) => Number(v.price) === defaultAmount);
+const zarText = (n: number) => `R${n.toLocaleString('en-US')}`;
 // Buyable only with stock + variant id(s) + a configured shop.
 const buyable =
   site.salesOpen &&
@@ -44,7 +52,10 @@ const buyable =
   (sized ? variants.every((v) => v.id) : !!product.variantId);
 // An accessory without its Shopify ids yet is waiting, not made to order.
 const comingSoon = !buyable && product.productType === 'Accessories';
-const cartVariantId = sized ? '' : product.variantId;
+const cartVariantId = product.customAmount ? defaultVariant?.id : sized ? '' : product.variantId;
+const cartTitle = product.customAmount ? `${product.title} — ${zarText(defaultAmount)}` : product.title;
+const cartPrice = product.customAmount ? String(defaultAmount) : product.priceRange.minVariantPrice.amount;
+const barPrice = product.customAmount ? zarText(defaultAmount) : price;
 // Boards (enquire-only) offer a "make it yourself" build — shaped by the
 // customer in our workshop at the board price + 20%. The choice re-prices the
 // buy bar and rides along into the enquiry.
@@ -172,7 +183,34 @@ const crumbs = breadcrumbs([
 
             <div class="info-actions">
               {
-                sized && (
+                product.customAmount && (
+                  <fieldset
+                    class="sizes"
+                    data-amount
+                    data-step={amountStep}
+                    data-variants={JSON.stringify(Object.fromEntries(variants.map((v) => [Number(v.price), v.id])))}
+                  >
+                    <legend class="sizes-legend">{product.optionName ?? 'Amount'}</legend>
+                    <label class="amount-field">
+                      <span class="amount-prefix" aria-hidden="true">R</span>
+                      <input
+                        type="number"
+                        inputmode="numeric"
+                        min={amounts[0]}
+                        max={amounts[amounts.length - 1]}
+                        step={amountStep}
+                        value={defaultAmount}
+                        aria-label="Gift card amount in rand"
+                      />
+                    </label>
+                    <p class="amount-hint">
+                      {`${zarText(amounts[0])} to ${zarText(amounts[amounts.length - 1])}`}
+                    </p>
+                  </fieldset>
+                )
+              }
+              {
+                sized && !product.customAmount && (
                   <fieldset class="sizes" data-sizes>
                     <legend class="sizes-legend">{product.optionName ?? 'Size'}</legend>
                     <div class="sizes-row">
@@ -215,8 +253,8 @@ const crumbs = breadcrumbs([
                     data-add-to-cart
                     data-variant-id={cartVariantId}
                     data-handle={product.handle}
-                    data-title={product.title}
-                    data-price={product.priceRange.minVariantPrice.amount}
+                    data-title={cartTitle}
+                    data-price={cartPrice}
                     data-image={lead.url}
                   >
                     Add to cart
@@ -290,7 +328,7 @@ const crumbs = breadcrumbs([
         <div class="pdp-bar-meta">
           <span class="pdp-bar-title">{product.title}</span>
           {/* coming-soon items: the button says it, so no price line */}
-          {!comingSoon && <span class="pdp-bar-price">{price}</span>}
+          {!comingSoon && <span class="pdp-bar-price">{barPrice}</span>}
         </div>
         {
           buyable ? (
@@ -299,8 +337,8 @@ const crumbs = breadcrumbs([
               data-add-to-cart
               data-variant-id={cartVariantId}
               data-handle={product.handle}
-              data-title={product.title}
-              data-price={product.priceRange.minVariantPrice.amount}
+              data-title={cartTitle}
+              data-price={cartPrice}
               data-image={lead.url}
             >
               Add to cart
@@ -571,6 +609,45 @@ const crumbs = breadcrumbs([
   .sizes.is-invalid .size span {
     border-color: var(--ink);
   }
+  /* gift-card amount — a single hairline field, chip height */
+  .amount-field {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 360px;
+    height: 3.25rem;
+    border: 1px solid var(--rule);
+    transition: border-color 0.2s var(--ease);
+  }
+  .amount-field:hover,
+  .amount-field:focus-within {
+    border-color: var(--ink);
+  }
+  .amount-prefix {
+    padding-left: 0.9rem;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+  .amount-field input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0 0.9rem 0 0.35rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: transparent;
+    border: 0;
+    outline: none;
+  }
+  .amount-field input:disabled {
+    color: var(--muted);
+  }
+  .amount-hint {
+    margin-top: 0.6rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
   .info-note {
     font-size: 0.82rem;
     color: var(--muted);
@@ -814,6 +891,40 @@ const crumbs = breadcrumbs([
         sizes.querySelector<HTMLInputElement>('input')?.focus({ preventScroll: true });
       }),
     );
+  }
+
+  // ── Amount ── gift card: the typed amount is clamped and snapped to
+  // the nearest denomination, whose variant id, price and title go onto every
+  // add-to-cart button. The field shows the snapped value once it loses focus.
+  const amount = document.querySelector<HTMLFieldSetElement>('[data-amount]');
+  if (amount) {
+    const ids: Record<string, string> = JSON.parse(amount.dataset.variants ?? '{}');
+    const step = Number(amount.dataset.step) || 1;
+    const field = amount.querySelector<HTMLInputElement>('input[type="number"]')!;
+    const buttons = Array.from(document.querySelectorAll<HTMLElement>('[data-add-to-cart]'));
+    const baseTitle = (buttons[0]?.dataset.title ?? '').split(' — ')[0];
+    const barPrice = document.querySelector<HTMLElement>('.pdp-bar-price');
+    const min = Number(field.min);
+    const max = Number(field.max);
+    const snap = (v: number) => Math.min(max, Math.max(min, Math.round(v / step) * step));
+    const apply = (raw: number) => {
+      const value = snap(Number.isFinite(raw) ? raw : min);
+      const label = `R${value.toLocaleString('en-US')}`;
+      buttons.forEach((b) => {
+        b.dataset.variantId = ids[value] ?? '';
+        b.dataset.title = `${baseTitle} — ${label}`;
+        b.dataset.price = String(value);
+      });
+      if (barPrice) barPrice.textContent = label;
+      return value;
+    };
+    // mid-typing (an emptied field) leaves the last amount in place
+    field.addEventListener('input', () => {
+      if (Number.isFinite(field.valueAsNumber)) apply(field.valueAsNumber);
+    });
+    field.addEventListener('change', () => {
+      field.value = String(apply(field.valueAsNumber));
+    });
   }
 
   // ── Build ── "We build it" / "Make it yourself": re-price the buy bar and

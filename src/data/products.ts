@@ -56,6 +56,37 @@ const soon = (title: string) => [
   { url: '/img/product/background.webp', altText: `${title} — photography coming soon`, placeholder: true },
 ];
 
+/** Gift card denominations: R100–R10,000 in R100 steps (100 Shopify variants). */
+const GIFT_CARD_AMOUNTS = Array.from({ length: 100 }, (_, i) => 100 + i * 100);
+/** Shopify variant id per gift-card amount (the "Gift Card" gift-card product). */
+const GIFT_CARD_IDS: Record<number, string> = {
+  100: '41465438830656', 200: '41465439748160', 300: '41465439780928', 400: '41465439813696',
+  500: '41465439846464', 600: '41465439879232', 700: '41465439912000', 800: '41465439944768',
+  900: '41465439977536', 1000: '41465440010304', 1100: '41465440043072', 1200: '41465440075840',
+  1300: '41465440108608', 1400: '41465440141376', 1500: '41465440174144', 1600: '41465440206912',
+  1700: '41465440239680', 1800: '41465440272448', 1900: '41465440305216', 2000: '41465440337984',
+  2100: '41465440370752', 2200: '41465440403520', 2300: '41465440436288', 2400: '41465440469056',
+  2500: '41465440501824', 2600: '41465440534592', 2700: '41465440567360', 2800: '41465440600128',
+  2900: '41465440632896', 3000: '41465440665664', 3100: '41465440698432', 3200: '41465440731200',
+  3300: '41465440763968', 3400: '41465440796736', 3500: '41465440829504', 3600: '41465440862272',
+  3700: '41465440895040', 3800: '41465440927808', 3900: '41465440960576', 4000: '41465440993344',
+  4100: '41465441026112', 4200: '41465441058880', 4300: '41465441091648', 4400: '41465441124416',
+  4500: '41465441157184', 4600: '41465441189952', 4700: '41465441222720', 4800: '41465441255488',
+  4900: '41465441288256', 5000: '41465441321024', 5100: '41465441353792', 5200: '41465441386560',
+  5300: '41465441419328', 5400: '41465441452096', 5500: '41465441484864', 5600: '41465441517632',
+  5700: '41465441550400', 5800: '41465441583168', 5900: '41465441615936', 6000: '41465441648704',
+  6100: '41465441681472', 6200: '41465441714240', 6300: '41465441747008', 6400: '41465441779776',
+  6500: '41465441812544', 6600: '41465441845312', 6700: '41465441878080', 6800: '41465441910848',
+  6900: '41465441943616', 7000: '41465441976384', 7100: '41465442009152', 7200: '41465442041920',
+  7300: '41465442074688', 7400: '41465442107456', 7500: '41465442140224', 7600: '41465442172992',
+  7700: '41465442205760', 7800: '41465442238528', 7900: '41465442271296', 8000: '41465442304064',
+  8100: '41465442336832', 8200: '41465442369600', 8300: '41465442402368', 8400: '41465442435136',
+  8500: '41465442467904', 8600: '41465442500672', 8700: '41465442533440', 8800: '41465442566208',
+  8900: '41465442598976', 9000: '41465442631744', 9100: '41465442664512', 9200: '41465442697280',
+  9300: '41465442730048', 9400: '41465442762816', 9500: '41465442795584', 9600: '41465442828352',
+  9700: '41465442861120', 9800: '41465442893888', 9900: '41465442926656', 10000: '41465442959424',
+};
+
 export const products: Product[] = [
   // ── SURF · Short ─────────────────────────────
   {
@@ -578,6 +609,27 @@ export const products: Product[] = [
     ],
   },
   {
+    id: 'mock/canvas-tote',
+    handle: 'canvas-tote',
+    title: 'Canvas Tote',
+    description:
+      'A natural canvas tote with long shoulder straps, printed in ocean blue with the Wawa crest: a board through the waves, palms either side, Cape Town underneath.',
+    productType: 'Accessories',
+    tags: ['Bags'],
+    availableForSale: true,
+    variantId: '41464879448128',
+    priceRange: { minVariantPrice: zar('250.00') },
+    // one shot so far — no back, so no hover swap
+    images: [tote.front('Wawa canvas tote with the blue Cape Town crest')],
+    specs: [
+      [
+        { label: 'Colour', value: 'Natural with blue print' },
+        { label: 'Print', value: 'Wawa Cape Town crest' },
+        { label: 'Straps', value: 'Long, over the shoulder' },
+      ],
+    ],
+  },
+  {
     id: 'mock/canvas-carryall',
     handle: 'canvas-carryall',
     title: 'Canvas Carryall',
@@ -598,27 +650,6 @@ export const products: Product[] = [
         { label: 'Colour', value: 'Natural canvas, olive & rust straps' },
         { label: 'Closure', value: 'Rope loop & timber toggle' },
         { label: 'Detail', value: 'Wawa patch' },
-      ],
-    ],
-  },
-  {
-    id: 'mock/canvas-tote',
-    handle: 'canvas-tote',
-    title: 'Canvas Tote',
-    description:
-      'A natural canvas tote with long shoulder straps, printed in ocean blue with the Wawa crest: a board through the waves, palms either side, Cape Town underneath.',
-    productType: 'Accessories',
-    tags: ['Bags'],
-    availableForSale: true,
-    variantId: '41464879448128',
-    priceRange: { minVariantPrice: zar('250.00') },
-    // one shot so far — no back, so no hover swap
-    images: [tote.front('Wawa canvas tote with the blue Cape Town crest')],
-    specs: [
-      [
-        { label: 'Colour', value: 'Natural with blue print' },
-        { label: 'Print', value: 'Wawa Cape Town crest' },
-        { label: 'Straps', value: 'Long, over the shoulder' },
       ],
     ],
   },
@@ -916,33 +947,34 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 'mock/myo-experience',
-    handle: 'make-your-own-surfboard',
-    title: 'Make Your Own Surfboard',
+    id: 'mock/gift-card',
+    handle: 'gift-card',
+    title: 'Gift Card',
     description:
-      'Surfing a board you made yourself is addictive, and it ties you to the generations who treated shaping as a rite of passage. Seven 3-hour sessions in our workshop: transfer the shape, plane the blank, profile the rocker, vacuum-bag the timber and cork rails, set fin boxes, then sand, brand and seal. Hard work, real reward. Also available as a gift card.',
+      'A Wawa gift card for any amount you choose, redeemable at checkout on anything in our shop: covers, bags, clothing and art. Sent by email with a code to pass on, and valid for three years.',
     productType: 'Accessories',
     tags: ['Gift Cards'],
     availableForSale: true,
-    // Board price + 20% for the extra workshop time.
-    optionName: 'Board',
-    variants: [
-      { title: 'Short', id: '41464873418816', price: '21000.00' },
-      { title: 'Mid-length', id: '41464873451584', price: '23400.00' },
-      { title: 'Longboard', id: '41464873484352', price: '27000.00' },
-    ],
-    priceRange: { minVariantPrice: zar('21000.00') },
+    // Shopify can't take a free-typed amount via the cart permalink, so each
+    // amount is its own gift-card denomination; the PDP's amount field picks one.
+    customAmount: true,
+    optionName: 'Amount',
+    variants: GIFT_CARD_AMOUNTS.map((a) => ({
+      title: `R${a.toLocaleString('en-US')}`,
+      id: GIFT_CARD_IDS[a] ?? '',
+      price: `${a}.00`,
+    })),
+    priceRange: { minVariantPrice: zar(`${GIFT_CARD_AMOUNTS[0]}.00`) },
     images: [giftCard.front('Wawa gift card in engraved oak, held in hand')],
     specs: [
       [
-        { label: 'Used For', value: 'Shaping your own surfboard' },
-        { label: 'Format', value: 'Seven 3-hour sessions' },
-        { label: 'Location', value: 'Our workshop' },
+        { label: 'Used For', value: 'Anything in the shop' },
+        { label: 'Amount', value: 'R100 to R10,000' },
+        { label: 'Delivery', value: 'By email, with a redeemable code' },
       ],
       [
-        { label: 'You Build', value: 'Timber & cork board, blank to seal' },
-        { label: 'Boards', value: 'Short, mid-length, longboard' },
-        { label: 'Also', value: 'Available as a gift card' },
+        { label: 'Valid For', value: 'Three years' },
+        { label: 'Refunds', value: 'Non-refundable, but transferable' },
       ],
     ],
   },

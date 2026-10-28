@@ -35,6 +35,9 @@ export interface Product {
    *  An empty id means the Shopify variant isn't created yet. `price` overrides
    *  `priceRange` for that variant; `priceRange` then holds the cheapest. */
   variants?: { title: string; id: string; price?: string }[];
+  /** `variants` are amounts (gift card): the PDP shows an amount field that
+   *  snaps to the nearest variant instead of a chip per variant. */
+  customAmount?: boolean;
   /** Picker label for `variants` — Shopify's option name. Defaults to 'Size'. */
   optionName?: string;
   priceRange: { minVariantPrice: Money };

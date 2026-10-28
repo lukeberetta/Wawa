@@ -34,7 +34,7 @@ export function slug(s: string): string {
 export { disciplines };
 
 /** Shaping your own board in the workshop costs the board price plus 20%,
- *  for the extra workshop time. Shared by board PDPs and the MYOS product. */
+ *  for the extra workshop time. Used by the board PDPs' "Make it yourself" build. */
 export const MAKE_YOUR_OWN_MARKUP = 1.2;
 export const makeYourOwnPrice = (amount: string | number): number =>
   Math.round(Number(amount) * MAKE_YOUR_OWN_MARKUP);
