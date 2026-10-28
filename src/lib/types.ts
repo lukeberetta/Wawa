@@ -40,6 +40,9 @@ export interface Product {
   customAmount?: boolean;
   /** Picker label for `variants` — Shopify's option name. Defaults to 'Size'. */
   optionName?: string;
+  /** Several Shopify options (up to 3): one picker per name, and each variant
+   *  title holds its values joined by ' / ' in this order, as Shopify does. */
+  optionNames?: string[];
   priceRange: { minVariantPrice: Money };
   /** front + back for the flip-card; first = primary */
   images: ProductImage[];

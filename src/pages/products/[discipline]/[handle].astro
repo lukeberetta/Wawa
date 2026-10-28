@@ -52,13 +52,30 @@ const buyable =
   (sized ? variants.every((v) => v.id) : !!product.variantId);
 // An accessory without its Shopify ids yet is waiting, not made to order.
 const comingSoon = !buyable && product.productType === 'Accessories';
-const cartVariantId = product.customAmount ? defaultVariant?.id : sized ? '' : product.variantId;
-const cartTitle = product.customAmount ? `${product.title} — ${zarText(defaultAmount)}` : product.title;
-const cartPrice = product.customAmount ? String(defaultAmount) : product.priceRange.minVariantPrice.amount;
+// Several options (model / size / colour): one picker each, starting on the
+// first variant so the buttons carry an id; the combination picks the variant.
+const optionNames = product.optionNames ?? [];
+const multi = sized && optionNames.length > 1;
+const optionValues = optionNames.map((_, i) => [...new Set(variants.map((v) => v.title.split(' / ')[i]))]);
 // Enquire-only products with options: the picker is live (first option
 // preselected) and the choice re-prices the bar and goes into the enquiry.
 const enquireOptions = sized && !buyable && !comingSoon && !product.customAmount;
-const firstOption = enquireOptions ? variants[0] : undefined;
+const firstOption = enquireOptions || multi ? variants[0] : undefined;
+const cartVariantId = product.customAmount
+  ? defaultVariant?.id
+  : multi
+    ? firstOption?.id
+    : sized
+      ? ''
+      : product.variantId;
+const cartTitle = product.customAmount
+  ? `${product.title} — ${zarText(defaultAmount)}`
+  : multi
+    ? `${product.title} — ${firstOption?.title}`
+    : product.title;
+const cartPrice = product.customAmount
+  ? String(defaultAmount)
+  : (firstOption?.price ?? product.priceRange.minVariantPrice.amount);
 const orderTitle = firstOption ? `${product.title} — ${firstOption.title}` : product.title;
 const barPrice = product.customAmount
   ? zarText(defaultAmount)
@@ -220,7 +237,36 @@ const crumbs = breadcrumbs([
                 )
               }
               {
-                sized && !product.customAmount && (
+                multi && (
+                  <div
+                    data-options
+                    data-title={product.title}
+                    data-variants={JSON.stringify(variants.map((v) => [v.title, v.id, v.price]))}
+                  >
+                    {optionNames.map((name, i) => (
+                      <fieldset class="sizes">
+                        <legend class="sizes-legend">{name}</legend>
+                        <div class="sizes-row">
+                          {optionValues[i].map((value) => (
+                            <label class="size">
+                              <input
+                                type="radio"
+                                name={`option-${i}`}
+                                value={value}
+                                checked={value === firstOption?.title.split(' / ')[i]}
+                                disabled={!buyable && !enquireOptions}
+                              />
+                              <span>{value}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </fieldset>
+                    ))}
+                  </div>
+                )
+              }
+              {
+                sized && !product.customAmount && !multi && (
                   <fieldset class="sizes" data-sizes data-title={product.title}>
                     <legend class="sizes-legend">{product.optionName ?? 'Size'}</legend>
                     <div class="sizes-row">
@@ -907,6 +953,33 @@ const crumbs = breadcrumbs([
         sizes.querySelector<HTMLInputElement>('input')?.focus({ preventScroll: true });
       }),
     );
+  }
+
+  // ── Options ── several pickers (model / size / colour): the combination
+  // names a variant, whose id, price and title go onto every add-to-cart
+  // button and into the enquiry; the buy bar shows its price.
+  const options = document.querySelector<HTMLElement>('[data-options]');
+  if (options) {
+    const all: [string, string, string][] = JSON.parse(options.dataset.variants ?? '[]');
+    const buttons = Array.from(document.querySelectorAll<HTMLElement>('[data-add-to-cart]'));
+    const enquire = Array.from(document.querySelectorAll<HTMLElement>('[data-order][data-order-title]'));
+    const barPrice = document.querySelector<HTMLElement>('.pdp-bar-price');
+    const productTitle = options.dataset.title ?? '';
+    options.addEventListener('change', () => {
+      const picked = Array.from(options.querySelectorAll('fieldset')).map(
+        (fs) => fs.querySelector<HTMLInputElement>('input:checked')?.value,
+      );
+      const variant = all.find(([t]) => t === picked.join(' / '));
+      if (!variant) return;
+      const [title, id, price] = variant;
+      buttons.forEach((b) => {
+        b.dataset.variantId = id;
+        b.dataset.title = `${productTitle} — ${title}`;
+        b.dataset.price = price;
+      });
+      enquire.forEach((b) => (b.dataset.orderTitle = `${productTitle} — ${title}`));
+      if (barPrice) barPrice.textContent = `R${Number(price).toLocaleString('en-US')}`;
+    });
   }
 
   // ── Amount ── gift card: the typed amount is clamped and snapped to

@@ -30,6 +30,10 @@ const HEADERS = [
   'Published',
   'Option1 Name',
   'Option1 Value',
+  'Option2 Name',
+  'Option2 Value',
+  'Option3 Name',
+  'Option3 Value',
   'Variant Inventory Tracker',
   'Variant Inventory Qty',
   'Variant Inventory Policy',
@@ -44,7 +48,7 @@ const HEADERS = [
   'Image Alt Text',
   'Status',
   'Gift Card',
-];
+] as const;
 
 // Estimated packed weights (grams) for Shopify's weight-band shipping rates.
 // Rough figures, not weighed — replace with real ones when known.
@@ -81,24 +85,37 @@ const VARIANT_GRAMS: Record<string, number> = {
   'posters-and-prints/A4 framed': 2500,
   'posters-and-prints/A3 framed': 4000,
   'spex-wave-photography/A4 framed': 2500,
+  // multi-option variants match on any one value ('… / 4ft / …')
+  'paipo/4ft': 4500,
   'wooden-cruiser/Complete': 4000,
   'wooden-surfskate/Rounded tail, complete': 3500,
   'wooden-surfskate/Swallow tail, complete': 3500,
-  'paipo/4ft': 4500,
-  'paipo/4ft, custom colour': 4500,
 };
 // Gift cards — nothing is posted, so checkout skips shipping.
 const NO_SHIPPING = new Set(['gift-card']);
 
-const grams = (handle: string, variant?: string) =>
-  String(VARIANT_GRAMS[`${handle}/${variant}`] ?? GRAMS[handle] ?? '');
+// Shopify handle when it differs from the site's. Paipo and alaia were first
+// imported with a single option; their multi-option replacements import fresh
+// under these handles (the originals are drafted in Shopify).
+const SHOPIFY_HANDLE: Record<string, string> = {
+  paipo: 'paipo-models',
+  alaia: 'alaia-models',
+};
+
+const col = (name: (typeof HEADERS)[number]) => HEADERS.indexOf(name);
+
+const grams = (handle: string, variant = '') => {
+  const keys = [variant, ...variant.split(' / ')].map((v) => `${handle}/${v}`);
+  const hit = keys.find((k) => k in VARIANT_GRAMS);
+  return String(hit ? VARIANT_GRAMS[hit] : (GRAMS[handle] ?? ''));
+};
 
 const esc = (v: string | number): string => {
   const s = String(v);
   return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 };
 
-const rows: string[][] = [HEADERS];
+const rows: string[][] = [[...HEADERS]];
 
 // Launch scope: accessories plus the small craft below sell online. Boards
 // stay on-site as Enquire and are NOT imported to Shopify yet.
@@ -127,6 +144,7 @@ const forImport = products.filter(
 for (const p of forImport) {
   const priced = p.availableForSale;
   const amount = p.priceRange.minVariantPrice.amount;
+  const handle = SHOPIFY_HANDLE[p.handle] ?? p.handle;
   // Skip the empty-room placeholder — Shopify would store it as the product photo.
   const images = p.images.filter((im) => !im.placeholder);
   const img0 = images[0];
@@ -135,65 +153,58 @@ for (const p of forImport) {
   const variants = p.variants ?? [];
   // Gift cards: Shopify names the option "Denominations", valued "R 100.00".
   const giftCard = Boolean(p.customAmount);
-  const options = variants.map((v) => (giftCard ? `R ${v.price}` : v.title));
-  const optionName = giftCard ? 'Denominations' : (p.optionName ?? 'Size');
+  // Each variant's values, one per option ('Model / Size / Colour' → 3).
+  const values = variants.map((v) => (giftCard ? [`R ${v.price}`] : v.title.split(' / ')));
+  const names = giftCard ? ['Denominations'] : (p.optionNames ?? [p.optionName ?? 'Size']);
   const ships = NO_SHIPPING.has(p.handle) ? 'FALSE' : 'TRUE';
   const priceOf = (i: number) => (priced ? (variants[i]?.price ?? amount) : '0.00');
   // Gift cards import as Shopify gift-card products (variants = denominations),
   // so the buyer gets a code redeemable on anything; they carry no tax.
   const taxable = giftCard ? 'FALSE' : 'TRUE';
 
-  // First row: full product + first image.
-  rows.push([
-    p.handle,
-    p.title,
-    `<p>${p.description}</p>`,
-    VENDOR,
-    p.productType,
-    p.tags.join(', '),
-    'TRUE',
-    options.length ? optionName : 'Title',
-    options[0] ?? 'Default Title',
-    priced ? '' : 'shopify', // priced = made-to-order, untracked = always available
-    priced ? '' : '0',
-    'deny',
-    'manual',
-    priceOf(0),
-    grams(p.handle, options[0]),
-    'kg',
-    ships,
-    taxable,
-    img0?.url ? `${ORIGIN}${img0.url}` : '',
-    img0?.url ? '1' : '',
-    img0?.altText ?? '',
-    'active',
-    giftCard ? 'TRUE' : 'FALSE',
-  ]);
-
-  // Further variants: Handle + option + variant columns.
-  options.slice(1).forEach((value, i) => {
-    const r = new Array(HEADERS.length).fill('');
-    r[0] = p.handle;
-    r[8] = value;
-    r[9] = priced ? '' : 'shopify';
-    r[10] = priced ? '' : '0';
-    r[11] = 'deny';
-    r[12] = 'manual';
-    r[13] = priceOf(i + 1);
-    r[14] = grams(p.handle, value);
-    r[15] = 'kg';
-    r[16] = ships;
-    r[17] = taxable;
+  // One row per variant (or a single 'Default Title' row); the first also
+  // carries the product fields and first image.
+  const count = Math.max(variants.length, 1);
+  for (let i = 0; i < count; i++) {
+    const r: string[] = new Array(HEADERS.length).fill('');
+    const vals = values[i] ?? ['Default Title'];
+    r[col('Handle')] = handle;
+    vals.forEach((v, k) => {
+      if (i === 0) r[col(`Option${k + 1} Name` as (typeof HEADERS)[number])] = variants.length ? names[k] : 'Title';
+      r[col(`Option${k + 1} Value` as (typeof HEADERS)[number])] = v;
+    });
+    r[col('Variant Inventory Tracker')] = priced ? '' : 'shopify'; // priced = made-to-order, untracked = always available
+    r[col('Variant Inventory Qty')] = priced ? '' : '0';
+    r[col('Variant Inventory Policy')] = 'deny';
+    r[col('Variant Fulfillment Service')] = 'manual';
+    r[col('Variant Price')] = priceOf(i);
+    r[col('Variant Grams')] = grams(p.handle, variants[i]?.title);
+    r[col('Variant Weight Unit')] = 'kg';
+    r[col('Variant Requires Shipping')] = ships;
+    r[col('Variant Taxable')] = taxable;
+    if (i === 0) {
+      r[col('Title')] = p.title;
+      r[col('Body (HTML)')] = `<p>${p.description}</p>`;
+      r[col('Vendor')] = VENDOR;
+      r[col('Type')] = p.productType;
+      r[col('Tags')] = p.tags.join(', ');
+      r[col('Published')] = 'TRUE';
+      r[col('Image Src')] = img0?.url ? `${ORIGIN}${img0.url}` : '';
+      r[col('Image Position')] = img0?.url ? '1' : '';
+      r[col('Image Alt Text')] = img0?.altText ?? '';
+      r[col('Status')] = 'active';
+      r[col('Gift Card')] = giftCard ? 'TRUE' : 'FALSE';
+    }
     rows.push(r);
-  });
+  }
 
   // Extra images: Handle + image columns only.
   images.slice(1).forEach((im, i) => {
-    const r = new Array(HEADERS.length).fill('');
-    r[0] = p.handle;
-    r[18] = `${ORIGIN}${im.url}`;
-    r[19] = String(i + 2);
-    r[20] = im.altText ?? '';
+    const r: string[] = new Array(HEADERS.length).fill('');
+    r[col('Handle')] = handle;
+    r[col('Image Src')] = `${ORIGIN}${im.url}`;
+    r[col('Image Position')] = String(i + 2);
+    r[col('Image Alt Text')] = im.altText ?? '';
     rows.push(r);
   });
 }
