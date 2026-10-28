@@ -552,16 +552,16 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 'mock/bellyboard',
-    handle: 'bellyboard',
-    title: 'Bellyboard',
+    id: 'mock/bodyboard',
+    handle: 'bodyboard',
+    title: 'Bodyboard',
     description:
       'Prone wave-riding craft in the paipo lineage: fast, direct and about as close to the wave as you can get. Paulownia veneer over a recycled foam core, finished with cork rails. Lighter than it looks.',
     productType: 'Body & Belly',
-    tags: ['Bellyboard'],
+    tags: ['Bodyboard'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('0.00') },
-    images: [bodyboard.front('Wawa Bellyboard, deck'), bodyboard.back('Wawa Bellyboard, hull')],
+    images: [bodyboard.front('Wawa Bodyboard, deck'), bodyboard.back('Wawa Bodyboard, hull')],
     featured: 7,
     specs: [
       [

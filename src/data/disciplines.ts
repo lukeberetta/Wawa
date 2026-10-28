@@ -43,11 +43,11 @@ export const disciplines: Discipline[] = [
   {
     handle: 'body-belly',
     title: 'Body & Belly',
-    blurb: 'Bodysurf handplanes, bellyboards, paipos and boogies.',
+    blurb: 'Bodysurf handplanes, bodyboards and paipos.',
     intro:
-      'Get closer to the wave with handplanes, bellyboards and paipos. From bodysurfing to prone riding, small craft bring a different feel to a familiar break.',
+      'Get closer to the wave with handplanes, bodyboards and paipos. From bodysurfing to prone riding, small craft bring a different feel to a familiar break.',
     hero: '/img/category/body-belly.webp',
-    categories: ['Bodysurf', 'Bellyboard', 'Paipo', 'Skimboard'],
+    categories: ['Bodysurf', 'Bodyboard', 'Paipo', 'Skimboard'],
   },
   {
     handle: 'accessories',

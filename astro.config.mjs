@@ -35,5 +35,6 @@ export default defineConfig({
     '/products/skate': '/products?discipline=skate',
     '/products/body-belly': '/products?discipline=body-belly',
     '/products/accessories': '/products?discipline=accessories',
+    '/products/body-belly/bellyboard': '/products/body-belly/bodyboard',
   },
 });
