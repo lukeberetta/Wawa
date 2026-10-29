@@ -325,10 +325,15 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
     background: var(--cream);
     border-top: 1px solid var(--rule);
     transform: translateY(100%);
-    transition: transform 0.4s var(--ease);
+    /* iOS Safari paints below the layout viewport (under its floating toolbar),
+       so a parked sheet peeks out — hide it once the slide-out finishes */
+    visibility: hidden;
+    transition: transform 0.4s var(--ease), visibility 0s linear 0.4s;
   }
   .sheet.open {
     transform: translateY(0);
+    visibility: visible;
+    transition: transform 0.4s var(--ease), visibility 0s;
   }
   /* roomier, framed panel on larger screens */
   @media (min-width: 600px) {

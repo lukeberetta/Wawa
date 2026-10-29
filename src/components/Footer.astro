@@ -42,6 +42,13 @@ const year = new Date().getFullYear();
     display: flex;
     align-items: stretch;
   }
+  /* iOS 26 Safari tints its bottom toolbar from any fixed element touching the
+     viewport bottom — a dark footer parked behind the page turns the bar into a
+     solid dark band on every scroll position. Keep it out of the render until
+     the end of the page is near (the script below toggles .is-near). */
+  :global(html.js) .site-footer:not(.is-near) {
+    visibility: hidden;
+  }
   /* hero video as the footer backdrop, behind the darkening gradient — same
      treatment as #hero so the two video panels read identically */
   .footer-video {
@@ -187,6 +194,21 @@ const year = new Date().getFullYear();
       new ResizeObserver(remeasure).observe(document.body);
     }
     remeasure();
+  }
+</script>
+
+<script>
+  // Only show the fixed footer once the sentinel (end of <main>) is within a
+  // viewport of coming into view — see the .is-near note in the styles.
+  const siteFooter = document.querySelector<HTMLElement>('.site-footer');
+  const sentinel = document.getElementById('footer-sentinel');
+  if (siteFooter && sentinel && 'IntersectionObserver' in window) {
+    new IntersectionObserver(
+      ([entry]) => siteFooter.classList.toggle('is-near', entry.isIntersecting),
+      { rootMargin: '0px 0px 100% 0px' },
+    ).observe(sentinel);
+  } else {
+    siteFooter?.classList.add('is-near');
   }
 </script>
 
