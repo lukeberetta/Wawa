@@ -64,6 +64,12 @@ main {
   min-height: 100vh;
   min-height: 100dvh;
 }
+/* footer sits in flow on mobile (see Footer.astro) — no space to reserve */
+@media (max-width: 768px) {
+  main {
+    margin-bottom: 0;
+  }
+}
 
 a {
   color: inherit;
