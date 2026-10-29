@@ -62,7 +62,9 @@ main {
   /* always cover the viewport so the fixed footer stays hidden until the
      bottom edge scrolls past — short pages won't reveal it early */
   min-height: 100vh;
-  min-height: 100dvh;
+  /* svh, not dvh: dvh tracks iOS Safari's toolbar live, so the box resizes
+     mid-scroll as the toolbar collapses/expands and the page judders */
+  min-height: 100svh;
 }
 /* footer sits in flow on mobile (see Footer.astro) — no space to reserve */
 @media (max-width: 768px) {

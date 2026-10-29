@@ -128,23 +128,26 @@ const isActive = (label: string) => {
       height 0.3s var(--ease);
   }
   /* Over the hero (homepage) the bar floats transparent with cream marks until
-     the page scrolls past the fold, then settles into the solid cream header. */
-  #nav.overlay:not(.scrolled):not(.menu-open) {
-    background: transparent;
-    border-bottom-color: transparent;
-  }
-  #nav.overlay:not(.scrolled):not(.menu-open) .nav-link,
-  #nav.overlay:not(.scrolled):not(.menu-open) .nav-cart {
-    color: var(--cream);
-  }
-  #nav.overlay:not(.scrolled):not(.menu-open) .nav-link.active {
-    color: var(--cream);
-  }
-  #nav.overlay:not(.scrolled):not(.menu-open) .nav-burger {
-    color: var(--cream);
-  }
-  #nav.overlay:not(.scrolled):not(.menu-open) .nav-logo img {
-    filter: brightness(0) invert(1);
+     the page scrolls past the fold, then settles into the solid cream header.
+     Desktop only — on mobile the bar stays solid cream throughout. */
+  @media (min-width: 769px) {
+    #nav.overlay:not(.scrolled):not(.menu-open) {
+      background: transparent;
+      border-bottom-color: transparent;
+    }
+    #nav.overlay:not(.scrolled):not(.menu-open) .nav-link,
+    #nav.overlay:not(.scrolled):not(.menu-open) .nav-cart {
+      color: var(--cream);
+    }
+    #nav.overlay:not(.scrolled):not(.menu-open) .nav-link.active {
+      color: var(--cream);
+    }
+    #nav.overlay:not(.scrolled):not(.menu-open) .nav-burger {
+      color: var(--cream);
+    }
+    #nav.overlay:not(.scrolled):not(.menu-open) .nav-logo img {
+      filter: brightness(0) invert(1);
+    }
   }
   .nav-inner {
     position: relative;
