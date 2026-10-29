@@ -33,6 +33,8 @@ const woodIsGood = studioSet('wood-is-good-tee');
 const tote = studioSet('tote');
 const carryall = studioSet('carryall');
 const cruiser = studioSet('cruiser');
+const surfskate = studioSet('surfskate');
+const surfskateSwallow = studioSet('surfskate-swallow');
 const foilWave = studioSet('foil-wave');
 const foilProne = studioSet('foil-prone');
 const kiteTomo = studioSet('kite-tomo');
@@ -45,6 +47,7 @@ const swallowTee = studioSet('swallow-tee');
 const beachBats = studioSet('beach-bats');
 const paipo = studioSet('paipo');
 const handslide = studioSet('handslide');
+const handslidePro = studioSet('handslide-pro');
 const boardCover = studioSet('board-cover');
 const giftCard = studioSet('gift-card');
 const waxComb = studioSet('wax-comb');
@@ -481,7 +484,7 @@ export const products: Product[] = [
     handle: 'wooden-cruiser',
     title: 'Wooden Cruiser',
     description:
-      'For the days the sea goes flat. A wooden cruiser built from the same paulownia and cork as the boards, warm underfoot and lively through a turn, finished to age with salt and sun. Keep surfing when there’s no surf. 30–40" long, as a deck on its own or complete with trucks, wheels and bearings.',
+      'For the days the sea goes flat. A solid timber cruiser, warm underfoot and lively through a turn, finished to age with salt and sun. Keep surfing when there’s no surf. 30–40" long, as a deck on its own or complete with trucks, wheels and bearings.',
     productType: 'Skate',
     tags: [],
     availableForSale: true,
@@ -492,7 +495,10 @@ export const products: Product[] = [
     ],
     priceRange: { minVariantPrice: zar('2750.00') },
     // one shot so far — no back, so no hover swap
-    images: [cruiser.front('Wawa Wooden Cruiser, deck')],
+    images: [
+      cruiser.front('Wawa Wooden Cruiser deck from above, a dark wood centre stripe between pale outer strips'),
+      cruiser.back('Underside of the Wawa Wooden Cruiser, with layered wooden rails, trucks and black wheels'),
+    ],
     specs: [
       [
         { label: 'Best For', value: 'Flat days and cruising' },
@@ -501,7 +507,7 @@ export const products: Product[] = [
       ],
       [
         { label: 'Designer', value: 'Cobus Joubert' },
-        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Material', value: 'Solid timber' },
         { label: 'Finish', value: 'Matte' },
       ],
     ],
@@ -511,7 +517,7 @@ export const products: Product[] = [
     handle: 'wooden-surfskate',
     title: 'Wooden Surfskate',
     description:
-      'The cruiser’s shorter, surfier sibling. A 28–30" paulownia and cork deck for tight, flowing carves on flat days, with a rounded or swallow tail. Buy the deck on its own, or complete with trucks, wheels and bearings.',
+      'The cruiser’s shorter, surfier sibling. A 28–30" solid timber deck for tight, flowing carves on flat days, with a rounded or swallow tail. Buy the deck on its own, or complete with trucks, wheels and bearings.',
     productType: 'Skate',
     tags: [],
     availableForSale: true,
@@ -523,7 +529,12 @@ export const products: Product[] = [
       { title: 'Swallow tail, complete', id: '41465933037632', price: '6000.00' },
     ],
     priceRange: { minVariantPrice: zar('2750.00') },
-    images: soon('Wawa Wooden Surfskate'),
+    images: [
+      surfskate.front('Wawa Wooden Surfskate, rounded tail, deck with a black centre stripe'),
+      surfskate.back('Underside of the rounded-tail Wawa Wooden Surfskate, with a blue centre stripe, black trucks and cream wheels'),
+      surfskateSwallow.front('Wawa Wooden Surfskate, swallow tail, striped wooden deck'),
+      surfskateSwallow.back('Underside of the swallow-tail Wawa Wooden Surfskate, with a red centre stripe, black trucks and cream wheels'),
+    ],
     specs: [
       [
         { label: 'Best For', value: 'Flat days and carving' },
@@ -532,7 +543,7 @@ export const products: Product[] = [
       ],
       [
         { label: 'Designer', value: 'Cobus Joubert' },
-        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Material', value: 'Solid timber' },
         { label: 'Finish', value: 'Matte' },
       ],
     ],
@@ -594,11 +605,7 @@ export const products: Product[] = [
     productType: 'Body & Belly',
     tags: ['Bodysurf'],
     availableForSale: true,
-    optionName: 'Hand strap',
-    variants: [
-      { title: 'Red webbing', id: '41465789972544', price: '950.00' },
-      { title: 'Adjustable neoprene', id: '41465790005312', price: '1950.00' },
-    ],
+    variantId: '41465789972544',
     priceRange: { minVariantPrice: zar('950.00') },
     images: [
       handslide.front('Wawa handslide with red hand strap and burnt-in logo, held against a sunlit wall'),
@@ -613,7 +620,36 @@ export const products: Product[] = [
       ],
       [
         { label: 'Designer', value: 'Cobus Joubert' },
-        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Material', value: 'Solid timber' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/handslide-pro',
+    handle: 'handslide-pro',
+    title: 'Handslide Pro',
+    description:
+      'A step up from the Handslide: its own teardrop shape, cut from premium hardwood, with an adjustable neoprene strap that cinches to your hand and stays put through the wave. Made locally, for bodysurfers who are in the water most days. Comes with a Wawa-branded calico bag.',
+    productType: 'Body & Belly',
+    tags: ['Bodysurf'],
+    availableForSale: true,
+    // sold as the adjustable-strap variant of the Shopify Handslide product
+    variantId: '41465790005312',
+    priceRange: { minVariantPrice: zar('1950.00') },
+    images: [
+      handslidePro.front('Wawa Handslide Pro in dark striped wood with an adjustable black neoprene strap and burnt-in logo'),
+      handslidePro.back('Underside of the Wawa Handslide Pro, stamped Handcrafted in Cape Town'),
+    ],
+    specs: [
+      [
+        { label: 'Best For', value: 'Bodysurfing' },
+        { label: 'Board Feel', value: 'Fast and direct' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Premium hardwood' },
         { label: 'Finish', value: 'Matte' },
       ],
     ],
