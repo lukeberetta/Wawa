@@ -139,7 +139,8 @@ const year = new Date().getFullYear();
     will-change: opacity, filter;
   }
 
-  @media (prefers-reduced-motion: reduce) {
+  /* mobile footer is in flow (no curtain), so skip the per-frame blur over video */
+  @media (prefers-reduced-motion: reduce), (max-width: 768px) {
     .footer-inner > * {
       opacity: 1;
       filter: none;
@@ -152,8 +153,11 @@ const year = new Date().getFullYear();
   // fades in as the fixed footer is uncovered, and blurs back out on scroll up.
   const footer = document.querySelector<HTMLElement>('.site-footer');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Mobile footer is in flow (no curtain) and its CSS drops the reveal — don't
+  // run the scroll/resize work there.
+  const inFlow = window.matchMedia('(max-width: 768px)').matches;
 
-  if (footer && !reduce) {
+  if (footer && !reduce && !inFlow) {
     // Measure layout (forces reflow) only on resize/load — never per scroll.
     // Caching winH also stops the reveal wobbling as iOS shows/hides its
     // toolbar (which changes innerHeight mid-scroll).

@@ -53,7 +53,9 @@ export function lockScroll(lock: boolean) {
       window.lenis.resize();
       window.lenis.scrollTo(lockedY, { immediate: true, force: true });
     } else {
-      window.scrollTo(0, lockedY);
+      // instant — html has scroll-behavior: smooth, which would animate the
+      // restore from the top
+      window.scrollTo({ top: lockedY, behavior: 'instant' });
     }
   }
 }

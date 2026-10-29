@@ -8,7 +8,11 @@
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ── Smooth scroll ──────────────────────────────
-  if (!reduce) {
+  // Touch-only devices scroll natively anyway (Lenis leaves touch alone), so
+  // skip it there — its per-frame loop and resize handling only add work while
+  // iOS Safari collapses/expands its toolbar at the top and bottom of the page.
+  const touchOnly = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  if (!reduce && !touchOnly) {
     const lenis = new Lenis({
       duration: 1.1,
       smoothWheel: true,
