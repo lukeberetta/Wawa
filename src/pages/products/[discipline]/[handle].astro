@@ -57,21 +57,24 @@ const comingSoon = !buyable && product.productType === 'Accessories';
 const optionNames = product.optionNames ?? [];
 const multi = sized && optionNames.length > 1;
 const optionValues = optionNames.map((_, i) => [...new Set(variants.map((v) => v.title.split(' / ')[i]))]);
+// Images per first-option value (a tee's design): the gallery shows every set
+// and narrows to one once that value is picked, so nothing starts selected.
+const filterable = multi && !!product.optionImages;
 // Enquire-only products with options: the picker is live (first option
 // preselected) and the choice re-prices the bar and goes into the enquiry.
 const enquireOptions = sized && !buyable && !comingSoon && !product.customAmount;
-const firstOption = enquireOptions || multi ? variants[0] : undefined;
+const firstOption = (enquireOptions || multi) && !filterable ? variants[0] : undefined;
 const cartVariantId = product.customAmount
   ? defaultVariant?.id
   : multi
-    ? firstOption?.id
+    ? (firstOption?.id ?? '')
     : sized
       ? ''
       : product.variantId;
 const cartTitle = product.customAmount
   ? `${product.title} — ${zarText(defaultAmount)}`
-  : multi
-    ? `${product.title} — ${firstOption?.title}`
+  : firstOption
+    ? `${product.title} — ${firstOption.title}`
     : product.title;
 const cartPrice = product.customAmount
   ? String(defaultAmount)
@@ -97,11 +100,20 @@ const builds = [
   },
 ];
 
-const images = product.images;
-const lead = images[0];
+// Each slide's option value (filterable products only) — the gallery hides
+// the others once a value is picked.
+const gallery = product.optionImages
+  ? Object.entries(product.optionImages).flatMap(([value, set]) => set.map((image) => ({ image, value })))
+  : product.images.map((image) => ({ image, value: undefined }));
+const images = gallery.map((g) => g.image);
+const lead = product.images[0];
 // Carousel slide count — one per image; show at least 3 placeholder slides
 // while in the wireframe phase so the gallery reads as a real carousel.
-const slideCount = Math.max(images.length, 3);
+// Filterable galleries show every image up front, so their padding slides
+// start hidden and only fill in once a picked value leaves fewer than 3.
+const minSet = filterable ? Math.min(...Object.values(product.optionImages ?? {}).map((s) => s.length)) : 0;
+const slideCount = filterable ? images.length + Math.max(0, 3 - minSet) : Math.max(images.length, 3);
+const hiddenPad = (i: number) => filterable && i >= images.length;
 const category = product.tags[0];
 const disciplineHref = `/products?discipline=${slug(product.productType)}`;
 
@@ -157,7 +169,7 @@ const crumbs = breadcrumbs([
             Horizontal gestures are handed to the browser in Motion.astro. */}
         <ul class:list={['car-track', { 'has-more': slideCount > 3 }]} data-car-track>
           {Array.from({ length: slideCount }).map((_, i) => (
-            <li class="car-slide">
+            <li class="car-slide" data-value={gallery[i]?.value} data-pad={hiddenPad(i) || undefined} hidden={hiddenPad(i)}>
               {images[i]?.placeholder ? (
                 <div class="slide-media slide-soon">
                   <img
@@ -193,6 +205,7 @@ const crumbs = breadcrumbs([
               <button
                 class:list={['car-dot', { 'is-active': i === 0 }]}
                 data-i={i}
+                hidden={hiddenPad(i)}
                 aria-label={`Show image ${i + 1}`}
               />
             ))}
@@ -241,7 +254,7 @@ const crumbs = breadcrumbs([
                   <div
                     data-options
                     data-title={product.title}
-                    data-variants={JSON.stringify(variants.map((v) => [v.title, v.id, v.price]))}
+                    data-variants={JSON.stringify(variants.map((v) => [v.title, v.id, v.price ?? product.priceRange.minVariantPrice.amount]))}
                   >
                     {optionNames.map((name, i) => (
                       <fieldset class="sizes">
@@ -870,8 +883,11 @@ const crumbs = breadcrumbs([
     ? Array.from(carousel.querySelectorAll<HTMLButtonElement>('.car-dot'))
     : [];
 
+  // Slides for other option values are `hidden` (see Options below); their
+  // dots hide with them and they never count as the active slide.
+  const slides = track ? (Array.from(track.children) as HTMLElement[]) : [];
+
   if (track && dots.length) {
-    const slides = Array.from(track.children) as HTMLElement[];
     const setActive = (i: number) =>
       dots.forEach((d, n) => d.classList.toggle('is-active', n === i));
 
@@ -907,6 +923,7 @@ const crumbs = breadcrumbs([
           let best = 0;
           let bestDist = Infinity;
           slides.forEach((s, i) => {
+            if (s.hidden) return;
             const dist = Math.abs(s.offsetLeft + s.offsetWidth / 2 - centre);
             if (dist < bestDist) {
               bestDist = dist;
@@ -957,7 +974,8 @@ const crumbs = breadcrumbs([
 
   // ── Options ── several pickers (model / size / colour): the combination
   // names a variant, whose id, price and title go onto every add-to-cart
-  // button and into the enquiry; the buy bar shows its price.
+  // button and into the enquiry; the buy bar shows its price. Products with
+  // images per first-option value (a tee's design) swap the gallery to match.
   const options = document.querySelector<HTMLElement>('[data-options]');
   if (options) {
     const all: [string, string, string][] = JSON.parse(options.dataset.variants ?? '[]');
@@ -965,12 +983,49 @@ const crumbs = breadcrumbs([
     const enquire = Array.from(document.querySelectorAll<HTMLElement>('[data-order][data-order-title]'));
     const barPrice = document.querySelector<HTMLElement>('.pdp-bar-price');
     const productTitle = options.dataset.title ?? '';
+    const fieldsets = Array.from(options.querySelectorAll<HTMLFieldSetElement>('fieldset'));
+    const filterable = slides.some((s) => s.dataset.value);
+    let shown: string | undefined;
+    // narrow the gallery to one first-option value's slides, or with no value
+    // show them all again (filterable products tag each slide with its value)
+    const filter = (value: string | undefined) => {
+      if (value === shown) return;
+      shown = value;
+      const shownCount = slides.filter((s) => s.dataset.value && (!value || s.dataset.value === value)).length;
+      let pads = Math.max(0, 3 - shownCount);
+      slides.forEach((s, i) => {
+        s.hidden = s.dataset.pad !== undefined ? pads-- <= 0 : !!value && s.dataset.value !== value;
+        if (dots[i]) dots[i].hidden = s.hidden;
+      });
+      const visible = slides.filter((s) => !s.hidden);
+      track?.classList.toggle('has-more', visible.length > 3);
+      track?.scrollTo({ left: 0 });
+      dots.forEach((d) => d.classList.toggle('is-active', d.dataset.i === String(slides.indexOf(visible[0]))));
+      const lead = visible[0]?.querySelector<HTMLImageElement>('.slide-img');
+      if (lead) buttons.forEach((b) => (b.dataset.image = lead.getAttribute('src') ?? b.dataset.image));
+    };
+    // the filter chip toggles: clicking the picked value again unpicks it
+    if (filterable) {
+      fieldsets[0]?.addEventListener('click', (e) => {
+        const input = e.target as HTMLInputElement;
+        if (input.tagName !== 'INPUT' || input.value !== shown) return;
+        input.checked = false;
+        options.dispatchEvent(new Event('change'));
+      });
+    }
     options.addEventListener('change', () => {
-      const picked = Array.from(options.querySelectorAll('fieldset')).map(
-        (fs) => fs.querySelector<HTMLInputElement>('input:checked')?.value,
-      );
+      const picked = fieldsets.map((fs) => fs.querySelector<HTMLInputElement>('input:checked')?.value);
+      fieldsets.forEach((fs, i) => picked[i] && fs.classList.remove('is-invalid'));
+      if (filterable) filter(picked[0]);
       const variant = all.find(([t]) => t === picked.join(' / '));
-      if (!variant) return;
+      // an unpicked option leaves no variant: the buttons lose their id
+      if (!variant) {
+        buttons.forEach((b) => {
+          b.dataset.variantId = '';
+          b.dataset.title = productTitle;
+        });
+        return;
+      }
       const [title, id, price] = variant;
       buttons.forEach((b) => {
         b.dataset.variantId = id;
@@ -980,6 +1035,17 @@ const crumbs = breadcrumbs([
       enquire.forEach((b) => (b.dataset.orderTitle = `${productTitle} — ${title}`));
       if (barPrice) barPrice.textContent = `R${Number(price).toLocaleString('en-US')}`;
     });
+    // nothing preselected: pressed before every option is picked, the button
+    // has no id — point at the first unpicked option instead
+    buttons.forEach((b) =>
+      b.addEventListener('click', () => {
+        if (b.dataset.variantId) return;
+        const missing = fieldsets.filter((fs) => !fs.querySelector('input:checked'));
+        missing.forEach((fs) => fs.classList.add('is-invalid'));
+        missing[0]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        missing[0]?.querySelector<HTMLInputElement>('input')?.focus({ preventScroll: true });
+      }),
+    );
   }
 
   // ── Amount ── gift card: the typed amount is clamped and snapped to

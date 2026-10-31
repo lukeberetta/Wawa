@@ -38,5 +38,8 @@ export default defineConfig({
     '/products/body-belly/bellyboard': '/products/body-belly/bodyboard',
     '/products/skate/wooden-cruiser-deck': '/products/skate/wooden-cruiser',
     '/products/skate/wooden-cruiser-complete': '/products/skate/wooden-cruiser',
+    '/products/accessories/cape-town-crest-tee': '/products/accessories/wawa-tee',
+    '/products/accessories/swallow-tee': '/products/accessories/wawa-tee',
+    '/products/accessories/wood-is-good-tee': '/products/accessories/wawa-tee',
   },
 });

@@ -46,6 +46,10 @@ export interface Product {
   priceRange: { minVariantPrice: Money };
   /** front + back for the flip-card; first = primary */
   images: ProductImage[];
+  /** Images per value of the first option (e.g. a tee's design): the PDP
+   *  gallery swaps to the chosen value's set. `images` stays the default set,
+   *  shown on cards. */
+  optionImages?: Record<string, ProductImage[]>;
   /** Featured-products slot on the homepage, lowest first. Omit to leave off. */
   featured?: number;
   /** PDP spec list, shown as a label/value table. Grouped: each inner array is

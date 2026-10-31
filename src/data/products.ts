@@ -698,7 +698,7 @@ export const products: Product[] = [
       { title: `9'6"`, id: '41464872271936', price: '3500.00' },
     ],
     priceRange: { minVariantPrice: zar('2250.00') },
-    images: [boardCover.front('Wawa cotton duck board cover with yellow and orange stripes, leaning on a sunlit wall')],
+    images: [boardCover.front('Wawa cotton duck board cover with yellow and orange stripes and a drawstring tail')],
     specs: [
       [
         { label: 'Used For', value: 'Storage & travel' },
@@ -900,89 +900,57 @@ export const products: Product[] = [
     ],
   },
   {
-    id: 'mock/crest-tee',
-    handle: 'cape-town-crest-tee',
-    title: 'Cape Town Crest Tee',
+    id: 'mock/wawa-tee',
+    handle: 'wawa-tee',
+    title: 'Wawa Tee',
     description:
-      'A navy crew-neck tee carrying the Wawa crest: a board through the waves, palms either side, Cape Town underneath. Small on the chest, large across the back, in aqua.',
+      'A navy crew-neck tee in three designs from the Wawa workshop in Cape Town. Cape Town Crest: a board through the waves with palms either side, small on the chest and large across the back, in aqua. Swallow: a single aqua badge on the chest, a swallow in a hand-drawn circle, plain back. Wood Is Good: the surfer small on the chest and drawn large across the back in white and ocean blue.',
     productType: 'Accessories',
     tags: ['Clothing'],
     availableForSale: true,
+    // Each design is its own Shopify product; the site sells them as one.
+    optionNames: ['Design', 'Size'],
     variants: [
-      { title: 'XS', id: '41464872599616' },
-      { title: 'S', id: '41464872632384' },
-      { title: 'M', id: '41464872665152' },
-      { title: 'L', id: '41464872697920' },
-      { title: 'XL', id: '41464872730688' },
+      { title: 'Cape Town Crest / XS', id: '41464872599616' },
+      { title: 'Cape Town Crest / S', id: '41464872632384' },
+      { title: 'Cape Town Crest / M', id: '41464872665152' },
+      { title: 'Cape Town Crest / L', id: '41464872697920' },
+      { title: 'Cape Town Crest / XL', id: '41464872730688' },
+      { title: 'Swallow / XS', id: '41464872763456' },
+      { title: 'Swallow / S', id: '41464872796224' },
+      { title: 'Swallow / M', id: '41464872828992' },
+      { title: 'Swallow / L', id: '41464872861760' },
+      { title: 'Swallow / XL', id: '41464872894528' },
+      { title: 'Wood Is Good / XS', id: '41464872927296' },
+      { title: 'Wood Is Good / S', id: '41464872960064' },
+      { title: 'Wood Is Good / M', id: '41464872992832' },
+      { title: 'Wood Is Good / L', id: '41464873025600' },
+      { title: 'Wood Is Good / XL', id: '41464873058368' },
     ],
     priceRange: { minVariantPrice: zar('550.00') },
     images: [
       crestTee.front('Wawa Cape Town Crest tee in navy, chest print'),
       crestTee.back('Wawa Cape Town Crest tee in navy, back print'),
     ],
+    optionImages: {
+      'Cape Town Crest': [
+        crestTee.front('Wawa Cape Town Crest tee in navy, chest print'),
+        crestTee.back('Wawa Cape Town Crest tee in navy, back print'),
+      ],
+      Swallow: [
+        swallowTee.front('Wawa Swallow tee in navy, chest badge'),
+        swallowTee.back('Wawa Swallow tee in navy, plain back'),
+      ],
+      'Wood Is Good': [
+        woodIsGood.front('Wawa Wood Is Good tee in navy, chest print'),
+        woodIsGood.back('Wawa Wood Is Good tee in navy, back print'),
+      ],
+    },
     featured: 5,
     specs: [
       [
         { label: 'Colour', value: 'Navy' },
-        { label: 'Print', value: 'Left chest & full back' },
-        { label: 'Sizes', value: 'XS, S, M, L, XL' },
-      ],
-    ],
-  },
-  {
-    id: 'mock/swallow-tee',
-    handle: 'swallow-tee',
-    title: 'Swallow Tee',
-    description:
-      'A navy crew-neck tee with a single aqua badge on the chest: a swallow in a hand-drawn circle, lettered Lis Vos, Wawa and Cape Town. Plain back.',
-    productType: 'Accessories',
-    tags: ['Clothing'],
-    availableForSale: true,
-    variants: [
-      { title: 'XS', id: '41464872763456' },
-      { title: 'S', id: '41464872796224' },
-      { title: 'M', id: '41464872828992' },
-      { title: 'L', id: '41464872861760' },
-      { title: 'XL', id: '41464872894528' },
-    ],
-    priceRange: { minVariantPrice: zar('550.00') },
-    images: [
-      swallowTee.front('Wawa Swallow tee in navy, chest badge'),
-      swallowTee.back('Wawa Swallow tee in navy, plain back'),
-    ],
-    specs: [
-      [
-        { label: 'Colour', value: 'Navy' },
-        { label: 'Print', value: 'Left chest' },
-        { label: 'Sizes', value: 'XS, S, M, L, XL' },
-      ],
-    ],
-  },
-  {
-    id: 'mock/wood-is-good-tee',
-    handle: 'wood-is-good-tee',
-    title: 'Wood Is Good Tee',
-    description:
-      'A navy crew-neck tee carrying the Wood Is Good surfer: small on the chest, drawn large across the back in white and ocean blue. From the Wawa workshop in Cape Town.',
-    productType: 'Accessories',
-    tags: ['Clothing'],
-    availableForSale: true,
-    variants: [
-      { title: 'XS', id: '41464872927296' },
-      { title: 'S', id: '41464872960064' },
-      { title: 'M', id: '41464872992832' },
-      { title: 'L', id: '41464873025600' },
-      { title: 'XL', id: '41464873058368' },
-    ],
-    priceRange: { minVariantPrice: zar('550.00') },
-    images: [
-      woodIsGood.front('Wawa Wood Is Good tee in navy, chest print'),
-      woodIsGood.back('Wawa Wood Is Good tee in navy, back print'),
-    ],
-    specs: [
-      [
-        { label: 'Colour', value: 'Navy' },
-        { label: 'Print', value: 'Left chest & full back' },
+        { label: 'Designs', value: 'Cape Town Crest, Swallow, Wood Is Good' },
         { label: 'Sizes', value: 'XS, S, M, L, XL' },
       ],
     ],
