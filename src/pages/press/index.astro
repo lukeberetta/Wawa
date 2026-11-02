@@ -1,8 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import PageHero from '@/components/PageHero.astro';
-import VideoCard from '@/components/VideoCard.astro';
-import { videos } from '@/data/videos';
+import Films from '@/components/Films.astro';
 import { getCollection } from 'astro:content';
 import { breadcrumbs } from '@/lib/schema';
 
@@ -22,31 +20,8 @@ const source = (p: (typeof posts)[number]) => p.data.publication ?? 'Wawa Journa
   overlay={true}
   schema={[breadcrumbs([{ name: 'Press' }])]}
 >
-  <PageHero
-    src="/img/press/barrel-ride.webp"
-    alt="A surfer crouched inside a teal barrel on a wooden board, shot from the water"
-    width={2200}
-    height={1470}
-  >
-    Words about the wood, <span class="accent">film from the water.</span>
-  </PageHero>
-
-  <!-- FILMS -->
-  <section id="films">
-    <div class="wrap">
-      <div class="section-head fade-in">
-        <p class="label">Watch</p>
-        <h2>On film.</h2>
-        <p class="section-lead">
-          Documentary crews and surf channels who came to Muizenberg, filmed the workshop, and
-          followed the boards into the water.
-        </p>
-      </div>
-      <div class="video-grid">
-        {videos.map((video) => <VideoCard video={video} />)}
-      </div>
-    </div>
-  </section>
+  <!-- HERO: featured film + rail -->
+  <Films />
 
   <section id="posts">
     <div class="wrap">
@@ -94,19 +69,8 @@ const source = (p: (typeof posts)[number]) => p.data.publication ?? 'Wawa Journa
     margin-top: 1.5rem;
     max-width: 44ch;
   }
-  /* the hero runs to the viewport edge, so the first section opens on its own
-     section pad */
-  #films {
-    padding: var(--space-section) 0 4rem;
-  }
-  .video-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2.5rem 1.75rem;
-  }
   #posts {
-    padding: 4rem 0 5rem;
-    border-top: 1px solid var(--rule);
+    padding: var(--space-section) 0 5rem;
   }
   .post-list {
     list-style: none;

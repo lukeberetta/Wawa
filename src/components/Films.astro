@@ -1,0 +1,406 @@
+---
+/**
+ * Streaming-style film showcase, used as the Press page hero: a full-bleed
+ * featured billboard (first film, carries the page's h1), a
+ * horizontal rail of the rest, and one shared lightbox player. Thumbnails load
+ * as plain images; the iframe is only created when a film is played, and torn
+ * down on close so audio stops.
+ */
+import { videos, thumbOf, embedOf, type Video } from '@/data/videos';
+
+const [featured, ...rest] = videos;
+const meta = (v: Video) =>
+  [v.author, v.year, v.minutes && `${v.minutes} min`].filter(Boolean).join(' · ');
+---
+
+<section id="films" class="films" aria-labelledby="films-title">
+  <!-- BILLBOARD -->
+  <div class="billboard">
+    <img
+      class="billboard-img"
+      src={thumbOf(featured)}
+      alt=""
+      width="1920"
+      height="1080"
+      fetchpriority="high"
+      decoding="async"
+    />
+    <div class="billboard-scrim" aria-hidden="true"></div>
+    <div class="wrap billboard-copy fade-in">
+      <p class="label">Featured film</p>
+      <h1 id="films-title">{featured.title}</h1>
+      <p class="billboard-meta">{meta(featured)}</p>
+      {featured.blurb && <p class="billboard-blurb">{featured.blurb}</p>}
+      <button
+        class="play-btn"
+        type="button"
+        data-film={embedOf(featured)}
+        data-film-title={featured.title}
+      >
+        <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0v12l10-6z" /></svg>
+        Watch the film
+      </button>
+    </div>
+  </div>
+
+  <!-- RAIL -->
+  <div class="rail-block">
+    <div class="wrap rail-head">
+      <p class="label">More films</p>
+      <div class="rail-nav" aria-hidden="true">
+        <button type="button" tabindex="-1" data-rail="-1">←</button>
+        <button type="button" tabindex="-1" data-rail="1">→</button>
+      </div>
+    </div>
+    <ul class="rail" data-rail-track>
+      {
+        rest.map((v) => (
+          <li>
+            <button
+              class="tile"
+              type="button"
+              data-film={embedOf(v)}
+              data-film-title={v.title}
+              aria-label={`Play ${v.title}`}
+            >
+              <span class="tile-frame">
+                <img src={thumbOf(v)} alt="" loading="lazy" decoding="async" width="640" height="360" />
+                <span class="tile-play" aria-hidden="true">▶</span>
+              </span>
+              <span class="tile-meta">
+                <span class="tile-title">{v.title}</span>
+                <span class="tile-sub">{meta(v)}</span>
+              </span>
+            </button>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <!-- PLAYER -->
+  <dialog class="player" aria-label="Film player">
+    <button class="player-close" type="button" aria-label="Close">&times;</button>
+    <div class="player-frame"></div>
+  </dialog>
+</section>
+
+<style>
+  .films {
+    background: var(--ink);
+    color: var(--cream);
+    padding-bottom: var(--space-section);
+  }
+
+  /* ── Billboard ─────────────────────────────── */
+  /* page hero: sits under the transparent overlay nav. Stops short of the full
+     viewport so the top of the rail peeks in and invites the scroll. */
+  .billboard {
+    position: relative;
+    min-height: max(560px, 88vh);
+    min-height: max(560px, 88svh);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .billboard-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+  }
+  /* two scrims: left fade carries the copy, bottom fade melts into the rail */
+  .billboard-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      /* top scrim so the nav reads against the still */
+      linear-gradient(180deg, rgb(26 20 16 / 0.55) 0%, transparent 22%),
+      linear-gradient(90deg, rgb(26 20 16 / 0.85) 0%, rgb(26 20 16 / 0.35) 45%, transparent 70%),
+      linear-gradient(0deg, var(--ink) 0%, rgb(26 20 16 / 0.6) 18%, transparent 45%);
+  }
+  .billboard-copy {
+    position: relative;
+    padding-top: calc(var(--nav-h) + var(--space-3xl));
+    padding-bottom: clamp(2.5rem, 6vh, 5rem);
+  }
+  .films .label {
+    color: rgb(245 240 232 / 0.6);
+  }
+  .billboard h1 {
+    font-size: var(--fs-display);
+    line-height: 1.04;
+    margin-top: var(--space-xs);
+    max-width: 15ch;
+  }
+  .billboard-meta {
+    margin-top: var(--space-sm);
+    font-size: var(--fs-caption);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgb(245 240 232 / 0.7);
+  }
+  .billboard-blurb {
+    margin-top: var(--space-sm);
+    max-width: 46ch;
+    font-size: var(--fs-lead);
+    color: rgb(245 240 232 / 0.85);
+  }
+  /* the PDP's filled .pdp-action, inverted for the dark hero */
+  .play-btn {
+    margin-top: var(--space-lg);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.75rem;
+    font-family: inherit;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--cream);
+    border: 1px solid var(--cream);
+    cursor: pointer;
+    transition: opacity 0.2s var(--ease);
+  }
+  .play-btn:hover {
+    opacity: 0.85;
+  }
+  .play-btn svg {
+    width: 9px;
+    height: 11px;
+    fill: currentColor;
+  }
+
+  /* ── Rail ──────────────────────────────────── */
+  .rail-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-sm);
+  }
+  .rail-nav {
+    display: none;
+    gap: 0.5rem;
+  }
+  @media (hover: hover) {
+    .rail-nav {
+      display: flex;
+    }
+  }
+  .rail-nav button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgb(245 240 232 / 0.3);
+    background: transparent;
+    color: var(--cream);
+    font: inherit;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .rail-nav button:hover {
+    background: rgb(245 240 232 / 0.1);
+    border-color: var(--cream);
+  }
+  .rail {
+    list-style: none;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: clamp(250px, 30vw, 440px);
+    gap: var(--space-sm);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-block: 0 var(--space-sm);
+    padding-inline: max(var(--wrap-pad), env(safe-area-inset-left));
+    scroll-padding-inline: max(var(--wrap-pad), env(safe-area-inset-left));
+  }
+  .rail::-webkit-scrollbar {
+    display: none;
+  }
+  .rail li {
+    scroll-snap-align: start;
+  }
+  .tile {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .tile-frame {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #2a221c;
+    border: 1px solid rgb(245 240 232 / 0.15);
+    transition: border-color 0.3s var(--ease);
+  }
+  .tile-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--ease), opacity 0.3s;
+  }
+  .tile-play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    padding-left: 3px;
+    background: var(--cream);
+    color: var(--ink);
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+  }
+  .tile:hover .tile-frame,
+  .tile:focus-visible .tile-frame {
+    border-color: var(--cream);
+  }
+  .tile:hover img,
+  .tile:focus-visible img {
+    transform: scale(1.04);
+    opacity: 0.9;
+  }
+  .tile:hover .tile-play,
+  .tile:focus-visible .tile-play {
+    opacity: 1;
+    transform: none;
+  }
+  /* touch: no hover, so the play cue is always shown */
+  @media (hover: none) {
+    .tile-play {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .tile:focus-visible {
+    outline: none;
+  }
+  .tile-meta {
+    display: block;
+    margin-top: 0.8rem;
+  }
+  .tile-title {
+    display: block;
+    font-size: 1.02rem;
+  }
+  .tile-sub {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgb(245 240 232 / 0.55);
+  }
+
+  /* ── Player ────────────────────────────────── */
+  .player {
+    width: min(92vw, 1280px, calc(85svh * 16 / 9));
+    max-width: none;
+    margin: auto;
+    padding: 0;
+    border: 0;
+    background: #000;
+    overflow: visible;
+  }
+  .player::backdrop {
+    background: rgb(10 8 6 / 0.92);
+  }
+  .player[open] {
+    animation: player-in 0.35s var(--ease);
+  }
+  @keyframes player-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+  .player-frame {
+    aspect-ratio: 16 / 9;
+  }
+  .player-frame :global(iframe) {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .player-close {
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    right: 0;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    background: none;
+    color: var(--cream);
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .player[open] {
+      animation: none;
+    }
+    .tile-frame,
+    .tile-frame img,
+    .tile-play {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { lockScroll } from '@/lib/scrollLock';
+
+  const dialog = document.querySelector<HTMLDialogElement>('.films .player');
+  const frame = dialog?.querySelector<HTMLElement>('.player-frame');
+
+  document.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+
+    const trigger = t.closest<HTMLElement>('[data-film]');
+    if (trigger && dialog && frame) {
+      const iframe = document.createElement('iframe');
+      iframe.src = trigger.dataset.film!;
+      iframe.allow =
+        'accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      iframe.title = trigger.dataset.filmTitle ?? 'Film';
+      frame.replaceChildren(iframe);
+      lockScroll(true);
+      dialog.showModal();
+      return;
+    }
+
+    const nav = t.closest<HTMLElement>('[data-rail]');
+    if (nav) {
+      const track = document.querySelector<HTMLElement>('[data-rail-track]');
+      if (track) track.scrollBy({ left: Number(nav.dataset.rail) * track.clientWidth * 0.8, behavior: 'smooth' });
+    }
+  });
+
+  if (dialog && frame) {
+    dialog.querySelector('.player-close')?.addEventListener('click', () => dialog.close());
+    // clicks land on the dialog element itself only outside the frame (backdrop)
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('close', () => {
+      frame.replaceChildren();
+      lockScroll(false);
+    });
+  }
+</script>
