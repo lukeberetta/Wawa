@@ -1,0 +1,209 @@
+---
+/**
+ * Newsletter signup: one inline field, never a popup. Posts to the Pages
+ * Function (functions/api/subscribe.ts), which subscribes the email in Shopify
+ * so it joins the same list as checkout's marketing opt-in. Works without JS as
+ * a plain form post (the function redirects back with #subscribed); with JS it
+ * submits in place and swaps the field for a confirmation.
+ *
+ * Styled as a footer-nav column: input text matches the link size, an arrow
+ * submits (the site's action glyph), one caption below. `compact` drops the
+ * caption and shrinks the type for the cart drawer.
+ *
+ *   source — tagged on the Shopify customer as `signup:<source>`
+ */
+interface Props {
+  source: string;
+  compact?: boolean;
+  placeholder?: string;
+}
+const { source, compact = false, placeholder = 'Your email' } = Astro.props;
+const id = `signup-${source}`;
+---
+
+<form
+  class:list={['signup', { 'signup-compact': compact }]}
+  action="/api/subscribe"
+  method="post"
+  novalidate
+  data-signup
+>
+  <div class="signup-row">
+    <label class="signup-hide" for={id}>Email address</label>
+    <input
+      id={id}
+      name="email"
+      type="email"
+      autocomplete="email"
+      inputmode="email"
+      placeholder={placeholder}
+      required
+    />
+    <input type="hidden" name="source" value={source} />
+    <!-- honeypot: hidden from people, bots fill it -->
+    <input class="signup-hide" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+    <button type="submit" aria-label="Sign up"><span aria-hidden="true">→</span></button>
+  </div>
+  <p class="signup-msg" role="status" aria-live="polite"></p>
+  {!compact && <p class="signup-note">A few emails a year.</p>}
+</form>
+
+<style>
+  .signup-row {
+    display: flex;
+    align-items: baseline;
+    border-bottom: 1px solid var(--rule);
+    transition: border-color 0.2s var(--ease);
+  }
+  .signup-row:focus-within {
+    border-bottom-color: var(--ink);
+  }
+  .signup-row input[type='email'] {
+    flex: 1;
+    min-width: 0;
+    font: inherit;
+    font-size: var(--fs-lead);
+    font-weight: var(--fw-light);
+    color: var(--ink);
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0 0 var(--space-2xs);
+    outline: none;
+  }
+  .signup-row input::placeholder {
+    color: var(--muted);
+  }
+  .signup-row button {
+    font: inherit;
+    font-size: var(--fs-lead);
+    font-weight: var(--fw-light);
+    line-height: 1;
+    color: var(--ink);
+    background: none;
+    border: 0;
+    padding: 0 0 var(--space-2xs) var(--space-sm);
+    cursor: pointer;
+    transition: color 0.2s var(--ease), transform 0.3s var(--ease);
+  }
+  .signup-row button:hover,
+  .signup-row button:focus-visible {
+    color: var(--warm);
+    transform: translateX(4px);
+  }
+  .signup-row button:disabled {
+    color: var(--rule);
+    transform: none;
+    cursor: default;
+  }
+  .signup-msg,
+  .signup-note {
+    margin-top: var(--space-2xs);
+    font-size: var(--fs-caption);
+    color: var(--muted);
+  }
+  .signup-msg:empty {
+    display: none;
+  }
+  /* the message replaces the caption while it has something to say */
+  .signup-msg:not(:empty) + .signup-note {
+    display: none;
+  }
+  .signup.is-error .signup-msg {
+    color: var(--accent);
+  }
+  /* done: the field gives way to the confirmation, set like a link */
+  .signup.is-done .signup-row {
+    display: none;
+  }
+  .signup.is-done .signup-msg {
+    margin-top: 0;
+    font-size: var(--fs-lead);
+    font-weight: var(--fw-light);
+    color: var(--ink);
+  }
+  .signup-hide {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* compact (cart): caption-sized, but the input stays 16px so iOS won't zoom */
+  .signup-compact .signup-row input[type='email'] {
+    font-size: 16px;
+  }
+  .signup-compact .signup-row button {
+    font-size: 1rem;
+  }
+  .signup-compact.is-done .signup-msg {
+    font-size: var(--fs-caption);
+  }
+</style>
+
+<script>
+  const OK = 'You’re on the list.';
+  const BAD = 'That email doesn’t look right.';
+
+  const forms = document.querySelectorAll<HTMLFormElement>('[data-signup]');
+
+  forms.forEach((form) => {
+    const msg = form.querySelector<HTMLElement>('.signup-msg')!;
+    const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const input = form.querySelector<HTMLInputElement>('input[type="email"]')!;
+
+    const say = (text: string, state: 'idle' | 'error' | 'done' = 'idle') => {
+      form.classList.toggle('is-error', state === 'error');
+      form.classList.toggle('is-done', state === 'done');
+      msg.textContent = text;
+    };
+
+    // Clear a stale error as soon as they start fixing it.
+    input.addEventListener('input', () => {
+      if (form.classList.contains('is-error')) say('');
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!input.value.trim() || !input.checkValidity()) {
+        say(BAD, 'error');
+        input.focus();
+        return;
+      }
+      btn.disabled = true;
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(form),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok) {
+          // one signup covers every form on the page
+          forms.forEach((f) => f.classList.add('is-done'));
+          forms.forEach((f) => (f.querySelector('.signup-msg')!.textContent = OK));
+          form.reset();
+        } else if (data.error === 'invalid_email') {
+          say(BAD, 'error');
+        } else {
+          say('Something went wrong. Try again in a moment.', 'error');
+        }
+      } catch {
+        say('Couldn’t reach us. Try again in a moment.', 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  });
+
+  // Landed back from the no-JS form post.
+  if (location.hash === '#subscribed') {
+    forms.forEach((f) => {
+      f.classList.add('is-done');
+      f.querySelector('.signup-msg')!.textContent = OK;
+    });
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+</script>

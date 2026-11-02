@@ -7,6 +7,7 @@
  */
 import { site } from '@/lib/site';
 import { disciplines } from '@/lib/catalog';
+import Signup from '@/components/Signup.astro';
 
 // Store policies live on Shopify (they're also linked from checkout); the site
 // must surface them too — ECTA wants returns/privacy reachable before purchase.
@@ -21,44 +22,50 @@ const policies = [
 
 <section class="footer-nav" aria-label="Site links">
   <div class="wrap footer-nav-inner">
-    <nav class="fn-cols" aria-label="Footer">
-      <div class="fn-col">
-        <p class="label fn-head">Shop</p>
-        <ul>
-          <li><a href="/products">All products</a></li>
-          {disciplines.map((d) => (
-            <li><a href={`/products?discipline=${d.handle}`}>{d.title}</a></li>
-          ))}
-        </ul>
-      </div>
-      <div class="fn-col">
-        <p class="label fn-head">Visit</p>
-        <ul>
-          <li><a href="/story">Story</a></li>
-          <li><a href="/cafe">Cafe</a></li>
-          <li><a href="/press">Press</a></li>
-          <li><a href="/contact">Contact</a></li>
-        </ul>
-      </div>
-      <div class="fn-col fn-col-reach">
-        <p class="label fn-head">Reach us</p>
-        <ul>
-          <li><a href={site.instagram} target="_blank" rel="noopener noreferrer">Instagram</a></li>
-          <li><a href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
-          <li><a class="fn-place" href="https://maps.app.goo.gl/Jwke2sXBTwRAiVhn6" target="_blank" rel="noopener noreferrer">{site.location}</a></li>
-        </ul>
-      </div>
-      {site.shopDomain && (
+    <div class="fn-cols">
+      <nav class="fn-links" aria-label="Footer">
         <div class="fn-col">
-          <p class="label fn-head">Help</p>
+          <p class="label fn-head">Shop</p>
           <ul>
-            {policies.map((p) => (
-              <li><a href={policy(p.handle)} target="_blank" rel="noopener noreferrer">{p.label}</a></li>
+            <li><a href="/products">All products</a></li>
+            {disciplines.map((d) => (
+              <li><a href={`/products?discipline=${d.handle}`}>{d.title}</a></li>
             ))}
           </ul>
         </div>
-      )}
-    </nav>
+        <div class="fn-col">
+          <p class="label fn-head">Visit</p>
+          <ul>
+            <li><a href="/story">Story</a></li>
+            <li><a href="/cafe">Cafe</a></li>
+            <li><a href="/press">Press</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+        {site.shopDomain && (
+          <div class="fn-col">
+            <p class="label fn-head">Help</p>
+            <ul>
+              {policies.map((p) => (
+                <li><a href={policy(p.handle)} target="_blank" rel="noopener noreferrer">{p.label}</a></li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <div class="fn-col fn-col-reach">
+          <p class="label fn-head">Reach us</p>
+          <ul>
+            <li><a href={site.instagram} target="_blank" rel="noopener noreferrer">Instagram</a></li>
+            <li><a href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+            <li><a href="https://maps.app.goo.gl/Jwke2sXBTwRAiVhn6" target="_blank" rel="noopener noreferrer">Google Maps</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div class="fn-col fn-col-signup">
+        <p class="label fn-head">Workshop news</p>
+        <Signup source="footer" />
+      </div>
+    </div>
   </div>
 </section>
 
@@ -83,6 +90,24 @@ const policies = [
       grid-template-columns: repeat(4, 1fr);
     }
   }
+  /* the link columns join the grid directly; <nav> only adds semantics */
+  .fn-links {
+    display: contents;
+  }
+  /* signup: a full row under the links until there's room for it to sit
+     beside them as a double-width column */
+  .fn-col-signup {
+    grid-column: 1 / -1;
+    max-width: 28rem;
+  }
+  @media (min-width: 1000px) {
+    .fn-cols {
+      grid-template-columns: repeat(4, 1fr) 2fr;
+    }
+    .fn-col-signup {
+      grid-column: auto;
+    }
+  }
   .fn-head {
     margin-bottom: var(--space-md);
   }
@@ -101,12 +126,5 @@ const policies = [
   .fn-col a:hover {
     color: var(--warm);
   }
-  /* location reads as the accent so it stands out as the "find us" link
-     (selector matches .fn-col a's specificity so it actually wins) */
-  .fn-col a.fn-place {
-    color: var(--warm);
-  }
-  .fn-col a.fn-place:hover {
-    color: var(--ink);
-  }
 </style>
+

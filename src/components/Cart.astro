@@ -8,6 +8,7 @@
  */
 import { site } from '@/lib/site';
 import { getProducts } from '@/lib/catalog';
+import Signup from '@/components/Signup.astro';
 const enabled = !!site.shopDomain;
 
 // Current price per sellable variant. Carts live in localStorage, so a line
@@ -51,6 +52,9 @@ for (const p of await getProducts()) {
           <p class="cart-note">Shipping calculated at checkout.</p>
           <a class="cart-checkout" data-cart-checkout href="#">Checkout</a>
         </footer>
+        <div class="cart-signup">
+          <Signup source="cart" compact placeholder="Email me workshop news" />
+        </div>
       </aside>
     </>
   )
@@ -276,6 +280,14 @@ for (const p of await getProducts()) {
   }
   .cart-checkout:hover {
     opacity: 0.85;
+  }
+  /* quiet, below checkout: one underlined line, no rule of its own */
+  .cart-signup {
+    padding: 0.25rem 1.75rem calc(1.5rem + env(safe-area-inset-bottom));
+  }
+  /* foot visible: it already pads for the home indicator */
+  .cart-foot:not([hidden]) {
+    padding-bottom: 1.25rem;
   }
 
   @media (prefers-reduced-motion: reduce) {
