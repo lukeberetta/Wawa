@@ -29,18 +29,18 @@ const COLOURS = {
   // Surf
   Short: '#DBB08F', // rust: fast, loose, punchy
   Mid: '#CBCCB0', // kelp: flow and smooth carving lines
-  Long: '#BACDC4', // rock pool: glide, trim, noseride
+  Long: '#C4C7C4', // storm: glide, trim, noseride
   Finless: '#D8C6A2', // driftwood: primal, raw timber
   // Other disciplines
   Foil: '#D1C8BA', // beach stone: flight, lift, open air
-  Kite: '#C4C7C4', // storm: wind and power (no plate shots yet)
+  Kite: '#CEC3CA', // dusk: wind and power
   Skate: '#D6B8A3', // red clay: street, flat days
   'Body & Belly': '#BCCACC', // deep water: closest to the water, in the tube
 };
 
 // studioSet() name → group. Both <name>-front and <name>-back are recoloured;
 // a missing side is skipped. Wall/lifestyle shots (paipo, handslide,
-// kite-tomo…) aren't plates, so they're not listed.
+// …) aren't plates, so they're not listed.
 const SETS = {
   fish: 'Short',
   'gun-fish': 'Short',
@@ -60,6 +60,7 @@ const SETS = {
   'surfskate-swallow': 'Skate',
   bodyboard: 'Body & Belly',
   'handslide-pro': 'Body & Belly',
+  'kite-tomo': 'Kite',
 };
 
 const FLOOD = 28; // max colour distance (sum of channel deltas) to count as plate

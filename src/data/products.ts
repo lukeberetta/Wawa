@@ -414,7 +414,14 @@ export const products: Product[] = [
     tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('30000.00') },
-    images: [foilWave.front('Wawa Wave Foilboard, deck'), foilWave.back('Wawa Wave Foilboard, hull with foil tracks')],
+    images: [
+      foilWave.front('Wawa Wave Foilboard, deck'),
+      foilWave.back('Wawa Wave Foilboard, hull with twin foil tracks'),
+      {
+        url: '/img/product/foil-wave-detail.webp',
+        altText: 'Hand-drawn flying fish laminate on a Wave Foilboard: "tripod model foil", wood & EPS',
+      },
+    ],
     featured: 6,
     specs: [
       [
