@@ -56,6 +56,7 @@ const spex = studioSet('spex');
 const miniSimmons = studioSet('mini-simmons');
 const foilWing = studioSet('foil-wing');
 const modelP = studioSet('model-p');
+const modelL = studioSet('model-l');
 
 /** Empty-room plate for anything not yet photographed. One image, so no hover swap. */
 const soon = (title: string) => [
@@ -291,7 +292,7 @@ export const products: Product[] = [
     tags: ['Long'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('22500.00') },
-    images: soon('Wawa Model L'),
+    images: [modelL.front('Wawa Model L Longboard, deck'), modelL.back('Wawa Model L Longboard, hull')],
     specs: [
       [
         { label: 'Best For', value: 'Small surf to serious' },

@@ -6,7 +6,7 @@ and address, 404 page and the wireframe imagery are all done.
 
 ## Photography
 
-- [ ] 3 products still on the `soon()` plate (`src/data/products.ts`): Model L, Trick and Vlieer kiteboards
+- [ ] 2 products still on the `soon()` plate (`src/data/products.ts`): Trick and Vlieer kiteboards
 - [ ] Shopify product images are the old shots for Gun Fish, Model T, Long Fish Twin, Alaia, Wave Foilboard and the board cover — re-upload in Shopify admin (cosmetic: checkout and order emails only)
 
 ## Content from the old 2012 site (archived in ~/Downloads)
