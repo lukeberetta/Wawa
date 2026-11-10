@@ -11,30 +11,31 @@ export const site = {
   /** E.164, for tel: links and LocalBusiness `telephone`. */
   phone: '+27823723142',
   email: 'surfboards@wawawave.com',
-  // Provisional hours: set hoursConfirmed only after the shop confirms them.
-  hoursConfirmed: false,
+  // Matches the Google Business Profile (checked 2026-11-10). Keep the two in
+  // step — Google cross-checks the page against the LocalBusiness markup.
+  hoursConfirmed: true,
   // `days`/`time` are the display strings; `spec` is the machine-readable pair
   // that feeds LocalBusiness `openingHoursSpecification` (schema.org day URLs,
   // 24h times). Keep the two in sync — they render from the same array.
   hours: [
     {
       days: 'Monday – Friday',
-      time: '7:00 – 16:00',
+      time: '7:00 – 17:00',
       spec: {
         dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
         opens: '07:00',
-        closes: '16:00',
+        closes: '17:00',
       },
     },
     {
       days: 'Saturday',
-      time: '7:00 – 14:00',
-      spec: { dayOfWeek: ['Saturday'], opens: '07:00', closes: '14:00' },
+      time: '7:00 – 15:00',
+      spec: { dayOfWeek: ['Saturday'], opens: '07:00', closes: '15:00' },
     },
     {
       days: 'Sunday',
-      time: '8:00 – 13:00',
-      spec: { dayOfWeek: ['Sunday'], opens: '08:00', closes: '13:00' },
+      time: '7:00 – 13:00',
+      spec: { dayOfWeek: ['Sunday'], opens: '07:00', closes: '13:00' },
     },
   ],
   address: {

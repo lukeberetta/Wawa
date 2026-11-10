@@ -35,7 +35,7 @@ const schema = [
       <h1 class="fade-in">Let’s shape<br />something.</h1>
       <p class="page-header-sub fade-in">
         Every board starts with a conversation. Tell us your style, your break and your experience,
-        and we’ll shape the rest. Based in {site.location}.
+        and we’ll shape the rest.
       </p>
 
       <div class="actions fade-in">
@@ -50,7 +50,7 @@ const schema = [
        thing you're being told to walk through. Same scrim + cream type as the
        page heroes, at a shorter height since it carries a list, not a display
        line. -->
-  <section id="hours">
+  <section id="hours" class="grain">
     <img
       class="hours-img"
       src="/img/contact/workshop-door.webp"
@@ -63,24 +63,39 @@ const schema = [
     <div class="wrap">
       <div class="hours-content fade-in">
         <p class="label">Visit</p>
-        <h2>{site.hoursConfirmed ? 'Opening times.' : 'Visit the workshop.'}</h2>
-        {site.hoursConfirmed ? (
-          <dl class="hours-list">
-            {
-              site.hours.map((h) => (
-                <div class="hours-row">
-                  <dt>{h.days}</dt>
-                  <dd>{h.time}</dd>
-                </div>
-              ))
-            }
-          </dl>
-        ) : (
-          <p class="hours-note">Message us on <a href={wa} target="_blank" rel="noopener noreferrer">WhatsApp</a> to check opening times before you visit.</p>
-        )}
-        <p class="hours-note">
-          <a class="hours-address" href={mapLink}>{addressLine}</a>. Come by for coffee and a closer look at the boards.
+        <h2>Come by the workshop.</h2>
+        <p class="hours-lead">
+          Coffee’s on and the boards are on the racks. Drop in for a closer look, or just a chat.
         </p>
+
+        <dl class="hours-list">
+          <div class="hours-row">
+            <dt>Where</dt>
+            <dd>{street}<br />{locality}, {region}, {postalCode}</dd>
+          </div>
+          {site.hoursConfirmed ? (
+            site.hours.map((h) => (
+              <div class="hours-row">
+                <dt>{h.days}</dt>
+                <dd>{h.time}</dd>
+              </div>
+            ))
+          ) : (
+            <div class="hours-row">
+              <dt>When</dt>
+              <dd>Hours vary — message us before you come.</dd>
+            </div>
+          )}
+        </dl>
+
+        <div class="hours-actions">
+          <a class="hours-btn" href={mapLink} target="_blank" rel="noopener noreferrer">
+            Get directions <span aria-hidden="true">→</span>
+          </a>
+          <a class="hours-btn ghost" href={wa} target="_blank" rel="noopener noreferrer">
+            WhatsApp us <span aria-hidden="true">→</span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -144,8 +159,9 @@ const schema = [
     overflow: hidden;
     display: flex;
     align-items: center;
-    min-height: clamp(420px, 60vh, 620px);
-    padding: var(--space-2xl) 0;
+    min-height: clamp(600px, 90vh, 920px);
+    min-height: clamp(600px, 90svh, 920px);
+    padding: var(--space-3xl) 0;
     background: var(--ink);
     color: var(--cream);
   }
@@ -181,41 +197,83 @@ const schema = [
   }
   #hours h2 {
     font-size: clamp(2rem, 5vw, 3.2rem);
-    margin: 0.75rem 0 2rem;
+    margin: 0.75rem 0 1rem;
   }
+  /* film grain over photo + wash, under the copy — matches the heroes */
+  #hours.grain::after {
+    z-index: 1;
+    --grain-opacity: 0.2;
+  }
+  .hours-lead {
+    max-width: 38ch;
+    font-size: var(--fs-lead);
+    line-height: 1.4;
+    color: color-mix(in srgb, var(--cream) 85%, transparent);
+  }
+  /* Where / When (or the confirmed hours): label left, detail right, hairline
+     rules between — the one block someone is scanning for */
   .hours-list {
-    /* the measure is the list, not the column: days and times sit on the two
-       edges of a narrow block so the times read as a column of their own */
-    max-width: 26rem;
+    max-width: 30rem;
+    margin-top: 2rem;
     border-top: 1px solid color-mix(in srgb, var(--cream) 30%, transparent);
   }
   .hours-row {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 10rem 1fr;
     gap: var(--space-sm);
-    padding: 0.85rem 0;
+    padding: 0.9rem 0;
     border-bottom: 1px solid color-mix(in srgb, var(--cream) 30%, transparent);
   }
+  .hours-row dt {
+    padding-top: 0.2em;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--cream) 60%, transparent);
+  }
   .hours-row dd {
+    line-height: 1.4;
     /* tabular figures keep the times aligned down the column */
     font-variant-numeric: tabular-nums;
   }
-  .hours-note {
-    margin-top: 1.5rem;
-    max-width: 34ch;
-    font-size: var(--fs-caption);
-    color: color-mix(in srgb, var(--cream) 75%, transparent);
+  .hours-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
   }
-  /* The address sits at full cream against the dimmed note around it — it's the
-     one line on the page someone is hunting for. */
-  .hours-address {
+  /* cream-on-photo versions of the page's .btn pair */
+  .hours-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.4rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--cream);
+    border: 1px solid var(--cream);
+    transition: gap 0.3s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease);
+  }
+  .hours-btn:hover {
+    gap: 0.85rem;
+  }
+  .hours-btn.ghost {
     color: var(--cream);
-    text-decoration: underline;
-    text-underline-offset: 0.25em;
-    text-decoration-thickness: 1px;
-    text-decoration-color: color-mix(in srgb, var(--cream) 45%, transparent);
+    background: transparent;
+    border-color: color-mix(in srgb, var(--cream) 50%, transparent);
   }
-  .hours-address:hover {
-    text-decoration-color: var(--cream);
+  .hours-btn.ghost:hover {
+    border-color: var(--cream);
+  }
+  @media (max-width: 520px) {
+    .hours-row {
+      grid-template-columns: 7.5rem 1fr;
+    }
+    .hours-btn {
+      flex: 1 1 100%;
+      justify-content: center;
+    }
   }
 </style>
