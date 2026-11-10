@@ -380,7 +380,7 @@ export const products: Product[] = [
     description:
       'A compact prone deck with a paulownia-and-cork shell, built for paddling into swell and getting onto the foil. Talk to us about dimensions and compatibility with your foil setup.',
     productType: 'Foil',
-    tags: ['Prone'],
+    tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('30000.00') },
     images: [foilProne.front('Wawa Prone Foilboard, deck'), foilProne.back('Wawa Prone Foilboard, hull with foil tracks')],
@@ -404,7 +404,7 @@ export const products: Product[] = [
     description:
       'Built to draw long, quiet lines off open-ocean swell. Timber-and-cork construction tuned for the surf foil, with enough volume to find the wave and a pulled outline to carve once the foil takes over. Light and lively.',
     productType: 'Foil',
-    tags: ['Wave'],
+    tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('30000.00') },
     images: [foilWave.front('Wawa Wave Foilboard, deck'), foilWave.back('Wawa Wave Foilboard, hull with foil tracks')],
@@ -429,7 +429,7 @@ export const products: Product[] = [
     description:
       'For wind and wing. A stable platform in paulownia and cork, sized for your weight, wind conditions and foil setup. Get in touch to discuss the right volume for your riding.',
     productType: 'Foil',
-    tags: ['Wing'],
+    tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('35000.00') },
     images: [
@@ -458,7 +458,7 @@ export const products: Product[] = [
     description:
       'A Tomo-inspired outline tuned for wind: compact, fast and direct. The same timber-and-cork construction as the boards, with stiff flex and controlled energy return for a clean connection to the water.',
     productType: 'Kite',
-    tags: ['Tomo'],
+    tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('25000.00') },
     images: [kiteTomo.front('Wawa Tomo Kiteboard, deck'), kiteTomo.back('Wawa Tomo Kiteboard, hull with fins')],
@@ -482,7 +482,7 @@ export const products: Product[] = [
     description:
       'Built to pop and play. A lively twin-tip shape in paulownia and cork, tuned for snappy energy return off the water. Loose enough for tricks, stiff enough to hold an edge upwind.',
     productType: 'Kite',
-    tags: ['Trick'],
+    tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('25000.00') },
     images: soon('Wawa Trick kiteboard'),
@@ -506,7 +506,7 @@ export const products: Product[] = [
     description:
       'The Vlieer, a directional shape for riders chasing flow over flat water and small wind swell. Timber-and-cork build for a smooth, damp ride and a direct line to the kite.',
     productType: 'Kite',
-    tags: ['Vlieer'],
+    tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('25000.00') },
     images: soon('Wawa Vlieer kiteboard'),
@@ -519,6 +519,138 @@ export const products: Product[] = [
       [
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Timber & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
+
+  // ── BODY & BELLY ─────────────────────────────
+  {
+    id: 'mock/paipo',
+    handle: 'paipo',
+    title: 'Paipo',
+    description:
+      'Short, wide and fast: the punk rock of surfing, with roots in Hawaiian wave riding. Choose finned or finless. The Bullet is a prone bodyboard ridden with swim fins. The Godfather is a wide planing hull built for speed. Dr. Strangelove is a small solid-wood Mini-Simmons with twin keels and a kicked nose. Purple Haze is a one-off timber shape. Each comes in 3ft or 4ft, in natural timber or a custom colour.',
+    productType: 'Body & Belly',
+    tags: [],
+    availableForSale: true,
+    optionNames: ['Model', 'Size', 'Colour'],
+    variants: [
+      { title: 'The Bullet / 3ft / Natural', id: '41466018201664', price: '3000.00' },
+      { title: 'The Bullet / 3ft / Custom colour', id: '41466018234432', price: '3750.00' },
+      { title: 'The Bullet / 4ft / Natural', id: '41466018267200', price: '4000.00' },
+      { title: 'The Bullet / 4ft / Custom colour', id: '41466018299968', price: '4750.00' },
+      { title: 'The Godfather / 3ft / Natural', id: '41466018332736', price: '3000.00' },
+      { title: 'The Godfather / 3ft / Custom colour', id: '41466018365504', price: '3750.00' },
+      { title: 'The Godfather / 4ft / Natural', id: '41466018398272', price: '4000.00' },
+      { title: 'The Godfather / 4ft / Custom colour', id: '41466018431040', price: '4750.00' },
+      { title: 'Dr. Strangelove / 3ft / Natural', id: '41466018463808', price: '3000.00' },
+      { title: 'Dr. Strangelove / 3ft / Custom colour', id: '41466018496576', price: '3750.00' },
+      { title: 'Dr. Strangelove / 4ft / Natural', id: '41466018529344', price: '4000.00' },
+      { title: 'Dr. Strangelove / 4ft / Custom colour', id: '41466018562112', price: '4750.00' },
+      { title: 'Purple Haze / 3ft / Natural', id: '41466018594880', price: '3000.00' },
+      { title: 'Purple Haze / 3ft / Custom colour', id: '41466018627648', price: '3750.00' },
+      { title: 'Purple Haze / 4ft / Natural', id: '41466018660416', price: '4000.00' },
+      { title: 'Purple Haze / 4ft / Custom colour', id: '41466018693184', price: '4750.00' },
+    ],
+    priceRange: { minVariantPrice: zar('3000.00') },
+    images: [
+      paipo.front('Four Wawa paipos leaning on a sunlit wall, painted PAIPO and octopus graphics'),
+      paipo.back('Four Wawa paipos showing their branded sides, solid timber grain'),
+    ],
+    specs: [
+      [
+        { label: 'Best For', value: 'Punchy beach breaks' },
+        { label: 'Board Feel', value: 'Short and fast' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Finned or finless' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/handslide',
+    handle: 'handslide',
+    title: 'Handslide',
+    description:
+      'Strip it all back and bodysurf. A small handplane made locally by bodysurfers, with no pop-up between you and the wave. Ask us about choosing a shape for your experience and conditions. Get closer to the wave. Kick. Laugh. Comes with a Wawa-branded calico bag.',
+    productType: 'Body & Belly',
+    tags: [],
+    availableForSale: true,
+    variantId: '41465789972544',
+    priceRange: { minVariantPrice: zar('950.00') },
+    images: [
+      handslide.front('Wawa handslide with red hand strap and burnt-in logo, held against a sunlit wall'),
+      handslide.back('Wawa handslide underside with floral inlay under resin, swallow tail'),
+    ],
+    featured: 1,
+    specs: [
+      [
+        { label: 'Best For', value: 'Bodysurfing' },
+        { label: 'Board Feel', value: 'Fast and direct' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Solid timber' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/handslide-pro',
+    handle: 'handslide-pro',
+    title: 'Handslide Pro',
+    description:
+      'A step up from the Handslide: its own teardrop shape, cut from premium hardwood, with an adjustable neoprene strap that cinches to your hand and stays put through the wave. Made locally, for bodysurfers who are in the water most days. Comes with a Wawa-branded calico bag.',
+    productType: 'Body & Belly',
+    tags: [],
+    availableForSale: true,
+    // sold as the adjustable-strap variant of the Shopify Handslide product
+    variantId: '41465790005312',
+    priceRange: { minVariantPrice: zar('1950.00') },
+    images: [
+      handslidePro.front('Wawa Handslide Pro in dark striped wood with an adjustable black neoprene strap and burnt-in logo'),
+      handslidePro.back('Underside of the Wawa Handslide Pro, stamped Handcrafted in Cape Town'),
+    ],
+    specs: [
+      [
+        { label: 'Best For', value: 'Bodysurfing' },
+        { label: 'Board Feel', value: 'Fast and direct' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Premium hardwood' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/bodyboard',
+    handle: 'bodyboard',
+    title: 'Bodyboard',
+    description:
+      'Prone wave-riding craft in the paipo lineage: fast, direct and about as close to the wave as you can get. A full cork deck for grip and warmth underneath you, a recycled foam core, and a paulownia wood bottom. Lighter than it looks.',
+    productType: 'Body & Belly',
+    tags: [],
+    availableForSale: true,
+    variantId: '41465933070400',
+    priceRange: { minVariantPrice: zar('6500.00') },
+    images: [bodyboard.front('Wawa Bodyboard, deck'), bodyboard.back('Wawa Bodyboard, hull')],
+    featured: 7,
+    specs: [
+      [
+        { label: 'Best For', value: 'Punchy beach breaks' },
+        { label: 'Board Feel', value: 'Fast and direct' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Cork deck, recycled foam core, paulownia bottom' },
         { label: 'Finish', value: 'Matte' },
       ],
     ],
@@ -590,138 +722,6 @@ export const products: Product[] = [
       [
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Solid timber' },
-        { label: 'Finish', value: 'Matte' },
-      ],
-    ],
-  },
-
-  // ── BODY & BELLY ─────────────────────────────
-  {
-    id: 'mock/paipo',
-    handle: 'paipo',
-    title: 'Paipo',
-    description:
-      'Short, wide and fast: the punk rock of surfing, with roots in Hawaiian wave riding. Choose finned or finless. The Bullet is a prone bodyboard ridden with swim fins. The Godfather is a wide planing hull built for speed. Dr. Strangelove is a small solid-wood Mini-Simmons with twin keels and a kicked nose. Purple Haze is a one-off timber shape. Each comes in 3ft or 4ft, in natural timber or a custom colour.',
-    productType: 'Body & Belly',
-    tags: ['Paipo'],
-    availableForSale: true,
-    optionNames: ['Model', 'Size', 'Colour'],
-    variants: [
-      { title: 'The Bullet / 3ft / Natural', id: '41466018201664', price: '3000.00' },
-      { title: 'The Bullet / 3ft / Custom colour', id: '41466018234432', price: '3750.00' },
-      { title: 'The Bullet / 4ft / Natural', id: '41466018267200', price: '4000.00' },
-      { title: 'The Bullet / 4ft / Custom colour', id: '41466018299968', price: '4750.00' },
-      { title: 'The Godfather / 3ft / Natural', id: '41466018332736', price: '3000.00' },
-      { title: 'The Godfather / 3ft / Custom colour', id: '41466018365504', price: '3750.00' },
-      { title: 'The Godfather / 4ft / Natural', id: '41466018398272', price: '4000.00' },
-      { title: 'The Godfather / 4ft / Custom colour', id: '41466018431040', price: '4750.00' },
-      { title: 'Dr. Strangelove / 3ft / Natural', id: '41466018463808', price: '3000.00' },
-      { title: 'Dr. Strangelove / 3ft / Custom colour', id: '41466018496576', price: '3750.00' },
-      { title: 'Dr. Strangelove / 4ft / Natural', id: '41466018529344', price: '4000.00' },
-      { title: 'Dr. Strangelove / 4ft / Custom colour', id: '41466018562112', price: '4750.00' },
-      { title: 'Purple Haze / 3ft / Natural', id: '41466018594880', price: '3000.00' },
-      { title: 'Purple Haze / 3ft / Custom colour', id: '41466018627648', price: '3750.00' },
-      { title: 'Purple Haze / 4ft / Natural', id: '41466018660416', price: '4000.00' },
-      { title: 'Purple Haze / 4ft / Custom colour', id: '41466018693184', price: '4750.00' },
-    ],
-    priceRange: { minVariantPrice: zar('3000.00') },
-    images: [
-      paipo.front('Four Wawa paipos leaning on a sunlit wall, painted PAIPO and octopus graphics'),
-      paipo.back('Four Wawa paipos showing their branded sides, solid timber grain'),
-    ],
-    specs: [
-      [
-        { label: 'Best For', value: 'Punchy beach breaks' },
-        { label: 'Board Feel', value: 'Short and fast' },
-        { label: 'Skill Level', value: 'All levels' },
-      ],
-      [
-        { label: 'Designer', value: 'Cobus Joubert' },
-        { label: 'Material', value: 'Paulownia & cork' },
-        { label: 'Finish', value: 'Finned or finless' },
-      ],
-    ],
-  },
-  {
-    id: 'mock/handslide',
-    handle: 'handslide',
-    title: 'Handslide',
-    description:
-      'Strip it all back and bodysurf. A small handplane made locally by bodysurfers, with no pop-up between you and the wave. Ask us about choosing a shape for your experience and conditions. Get closer to the wave. Kick. Laugh. Comes with a Wawa-branded calico bag.',
-    productType: 'Body & Belly',
-    tags: ['Bodysurf'],
-    availableForSale: true,
-    variantId: '41465789972544',
-    priceRange: { minVariantPrice: zar('950.00') },
-    images: [
-      handslide.front('Wawa handslide with red hand strap and burnt-in logo, held against a sunlit wall'),
-      handslide.back('Wawa handslide underside with floral inlay under resin, swallow tail'),
-    ],
-    featured: 1,
-    specs: [
-      [
-        { label: 'Best For', value: 'Bodysurfing' },
-        { label: 'Board Feel', value: 'Fast and direct' },
-        { label: 'Skill Level', value: 'All levels' },
-      ],
-      [
-        { label: 'Designer', value: 'Cobus Joubert' },
-        { label: 'Material', value: 'Solid timber' },
-        { label: 'Finish', value: 'Matte' },
-      ],
-    ],
-  },
-  {
-    id: 'mock/handslide-pro',
-    handle: 'handslide-pro',
-    title: 'Handslide Pro',
-    description:
-      'A step up from the Handslide: its own teardrop shape, cut from premium hardwood, with an adjustable neoprene strap that cinches to your hand and stays put through the wave. Made locally, for bodysurfers who are in the water most days. Comes with a Wawa-branded calico bag.',
-    productType: 'Body & Belly',
-    tags: ['Bodysurf'],
-    availableForSale: true,
-    // sold as the adjustable-strap variant of the Shopify Handslide product
-    variantId: '41465790005312',
-    priceRange: { minVariantPrice: zar('1950.00') },
-    images: [
-      handslidePro.front('Wawa Handslide Pro in dark striped wood with an adjustable black neoprene strap and burnt-in logo'),
-      handslidePro.back('Underside of the Wawa Handslide Pro, stamped Handcrafted in Cape Town'),
-    ],
-    specs: [
-      [
-        { label: 'Best For', value: 'Bodysurfing' },
-        { label: 'Board Feel', value: 'Fast and direct' },
-        { label: 'Skill Level', value: 'All levels' },
-      ],
-      [
-        { label: 'Designer', value: 'Cobus Joubert' },
-        { label: 'Material', value: 'Premium hardwood' },
-        { label: 'Finish', value: 'Matte' },
-      ],
-    ],
-  },
-  {
-    id: 'mock/bodyboard',
-    handle: 'bodyboard',
-    title: 'Bodyboard',
-    description:
-      'Prone wave-riding craft in the paipo lineage: fast, direct and about as close to the wave as you can get. A full cork deck for grip and warmth underneath you, a recycled foam core, and a paulownia wood bottom. Lighter than it looks.',
-    productType: 'Body & Belly',
-    tags: ['Bodyboard'],
-    availableForSale: true,
-    variantId: '41465933070400',
-    priceRange: { minVariantPrice: zar('6500.00') },
-    images: [bodyboard.front('Wawa Bodyboard, deck'), bodyboard.back('Wawa Bodyboard, hull')],
-    featured: 7,
-    specs: [
-      [
-        { label: 'Best For', value: 'Punchy beach breaks' },
-        { label: 'Board Feel', value: 'Fast and direct' },
-        { label: 'Skill Level', value: 'All levels' },
-      ],
-      [
-        { label: 'Designer', value: 'Cobus Joubert' },
-        { label: 'Material', value: 'Cork deck, recycled foam core, paulownia bottom' },
         { label: 'Finish', value: 'Matte' },
       ],
     ],

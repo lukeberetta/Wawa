@@ -12,7 +12,7 @@ export const disciplines: Discipline[] = [
     intro:
       'Shapes built by surfers, from timber over foam cores with cork rails to solid-wood alaias. From the Classic Fish to the Alaia, every outline carries a piece of surfing’s lineage.',
     hero: '/img/category/surf.webp',
-    categories: ['Short', 'Mid', 'Long', 'Finless', 'Custom'],
+    categories: ['Short', 'Mid', 'Long', 'Finless'],
   },
   {
     handle: 'foil',
@@ -21,7 +21,7 @@ export const disciplines: Discipline[] = [
     intro:
       'Paulownia and cork foilboards for prone, wave and wing riding. Choose a shape or talk to us about a custom build for your weight, conditions and foil setup.',
     hero: '/img/category/foil.webp',
-    categories: ['Prone', 'Wave', 'Wing', 'Custom'],
+    categories: [],
   },
   {
     handle: 'kite',
@@ -30,14 +30,6 @@ export const disciplines: Discipline[] = [
     intro:
       'The same timber-and-cork construction, tuned for wind. Stiff flex, controlled energy return and a direct connection to the water. Tomo, trick and vlieer shapes.',
     hero: '/img/category/kite.webp',
-    categories: ['Tomo', 'Trick', 'Vlieer'],
-  },
-  {
-    handle: 'skate',
-    title: 'Skate',
-    blurb: 'Wooden cruisers and shapes for flat days.',
-    intro: 'For the days the sea goes flat. Wooden cruisers built from the same materials as the boards.',
-    hero: '/img/category/skate.webp',
     categories: [],
   },
   {
@@ -47,7 +39,15 @@ export const disciplines: Discipline[] = [
     intro:
       'Get closer to the wave with handplanes, bodyboards and paipos. From bodysurfing to prone riding, small craft bring a different feel to a familiar break.',
     hero: '/img/category/body-belly.webp',
-    categories: ['Bodysurf', 'Bodyboard', 'Paipo', 'Skimboard'],
+    categories: [],
+  },
+  {
+    handle: 'skate',
+    title: 'Skate',
+    blurb: 'Wooden cruisers and shapes for flat days.',
+    intro: 'For the days the sea goes flat. Wooden cruisers built from the same materials as the boards.',
+    hero: '/img/category/skate.webp',
+    categories: [],
   },
   {
     handle: 'accessories',
