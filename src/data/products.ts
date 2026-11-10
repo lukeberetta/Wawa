@@ -57,6 +57,7 @@ const miniSimmons = studioSet('mini-simmons');
 const foilWing = studioSet('foil-wing');
 const modelP = studioSet('model-p');
 const modelL = studioSet('model-l');
+const bigBonzer = studioSet('big-bonzer-3');
 
 /** Empty-room plate for anything not yet photographed. One image, so no hover swap. */
 const soon = (title: string) => [
@@ -223,6 +224,37 @@ export const products: Product[] = [
       [
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/big-bonzer-3',
+    handle: 'big-bonzer-3',
+    title: 'Big Bonzer 3',
+    description:
+      'Our take on the bonzer, the design the Campbell brothers developed in the early 1970s. A centre fin is paired with two long, low side keels that channel water through deep double concaves in the tail, giving drive and hold through long, carving turns. Wood and cork over an EPS core, 7′11″ × 21¼″ × 3¼″. Talk to us about dimensions for your weight and the waves you ride.',
+    productType: 'Surf',
+    tags: ['Mid'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: zar('19500.00') },
+    images: [
+      bigBonzer.front('Wawa Big Bonzer 3, deck'),
+      bigBonzer.back('Wawa Big Bonzer 3 bottom with centre fin and bonzer side keels'),
+      {
+        url: '/img/product/big-bonzer-3-detail.webp',
+        altText: 'Hand-drawn laminate on the Big Bonzer 3: a winged figure with a "Bonzer Three" banner, 2026',
+      },
+    ],
+    specs: [
+      [
+        { label: 'Best For', value: 'Medium to overhead waves' },
+        { label: 'Board Feel', value: 'Drive and hold' },
+        { label: 'Skill Level', value: 'Intermediate to advanced' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Wood & cork, EPS core' },
         { label: 'Finish', value: 'Matte' },
       ],
     ],
