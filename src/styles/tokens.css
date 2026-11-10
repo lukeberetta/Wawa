@@ -12,6 +12,8 @@
   --warm: #9c7d5e;
   /* brighter, more saturated warm — for accents that need to pop */
   --accent: #bc854e;
+  /* sun-baked terracotta — the one saturated colour, kept for the shop strip */
+  --clay: #b0532f;
 
   /* type */
   /* system-ui carries the brief moment before PolySans swaps in — no webfont
@@ -51,9 +53,10 @@
 
   /* layout */
   --bar-h: 66px; /* top bar: logo + cart (+ burger on mobile) */
-  --nav-h: var(--bar-h); /* full header height — pages offset content by this */
+  --announce-h: 44px; /* announcement strip above the bar (Nav); 0 once dismissed */
+  --nav-h: calc(var(--bar-h) + var(--announce-h)); /* full header height — pages offset content by this */
   --wrap-pad: 2rem;
-  --footer-h: 420px; /* reveal footer panel height; main reserves this space */
+  --footer-h: 520px; /* reveal footer panel height; main reserves this space */
   --radius-pill: 100px;
 
   /* Editorial 2-column grid (see .grid-2 in global.css). One track definition
@@ -81,8 +84,14 @@
 @media (max-width: 768px) {
   :root {
     --bar-h: 52px;
-    --nav-h: var(--bar-h);
+    --announce-h: 40px;
+    --nav-h: calc(var(--bar-h) + var(--announce-h));
     --wrap-pad: 1.25rem;
-    --footer-h: 320px;
+    --footer-h: 380px;
   }
+}
+
+/* announcement dismissed (flag set in <head> before paint, see Layout) */
+:root.no-announce {
+  --announce-h: 0px;
 }

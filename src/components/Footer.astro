@@ -1,9 +1,10 @@
 ---
 import { site } from '@/lib/site';
+import PaymentIcons from '@/components/PaymentIcons.astro';
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer" aria-label="Site footer">
+<footer class="site-footer grain" aria-label="Site footer">
   <!-- The footer is fixed behind the page and sits on all 41 routes, so it must
        never cost anything up front: no source elements (their presence starts
        a fetch whatever `preload` says) and the poster carries the panel until
@@ -24,6 +25,7 @@ const year = new Date().getFullYear();
     <a class="f-order" href="/products">
       Shop the workshop <span aria-hidden="true">→</span>
     </a>
+    {site.salesOpen && <PaymentIcons class="f-pay" />}
     <p class="f-meta">© {year} {site.name}</p>
   </div>
 </footer>
@@ -79,6 +81,11 @@ const year = new Date().getFullYear();
       color-mix(in srgb, var(--ink) 56%, transparent)
     );
   }
+  /* film grain over video + gradient, under the text — matches #hero */
+  .site-footer.grain::after {
+    z-index: 1;
+    --grain-opacity: 0.2;
+  }
   .footer-inner {
     position: relative;
     z-index: 2;
@@ -124,6 +131,10 @@ const year = new Date().getFullYear();
     opacity: 0.85;
     gap: 0.9rem;
   }
+  /* payment marks: a quiet row between the button and the copyright */
+  .footer-inner :global(.f-pay) {
+    justify-content: center;
+  }
   .f-meta {
     font-size: 0.78rem;
     color: color-mix(in srgb, var(--cream) 48%, transparent);
@@ -133,14 +144,14 @@ const year = new Date().getFullYear();
      `--reveal` (0–1) is driven by JS from scroll position: the text sharpens
      and fades in as the footer is uncovered, and blurs back out on scroll up.
      No-JS / fallback keeps the content fully visible and sharp. */
-  .footer-inner > * {
+  .footer-inner > :global(*) {
     opacity: var(--reveal, 1);
     filter: blur(calc((1 - var(--reveal, 1)) * 12px));
     will-change: opacity, filter;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .footer-inner > * {
+    .footer-inner > :global(*) {
       opacity: 1;
       filter: none;
     }

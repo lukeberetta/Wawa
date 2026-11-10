@@ -1,0 +1,40 @@
+---
+/**
+ * Row of accepted payment marks (site.payments). Used under every buy point
+ * (PDP, cart) and in the footer, so shoppers see Apple Pay / cards before they
+ * reach Shopify's checkout.
+ */
+import { site } from '@/lib/site';
+
+export interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+const label = `We accept ${site.payments.map((p) => p.name).join(', ')}`;
+---
+
+<ul class:list={['pay-icons', className]} aria-label={label}>
+  {
+    site.payments.map((p) => (
+      <li>
+        <img src={`/payment/${p.file}.svg`} alt={p.name} width="38" height="24" loading="lazy" />
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .pay-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .pay-icons img {
+    display: block;
+    width: 34px;
+    height: auto;
+  }
+</style>

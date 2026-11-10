@@ -1,7 +1,8 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import ProductCard from '@/components/ProductCard.astro';
-import { disciplines, getProducts, slug, formatPrice, makeYourOwnPrice } from '@/lib/catalog';
+import PaymentIcons from '@/components/PaymentIcons.astro';
+import { disciplines, getProducts, slug, formatPrice, makeYourOwnPrice, isBuyable } from '@/lib/catalog';
 import { site } from '@/lib/site';
 import { ORG_ID, abs, breadcrumbs } from '@/lib/schema';
 import type { Product, Discipline } from '@/lib/types';
@@ -45,11 +46,7 @@ const defaultAmount = amounts.includes(1000) ? 1000 : amounts[0];
 const defaultVariant = variants.find((v) => Number(v.price) === defaultAmount);
 const zarText = (n: number) => `R${n.toLocaleString('en-US')}`;
 // Buyable only with stock + variant id(s) + a configured shop.
-const buyable =
-  site.salesOpen &&
-  product.availableForSale &&
-  !!site.shopDomain &&
-  (sized ? variants.every((v) => v.id) : !!product.variantId);
+const buyable = isBuyable(product);
 // An accessory without its Shopify ids yet is waiting, not made to order.
 const comingSoon = !buyable && product.productType === 'Accessories';
 // Several options (model / size / colour): one picker each, starting on the
@@ -360,6 +357,14 @@ const crumbs = breadcrumbs([
                   >
                     Enquire about this board
                   </button>
+                )
+              }
+              {
+                buyable && (
+                  <div class="pay-note">
+                    <p class="info-note">Secure checkout. Pay by card, Apple Pay or Google Pay.</p>
+                    <PaymentIcons />
+                  </div>
                 )
               }
               {
@@ -738,6 +743,9 @@ const crumbs = breadcrumbs([
     color: var(--muted);
     margin-top: 0.85rem;
     max-width: 44ch;
+  }
+  .pay-note .info-note {
+    margin-bottom: 0.6rem;
   }
 
   /* "Make it yourself" — an opt-in add-on card rather than a picker. A warm

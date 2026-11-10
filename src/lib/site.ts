@@ -57,6 +57,24 @@ export const site = {
   // Master switch for add-to-cart. Off = every buyable item shows "Coming soon"
   // (boards keep Enquire). Flip on once Yoco + real prices are live.
   salesOpen: true,
+  // Strip above the nav on every page. Dismissal is remembered per `id`, so
+  // bump the id when the message changes and everyone sees the new one.
+  // Set to null to remove the strip.
+  announce: {
+    id: 'shop-open-2026-11',
+    text: 'Our online shop is open',
+    cta: 'Shop now',
+    href: '/products',
+  } as { id: string; text: string; cta: string; href: string } | null,
+  // Methods the Yoco gateway offers on Shopify's checkout. Icons in
+  // /public/payment are Shopify's open payment_icons set (activemerchant).
+  payments: [
+    { file: 'visa', name: 'Visa' },
+    { file: 'mastercard', name: 'Mastercard' },
+    { file: 'amex', name: 'American Express' },
+    { file: 'apple_pay', name: 'Apple Pay' },
+    { file: 'google_pay', name: 'Google Pay' },
+  ],
   // `dropdown` (disciplines drilled in Nav.astro) makes Shop a two-level row.
   nav: [
     { href: '/products', label: 'Shop', dropdown: true },

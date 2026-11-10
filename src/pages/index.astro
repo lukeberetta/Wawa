@@ -39,7 +39,7 @@ const igTiles = [
 
 <Layout current="home" overlay={true}>
   <!-- HERO -->
-  <section id="hero">
+  <section id="hero" class="grain">
     <!-- The poster is the LCP image and paints on its own. Sources are attached
          by script after `load`, so 2.6MB of video never competes with first
          paint — see the hero-video script below for the size + opt-out rules.
@@ -123,7 +123,7 @@ const igTiles = [
           href={site.instagram}
           target="_blank"
           rel="noopener noreferrer"
-          class:list={['ig-tile', `ig-tile--${t.area}`, { 'ig-tile--feat': t.feat }]}
+          class:list={['ig-tile', 'grain', `ig-tile--${t.area}`, { 'ig-tile--feat': t.feat }]}
           aria-label="View on Instagram"
         >
           <img class="ig-img" src={`/img/insta/${t.img}.webp`} alt="" loading="lazy" decoding="async" />
@@ -231,6 +231,11 @@ const igTiles = [
         color-mix(in srgb, var(--ink) 38%, transparent),
         color-mix(in srgb, var(--ink) 56%, transparent)
       );
+  }
+  /* film grain over video + gradient, under the text (see .grain) */
+  #hero.grain::after {
+    z-index: 1;
+    --grain-opacity: 0.2;
   }
   #hero .wrap {
     position: relative;
@@ -421,6 +426,8 @@ const igTiles = [
     opacity: 0.8;
     filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.45));
     pointer-events: none;
+    /* above the tile's grain (.grain::after), like the caption */
+    z-index: 1;
     transition: color 0.35s var(--ease), opacity 0.35s var(--ease);
   }
   /* caption + gradient are hidden until hover, then fade up over the tile */

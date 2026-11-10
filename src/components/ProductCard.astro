@@ -1,12 +1,23 @@
 ---
 import type { Product } from '@/lib/types';
-import { formatPrice, slug } from '@/lib/catalog';
+import { formatPrice, slug, isBuyable } from '@/lib/catalog';
 
 export interface Props {
   product: Product;
 }
 const { product } = Astro.props;
 const price = formatPrice(product);
+// Availability chip, so buy-now and made-to-order sit apart at a glance.
+// Gift cards skip it (nothing to "make"); unreleased accessories already say
+// "Coming soon" in the price line.
+const buyable = isBuyable(product);
+const status = product.customAmount
+  ? null
+  : buyable
+    ? 'Buy online'
+    : product.productType !== 'Accessories'
+      ? 'Made to order'
+      : null;
 const href = `/products/${slug(product.productType)}/${product.handle}`;
 // Every product has a lead image — its own deck shot, or the empty-room plate.
 const front = product.images[0];
@@ -43,6 +54,9 @@ const frontAlt = front?.altText ?? product.title;
         width="1600"
         height="2000"
       />
+    )}
+    {status && (
+      <span class:list={['card-status', { 'is-live': buyable }]}>{status}</span>
     )}
     <a class="card-link" href={href} aria-label={`View the ${product.title}`}></a>
   </div>
@@ -123,6 +137,34 @@ const frontAlt = front?.altText ?? product.title;
   @media (prefers-reduced-motion: reduce) {
     .card-img-back {
       transition: none;
+    }
+  }
+  /* availability chip, top-left over the image. Made to order is a quiet
+     translucent wash; Buy online is solid ink, the one that should pop. */
+  .card-status {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 2;
+    pointer-events: none;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.6rem;
+    line-height: 1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: color-mix(in srgb, var(--cream) 82%, transparent);
+  }
+  .card-status.is-live {
+    color: var(--cream);
+    background: var(--ink);
+  }
+  @media (max-width: 520px) {
+    .card-status {
+      top: 0.5rem;
+      left: 0.5rem;
+      padding: 0.35rem 0.5rem;
+      font-size: 0.55rem;
     }
   }
   .card-link {

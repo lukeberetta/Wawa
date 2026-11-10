@@ -58,6 +58,14 @@ const graph = {
     <!-- Flag JS early (before paint) so the .fade-in reveal only arms when it
          can actually be driven — no-JS keeps all content visible. -->
     <script is:inline>document.documentElement.classList.add('js');</script>
+    <!-- Hide a dismissed announcement before paint, so the strip (and the
+         --nav-h offset every page uses) never flashes in and jumps out. -->
+    <script is:inline define:vars={{ announceId: site.announce?.id ?? '' }}>
+      try {
+        if (!announceId || localStorage.getItem('wawa-announce') === announceId)
+          document.documentElement.classList.add('no-announce');
+      } catch (e) {}
+    </script>
 
     <!-- iOS / Android standalone: Add to Home Screen launches chrome-free -->
     <meta name="apple-mobile-web-app-capable" content="yes" />

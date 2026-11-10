@@ -39,6 +39,18 @@ export const MAKE_YOUR_OWN_MARKUP = 1.2;
 export const makeYourOwnPrice = (amount: string | number): number =>
   Math.round(Number(amount) * MAKE_YOUR_OWN_MARKUP);
 
+/** Can go in the cart: sales open, in stock, a shop configured and a Shopify
+ *  id on every variant (or on the product, when it has none). */
+export function isBuyable(p: Product): boolean {
+  const v = p.variants ?? [];
+  return (
+    site.salesOpen &&
+    p.availableForSale &&
+    !!site.shopDomain &&
+    (v.length > 0 ? v.every((x) => x.id) : !!p.variantId)
+  );
+}
+
 /** Format Storefront Money as a ZAR price string, or "Enquire" when POA.
  *  Accessories read "Coming soon" while sales are closed (salesOpen off). */
 export function formatPrice(p: Product): string {
