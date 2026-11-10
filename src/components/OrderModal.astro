@@ -40,13 +40,30 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
 
     <form class="order-body" data-order-form data-lenis-prevent>
       <p class="order-intro">
-        Tell us what you’d like to ride and where you surf. All fields are optional — share what
-        you know, and we’ll work out the details together. Continue to WhatsApp or open an email
-        draft to send your enquiry.
+        Tell us a little about what you’re after. Everything’s optional — we’ll work out the
+        rest together.
       </p>
 
-      <fieldset class="order-group">
-        <legend class="label">Board</legend>
+      <p class="order-about" data-order-about hidden>
+        About: <span data-order-about-title></span>
+      </p>
+
+      <div class="order-grid">
+        <label class="order-field order-field-wide">
+          <span>Your name</span>
+          <input type="text" name="name" autocomplete="name" />
+        </label>
+        <label class="order-field order-field-wide">
+          <span>What are you after?</span>
+          <textarea
+            name="additional"
+            rows="3"
+            placeholder="A mid for mellow points, a gift, questions about lead time…"></textarea>
+        </label>
+      </div>
+
+      <details class="order-more">
+        <summary>Add board details <span class="order-opt">optional</span></summary>
         <div class="order-grid">
           <label class="order-field">
             <span>Discipline</span>
@@ -85,15 +102,11 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
             <input type="text" name="wave" placeholder="Beachbreak, point, mushy…" autocomplete="off" />
           </label>
         </div>
-      </fieldset>
+      </details>
 
-      <fieldset class="order-group">
-        <legend class="label">You</legend>
+      <details class="order-more">
+        <summary>Add your size &amp; skill <span class="order-opt">optional</span></summary>
         <div class="order-grid">
-          <label class="order-field order-field-wide">
-            <span>Name</span>
-            <input type="text" name="name" autocomplete="name" />
-          </label>
           <label class="order-field">
             <span>Height</span>
             <input type="text" name="height" placeholder="e.g. 180 cm" autocomplete="off" />
@@ -114,15 +127,7 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
             </select>
           </label>
         </div>
-      </fieldset>
-
-      <fieldset class="order-group">
-        <legend class="label">Anything else</legend>
-        <label class="order-field order-field-wide">
-          <span class="order-sr">Notes</span>
-          <textarea name="additional" rows="3" placeholder="Colours, timeline, references, questions…"></textarea>
-        </label>
-      </fieldset>
+      </details>
 
       <div class="order-actions">
         <button class="order-submit" type="submit">
@@ -218,14 +223,57 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
     line-height: 1.45;
     color: var(--muted);
   }
-  .order-group {
-    border: 0;
-    padding: 0;
-    margin: 0;
+  /* product the enquiry came from (PDP) — so it's clear it's already attached */
+  .order-about {
+    font-size: 0.85rem;
+    color: var(--muted);
+    padding: 0.7rem 0.85rem;
+    background: color-mix(in srgb, var(--warm) 9%, var(--cream));
   }
-  .order-group .label {
-    display: block;
-    margin-bottom: 0.75rem;
+  .order-about span {
+    color: var(--ink);
+  }
+  .order-about[hidden] {
+    display: none;
+  }
+  /* optional detail sections, collapsed: one quiet row each with a +/− */
+  .order-more {
+    border-top: 1px solid var(--rule);
+  }
+  .order-more + .order-more {
+    margin-top: -1.5rem; /* cancel the body gap: the two rows read as one list */
+  }
+  .order-more:last-of-type {
+    border-bottom: 1px solid var(--rule);
+  }
+  .order-more summary {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.95rem 0;
+    font-size: 0.9rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .order-more summary::-webkit-details-marker {
+    display: none;
+  }
+  .order-more summary::after {
+    content: '+';
+    margin-left: auto;
+    font-size: 1.2rem;
+    line-height: 1;
+    color: var(--muted);
+  }
+  .order-more[open] summary::after {
+    content: '−';
+  }
+  .order-opt {
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  .order-more .order-grid {
+    padding-bottom: 1.25rem;
   }
   .order-grid {
     display: grid;
@@ -374,7 +422,9 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
     lockScroll(open);
     if (open) {
       overlay.hidden = false;
-      releaseTrap = trapFocus(modal, discEl);
+      // focus the close button, not a field — on phones a focused input pops
+      // the keyboard over the form before anyone has read it
+      releaseTrap = trapFocus(modal, closeBtn);
     } else {
       releaseTrap?.();
       releaseTrap = null;
@@ -408,6 +458,12 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
   function prefillFrom(el: HTMLElement) {
     const d = el.dataset;
     productTitle = d.orderTitle || '';
+    const about = modal?.querySelector<HTMLElement>('[data-order-about]');
+    const aboutTitle = modal?.querySelector<HTMLElement>('[data-order-about-title]');
+    if (about && aboutTitle) {
+      aboutTitle.textContent = productTitle;
+      about.hidden = !productTitle;
+    }
     if (discEl && d.orderDiscipline && categoryMap[d.orderDiscipline]) {
       discEl.value = d.orderDiscipline;
     }
@@ -453,14 +509,14 @@ const finSetups = ['Thruster', 'Twin', 'Quad', 'Single', '2 + 1', 'Finless', 'No
     ].filter(([, val]) => val);
 
     const lines: string[] = ["Hi Wawa, I'd like to discuss a custom board."];
+    const notes = v('additional');
+    if (notes) lines.push('', notes);
     if (board.length) {
       lines.push('', '— Board —', ...board.map(([k, val]) => `${k}: ${val}`));
     }
     if (rider.length) {
       lines.push('', '— Rider —', ...rider.map(([k, val]) => `${k}: ${val}`));
     }
-    const notes = v('additional');
-    if (notes) lines.push('', `Notes: ${notes}`);
     return lines.join('\n');
   }
 
