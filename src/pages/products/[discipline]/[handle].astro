@@ -99,6 +99,10 @@ const builds = [
     price: hasPrice ? fromPrice(makeYourOwnPrice(boardAmount)) : price,
   },
 ];
+// The add-on card quotes the difference, not the total ("+ R3,500").
+const buildUpcharge = hasPrice
+  ? `+ R${(makeYourOwnPrice(boardAmount) - boardAmount).toLocaleString('en-US')}`
+  : '+ 20%';
 
 // Each slide's option value (filterable products only) — the gallery hides
 // the others once a value is picked.
@@ -303,17 +307,29 @@ const crumbs = breadcrumbs([
               }
               {
                 selfBuild && (
-                  <fieldset class="sizes" data-build>
-                    <legend class="sizes-legend">Build</legend>
-                    <div class="sizes-row">
-                      {builds.map((b, i) => (
-                        <label class="size">
-                          <input type="radio" name="build" value={b.value} data-price={b.price} checked={i === 0} />
-                          <span>{b.value}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </fieldset>
+                  <label class="addon" data-build>
+                    <input
+                      type="checkbox"
+                      name="build"
+                      data-off={builds[0].value}
+                      data-on={builds[1].value}
+                      data-price-off={builds[0].price}
+                      data-price-on={builds[1].price}
+                    />
+                    <span class="addon-box" aria-hidden="true">
+                      <svg viewBox="0 0 12 12"><path d="M2.5 6.2 5 8.6l4.5-5.2" /></svg>
+                    </span>
+                    <span class="addon-body">
+                      <span class="addon-eyebrow">Workshop add-on</span>
+                      <span class="addon-head">
+                        <span class="addon-title">Make it yourself</span>
+                        <span class="addon-price">{buildUpcharge}</span>
+                      </span>
+                      <span class="addon-desc">
+                        Shape this board with us, start to finish, over seven 3-hour sessions in our {site.location.split(',')[0]} workshop. You learn the craft and paddle out on a board you made yourself.
+                      </span>
+                    </span>
+                  </label>
                 )
               }
               {
@@ -352,7 +368,6 @@ const crumbs = breadcrumbs([
                     {hasPrice
                       ? 'Made to order — ask us about your build and lead time.'
                       : 'Made to order — ask us about pricing and lead time.'}
-                    {selfBuild && ' Make it yourself: shape it with us over seven 3-hour workshop sessions, for 20% more.'}
                   </p>
                 )
               }
@@ -725,6 +740,100 @@ const crumbs = breadcrumbs([
     max-width: 44ch;
   }
 
+  /* "Make it yourself" — an opt-in add-on card rather than a picker. A warm
+     tint + accent eyebrow set it apart from the plain size chips; ticking it
+     firms the hairline to ink so the upgrade reads as chosen. */
+  .addon {
+    position: relative;
+    display: flex;
+    gap: 0.9rem;
+    max-width: 360px; /* matches .pdp-action so the column's right edge holds */
+    margin-bottom: 1.25rem;
+    padding: 1.1rem 1.2rem 1.2rem;
+    background: color-mix(in srgb, var(--accent) 7%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--rule));
+    cursor: pointer;
+    transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+  }
+  .addon:hover {
+    border-color: var(--accent);
+  }
+  .addon:has(input:checked) {
+    background: color-mix(in srgb, var(--accent) 12%, var(--cream));
+    border-color: var(--ink);
+  }
+  .addon:has(input:focus-visible) {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+  .addon input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .addon-box {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.1rem;
+    border: 1px solid var(--ink);
+    background: var(--cream);
+    transition: background 0.2s var(--ease);
+  }
+  .addon-box svg {
+    width: 0.8rem;
+    height: 0.8rem;
+    fill: none;
+    stroke: var(--cream);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0;
+    transition: opacity 0.15s var(--ease);
+  }
+  .addon input:checked + .addon-box {
+    background: var(--ink);
+  }
+  .addon input:checked + .addon-box svg {
+    opacity: 1;
+  }
+  .addon-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .addon-eyebrow {
+    font-size: var(--fs-eyebrow);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .addon-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.35rem;
+  }
+  .addon-title {
+    font-size: var(--fs-h3);
+    line-height: 1.15;
+  }
+  .addon-price {
+    flex: none;
+    font-size: var(--fs-caption);
+    letter-spacing: 0.04em;
+  }
+  .addon-desc {
+    margin-top: 0.55rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
   /* ── Sticky buy bar ── persistent, but slides away as the footer reveals ── */
   .pdp-bar {
     position: fixed;
@@ -1084,15 +1193,18 @@ const crumbs = breadcrumbs([
 
   // ── Build ── "We build it" / "Make it yourself": re-price the buy bar and
   // hand the choice to the enquiry buttons (OrderModal reads data-order-build).
-  const build = document.querySelector<HTMLFieldSetElement>('[data-build]');
+  const build = document.querySelector<HTMLInputElement>('[data-build] input');
   if (build) {
     const barPrice = document.querySelector<HTMLElement>('.pdp-bar-price');
     const enquire = Array.from(document.querySelectorAll<HTMLElement>('[data-order][data-order-build]'));
-    build.addEventListener('change', (e) => {
-      const input = e.target as HTMLInputElement;
-      if (barPrice && input.dataset.price) barPrice.textContent = input.dataset.price;
-      enquire.forEach((b) => (b.dataset.orderBuild = input.value));
-    });
+    const sync = () => {
+      const d = build.dataset;
+      const price = build.checked ? d.priceOn : d.priceOff;
+      if (barPrice && price) barPrice.textContent = price;
+      enquire.forEach((b) => (b.dataset.orderBuild = (build.checked ? d.on : d.off) ?? ''));
+    };
+    build.addEventListener('change', sync);
+    sync(); // bfcache / restored form state can arrive pre-ticked
   }
 
   // ── Buy bar ── persistent, but tuck it away once the "More from" related
