@@ -12,23 +12,19 @@ const heroSrc = discipline.hero?.startsWith('/') ? discipline.hero : null;
 ---
 
 <article class="card fade-in">
-  <a class="card-media" href={href} aria-label={`View ${discipline.title}`}>
+  <a class:list={['card-media', { grain: heroSrc }]} href={href}>
     {heroSrc && <img class="face" src={heroSrc} alt="" loading="lazy" />}
+    <div class="card-meta">
+      <h3>{discipline.title}</h3>
+    </div>
   </a>
-  <div class="card-meta">
-    <h3><a href={href}>{discipline.title}</a></h3>
-    <p class="card-desc">{discipline.blurb}</p>
-  </div>
 </article>
 
 <style>
-  /* mirrors ProductCard so categories read as the same catalog card. borders
-     live on `.card` (not the page's `.product-grid > *`) because Astro scopes
-     styles per file — a parent selector can't reach this child. */
+  /* same 4:5 cell as ProductCard's media, but the whole cell is image — title
+     sits over it on a bottom scrim. borders live on `.card` (not the
+     page's `.product-grid > *`) because Astro scopes styles per file. */
   .card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
     min-width: 0;
     background: var(--cream);
     border-right: 1px solid var(--rule);
@@ -38,10 +34,10 @@ const heroSrc = discipline.hero?.startsWith('/') ? discipline.hero : null;
     position: relative;
     display: block;
     width: 100%;
-    aspect-ratio: 1 / 1;
-    flex-shrink: 0;
+    aspect-ratio: 4 / 5;
     background: color-mix(in srgb, var(--warm) 8%, var(--cream));
     overflow: hidden;
+    color: var(--cream);
   }
   .face {
     position: absolute;
@@ -49,48 +45,52 @@ const heroSrc = discipline.hero?.startsWith('/') ? discipline.hero : null;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.8s var(--ease);
   }
-  /* meta sits inside the cell, divided from the image by a single hairline */
+  /* scrim: soft radial wash behind the centred title, photo edges stay clean */
+  .card-media::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: radial-gradient(
+      ellipse 70% 40% at center,
+      color-mix(in srgb, var(--ink) 45%, transparent) 0%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
   .card-meta {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
     display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    padding: 1rem 1.1rem 1.2rem;
-    border-top: 1px solid var(--rule);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.1rem;
   }
-  /* title to one line — keeps every cell's meta the same height so the row
-     hairlines line up */
+  /* only one PolySans weight ships (Neutral), so "bold" comes from size, tight
+     tracking and a hairline stroke rather than a synthesised faux-bold */
   .card-meta h3 {
-    font-size: 1.1rem;
-    line-height: 1.3;
-    min-width: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    -webkit-text-stroke: 0.4px var(--cream);
   }
-  .card-meta h3 a {
-    transition: color 0.2s var(--ease);
+  @media (hover: hover) {
+    .card-media:hover .face {
+      transform: scale(1.03);
+    }
   }
-  .card-meta h3 a:hover {
-    color: var(--warm);
-  }
-  /* blurb clamped to two lines so a longer description can't make one card
-     taller than the rest of the row */
-  .card-desc {
-    color: var(--muted);
-    font-size: 0.9rem;
-    line-height: 1.35;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    /* always reserve two lines so a one-line blurb doesn't make its card
-       shorter than the rest of the rail */
-    min-height: calc(0.9rem * 1.35 * 2);
+  @media (prefers-reduced-motion: reduce) {
+    .face {
+      transition: none;
+    }
   }
   @media (max-width: 520px) {
     .card-meta {
-      padding: 0.85rem 0.9rem 1rem;
+      padding: 0.9rem;
     }
-  }
-</style>
+  </style>

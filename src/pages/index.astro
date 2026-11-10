@@ -67,7 +67,16 @@ const igTiles = [
   </section>
 
   <!-- BRAND STATEMENT -->
-  <section id="pullquote">
+  <section id="pullquote" class="grain">
+    <img
+      class="pullquote-img"
+      src="/img/contact/workshop-door.webp"
+      alt=""
+      width={2200}
+      height={1650}
+      loading="lazy"
+      decoding="async"
+    />
     <div class="wrap">
       <p class="label fade-in">Honouring the source</p>
       <p class="quote-text fade-in">
@@ -268,12 +277,58 @@ const igTiles = [
     color: var(--cream);
   }
 
+  /* dark grained band — breaks the cream run between hero and range, and the
+     accent highlight reads stronger on ink than on cream */
   #pullquote {
+    position: relative;
+    overflow: hidden;
     padding: var(--space-section) 0;
-    border-bottom: 1px solid var(--rule);
+    background: var(--ink);
+    color: var(--cream);
+  }
+  /* workshop door photo, shared with contact's Visit band — mirrored so the
+     door sits opposite the quote */
+  .pullquote-img {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+  }
+  /* wash: deep on the left behind the quote, easing off to the right so the
+     door still reads; a vertical stop underneath keeps the band even */
+  #pullquote::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--ink) 85%, transparent) 0%,
+        color-mix(in srgb, var(--ink) 60%, transparent) 55%,
+        color-mix(in srgb, var(--ink) 15%, transparent) 100%
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--ink) 62%, transparent),
+        color-mix(in srgb, var(--ink) 75%, transparent)
+      );
+  }
+  /* grain over photo + wash, under the copy */
+  #pullquote.grain::after {
+    z-index: 1;
+    --grain-opacity: 0.2;
+  }
+  #pullquote .wrap {
+    position: relative;
+    z-index: 2;
   }
   #pullquote .label {
     margin-bottom: 1.5rem;
+    color: color-mix(in srgb, var(--cream) 60%, transparent);
   }
   .quote-text {
     font-size: var(--fs-quote);
@@ -290,7 +345,7 @@ const igTiles = [
     display: block;
     width: clamp(120px, 9rem + 4vw, 190px);
     aspect-ratio: 875 / 260;
-    background: var(--ink);
+    background: var(--cream);
     -webkit-mask: url('/img/signature-cobus.png') no-repeat center / contain;
     mask: url('/img/signature-cobus.png') no-repeat center / contain;
     transform: rotate(-3deg);
@@ -298,7 +353,7 @@ const igTiles = [
   }
   .quote-attr {
     margin-top: 0.75rem;
-    color: var(--muted);
+    color: color-mix(in srgb, var(--cream) 60%, transparent);
     font-size: 0.9rem;
   }
 
