@@ -15,7 +15,7 @@ const meta = (v: Video) =>
 
 <section id="films" class="films" aria-labelledby="films-title">
   <!-- BILLBOARD -->
-  <div class="billboard">
+  <div class="billboard grain">
     <img
       class="billboard-img"
       src={thumbOf(featured)}
@@ -131,8 +131,14 @@ const meta = (v: Video) =>
         linear-gradient(0deg, var(--ink) 0%, rgb(26 20 16 / 0.82) 40%, rgb(26 20 16 / 0.55) 75%, rgb(26 20 16 / 0.35) 100%);
     }
   }
+  /* film grain over still + scrim, under the copy — matches the other heroes */
+  .billboard.grain::after {
+    z-index: 1;
+    --grain-opacity: 0.2;
+  }
   .billboard-copy {
     position: relative;
+    z-index: 2;
     padding-top: calc(var(--nav-h) + var(--space-3xl));
     padding-bottom: clamp(2.5rem, 6vh, 5rem);
   }
