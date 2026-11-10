@@ -53,6 +53,9 @@ const giftCard = studioSet('gift-card');
 const waxComb = studioSet('wax-comb');
 const speedEgg = studioSet('speed-egg');
 const spex = studioSet('spex');
+const miniSimmons = studioSet('mini-simmons');
+const foilWing = studioSet('foil-wing');
+const modelP = studioSet('model-p');
 
 /** Empty-room plate for anything not yet photographed. One image, so no hover swap. */
 const soon = (title: string) => [
@@ -152,7 +155,10 @@ export const products: Product[] = [
     tags: ['Short'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('17500.00') },
-    images: soon('Wawa Mini-Simmons'),
+    images: [
+      miniSimmons.front('Wawa Mini-Simmons deck in paulownia with a green seagrass inlay'),
+      miniSimmons.back('Wawa Mini-Simmons bottom with quad fin boxes and red twin fins'),
+    ],
     specs: [
       [
         { label: 'Best For', value: 'Small to medium waves' },
@@ -232,7 +238,11 @@ export const products: Product[] = [
     tags: ['Long'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('22500.00') },
-    images: soon('Wawa Model P'),
+    images: [
+      modelP.front('Wawa Model P Longboard, deck'),
+      modelP.back('Wawa Model P Longboard, hull'),
+      { url: '/img/product/model-p-detail.webp', altText: 'Hand-drawn flying pig laminate on the Model P hull: "pigs can fly, the ocean brings out the best in us"' },
+    ],
     specs: [
       [
         { label: 'Best For', value: 'Small to medium waves' },
@@ -389,7 +399,10 @@ export const products: Product[] = [
     tags: ['Wing'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('35000.00') },
-    images: soon('Wawa wing foilboard'),
+    images: [
+      foilWing.front('Wawa Wing Foilboard deck with footstrap inserts'),
+      foilWing.back('Wawa Wing Foilboard bottom with twin foil tracks and carry handle'),
+    ],
     specs: [
       [
         { label: 'Best For', value: 'Wind and wing' },
