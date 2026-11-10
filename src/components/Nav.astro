@@ -260,12 +260,13 @@ const isActive = (label: string) => {
   }
   .announce-close {
     position: absolute;
-    right: max(var(--wrap-pad), env(safe-area-inset-right));
+    /* same × spec as the cart drawer: glyph on the gutter, padding outside */
+    right: calc(max(var(--wrap-pad), env(safe-area-inset-right)) - 0.5rem);
     top: 50%;
     transform: translateY(-50%);
     background: none;
     border: 0;
-    padding: 0.25rem;
+    padding: 0.5rem;
     font-size: 1.25rem;
     line-height: 1;
     color: color-mix(in srgb, var(--cream) 65%, transparent);

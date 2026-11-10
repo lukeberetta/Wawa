@@ -6,9 +6,9 @@
  * a plain form post (the function redirects back with #subscribed); with JS it
  * submits in place and swaps the field for a confirmation.
  *
- * Styled as a footer-nav column: input text matches the link size, an arrow
- * submits (the site's action glyph), one caption below. `compact` drops the
- * caption and shrinks the type for the cart drawer.
+ * A single dark field, no visible button: Enter submits (the button stays
+ * for screen readers), one caption below. `compact` drops the caption and
+ * tightens padding for the cart drawer.
  *
  *   source — tagged on the Shopify customer as `signup:<source>`
  */
@@ -42,59 +42,35 @@ const id = `signup-${source}`;
     <input type="hidden" name="source" value={source} />
     <!-- honeypot: hidden from people, bots fill it -->
     <input class="signup-hide" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
-    <button type="submit" aria-label="Sign up"><span aria-hidden="true">→</span></button>
+    <button class="signup-hide" type="submit">Sign up</button>
   </div>
   <p class="signup-msg" role="status" aria-live="polite"></p>
-  {!compact && <p class="signup-note">A few emails a year.</p>}
+  {!compact && <p class="signup-note">New boards, sales and workshop events. A few emails a year.</p>}
 </form>
 
 <style>
+  /* a single dark field; Enter submits (the button is visually hidden) */
   .signup-row {
     display: flex;
-    align-items: baseline;
-    border-bottom: 1px solid var(--rule);
-    transition: border-color 0.2s var(--ease);
-  }
-  .signup-row:focus-within {
-    border-bottom-color: var(--ink);
   }
   .signup-row input[type='email'] {
     flex: 1;
     min-width: 0;
     font: inherit;
-    font-size: var(--fs-lead);
-    font-weight: var(--fw-light);
-    color: var(--ink);
-    background: transparent;
+    font-size: var(--fs-body);
+    color: var(--cream);
+    background: var(--ink);
     border: 0;
     border-radius: 0;
-    padding: 0 0 var(--space-2xs);
+    padding: 0.85rem 1rem;
     outline: none;
+    transition: box-shadow 0.2s var(--ease);
   }
   .signup-row input::placeholder {
-    color: var(--muted);
+    color: color-mix(in srgb, var(--cream) 55%, transparent);
   }
-  .signup-row button {
-    font: inherit;
-    font-size: var(--fs-lead);
-    font-weight: var(--fw-light);
-    line-height: 1;
-    color: var(--ink);
-    background: none;
-    border: 0;
-    padding: 0 0 var(--space-2xs) var(--space-sm);
-    cursor: pointer;
-    transition: color 0.2s var(--ease), transform 0.3s var(--ease);
-  }
-  .signup-row button:hover,
-  .signup-row button:focus-visible {
-    color: var(--warm);
-    transform: translateX(4px);
-  }
-  .signup-row button:disabled {
-    color: var(--rule);
-    transform: none;
-    cursor: default;
+  .signup-row input:focus-visible {
+    box-shadow: 0 0 0 2px var(--cream), 0 0 0 3px var(--ink);
   }
   .signup-msg,
   .signup-note {
@@ -118,8 +94,7 @@ const id = `signup-${source}`;
   }
   .signup.is-done .signup-msg {
     margin-top: 0;
-    font-size: var(--fs-lead);
-    font-weight: var(--fw-light);
+    font-size: var(--fs-body);
     color: var(--ink);
   }
   .signup-hide {
@@ -134,9 +109,7 @@ const id = `signup-${source}`;
   /* compact (cart): caption-sized, but the input stays 16px so iOS won't zoom */
   .signup-compact .signup-row input[type='email'] {
     font-size: 16px;
-  }
-  .signup-compact .signup-row button {
-    font-size: 1rem;
+    padding: 0.6rem 0.8rem;
   }
   .signup-compact.is-done .signup-msg {
     font-size: var(--fs-caption);

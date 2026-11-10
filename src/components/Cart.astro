@@ -8,7 +8,6 @@
  */
 import { site } from '@/lib/site';
 import { getProducts } from '@/lib/catalog';
-import Signup from '@/components/Signup.astro';
 import PaymentIcons from '@/components/PaymentIcons.astro';
 const enabled = !!site.shopDomain;
 
@@ -57,9 +56,6 @@ for (const p of await getProducts()) {
             <PaymentIcons />
           </div>
         </footer>
-        <div class="cart-signup">
-          <Signup source="cart" compact placeholder="Email me workshop news" />
-        </div>
       </aside>
     </>
   )
@@ -87,6 +83,9 @@ for (const p of await getProducts()) {
     right: 0;
     z-index: 126;
     width: min(90vw, 408px);
+    /* the drawer meets the viewport edge, so its gutter is the page gutter —
+       keeps every × in one column with the announcement close above */
+    --cart-pad: max(var(--wrap-pad), env(safe-area-inset-right));
     display: flex;
     flex-direction: column;
     background: var(--cream);
@@ -102,7 +101,7 @@ for (const p of await getProducts()) {
     align-items: center;
     justify-content: space-between;
     height: var(--bar-h);
-    padding: 0 1.75rem;
+    padding: 0 var(--cart-pad);
     border-bottom: 1px solid var(--rule);
   }
   /* match the nav link type */
@@ -114,14 +113,18 @@ for (const p of await getProducts()) {
   .cart-head-count {
     color: var(--muted);
   }
+  /* × buttons share one spec with .announce-close (Nav): 1.25rem glyph,
+     0.5rem padding pulled back by a negative margin, so the glyph sits on
+     the gutter and the hit area stays generous */
   .cart-close {
     background: none;
     border: 0;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     line-height: 1;
     color: var(--muted);
     cursor: pointer;
-    padding: 0 0.1rem;
+    padding: 0.5rem;
+    margin-right: -0.5rem;
     transition: color 0.2s var(--ease);
   }
   .cart-close:hover {
@@ -134,7 +137,7 @@ for (const p of await getProducts()) {
     min-height: 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding: 0.5rem 1.75rem 1rem;
+    padding: 0.5rem var(--cart-pad) 1rem;
   }
   /* empty cart: drop the (empty) list so it doesn't split the drawer's height
      with .cart-empty and push the message off-centre */
@@ -253,7 +256,8 @@ for (const p of await getProducts()) {
     cursor: pointer;
     font-size: 1.25rem;
     line-height: 1;
-    padding: 0;
+    padding: 0.5rem;
+    margin-right: -0.5rem;
     align-self: center;
     transition: color 0.2s var(--ease);
   }
@@ -261,7 +265,7 @@ for (const p of await getProducts()) {
     color: var(--ink);
   }
   .cart-foot {
-    padding: 1.25rem 1.75rem calc(1.75rem + env(safe-area-inset-bottom));
+    padding: 1.25rem var(--cart-pad) calc(1.75rem + env(safe-area-inset-bottom));
     border-top: 1px solid var(--rule);
   }
   .cart-subtotal {
@@ -302,14 +306,6 @@ for (const p of await getProducts()) {
     font-size: 0.72rem;
     color: var(--muted);
     white-space: nowrap;
-  }
-  /* quiet, below checkout: one underlined line, no rule of its own */
-  .cart-signup {
-    padding: 0.25rem 1.75rem calc(1.5rem + env(safe-area-inset-bottom));
-  }
-  /* foot visible: it already pads for the home indicator */
-  .cart-foot:not([hidden]) {
-    padding-bottom: 1.25rem;
   }
 
   @media (prefers-reduced-motion: reduce) {
