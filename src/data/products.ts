@@ -383,7 +383,14 @@ export const products: Product[] = [
     tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('30000.00') },
-    images: [foilProne.front('Wawa Prone Foilboard, deck'), foilProne.back('Wawa Prone Foilboard, hull with foil tracks')],
+    images: [
+      foilProne.front('Wawa Prone Foilboard, deck'),
+      foilProne.back('Wawa Prone Foilboard, hull with foil tracks'),
+      {
+        url: '/img/product/foil-prone-detail.webp',
+        altText: 'Hand-drawn flying fish laminate on a Prone Foilboard: "vlieer vis foil", 7\'8 x 20¼ x 6", 110L, wood & EPS, 2024',
+      },
+    ],
     specs: [
       [
         { label: 'Best For', value: 'Open-ocean swell' },
