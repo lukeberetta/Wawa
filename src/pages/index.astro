@@ -71,12 +71,15 @@ const igTiles = [
     <div class="wrap">
       <p class="label fade-in">Honouring the source</p>
       <p class="quote-text fade-in">
-        &ldquo;Way out on the split ends of surfing&rsquo;s fringe sits an anachronistic little
-        wooden surfboard company, built on quality, respect for our roots and a belief in the
-        sanctity of nature. We shape boards and surf craft inspired by the intuited
-        hydrodynamic genius of the ancient Hawaiian board builders.&rdquo;
+        &ldquo;Way out on the split ends of surfing&rsquo;s fringe sits an
+        <span class="hl">anachronistic little wooden surfboard company</span>, built on quality, respect for our roots
+        and a belief in the sanctity of nature. We shape boards and surf craft inspired by the
+        intuited hydrodynamic genius of the ancient Hawaiian board builders.&rdquo;
       </p>
-      <p class="quote-attr fade-in">Cobus Joubert, Founder</p>
+      <div class="quote-sign fade-in">
+        <span class="signature" role="img" aria-label="Cobus's signature"></span>
+        <p class="quote-attr">Cobus Joubert, Founder</p>
+      </div>
     </div>
   </section>
 
@@ -277,8 +280,24 @@ const igTiles = [
     max-width: 30ch;
     line-height: 1.15;
   }
+  .quote-text .hl {
+    color: var(--accent);
+  }
+  .quote-sign {
+    margin-top: 2rem;
+  }
+  .signature {
+    display: block;
+    width: clamp(120px, 9rem + 4vw, 190px);
+    aspect-ratio: 875 / 260;
+    background: var(--ink);
+    -webkit-mask: url('/img/signature-cobus.png') no-repeat center / contain;
+    mask: url('/img/signature-cobus.png') no-repeat center / contain;
+    transform: rotate(-3deg);
+    transform-origin: left center;
+  }
   .quote-attr {
-    margin-top: 1.5rem;
+    margin-top: 0.75rem;
     color: var(--muted);
     font-size: 0.9rem;
   }
