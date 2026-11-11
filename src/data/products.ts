@@ -58,6 +58,10 @@ const foilWing = studioSet('foil-wing');
 const modelP = studioSet('model-p');
 const modelL = studioSet('model-l');
 const bigBonzer = studioSet('big-bonzer-3');
+const moteTwin = studioSet('mote-twin');
+const evoEgg = studioSet('evo-egg');
+const bonzer5 = studioSet('bonzer-5');
+const needleFish = studioSet('needle-fish');
 
 /** Cobus's monoprint exhibition posters, in design order (No. 1 = monoprint-01). */
 const MONOPRINTS = [
@@ -194,6 +198,31 @@ export const products: Product[] = [
       ],
     ],
   },
+  {
+    id: 'mock/bonzer-5',
+    handle: 'bonzer-5',
+    title: 'Bonzer 5',
+    description:
+      'A five-fin bonzer shortboard, after the design the Campbell brothers developed in the 1970s and took to five fins in 1983. A centre fin with two pairs of low side keels channels water through deep double concaves in the tail, for speed off the bottom and hold through tight, carving turns. A pulled-in nose and rounded pin tail, built in paulownia with cork rails. Talk to us about dimensions for your weight and the waves you ride.',
+    productType: 'Surf',
+    tags: ['Short'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: zar('17500.00') },
+    // deck shot only — no back, so no hover swap
+    images: [bonzer5.front('Wawa Bonzer 5 deck in paulownia with cork rails')],
+    specs: [
+      [
+        { label: 'Best For', value: 'Medium to overhead waves' },
+        { label: 'Board Feel', value: 'Drive and hold' },
+        { label: 'Skill Level', value: 'Intermediate to advanced' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
 
   // ── SURF · Mid ───────────────────────────────
   {
@@ -220,6 +249,65 @@ export const products: Product[] = [
       [
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/evo-egg',
+    handle: 'evo-egg',
+    title: 'Evo Egg',
+    description:
+      'An 8′4″ egg with a full, rounded outline from nose to tail. The extra length paddles in early and glides through flat sections, and the single fin keeps it smooth and easy in trim. A forgiving board for long sessions in small to medium surf. Built in paulownia with cork rails. Talk to us about dimensions for your weight and the waves you ride.',
+    productType: 'Surf',
+    tags: ['Mid'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: zar('19500.00') },
+    images: [
+      evoEgg.front('Wawa Evo Egg deck in paulownia with cork rails'),
+      evoEgg.back('Wawa Evo Egg bottom with single fin box'),
+    ],
+    specs: [
+      [
+        { label: 'Best For', value: 'Small to medium waves' },
+        { label: 'Board Feel', value: 'Smooth and easy' },
+        { label: 'Skill Level', value: 'All levels' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
+  {
+    // Placeholder copy — Cobus is sending text on the asymmetrical design and
+    // this board. Name and dims from the laminate.
+    id: 'mock/needle-fish',
+    handle: 'needle-fish',
+    title: 'Needle Fish',
+    description:
+      'An asymmetrical shape: each rail is drawn for its own side of the wave, so the toeside and heelside turn differently, with an offset tail to match. Wood and cork over an EPS core, 6′11″ × 21″ × 2¾″. Talk to us about dimensions for your weight, your stance and the waves you ride.',
+    productType: 'Surf',
+    tags: ['Mid'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: zar('19500.00') },
+    images: [
+      needleFish.front('Wawa Needle Fish asymmetrical surfboard, deck in paulownia with cork rails and an offset tail'),
+      {
+        url: '/img/product/needle-fish-detail.webp',
+        altText: 'Hand-drawn needlefish laminate on the Needle Fish: "cape town", 6\'11 x 21 x 2¾", asymm, EPS, 2026',
+      },
+    ],
+    specs: [
+      [
+        { label: 'Best For', value: 'Point and reef breaks' },
+        { label: 'Board Feel', value: 'Drive on one rail, release on the other' },
+        { label: 'Skill Level', value: 'Intermediate to advanced' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Wood & cork, EPS core' },
         { label: 'Finish', value: 'Matte' },
       ],
     ],
@@ -275,6 +363,33 @@ export const products: Product[] = [
       [
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Wood & cork, EPS core' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/mote-twin',
+    handle: 'mote-twin',
+    title: 'Mote Twin',
+    description:
+      'A 6′8″ twin-fin with a pulled-in nose and a rounded pin, long enough to paddle early and loose enough to turn off the tail. Built in paulownia with cork rails. Talk to us about dimensions for your weight and the waves you ride.',
+    productType: 'Surf',
+    tags: ['Mid'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: zar('19500.00') },
+    images: [
+      moteTwin.front('Wawa Mote Twin deck in paulownia with cork rails'),
+      moteTwin.back('Wawa Mote Twin bottom with red twin fins'),
+    ],
+    specs: [
+      [
+        { label: 'Best For', value: 'Small to overhead waves' },
+        { label: 'Board Feel', value: 'Fast and loose' },
+        { label: 'Skill Level', value: 'Intermediate to advanced' },
+      ],
+      [
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Paulownia & cork' },
         { label: 'Finish', value: 'Matte' },
       ],
     ],
