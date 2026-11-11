@@ -13,7 +13,23 @@ import { site } from '@/lib/site';
  */
 
 export async function getProducts(): Promise<Product[]> {
-  return mockProducts;
+  return byFilterOrder(mockProducts);
+}
+
+/** Order products as the shop's filters read: discipline pill order, then
+ *  category order within it. Stable, so the catalog order breaks ties. */
+function byFilterOrder(list: Product[]): Product[] {
+  const rank = (p: Product) => {
+    const di = disciplines.findIndex((d) => d.handle === slug(p.productType));
+    const d = disciplines[di];
+    const ci = d ? d.categories.findIndex((c) => p.tags.includes(c)) : -1;
+    return [di < 0 ? Infinity : di, ci < 0 ? Infinity : ci];
+  };
+  return [...list].sort((a, b) => {
+    const [ad, ac] = rank(a);
+    const [bd, bc] = rank(b);
+    return ad - bd || ac - bc || 0;
+  });
 }
 
 export async function getFeatured(): Promise<Product[]> {
@@ -32,6 +48,12 @@ export function slug(s: string): string {
 }
 
 export { disciplines };
+
+/** Product types that aren't boards: fixed-price goods, not made-to-order builds. */
+const GOODS_TYPES = new Set(['Accessories', 'Art & Prints']);
+export const isGoods = (p: Product): boolean => GOODS_TYPES.has(p.productType);
+/** Discipline handles of those types (kept off the board-order form). */
+export const GOODS_DISCIPLINES = new Set([...GOODS_TYPES].map(slug));
 
 /** Shaping your own board in the workshop costs the board price plus 20%,
  *  for the extra workshop time. Used by the board PDPs' "Make it yourself" build. */
@@ -54,7 +76,7 @@ export function isBuyable(p: Product): boolean {
 /** Format Storefront Money as a ZAR price string, or "Enquire" when POA.
  *  Accessories read "Coming soon" while sales are closed (salesOpen off). */
 export function formatPrice(p: Product): string {
-  if (p.productType === 'Accessories' && !site.salesOpen) return 'Coming soon';
+  if (isGoods(p) && !site.salesOpen) return 'Coming soon';
   const amt = Number(p.priceRange.minVariantPrice.amount);
   if (amt <= 0) return 'Enquire';
   // R25,000 — comma thousands, no decimals (not the en-ZA space/comma)
@@ -67,5 +89,5 @@ export function formatPrice(p: Product): string {
   // differently (sizes, framed or not).
   const tiered = new Set(p.variants?.map((v) => Number(v.price ?? amt))).size > 1;
   const online = Boolean(p.variantId) || Boolean(p.variants?.some((v) => v.id));
-  return (p.productType === 'Accessories' || online) && !tiered ? price : `From ${price}`;
+  return (isGoods(p) || online) && !tiered ? price : `From ${price}`;
 }

@@ -10,10 +10,10 @@
  * to pre-fill the board selects from a product (PDP). Mounted once in Layout.astro, next to the
  * cart drawer, whose overlay/panel + focus-trap + scroll-lock idiom this mirrors.
  */
-import { disciplines, slug } from '@/lib/catalog';
+import { disciplines, slug, GOODS_DISCIPLINES } from '@/lib/catalog';
 
-// Board disciplines only — accessories aren't made-to-order builds.
-const boardDisciplines = disciplines.filter((d) => d.handle !== 'accessories');
+// Board disciplines only — accessories and art aren't made-to-order builds.
+const boardDisciplines = disciplines.filter((d) => !GOODS_DISCIPLINES.has(d.handle));
 // discipline handle -> sub-categories, for client-side sub-category repopulation.
 const categoryMap = Object.fromEntries(
   boardDisciplines.map((d) => [d.handle, d.categories]),

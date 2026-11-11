@@ -2,7 +2,7 @@
 import Layout from '@/layouts/Layout.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import PaymentIcons from '@/components/PaymentIcons.astro';
-import { disciplines, getProducts, slug, formatPrice, makeYourOwnPrice, isBuyable } from '@/lib/catalog';
+import { disciplines, getProducts, slug, formatPrice, makeYourOwnPrice, isBuyable, isGoods } from '@/lib/catalog';
 import { site } from '@/lib/site';
 import { ORG_ID, abs, breadcrumbs } from '@/lib/schema';
 import type { Product, Discipline } from '@/lib/types';
@@ -49,7 +49,7 @@ const zarText = (n: number) => `R${n.toLocaleString('en-US')}`;
 // Buyable only with stock + variant id(s) + a configured shop.
 const buyable = isBuyable(product);
 // An accessory without its Shopify ids yet is waiting, not made to order.
-const comingSoon = !buyable && product.productType === 'Accessories';
+const comingSoon = !buyable && isGoods(product);
 // Several options (model / size / colour): one picker each, starting on the
 // first variant so the buttons carry an id; the combination picks the variant.
 const optionNames = product.optionNames ?? [];

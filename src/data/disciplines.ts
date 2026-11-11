@@ -52,10 +52,19 @@ export const disciplines: Discipline[] = [
   {
     handle: 'accessories',
     title: 'Accessories',
-    blurb: 'Wetsuit jackets, board covers, wax combs, clothing, bags, art and gift cards.',
+    blurb: 'Wetsuit jackets, board covers, wax combs, clothing, bags and gift cards.',
     intro:
       'Board covers, wetsuit jackets and everyday essentials for time in and around the water. Explore Yamamoto Geoprene jackets, cotton-duck covers, wood-and-cork beach bats and more.',
     hero: '/img/category/accessories.webp',
-    categories: ['Boardbag', 'Bags', 'Wax Combs', 'Beach Bats', 'Wetsuits', 'Clothing', 'Art', 'Gift Cards'],
+    categories: ['Boardbag', 'Bags', 'Wax Combs', 'Beach Bats', 'Wetsuits', 'Clothing', 'Gift Cards'],
+  },
+  {
+    handle: 'art-prints',
+    title: 'Art & Prints',
+    blurb: 'Prints, posters and wave photography, on paper or framed in timber.',
+    intro:
+      'Art for the wall from the Wawa world: engravings and woodcuts, wave photography by Spex, and posters from Cobus Joubert’s monoprint exhibition. On paper, or framed in timber.',
+    hero: '/img/category/art-prints.webp',
+    categories: [],
   },
 ];

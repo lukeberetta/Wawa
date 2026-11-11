@@ -8,11 +8,11 @@ import { srcset } from '@/lib/img';
 
 const featured = await getFeatured();
 
-// Home grid runs in its own order: Surf leads (it's the craft), accessories is
-// pulled up to second because it's the only discipline with live checkout. Nav,
+// Home grid runs in its own order: Surf leads (it's the craft), then
+// accessories and art & prints, pulled up because they sell online. Nav,
 // footer and the products pills keep the plain `disciplines` order, so this
 // stays local. Any handle left out of the list falls to the end.
-const HOME_ORDER = ['surf', 'accessories', 'foil', 'skate', 'kite', 'body-belly'];
+const HOME_ORDER = ['surf', 'accessories', 'art-prints', 'foil', 'skate', 'kite', 'body-belly'];
 const homeDisciplines = [...disciplines].sort(
   (a, b) =>
     (HOME_ORDER.indexOf(a.handle) + 1 || Infinity) - (HOME_ORDER.indexOf(b.handle) + 1 || Infinity),

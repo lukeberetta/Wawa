@@ -1,0 +1,6 @@
+# Cloudflare Pages redirects.
+# Art moved out of Accessories into its own Art & Prints category, and
+# Posters & Prints became Wawa Heritage Prints (2026-11-11).
+/products/accessories/posters-and-prints /products/art-prints/heritage-prints 301
+/products/art-prints/posters-and-prints /products/art-prints/heritage-prints 301
+/products/accessories/spex-wave-photography /products/art-prints/spex-wave-photography 301

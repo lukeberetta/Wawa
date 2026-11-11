@@ -23,7 +23,7 @@ const DIR = new URL('../public/img/product/', import.meta.url);
 // never pastels, so the timber stays the hero. The colour follows how the
 // craft rides: Surf splits by its sub-categories, every other board
 // discipline gets one colour.
-// Accessories (and anything not listed) keep the sand plate.
+// Accessories (and anything not listed) keep the sand plate; Art & Prints gets its own.
 const SAND = '#EEE2D8';
 const COLOURS = {
   // Surf
@@ -36,6 +36,8 @@ const COLOURS = {
   Kite: '#CEC3CA', // dusk: wind and power
   Skate: '#D6B8A3', // red clay: street, flat days
   'Body & Belly': '#BCCACC', // deep water: closest to the water, in the tube
+  // Goods
+  Art: '#F5F4F1', // off-white: a gallery wall for the work
 };
 
 // studioSet() name → group. Both <name>-front and <name>-back are recoloured;
@@ -61,6 +63,9 @@ const SETS = {
   bodyboard: 'Body & Belly',
   'handslide-pro': 'Body & Belly',
   'kite-tomo': 'Kite',
+  'art-prints': 'Art', // front only: prints-back is a wall shot
+  'art-spex': 'Art',
+  // monoprint-01…12 are composed straight onto the Art colour, not recoloured
 };
 
 const FLOOD = 28; // max colour distance (sum of channel deltas) to count as plate

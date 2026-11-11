@@ -62,7 +62,7 @@ const GRAMS: Record<string, number> = {
   'beach-bats': 1000,
   'geoprene-jacket': 800,
   'wawa-tee': 300,
-  'posters-and-prints': 400,
+  'heritage-prints': 400,
   'spex-wave-photography': 400,
   'wooden-cruiser': 2500,
   'wooden-surfskate': 2000,
@@ -77,12 +77,14 @@ const GRAMS: Record<string, number> = {
 const VARIANT_GRAMS: Record<string, number> = {
   [`cotton-duck-cover/5'0"`]: 1300,
   [`cotton-duck-cover/9'6"`]: 2300,
-  'posters-and-prints/A5 print': 300,
-  'posters-and-prints/A3 print': 500,
-  'posters-and-prints/A5 framed': 1500,
-  'posters-and-prints/A4 framed': 2500,
-  'posters-and-prints/A3 framed': 4000,
+  'heritage-prints/A5 print': 300,
+  'heritage-prints/A3 print': 500,
+  'heritage-prints/A5 framed': 1500,
+  'heritage-prints/A4 framed': 2500,
+  'heritage-prints/A3 framed': 4000,
   'spex-wave-photography/A4 framed': 2500,
+  'monoprint-exhibition-posters/Poster': 500,
+  'monoprint-exhibition-posters/Framed': 4000,
   // multi-option variants match on any one value ('… / 4ft / …')
   'paipo/4ft': 4500,
   'wooden-cruiser/Complete': 4000,
@@ -98,6 +100,8 @@ const NO_SHIPPING = new Set(['gift-card']);
 const SHOPIFY_HANDLE: Record<string, string> = {
   paipo: 'paipo-models',
   alaia: 'alaia-models',
+  // renamed on the site from Posters & Prints; Shopify keeps the old handle
+  'heritage-prints': 'posters-and-prints',
 };
 
 const col = (name: (typeof HEADERS)[number]) => HEADERS.indexOf(name);
@@ -134,7 +138,7 @@ const inShopify = (p: (typeof products)[number]) =>
 const PLACEHOLDER = '999.00';
 const forImport = products.filter(
   (p) =>
-    (p.productType === 'Accessories' || SMALL_CRAFT.has(p.handle)) &&
+    (['Accessories', 'Art & Prints'].includes(p.productType) || SMALL_CRAFT.has(p.handle)) &&
     p.priceRange.minVariantPrice.amount !== PLACEHOLDER &&
     !(onlyNew && inShopify(p)),
 );
@@ -144,7 +148,10 @@ for (const p of forImport) {
   const amount = p.priceRange.minVariantPrice.amount;
   const handle = SHOPIFY_HANDLE[p.handle] ?? p.handle;
   // Skip the empty-room placeholder — Shopify would store it as the product photo.
-  const images = p.images.filter((im) => !im.placeholder);
+  // Per-option sets (tee designs, monoprints) come too, once each.
+  const images = [...p.images, ...Object.values(p.optionImages ?? {}).flat()]
+    .filter((im) => !im.placeholder)
+    .filter((im, i, all) => all.findIndex((x) => x.url === im.url) === i);
   const img0 = images[0];
 
   // Sized/coloured products get one row per variant; the first carries the product.

@@ -38,7 +38,7 @@ const surfskateSwallow = studioSet('surfskate-swallow');
 const foilWave = studioSet('foil-wave');
 const foilProne = studioSet('foil-prone');
 const kiteTomo = studioSet('kite-tomo');
-const prints = studioSet('prints');
+const prints = { ...studioSet('art-prints'), back: studioSet('prints').back };
 const geoprene = studioSet('geoprene');
 const wetsuitSling = studioSet('wetsuit-sling');
 const togRegular = studioSet('tog-bag-regular');
@@ -52,12 +52,32 @@ const boardCover = studioSet('board-cover');
 const giftCard = studioSet('gift-card');
 const waxComb = studioSet('wax-comb');
 const speedEgg = studioSet('speed-egg');
-const spex = studioSet('spex');
+const spex = studioSet('art-spex');
 const miniSimmons = studioSet('mini-simmons');
 const foilWing = studioSet('foil-wing');
 const modelP = studioSet('model-p');
 const modelL = studioSet('model-l');
 const bigBonzer = studioSet('big-bonzer-3');
+
+/** Cobus's monoprint exhibition posters, in design order (No. 1 = monoprint-01). */
+const MONOPRINTS = [
+  'red lilies among blue-green leaves',
+  'figures in hats walking through a green wood',
+  'nude figures dancing in an orchard',
+  'a red-earth path through a green forest',
+  'leaning trees with yellow blossom',
+  'a fisherman and walkers on a beach at sunset',
+  'a walker on a curving path by a lake under trees',
+  'a chapel among trees',
+  'branches over an orange hillside',
+  'a green glass vase with pink blossom',
+  'a blue and yellow thicket between two trees',
+  'fynbos under bare leaning branches',
+];
+const monoprint = (i: number) => ({
+  url: `/img/product/monoprint-${String(i + 1).padStart(2, '0')}.webp`,
+  altText: `Monoprint exhibition poster No. ${i + 1}: ${MONOPRINTS[i]}`,
+});
 
 /** Empty-room plate for anything not yet photographed. One image, so no hover swap. */
 const soon = (title: string) => [
@@ -1017,12 +1037,12 @@ export const products: Product[] = [
   },
   {
     id: 'mock/art-prints',
-    handle: 'posters-and-prints',
-    title: 'Posters & Prints',
+    handle: 'heritage-prints',
+    title: 'Wawa Heritage Prints',
     description:
-      'Original artwork and prints from the Wawa world: timber, ocean and the craft behind the boards. Pieces for the wall, made to hang alongside the boards.',
-    productType: 'Accessories',
-    tags: ['Art'],
+      'Engravings and woodcuts of wave-riding from long before fins and foam: the old craft our boards come from. Printed on paper or framed in timber, made to hang alongside the boards.',
+    productType: 'Art & Prints',
+    tags: [],
     availableForSale: true,
     // Paper prints and timber-framed, three sizes each.
     optionName: 'Format',
@@ -1042,7 +1062,7 @@ export const products: Product[] = [
     specs: [
       [
         { label: 'Used For', value: 'Wall art' },
-        { label: 'Subject', value: 'Timber, ocean & the craft' },
+        { label: 'Subject', value: 'Early wave-riding, engraved' },
       ],
       [
         { label: 'Format', value: 'Paper print or timber frame' },
@@ -1056,8 +1076,8 @@ export const products: Product[] = [
     title: 'Spex Wave Photography',
     description:
       'Wave photography by Sacha Specker, “Spex”. A4 prints, each signed by the artist, on paper or framed in timber.',
-    productType: 'Accessories',
-    tags: ['Art'],
+    productType: 'Art & Prints',
+    tags: [],
     availableForSale: true,
     optionName: 'Format',
     variants: [
@@ -1075,6 +1095,38 @@ export const products: Product[] = [
       [
         { label: 'Format', value: 'Paper print or timber frame' },
         { label: 'Size', value: 'A4' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/monoprint-posters',
+    handle: 'monoprint-exhibition-posters',
+    title: 'Monoprint Exhibition Posters',
+    description:
+      'Posters from Cobus Joubert’s first monoprint exhibition, Studio Muse, Kalk Bay, 27–29 November 2026. Twelve designs, each a different monoprint: lilies, forest paths, a beach at sunset, a chapel among the trees. A3, as a paper poster or framed in timber.',
+    productType: 'Art & Prints',
+    tags: [],
+    availableForSale: true,
+    // Variant ids are blank until the product is imported to Shopify
+    // (gen-shopify-csv --new); paste them in after.
+    optionNames: ['Design', 'Format'],
+    variants: MONOPRINTS.flatMap((_, i) => [
+      { title: `No. ${i + 1} / Poster`, id: '', price: '450.00' },
+      { title: `No. ${i + 1} / Framed`, id: '', price: '1950.00' },
+    ]),
+    priceRange: { minVariantPrice: zar('450.00') },
+    images: [monoprint(0)],
+    optionImages: Object.fromEntries(MONOPRINTS.map((_, i) => [`No. ${i + 1}`, [monoprint(i)]])),
+    specs: [
+      [
+        { label: 'Used For', value: 'Wall art' },
+        { label: 'Artist', value: 'Cobus Joubert' },
+        { label: 'Exhibition', value: 'Studio Muse, Kalk Bay, 27–29.11.26' },
+      ],
+      [
+        { label: 'Format', value: 'Paper poster or timber frame' },
+        { label: 'Size', value: 'A3' },
+        { label: 'Designs', value: '12' },
       ],
     ],
   },

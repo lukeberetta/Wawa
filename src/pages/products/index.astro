@@ -39,7 +39,7 @@ const priceOf = (p: Product) =>
 const headerCopy: Record<string, { title: string; sub: string }> = {
   all: {
     title: 'The full range.',
-    sub: 'Surf craft, wooden cruisers and accessories from our Muizenberg workshop.',
+    sub: 'Surf craft, wooden cruisers, accessories and art from our Muizenberg workshop.',
   },
   ...Object.fromEntries(
     disciplines.map((d) => [d.handle, { title: `${d.title}.`, sub: d.intro ?? d.blurb }]),
@@ -47,7 +47,7 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
 };
 ---
 
-<Layout title="Shop · Wawa Surfboards" description="Explore Wawa surf, foil, kite, skate, body & belly craft and accessories from Muizenberg, Cape Town." current="products" schema={[breadcrumbs([{ name: 'Shop' }])]}>
+<Layout title="Shop · Wawa Surfboards" description="Explore Wawa surf, foil, kite, skate, body & belly craft, accessories and art from Muizenberg, Cape Town." current="products" schema={[breadcrumbs([{ name: 'Shop' }])]}>
   <!-- Primary lens: discipline pills, pinned directly below the nav. The
        wrapper clears the fixed nav at rest; the band then sticks under it. -->
   <div class="disc-band-wrap">

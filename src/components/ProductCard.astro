@@ -1,6 +1,6 @@
 ---
 import type { Product } from '@/lib/types';
-import { formatPrice, slug, isBuyable } from '@/lib/catalog';
+import { formatPrice, slug, isBuyable, isGoods } from '@/lib/catalog';
 import { srcset } from '@/lib/img';
 
 export interface Props {
@@ -16,7 +16,7 @@ const status = product.customAmount
   ? null
   : buyable
     ? 'Buy online'
-    : product.productType !== 'Accessories'
+    : !isGoods(product)
       ? 'Made to order'
       : null;
 const href = `/products/${slug(product.productType)}/${product.handle}`;
