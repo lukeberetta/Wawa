@@ -9,7 +9,7 @@
  *   #organization  the business itself, and the source of the SERP logo
  *   #website       enables the site-name treatment on the brand result
  */
-import { site } from '@/lib/site';
+import { site, type SiteEvent } from '@/lib/site';
 
 /**
  * Site-relative path → absolute URL. Structured data must never be relative.
@@ -132,6 +132,35 @@ export function breadcrumbs(trail: { name: string; path?: string }[]) {
       name: crumb.name,
       ...(crumb.path && { item: abs(crumb.path) }),
     })),
+  };
+}
+
+/** The home page's featured event (`site.event`). Call only when it's set. */
+export function exhibition(e: SiteEvent) {
+  return {
+    '@type': 'VisualArtsEvent',
+    '@id': `${site.url}/#event`,
+    name: e.title,
+    performer: { '@type': 'Person', name: e.artist },
+    description: e.blurb,
+    startDate: e.start,
+    endDate: e.end,
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: {
+      '@type': 'Place',
+      name: e.venue,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: e.street,
+        addressLocality: e.locality,
+        addressRegion: site.address.region,
+        addressCountry: site.address.country,
+      },
+    },
+    image: abs(e.image),
+    url: abs(e.href),
+    organizer: ref(ORG_ID),
   };
 }
 

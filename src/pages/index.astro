@@ -5,8 +5,48 @@ import CategoryCard from '@/components/CategoryCard.astro';
 import { getFeatured, disciplines } from '@/lib/catalog';
 import { site } from '@/lib/site';
 import { srcset } from '@/lib/img';
+import { exhibition } from '@/lib/schema';
 
 const featured = await getFeatured();
+const event = site.event;
+
+// Event band: the twelve monoprints scattered around a clear centre, like
+// prints laid out on a table. Desktop x/y are the print's top-left as % of the
+// band, w its width %; `r` is tilt in deg. Sizes and tilts vary on purpose, and
+// two drift into the top/bottom of the centre (cropped by the band edge) so it
+// reads as a scatter, not two columns. Phones (`m`) show six, three above the
+// copy and three below: x is the print's centre %, t/b rem from that edge, r
+// its own tilt. Several hang off the band's edges on purpose (negative t/b, x
+// near 0 or 100) so the row never looks set out with a ruler. Prints without
+// `m` are desktop-only. Crops: scripts/event-collage.mjs.
+type Print = {
+  n: number;
+  x: number; y: number; w: number; r: number;
+  m?: { x: number; w: number; r: number; t?: number; b?: number };
+};
+const PRINTS: Print[] = [
+  // left
+  { n: 1, x: 4, y: 7, w: 14, r: -5, m: { x: 11, w: 36, r: -9, t: -1.25 } },
+  { n: 4, x: 21, y: 2, w: 8, r: 6, m: { x: 48, w: 24, r: 5, t: 2.4 } },
+  { n: 3, x: 13, y: 38, w: 10, r: 3 },
+  { n: 6, x: 25, y: 60, w: 8, r: -7 },
+  { n: 8, x: 3, y: 62, w: 12, r: 4, m: { x: 15, w: 30, r: 7, b: 0.75 } },
+  { n: 10, x: 33, y: 84, w: 9, r: -3 },
+  // right
+  { n: 5, x: 82, y: 4, w: 13, r: 4, m: { x: 89, w: 32, r: 10, t: 0.25 } },
+  { n: 12, x: 66, y: 3, w: 9, r: -4 },
+  { n: 2, x: 74, y: 32, w: 9, r: 5 },
+  { n: 7, x: 88, y: 38, w: 10, r: -3 },
+  { n: 11, x: 79, y: 62, w: 13, r: -4, m: { x: 53, w: 27, r: -6, b: -1.75 } },
+  { n: 9, x: 60, y: 85, w: 9, r: 3, m: { x: 91, w: 36, r: -4, b: 2.25 } },
+];
+const printStyle = ({ x, y, w, r, m }: Print) =>
+  [
+    `--x:${x}`, `--y:${y}`, `--w:${w}`, `--r:${r}`,
+    m && `--mx:${m.x}`, m && `--mw:${m.w}`, m && `--mr:${m.r}`,
+    m?.t !== undefined && `--mt:${m.t}rem`,
+    m?.b !== undefined && `--mb:${m.b}rem`,
+  ].filter(Boolean).join(';');
 
 // Home grid runs in its own order: Surf leads (it's the craft), then
 // accessories and art & prints, pulled up because they sell online. Nav,
@@ -38,7 +78,12 @@ const igTiles = [
 ];
 ---
 
-<Layout current="home" overlay={true} preloadImage="/hero-poster.jpg">
+<Layout
+  current="home"
+  overlay={true}
+  preloadImage="/hero-poster.jpg"
+  schema={event ? [exhibition(event)] : []}
+>
   <!-- HERO -->
   <section id="hero" class="grain">
     <!-- The poster is the LCP image and paints on its own. Sources are attached
@@ -66,6 +111,50 @@ const igTiles = [
       </div>
     </div>
   </section>
+
+  <!-- EVENT (site.event — null removes it). One job: announce the show and
+       sell a print. Full-bleed artwork, the hand lettering as the headline,
+       facts kept to three short lines. Full schedule lives on the poster. -->
+  {event && (
+    <section id="event-home" class="grain" aria-labelledby="event-title">
+      <!-- decorative: the prints are for sale on the product page, where each
+           is described; here they're texture around the announcement -->
+      {PRINTS.map((p) => {
+        const src = `/img/event/print-${String(p.n).padStart(2, '0')}.webp`;
+        return (
+          <img
+            class:list={['event-print', { 'event-print--desk': !p.m }]}
+            style={printStyle(p)}
+            src={src}
+            srcset={srcset(src)}
+            sizes="(min-width: 1100px) 13vw, 8.5rem"
+            alt=""
+            width={640}
+            height={599}
+            loading="lazy"
+            decoding="async"
+          />
+        );
+      })}
+      <div class="event-inner">
+        <p class="label">{event.label}</p>
+        <!-- Cobus's hand lettering, painted cream through a mask (like the
+             signature). The real title stays in the h2 for readers + search. -->
+        <h2 id="event-title" class="event-lettering">
+          <span>{event.title}</span>
+        </h2>
+        <p class="event-facts">
+          <span>{event.dates}</span>
+          <a href={event.mapHref} target="_blank" rel="noopener noreferrer">{event.venue}, {event.locality}</a>
+          <span class="event-opening">{event.opening}</span>
+        </p>
+        <a href={event.href} class="event-btn">
+          {event.cta} <span aria-hidden="true">→</span>
+        </a>
+        <p class="event-credit">{event.artCredit}</p>
+      </div>
+    </section>
+  )}
 
   <!-- RANGE -->
   <section id="range-home">
@@ -368,6 +457,179 @@ const igTiles = [
     margin-top: 0.75rem;
     color: color-mix(in srgb, var(--cream) 60%, transparent);
     font-size: 0.9rem;
+  }
+
+  /* featured event: the twelve prints scattered on the print's own leaf green
+     (sampled from monoprint No. 1, so local rather than a token), with one
+     centred column in the clearing. built for the phone first: prints sit in
+     bands above and below the copy, which the vertical padding reserves. */
+  #event-home {
+    --event-bg: #2c412f;
+    --event-muted: color-mix(in srgb, var(--cream) 70%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11rem var(--wrap-pad);
+    background: var(--event-bg);
+    color: var(--cream);
+  }
+  #event-home.grain::after {
+    z-index: 1;
+    --grain-opacity: 0.2;
+  }
+  /* each print on a thin paper mat, tilted, with a soft shadow on the green */
+  .event-print {
+    position: absolute;
+    z-index: 0;
+    /* phones anchor by centre, so the row stays balanced once the width cap
+       kicks in on tablets */
+    left: calc(var(--mx) * 1%);
+    translate: -50% 0;
+    top: var(--mt, auto);
+    bottom: var(--mb, auto);
+    width: min(calc(var(--mw) * 1%), 10rem);
+    height: auto;
+    padding: 0.3rem;
+    background: var(--cream);
+    box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.55);
+    rotate: calc(var(--mr, var(--r)) * 1deg);
+  }
+  .event-print--desk {
+    display: none;
+  }
+  /* tablets: prints hit their width cap, so the bands above and below the
+     copy need to grow with them */
+  @media (min-width: 600px) {
+    #event-home {
+      padding-block: 14rem;
+    }
+  }
+  /* one centred column; everything hangs off the lettering's centre line */
+  .event-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 30rem;
+    text-align: center;
+  }
+  .event-inner .label {
+    color: var(--event-muted);
+  }
+  /* the h2 is the shape, filled cream through the mask. text stays in the
+     DOM but clipped off, so it's read but never painted. */
+  .event-lettering {
+    margin: var(--space-lg) auto 0;
+    /* inset on phones so the nudged "1st" keeps clear of the gutter */
+    width: 88%;
+    aspect-ratio: 1400 / 410;
+    background: var(--cream);
+    -webkit-mask: url('/img/event/monoprint-lettering.png') no-repeat center / contain;
+    mask: url('/img/event/monoprint-lettering.png') no-repeat center / contain;
+    /* the "1st" hangs off the left of the artwork, so the box centre sits left
+       of the word. nudge so "monoprint" + "exhibition" own the centre line. */
+    translate: -4% 0;
+  }
+  .event-lettering span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  /* three short lines — date, place, opening — so nothing wraps mid-phrase on
+     a phone */
+  .event-facts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    margin-top: var(--space-lg);
+    font-size: var(--fs-lead);
+    line-height: 1.4;
+  }
+  .event-facts a {
+    border-bottom: 1px solid var(--event-muted);
+    transition: border-color 0.25s var(--ease);
+  }
+  .event-facts a:hover {
+    border-color: var(--cream);
+  }
+  .event-opening {
+    margin-top: 0.35rem;
+    font-size: var(--fs-body);
+    color: var(--event-muted);
+  }
+  .event-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: var(--space-lg);
+    padding: 0.95rem 1.6rem;
+    background: var(--cream);
+    color: var(--ink);
+    transition: gap 0.3s var(--ease), background 0.25s var(--ease);
+  }
+  .event-btn:hover {
+    gap: 0.9rem;
+    background: #fff;
+  }
+  .event-credit {
+    margin-top: var(--space-md);
+    font-size: var(--fs-caption);
+    color: var(--event-muted);
+  }
+  @media (min-width: 900px) {
+    .event-inner {
+      max-width: 34rem;
+    }
+    .event-lettering,
+    .event-facts,
+    .event-btn {
+      margin-top: var(--space-xl);
+    }
+    .event-lettering {
+      width: 100%;
+    }
+  }
+  /* wide enough for the side clearings: all twelve ring the copy */
+  @media (min-width: 1100px) {
+    #event-home {
+      min-height: clamp(38rem, 88vh, 54rem);
+      padding-block: var(--space-section);
+    }
+    .event-print,
+    .event-print--desk {
+      display: block;
+      left: calc(var(--x) * 1%);
+      translate: none;
+      top: calc(var(--y) * 1%);
+      bottom: auto;
+      width: calc(var(--w) * 1%);
+      rotate: calc(var(--r) * 1deg);
+    }
+  }
+  /* hover: the print you point at lifts off the table — straightens a little,
+     grows a touch, shadow deepens. pointer devices only; still under
+     reduced motion. */
+  @media (min-width: 1100px) and (hover: hover) {
+    .event-print {
+      transition:
+        rotate 0.5s var(--ease),
+        scale 0.5s var(--ease),
+        box-shadow 0.5s var(--ease);
+    }
+    .event-print:hover {
+      z-index: 3;
+      rotate: calc(var(--r) * 0.3deg);
+      scale: 1.06;
+      box-shadow: 0 24px 44px -14px rgba(0, 0, 0, 0.6);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .event-print {
+      transition: none;
+    }
   }
 
   #range-home {
