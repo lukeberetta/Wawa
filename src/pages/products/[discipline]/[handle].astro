@@ -58,6 +58,9 @@ const optionValues = optionNames.map((_, i) => [...new Set(variants.map((v) => v
 // Images per first-option value (a tee's design): the gallery shows every set
 // and narrows to one once that value is picked, so nothing starts selected.
 const filterable = multi && !!product.optionImages;
+// Past this many values a row of chips wraps into a wall (12 poster designs):
+// that option gets a native dropdown instead.
+const DROPDOWN_AT = 6;
 // Enquire-only products with options: the picker is live (first option
 // preselected) and the choice re-prices the bar and goes into the enquiry.
 const enquireOptions = sized && !buyable && !comingSoon && !product.customAmount;
@@ -269,6 +272,18 @@ const crumbs = breadcrumbs([
                     {optionNames.map((name, i) => (
                       <fieldset class="sizes">
                         <legend class="sizes-legend">{name}</legend>
+                        {optionValues[i].length >= DROPDOWN_AT ? (
+                          <div class="select">
+                            <select name={`option-${i}`} aria-label={name} disabled={!buyable && !enquireOptions}>
+                              <option value="" selected={!firstOption}>Choose {name.toLowerCase()}</option>
+                              {optionValues[i].map((value) => (
+                                <option value={value} selected={value === firstOption?.title.split(' / ')[i]}>
+                                  {value}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        ) : (
                         <div class="sizes-row">
                           {optionValues[i].map((value) => (
                             <label class="size">
@@ -283,6 +298,7 @@ const crumbs = breadcrumbs([
                             </label>
                           ))}
                         </div>
+                        )}
                       </fieldset>
                     ))}
                   </div>
@@ -708,6 +724,51 @@ const crumbs = breadcrumbs([
   .sizes.is-invalid .size span {
     border-color: var(--ink);
   }
+  /* long option lists — a native select dressed as a hairline field, chip
+     height, with a drawn chevron; the open list stays the platform's own */
+  .select {
+    position: relative;
+    max-width: 360px;
+  }
+  .select select {
+    appearance: none;
+    width: 100%;
+    height: 3.25rem;
+    padding: 0 2.5rem 0 0.9rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 0;
+    cursor: pointer;
+    transition: border-color 0.2s var(--ease);
+  }
+  .select::after {
+    content: '';
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-right: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+  .select select:hover:not(:disabled),
+  .sizes.is-invalid .select select {
+    border-color: var(--ink);
+  }
+  .select select:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+  .select select:disabled {
+    color: var(--muted);
+    cursor: default;
+  }
   /* gift-card amount — a single hairline field, chip height */
   .amount-field {
     display: flex;
@@ -1111,6 +1172,9 @@ const crumbs = breadcrumbs([
     const productTitle = options.dataset.title ?? '';
     const fieldsets = Array.from(options.querySelectorAll<HTMLFieldSetElement>('fieldset'));
     const filterable = slides.some((s) => s.dataset.value);
+    // an option is chips (radios) or, for long lists, a select; '' = unpicked
+    const valueOf = (fs: HTMLFieldSetElement) =>
+      fs.querySelector('select')?.value || fs.querySelector<HTMLInputElement>('input:checked')?.value;
     let shown: string | undefined;
     // narrow the gallery to one first-option value's slides, or with no value
     // show them all again (filterable products tag each slide with its value)
@@ -1140,7 +1204,7 @@ const crumbs = breadcrumbs([
       });
     }
     options.addEventListener('change', () => {
-      const picked = fieldsets.map((fs) => fs.querySelector<HTMLInputElement>('input:checked')?.value);
+      const picked = fieldsets.map((fs) => valueOf(fs));
       fieldsets.forEach((fs, i) => picked[i] && fs.classList.remove('is-invalid'));
       if (filterable) filter(picked[0]);
       const variant = all.find(([t]) => t === picked.join(' / '));
@@ -1166,10 +1230,10 @@ const crumbs = breadcrumbs([
     buttons.forEach((b) =>
       b.addEventListener('click', () => {
         if (b.dataset.variantId) return;
-        const missing = fieldsets.filter((fs) => !fs.querySelector('input:checked'));
+        const missing = fieldsets.filter((fs) => !valueOf(fs));
         missing.forEach((fs) => fs.classList.add('is-invalid'));
         missing[0]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        missing[0]?.querySelector<HTMLInputElement>('input')?.focus({ preventScroll: true });
+        missing[0]?.querySelector<HTMLElement>('select, input')?.focus({ preventScroll: true });
       }),
     );
   }
