@@ -15,6 +15,7 @@ export interface Props {
   width: number;
   height: number;
 }
+import { srcset } from '@/lib/img';
 const { src, alt, width, height } = Astro.props;
 ---
 
@@ -22,6 +23,8 @@ const { src, alt, width, height } = Astro.props;
   <img
     class="page-hero-img"
     src={src}
+    srcset={srcset(src)}
+    sizes="100vw"
     alt={alt}
     width={width}
     height={height}
@@ -30,7 +33,7 @@ const { src, alt, width, height } = Astro.props;
   />
   <div class="wrap">
     <div class="page-hero-content">
-      <h1 class="fade-in"><slot /></h1>
+      <h1><slot /></h1>
     </div>
   </div>
 </section>

@@ -1,0 +1,21 @@
+# Cloudflare Pages response headers.
+#
+# /_astro and /fonts are content-hashed or never change — cache for a year.
+# /img and the videos keep their filenames when replaced, so 30 days, not
+# immutable: if you swap a photo, give the new file a new name (or accept that
+# returning visitors may see the old one for up to a month).
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/img/*
+  Cache-Control: public, max-age=2592000
+
+/*.mp4
+  Cache-Control: public, max-age=2592000
+
+/*.webm
+  Cache-Control: public, max-age=2592000

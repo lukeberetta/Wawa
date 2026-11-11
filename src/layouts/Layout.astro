@@ -7,7 +7,7 @@ import Motion from '@/components/Motion.astro';
 import Cart from '@/components/Cart.astro';
 import OrderModal from '@/components/OrderModal.astro';
 import { site } from '@/lib/site';
-import { organization, website } from '@/lib/schema';
+import { organization, website, pagePath } from '@/lib/schema';
 
 export interface Props {
   title?: string;
@@ -17,6 +17,8 @@ export interface Props {
   /** Extra JSON-LD nodes (Product, Article, BreadcrumbList) merged into the
    *  page's `@graph` alongside the always-present Organization + WebSite. */
   schema?: Record<string, unknown>[];
+  /** LCP image the parser can't discover early (e.g. a video poster). */
+  preloadImage?: string;
 }
 
 const {
@@ -25,6 +27,7 @@ const {
   current,
   overlay = false,
   schema = [],
+  preloadImage,
 } = Astro.props;
 
 // Share card: an 1800s engraving of Hawaiian surfers — the alaia/paipo lineage
@@ -32,7 +35,7 @@ const {
 const ogImage = new URL('/og-image.jpg', site.url).href;
 const ogImageAlt = 'Engraving of Hawaiian surfers riding a wave on wooden boards';
 // Per-page, so a shared product link doesn't preview as the homepage.
-const canonical = new URL(Astro.url.pathname, site.url).href;
+const canonical = new URL(pagePath(Astro.url.pathname), site.url).href;
 
 // One `@graph` per page. Organization carries the SERP logo and the shop's
 // address/hours; WebSite is what lets Google print "Wawa Surfboards" as the
@@ -55,9 +58,6 @@ const graph = {
     <meta name="description" content={description} />
     <meta name="theme-color" content="#1a1410" />
 
-    <!-- Flag JS early (before paint) so the .fade-in reveal only arms when it
-         can actually be driven — no-JS keeps all content visible. -->
-    <script is:inline>document.documentElement.classList.add('js');</script>
     <!-- Hide a dismissed announcement before paint, so the strip (and the
          --nav-h offset every page uses) never flashes in and jumps out. -->
     <script is:inline define:vars={{ announceId: site.announce?.id ?? '' }}>
@@ -118,6 +118,9 @@ const graph = {
       type="font/woff2"
       crossorigin
     />
+    {preloadImage && (
+      <link rel="preload" href={preloadImage} as="image" fetchpriority="high" />
+    )}
 
     <script type="application/ld+json" set:html={JSON.stringify(graph)} is:inline />
   </head>

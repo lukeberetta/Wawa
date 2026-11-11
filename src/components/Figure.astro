@@ -13,12 +13,15 @@ export interface Props {
   /** page's opening image carries the LCP */
   eager?: boolean;
 }
+import { srcset } from '@/lib/img';
 const { src, alt, width, height, caption, eager = false } = Astro.props;
 ---
 
-<figure class="bleed fade-in">
+<figure class="bleed">
   <img
     src={src}
+    srcset={srcset(src)}
+    sizes="100vw"
     alt={alt}
     width={width}
     height={height}

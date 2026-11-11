@@ -1,5 +1,7 @@
 ---
-// Lenis smooth scroll. Honors prefers-reduced-motion (Lenis skipped).
+// Lenis smooth scroll (skipped under prefers-reduced-motion and on touch),
+// plus hover-only loading of ProductCard back images. No scroll reveals —
+// content is simply there; entrance fades were tried and dropped.
 ---
 
 <script>
@@ -34,33 +36,20 @@
     requestAnimationFrame(raf);
   }
 
-  // ── Scroll reveal ──────────────────────────────
-  // Reveal `.fade-in` elements as they enter the viewport (CSS holds the start
-  // state under html.js; see global.css). Under reduced motion the CSS already
-  // shows them, so we do nothing. Reveal is one-way — unobserve once shown.
-  if (!reduce && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            e.target.classList.add('in');
-            io.unobserve(e.target);
-          }
-        }
-      },
-      // fire a little before the element's top edge reaches the fold
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
-    );
-    document.querySelectorAll<HTMLElement>('.fade-in').forEach((el) => {
-      // Above-the-fold elements (e.g. the hero CTA) can land inside the
-      // observer's -8% bottom margin and never fire on load, leaving them stuck
-      // hidden. Reveal anything already in the real viewport up front.
-      const r = el.getBoundingClientRect();
-      if (r.top < window.innerHeight && r.bottom > 0) {
-        el.classList.add('in');
-      } else {
-        io.observe(el);
-      }
-    });
+  // ── Card back images ───────────────────────────
+  // ProductCard ships the hover (hull) shot with data-src only — on touch it
+  // can never be seen, so it never downloads there. Where hover exists, arm it
+  // once the page has loaded; the img keeps loading="lazy", so the browser
+  // still only fetches the ones near the viewport.
+  if (window.matchMedia('(hover: hover)').matches) {
+    const arm = () =>
+      document.querySelectorAll<HTMLImageElement>('img[data-src]').forEach((img) => {
+        if (img.dataset.srcset) img.srcset = img.dataset.srcset;
+        img.src = img.dataset.src!;
+        img.removeAttribute('data-src');
+        img.removeAttribute('data-srcset');
+      });
+    if (document.readyState === 'complete') arm();
+    else window.addEventListener('load', arm, { once: true });
   }
 </script>

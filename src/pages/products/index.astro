@@ -63,9 +63,9 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
 
   <header class="shop-header">
     <div class="wrap">
-      <p class="label fade-in">Shop</p>
-      <h1 class="fade-in" data-shop-title>{headerCopy.all.title}</h1>
-      <p class="shop-sub fade-in" data-shop-sub>{headerCopy.all.sub}</p>
+      <p class="label">Shop</p>
+      <h1 data-shop-title>{headerCopy.all.title}</h1>
+      <p class="shop-sub" data-shop-sub>{headerCopy.all.sub}</p>
     </div>
   </header>
   <script type="application/json" id="shop-copy" set:html={JSON.stringify(headerCopy)} is:inline></script>

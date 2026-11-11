@@ -27,9 +27,10 @@ export interface Props {
   label: string;
 }
 const { shots, eager = false, label } = Astro.props;
+import { srcset } from '@/lib/img';
 ---
 
-<section class="gallery fade-in" aria-label={label}>
+<section class="gallery" aria-label={label}>
   <div class="carousel" data-carousel>
     {/* No data-lenis-prevent: it prevents Lenis on both axes, so a vertical
         scroll over the rail dropped to native while the rest of the page stayed
@@ -39,10 +40,12 @@ const { shots, eager = false, label } = Astro.props;
       {
         shots.map((s, i) => (
           <li class="car-slide">
-            <figure class="slide-frame">
+            <figure class="slide-frame grain">
               <img
                 class="slide-media"
                 src={s.src}
+                srcset={srcset(s.src)}
+                sizes="(min-width: 900px) 70vh, 92vw"
                 alt={s.alt}
                 width={s.width}
                 height={s.height}

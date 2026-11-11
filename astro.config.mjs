@@ -8,6 +8,12 @@ export default defineConfig({
   site: 'https://wawawave.com',
   // Mostly static; switch to output:'server' + adapter when cart island lands.
   output: 'static',
+  // Every internal link is written slashless (/products, /story). With the
+  // default directory build, Pages answered each of those with a 308 to the
+  // slash form — a wasted round trip per click. `products.html` is served at
+  // /products directly; /products/ now 308s the other way for old links.
+  trailingSlash: 'never',
+  build: { format: 'file' },
   // /sitemap-index.xml + /sitemap-0.xml, referenced from public/robots.txt.
   // The old 2012 WordPress URLs are still in Google's index (they surface as
   // stale sitelinks); a sitemap is what gets the current set recrawled.

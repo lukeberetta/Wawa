@@ -1,5 +1,6 @@
 ---
 import type { Discipline } from '@/lib/types';
+import { srcset } from '@/lib/img';
 
 export interface Props {
   discipline: Discipline;
@@ -11,9 +12,21 @@ const href = `/products?discipline=${discipline.handle}`;
 const heroSrc = discipline.hero?.startsWith('/') ? discipline.hero : null;
 ---
 
-<article class="card fade-in">
+<article class="card">
   <a class:list={['card-media', { grain: heroSrc }]} href={href}>
-    {heroSrc && <img class="face" src={heroSrc} alt="" loading="lazy" />}
+    {heroSrc && (
+      <img
+        class="face"
+        src={heroSrc}
+        srcset={srcset(heroSrc)}
+        sizes="(min-width: 900px) 25vw, (min-width: 560px) 40vw, 66vw"
+        alt=""
+        width="1080"
+        height="1080"
+        loading="lazy"
+        decoding="async"
+      />
+    )}
     <div class="card-meta">
       <h3>{discipline.title}</h3>
     </div>

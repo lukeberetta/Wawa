@@ -25,7 +25,7 @@ const source = (p: (typeof posts)[number]) => p.data.publication ?? 'Wawa Journa
 
   <section id="posts">
     <div class="wrap">
-      <div class="section-head fade-in">
+      <div class="section-head">
         <p class="label">Read</p>
         <h2>In words.</h2>
         <p class="section-lead">
@@ -36,7 +36,7 @@ const source = (p: (typeof posts)[number]) => p.data.publication ?? 'Wawa Journa
       <ul class="post-list">
         {
           posts.map((post) => (
-            <li class="fade-in" id={`post-${post.id}`}>
+            <li id={`post-${post.id}`}>
               <a href={`/press/${post.id}`}>
                 <p class="post-pub">
                   {source(post)}
@@ -51,7 +51,7 @@ const source = (p: (typeof posts)[number]) => p.data.publication ?? 'Wawa Journa
         }
       </ul>
 
-      {posts.length === 0 && <p class="empty fade-in">Press coverage coming soon.</p>}
+      {posts.length === 0 && <p class="empty">Press coverage coming soon.</p>}
     </div>
   </section>
 </Layout>

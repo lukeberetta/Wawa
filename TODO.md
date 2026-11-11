@@ -19,7 +19,9 @@ and address, 404 page and the wireframe imagery are all done.
 
 - [ ] Analytics (none installed — Cloudflare Web Analytics is a dashboard toggle)
 - [ ] Test a full purchase end-to-end on wawawave.com (mobile Safari + desktop)
-- [ ] Lighthouse/perf pass
+- [x] Perf pass (2026-11-11): responsive `srcset` cuts, no hover images on touch, slashless URLs (no 308 per click), long cache headers, hero poster preload
+- [ ] After deploy: PageSpeed Insights (mobile) on home, `/products` and one PDP for real LCP/CLS numbers
+- [ ] Search Console: confirm canonicals moved to slashless URLs (`/products`, not `/products/`) and resubmit the sitemap
 
 ## Copy facts to confirm
 

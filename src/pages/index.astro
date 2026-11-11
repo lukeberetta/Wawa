@@ -4,6 +4,7 @@ import ProductCard from '@/components/ProductCard.astro';
 import CategoryCard from '@/components/CategoryCard.astro';
 import { getFeatured, disciplines } from '@/lib/catalog';
 import { site } from '@/lib/site';
+import { srcset } from '@/lib/img';
 
 const featured = await getFeatured();
 
@@ -37,7 +38,7 @@ const igTiles = [
 ];
 ---
 
-<Layout current="home" overlay={true}>
+<Layout current="home" overlay={true} preloadImage="/hero-poster.jpg">
   <!-- HERO -->
   <section id="hero" class="grain">
     <!-- The poster is the LCP image and paints on its own. Sources are attached
@@ -58,8 +59,8 @@ const igTiles = [
     ></video>
     <div class="wrap hero-grid">
       <div class="hero-content">
-        <h1 class="fade-in">Wooden surfboards rooted in tradition. <span class="accent">Made slowly. Ridden forever.</span></h1>
-        <a href="/products" class="link-arrow fade-in">
+        <h1>Wooden surfboards rooted in tradition. <span class="accent">Made slowly. Ridden forever.</span></h1>
+        <a href="/products" class="link-arrow">
           Find your board <span class="arrow">→</span>
         </a>
       </div>
@@ -69,7 +70,7 @@ const igTiles = [
   <!-- RANGE -->
   <section id="range-home">
     <div class="wrap">
-      <div class="section-head fade-in">
+      <div class="section-head">
         <p class="label">Our range</p>
         <h2>Find your craft.</h2>
       </div>
@@ -82,14 +83,14 @@ const igTiles = [
   <!-- FEATURED -->
   <section id="featured-home">
     <div class="wrap">
-      <div class="section-head fade-in">
+      <div class="section-head">
         <p class="label">Featured</p>
         <h2>Featured products.</h2>
       </div>
       <div class="product-grid">
         {featured.map((p) => <ProductCard product={p} />)}
       </div>
-      <div class="section-foot fade-in">
+      <div class="section-foot">
         <a href="/products" class="link-arrow">View all products <span class="arrow">→</span></a>
       </div>
     </div>
@@ -100,6 +101,8 @@ const igTiles = [
     <img
       class="pullquote-img"
       src="/img/contact/workshop-door.webp"
+      srcset={srcset('/img/contact/workshop-door.webp')}
+      sizes="100vw"
       alt=""
       width={2200}
       height={1650}
@@ -107,14 +110,14 @@ const igTiles = [
       decoding="async"
     />
     <div class="wrap">
-      <p class="label fade-in">Honouring the source</p>
-      <p class="quote-text fade-in">
+      <p class="label">Honouring the source</p>
+      <p class="quote-text">
         &ldquo;Way out on surfing&rsquo;s fringe sits an
         anachronistic wooden surfboard company, <span class="hl">built on quality, respect for our roots
         and the sanctity of nature.</span> We shape surf craft inspired by the
         hydrodynamic genius of ancient Hawaiian board builders.&rdquo;
       </p>
-      <div class="quote-sign fade-in">
+      <div class="quote-sign">
         <span class="signature" role="img" aria-label="Cobus's signature"></span>
         <p class="quote-attr">Cobus Joubert, Founder</p>
       </div>
@@ -124,12 +127,12 @@ const igTiles = [
   <!-- INSTAGRAM -->
   <section id="instagram">
     <div class="wrap">
-      <div class="section-head fade-in">
+      <div class="section-head">
         <p class="label">Instagram</p>
         <h2>Around the workshop.</h2>
       </div>
     </div>
-    <div class="ig-grid fade-in">
+    <div class="ig-grid">
       {igTiles.map((t) => (
         <a
           href={site.instagram}
@@ -138,7 +141,17 @@ const igTiles = [
           class:list={['ig-tile', 'grain', `ig-tile--${t.area}`, { 'ig-tile--feat': t.feat }]}
           aria-label="View on Instagram"
         >
-          <img class="ig-img" src={`/img/insta/${t.img}.webp`} alt="" loading="lazy" decoding="async" />
+          <img
+            class="ig-img"
+            src={`/img/insta/${t.img}.webp`}
+            srcset={srcset(`/img/insta/${t.img}.webp`)}
+            sizes={t.feat ? '50vw' : '(min-width: 768px) 25vw, 50vw'}
+            alt=""
+            width="800"
+            height="800"
+            loading="lazy"
+            decoding="async"
+          />
           {t.caption && (
             <div class="ig-caption">
               <p class="ig-caption-text">{t.caption}</p>
@@ -153,7 +166,7 @@ const igTiles = [
       ))}
     </div>
     <div class="wrap">
-      <div class="section-foot fade-in">
+      <div class="section-foot">
         <a href={site.instagram} target="_blank" rel="noopener noreferrer" class="link-arrow">
           Follow along <span class="arrow">→</span>
         </a>
@@ -164,14 +177,14 @@ const igTiles = [
   <!-- PERKS -->
   <section id="perks">
     <ul class="perks">
-      <li class="perk fade-in">
+      <li class="perk">
         <svg class="perk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M11 20A7 7 0 0 1 4 13C4 7 10 4 17 4c0 7-3 13-9 13Z" />
           <path d="M4 20c2-4 5-6.5 8-7.5" />
         </svg>
         <p>Shaped by hand from timber</p>
       </li>
-      <li class="perk fade-in">
+      <li class="perk">
         <svg class="perk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="9" />
           <path d="M3 12h18" />
@@ -179,7 +192,7 @@ const igTiles = [
         </svg>
         <p>Shipped worldwide</p>
       </li>
-      <li class="perk fade-in">
+      <li class="perk">
         <svg class="perk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M4 20h4L18.5 9.5a2.12 2.12 0 0 0-3-3L5 17v3Z" />
           <path d="M13.5 8 16 10.5" />
@@ -417,15 +430,6 @@ const igTiles = [
     margin-top: 3rem;
     text-align: center;
   }
-  /* no fade-up entrance on the home carousels — heads, foot and cards sit
-     in place. (ProductCard's .fade-in is global, hence :global) */
-  html.js #range-home :global(.fade-in),
-  html.js #featured-home :global(.fade-in) {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
   /* instagram mosaic: editorial tile wall. mobile is a plain 2-up grid; desktop
      becomes a named-area mosaic with one large 2×2 feature tile. */
   #instagram {

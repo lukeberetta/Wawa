@@ -39,18 +39,18 @@ const schema = [
       <div class="wrap">
         <div class="measure">
           {/* back to this article's own row in the list, not the top of it */}
-          <a href={`/press#post-${post.id}`} class="back fade-in">← Press</a>
-          <p class="post-date fade-in">
+          <a href={`/press#post-${post.id}`} class="back">← Press</a>
+          <p class="post-date">
             {post.data.publication ?? 'Wawa Journal'} · {fmtDate(post.data.date)}
           </p>
-          <h1 class="fade-in">{post.data.title}</h1>
-          <p class="post-author fade-in">Words by {post.data.author}</p>
+          <h1>{post.data.title}</h1>
+          <p class="post-author">Words by {post.data.author}</p>
         </div>
       </div>
     </header>
 
     <div class="wrap">
-      <div class="measure prose fade-in">
+      <div class="measure prose">
         <Content />
       </div>
     </div>

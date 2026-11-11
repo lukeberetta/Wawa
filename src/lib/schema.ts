@@ -14,17 +14,28 @@ import { site } from '@/lib/site';
 /**
  * Site-relative path → absolute URL. Structured data must never be relative.
  *
- * The build emits directory-style pages, so `<link rel="canonical">` always
- * carries a trailing slash. Schema URLs have to match it exactly or Google
- * reads `/press/x` and `/press/x/` as two documents — so page paths get the
- * slash added here. Files (anything with an extension) and query strings are
- * left alone.
+ * The build emits file-style pages (`products.html` served at `/products`),
+ * so `<link rel="canonical">` never carries a trailing slash. Schema URLs have
+ * to match it exactly or Google reads `/press/x` and `/press/x/` as two
+ * documents — so page paths are normalised here via `pagePath`. Other files
+ * (images etc.) and query strings are left alone.
  */
 export function abs(path: string): string {
   const [pathname, query] = path.split('?');
-  const isFile = /\.[a-z0-9]+$/i.test(pathname);
-  const normalized = isFile || pathname.endsWith('/') ? pathname : `${pathname}/`;
+  const normalized = /\.[a-z0-9]+$/i.test(pathname) && !/\.html$/.test(pathname)
+    ? pathname
+    : pagePath(pathname);
   return new URL(query ? `${normalized}?${query}` : normalized, site.url).href;
+}
+
+/**
+ * A page's public path. `Astro.url.pathname` at build time includes the
+ * emitted file (`/products.html`, `/index.html`) — strip it, and any trailing
+ * slash, so `/products/` and `/products.html` both read as `/products`.
+ */
+export function pagePath(pathname: string): string {
+  const p = pathname.replace(/(\/index)?\.html$/, '').replace(/\/+$/, '');
+  return p || '/';
 }
 
 export const ORG_ID = `${site.url}/#organization`;
