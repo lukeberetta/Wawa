@@ -2,6 +2,7 @@
 import Layout from '@/layouts/Layout.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import PaymentIcons from '@/components/PaymentIcons.astro';
+import Zoom from '@/components/Zoom.astro';
 import { disciplines, getProducts, slug, formatPrice, makeYourOwnPrice, isBuyable, isGoods } from '@/lib/catalog';
 import { site } from '@/lib/site';
 import { ORG_ID, abs, breadcrumbs } from '@/lib/schema';
@@ -192,7 +193,7 @@ const crumbs = breadcrumbs([
                   <span class="soon-label" aria-hidden="true">Coming soon</span>
                 </div>
               ) : images[i] ? (
-                <div class="slide-media grain">
+                <button type="button" class="slide-media slide-zoom grain" data-zoom aria-label={`Enlarge: ${images[i].altText ?? product.title}`}>
                   <img
                     class="slide-img"
                     src={images[i].url}
@@ -205,7 +206,7 @@ const crumbs = breadcrumbs([
                     fetchpriority={i === 0 ? 'high' : undefined}
                     decoding="async"
                   />
-                </div>
+                </button>
               ) : (
                 <div class="slide-media wf-ph" role="presentation" />
               )}
@@ -495,6 +496,7 @@ const crumbs = breadcrumbs([
       )
     }
   </article>
+  <Zoom />
 </Layout>
 
 <style>
@@ -539,6 +541,14 @@ const crumbs = breadcrumbs([
     aspect-ratio: 4 / 5;
     border: 1px solid var(--rule);
     background: color-mix(in srgb, var(--warm) 8%, var(--cream));
+  }
+  /* a real photo opens the full-screen viewer (Zoom.astro) */
+  .slide-zoom {
+    display: block;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: zoom-in;
   }
   .slide-img {
     display: block;

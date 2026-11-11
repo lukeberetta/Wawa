@@ -1,0 +1,483 @@
+---
+/**
+ * Full-screen photo viewer for the PDP gallery. Any `[data-zoom]` button that
+ * wraps an <img> opens it; the viewer shows that photo's original file (the
+ * full-resolution `src`, not the srcset cut the slide happened to load) fitted
+ * to the screen.
+ *
+ * Zoom is one transform (translate + scale) on the fitted photo, shared by
+ * every input so they can't disagree:
+ *   - touch: pinch zooms around the fingers, one finger drags while zoomed,
+ *     tap / double-tap toggles zoom at that spot, a sideways swipe at 1×
+ *     steps to the next photo
+ *   - mouse: click toggles zoom, the photo then follows the cursor; trackpad
+ *     pinch (ctrl + wheel) zooms around the cursor
+ *   - keyboard: Enter / Space toggles zoom, ← / → step, Esc closes
+ * The photo is always clamped to cover the frame, so it can't be dragged off.
+ *
+ * Hidden slides (another option value's photos) are skipped, so the viewer
+ * only steps through what the gallery is showing. Opening is instant — no
+ * entrance animation (see CLAUDE.md, Motion).
+ */
+---
+
+<dialog class="zoom" data-zoom-dialog aria-label="Photo viewer">
+  <div class="zoom-stage" data-zoom-stage tabindex="0" role="button">
+    <img class="zoom-img" data-zoom-img alt="" decoding="async" draggable="false" />
+  </div>
+  <button class="zoom-btn zoom-close" type="button" data-zoom-close aria-label="Close">&times;</button>
+  <button class="zoom-btn zoom-prev" type="button" data-zoom-step="-1" aria-label="Previous photo">&larr;</button>
+  <button class="zoom-btn zoom-next" type="button" data-zoom-step="1" aria-label="Next photo">&rarr;</button>
+  <p class="zoom-count" data-zoom-count aria-live="polite"></p>
+</dialog>
+
+<style>
+  .zoom {
+    /* fill the top layer edge to edge — the UA dialog box is centred and
+       shrink-wrapped by default */
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--cream);
+    color: var(--ink);
+    overflow: hidden;
+  }
+  .zoom::backdrop {
+    background: var(--cream);
+  }
+  .zoom-stage {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    /* one definite cell — with auto tracks the photo's max-height: 100% has
+       nothing to resolve against and it lays out at its natural size */
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+    place-items: center;
+    padding: calc(3.5rem + env(safe-area-inset-top)) 1rem calc(3.5rem + env(safe-area-inset-bottom));
+    overflow: hidden;
+    /* every gesture is ours (pinch, drag, swipe) — the browser's own page
+       zoom would scale the controls too and fight the swipe */
+    touch-action: none;
+    overscroll-behavior: contain;
+    cursor: zoom-in;
+    outline-offset: -4px;
+  }
+  .zoom-stage.is-zoomed {
+    cursor: zoom-out;
+  }
+  .zoom-img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    /* translate/scale are measured from the fitted photo's top-left */
+    transform-origin: 0 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
+  }
+  /* tap / click / double-tap ease between fit and zoom; live gestures don't */
+  .zoom-stage.is-easing .zoom-img {
+    transition: transform 0.3s var(--ease);
+  }
+  /* mid-gesture only: a permanent will-change would keep the photo rastered
+     at its fitted size and the zoom would go soft */
+  .zoom-stage.is-moving .zoom-img {
+    will-change: transform;
+  }
+
+  /* × and arrows share the cart close spec: bare glyph, muted until hover */
+  .zoom-btn {
+    position: absolute;
+    z-index: 1;
+    background: none;
+    border: 0;
+    padding: 0.75rem;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s var(--ease);
+  }
+  .zoom-btn:hover {
+    color: var(--ink);
+  }
+  .zoom-btn[hidden] {
+    display: none;
+  }
+  .zoom-close {
+    top: calc(0.5rem + env(safe-area-inset-top));
+    right: calc(0.5rem + env(safe-area-inset-right));
+  }
+  .zoom-prev,
+  .zoom-next {
+    bottom: calc(0.5rem + env(safe-area-inset-bottom));
+  }
+  .zoom-prev {
+    left: calc(0.5rem + env(safe-area-inset-left));
+  }
+  .zoom-next {
+    right: calc(0.5rem + env(safe-area-inset-right));
+  }
+  .zoom-count {
+    position: absolute;
+    left: 50%;
+    bottom: calc(1.25rem + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    margin: 0;
+    font-size: var(--fs-caption);
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+  /* zoomed, the chrome gets out of the photo's way — only × stays */
+  .zoom:has(.is-zoomed) :is(.zoom-prev, .zoom-next, .zoom-count) {
+    visibility: hidden;
+  }
+  /* desktop: arrows sit mid-height on the sides, like any viewer */
+  @media (min-width: 900px) {
+    .zoom-stage {
+      /* 3.5rem top and bottom: the counter sits clear of the photo */
+      padding: 3.5rem 5rem;
+    }
+    .zoom-prev,
+    .zoom-next {
+      bottom: auto;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .zoom-prev {
+      left: 1.25rem;
+    }
+    .zoom-next {
+      right: 1.25rem;
+    }
+  }
+</style>
+
+<script>
+  import { lockScroll } from '@/lib/scrollLock';
+
+  const dialog = document.querySelector<HTMLDialogElement>('[data-zoom-dialog]');
+  const stage = dialog?.querySelector<HTMLElement>('[data-zoom-stage]');
+  const img = dialog?.querySelector<HTMLImageElement>('[data-zoom-img]');
+  const count = dialog?.querySelector<HTMLElement>('[data-zoom-count]');
+  const steps = dialog ? Array.from(dialog.querySelectorAll<HTMLButtonElement>('[data-zoom-step]')) : [];
+  const triggers = Array.from(document.querySelectorAll<HTMLElement>('[data-zoom]'));
+
+  if (dialog && stage && img && count && triggers.length) {
+    let list: HTMLImageElement[] = [];
+    let index = 0;
+
+    // ── Transform state ── the photo is laid out fitted; zoom is
+    // translate(tx, ty) scale(s) on top, origin at its top-left
+    let s = 1;
+    let tx = 0;
+    let ty = 0;
+
+    // fitted box in stage coordinates (stage is the img's offsetParent);
+    // offset* ignore the transform, so this is always the 1× layout
+    const box = () => ({
+      left: img.offsetLeft,
+      top: img.offsetTop,
+      w: img.offsetWidth,
+      h: img.offsetHeight,
+      sw: stage.clientWidth,
+      sh: stage.clientHeight,
+    });
+
+    // full detail = the file's own pixels, but never less than 2× so a small
+    // file (or a big screen) still gets a real close-up
+    const maxScale = () => Math.max(img.naturalWidth / (img.offsetWidth || 1), 2);
+
+    // keep the photo covering the frame on any axis where it's bigger than the
+    // frame, and centred on any axis where it's smaller
+    const clampAxis = (t: number, start: number, size: number, frame: number) => {
+      const scaled = size * s;
+      if (scaled <= frame) return (frame - scaled) / 2 - start;
+      return Math.min(-start, Math.max(frame - scaled - start, t));
+    };
+
+    const render = () => {
+      const b = box();
+      s = Math.min(maxScale(), Math.max(1, s));
+      tx = clampAxis(tx, b.left, b.w, b.sw);
+      ty = clampAxis(ty, b.top, b.h, b.sh);
+      // at 1× there's nothing to transform — keep it clean so it rasters crisp
+      img.style.transform = s === 1 ? '' : `translate(${tx}px, ${ty}px) scale(${s})`;
+      stage.classList.toggle('is-zoomed', s > 1.01);
+    };
+
+    // zoom to `next` keeping the stage point (px, py) fixed under the finger
+    // or cursor
+    const zoomAround = (next: number, px: number, py: number) => {
+      const b = box();
+      const ix = (px - b.left - tx) / s;
+      const iy = (py - b.top - ty) / s;
+      s = Math.min(maxScale(), Math.max(1, next));
+      tx = px - b.left - ix * s;
+      ty = py - b.top - iy * s;
+      render();
+    };
+
+    // ease the next change (tap/click toggles), then drop it so live gestures
+    // track the fingers directly
+    let easeTimer = 0;
+    const eased = (fn: () => void) => {
+      clearTimeout(easeTimer);
+      stage.classList.add('is-easing');
+      fn();
+      easeTimer = window.setTimeout(() => stage.classList.remove('is-easing'), 320);
+    };
+    const stopEasing = () => {
+      clearTimeout(easeTimer);
+      stage.classList.remove('is-easing');
+    };
+
+    const reset = () => {
+      s = 1;
+      tx = 0;
+      ty = 0;
+      render();
+    };
+
+    // stage point from a client point
+    const local = (x: number, y: number) => {
+      const r = stage.getBoundingClientRect();
+      return [x - r.left, y - r.top] as const;
+    };
+
+    // toggle: zoomed → fit; fitted → full detail around the point
+    const toggleAt = (px: number, py: number) =>
+      eased(() => (s > 1.01 ? reset() : zoomAround(maxScale(), px, py)));
+
+    // mouse: the frame's edges map to the photo's edges, so every part of it
+    // is one move away and the cursor never runs out of photo
+    const follow = (px: number, py: number) => {
+      const b = box();
+      const fx = Math.min(1, Math.max(0, px / b.sw));
+      const fy = Math.min(1, Math.max(0, py / b.sh));
+      tx = fx * (b.sw - b.w * s) - b.left;
+      ty = fy * (b.sh - b.h * s) - b.top;
+      render();
+    };
+
+    // ── Gallery ──
+    // only the photos the gallery is currently showing (option filters hide
+    // the rest), in gallery order
+    const visible = () =>
+      triggers
+        .filter((t) => !t.closest('[hidden]'))
+        .map((t) => t.querySelector('img'))
+        .filter((i): i is HTMLImageElement => !!i);
+
+    const show = (i: number) => {
+      stopEasing();
+      s = 1;
+      tx = 0;
+      ty = 0;
+      img.style.transform = '';
+      stage.classList.remove('is-zoomed');
+      index = (i + list.length) % list.length;
+      const src = list[index];
+      // the original file — the slide's srcset cut is too small to zoom into
+      img.src = src.getAttribute('src') ?? '';
+      img.alt = src.alt;
+      stage.setAttribute('aria-label', `Zoom: ${src.alt}`);
+      count.textContent = list.length > 1 ? `${index + 1} / ${list.length}` : '';
+      steps.forEach((b) => (b.hidden = list.length < 2));
+    };
+
+    triggers.forEach((t) =>
+      t.addEventListener('click', () => {
+        const from = t.querySelector('img');
+        list = visible();
+        const i = from ? list.indexOf(from) : -1;
+        if (i < 0) return;
+        show(i);
+        lockScroll(true);
+        dialog.showModal();
+      }),
+    );
+
+    // Esc fires `cancel` → `close`; × and the empty frame call close()
+    dialog.addEventListener('close', () => {
+      lockScroll(false);
+      img.removeAttribute('src');
+      img.style.transform = '';
+    });
+    dialog.querySelector('[data-zoom-close]')?.addEventListener('click', () => dialog.close());
+    steps.forEach((b) => b.addEventListener('click', () => show(index + Number(b.dataset.zoomStep))));
+
+    dialog.addEventListener('keydown', (e) => {
+      const zoomed = s > 1.01;
+      if (e.key === 'ArrowLeft' && !zoomed) show(index - 1);
+      else if (e.key === 'ArrowRight' && !zoomed) show(index + 1);
+      else if ((e.key === 'Enter' || e.key === ' ') && e.target === stage) {
+        e.preventDefault();
+        const b = box();
+        toggleAt(b.left + b.w / 2, b.top + b.h / 2);
+      }
+    });
+
+    // ── Pointer gestures ──
+    const pointers = new Map<number, { x: number; y: number }>();
+    // gesture bookkeeping: where it started, and the transform at that moment
+    let start = { x: 0, y: 0, t: 0, tx: 0, ty: 0 };
+    let pinch: { dist: number; s: number; ix: number; iy: number } | null = null;
+    let travelled = 0; // furthest the single pointer moved — tells taps from drags
+    let multi = false; // a second finger joined: this gesture can't be a tap or swipe
+    let lastTap = 0;
+
+    const mid = () => {
+      const [a, b] = Array.from(pointers.values());
+      return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, dist: Math.hypot(a.x - b.x, a.y - b.y) };
+    };
+    const beginPinch = () => {
+      const m = mid();
+      const [px, py] = local(m.x, m.y);
+      const b = box();
+      // the photo point between the fingers stays between the fingers
+      pinch = { dist: m.dist || 1, s, ix: (px - b.left - tx) / s, iy: (py - b.top - ty) / s };
+    };
+
+    stage.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      stage.setPointerCapture(e.pointerId);
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      stopEasing();
+      stage.classList.add('is-moving');
+      if (pointers.size === 1) {
+        multi = false;
+        travelled = 0;
+        start = { x: e.clientX, y: e.clientY, t: performance.now(), tx, ty };
+      } else if (pointers.size === 2) {
+        multi = true;
+        beginPinch();
+      }
+    });
+
+    stage.addEventListener('pointermove', (e) => {
+      // mouse hover (no button down): the zoomed photo follows the cursor
+      if (e.pointerType === 'mouse' && !pointers.has(e.pointerId)) {
+        if (s > 1.01 && !stage.classList.contains('is-easing')) follow(...local(e.clientX, e.clientY));
+        return;
+      }
+      const p = pointers.get(e.pointerId);
+      if (!p) return;
+      p.x = e.clientX;
+      p.y = e.clientY;
+
+      if (pointers.size >= 2 && pinch) {
+        const m = mid();
+        const [px, py] = local(m.x, m.y);
+        const b = box();
+        s = Math.min(maxScale(), Math.max(1, pinch.s * (m.dist / pinch.dist)));
+        tx = px - b.left - pinch.ix * s;
+        ty = py - b.top - pinch.iy * s;
+        render();
+        return;
+      }
+
+      travelled = Math.max(travelled, Math.hypot(e.clientX - start.x, e.clientY - start.y));
+      // one finger on a zoomed photo drags it (mouse pans by hover instead)
+      if (e.pointerType !== 'mouse' && s > 1.01) {
+        tx = start.tx + (e.clientX - start.x);
+        ty = start.ty + (e.clientY - start.y);
+        render();
+      }
+    });
+
+    const end = (e: PointerEvent) => {
+      if (!pointers.has(e.pointerId)) return;
+      pointers.delete(e.pointerId);
+      if (stage.hasPointerCapture(e.pointerId)) stage.releasePointerCapture(e.pointerId);
+
+      // a pinch dropped to one finger: carry on as a drag from here, so the
+      // photo doesn't jump to where that finger first landed
+      if (pointers.size === 1) {
+        pinch = null;
+        const [p] = Array.from(pointers.values());
+        start = { x: p.x, y: p.y, t: start.t, tx, ty };
+        return;
+      }
+      if (pointers.size) return;
+      pinch = null;
+      stage.classList.remove('is-moving');
+      if (e.type === 'pointercancel' || multi) return;
+
+      const dx = e.clientX - start.x;
+      const dy = e.clientY - start.y;
+
+      // swipe at 1× steps through the gallery
+      if (e.pointerType !== 'mouse' && s <= 1.01 && list.length > 1 && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        show(index + (dx < 0 ? 1 : -1));
+        return;
+      }
+      if (travelled > 10) return; // a drag, not a tap
+
+      const [px, py] = local(e.clientX, e.clientY);
+      const b = box();
+      const onPhoto =
+        px >= b.left + tx && px <= b.left + tx + b.w * s && py >= b.top + ty && py <= b.top + ty + b.h * s;
+
+      // the empty frame around a fitted photo is the backdrop
+      if (!onPhoto && s <= 1.01) {
+        dialog.close();
+        return;
+      }
+
+      const now = performance.now();
+      if (e.pointerType === 'mouse') {
+        // click: zoom so the cursor's spot lines up with the follow mapping —
+        // no jump on the first mouse move after
+        if (s > 1.01) eased(reset);
+        else
+          eased(() => {
+            s = maxScale();
+            follow(px, py);
+          });
+      } else if (now - lastTap > 300) {
+        // touch: a tap toggles at the finger. The second tap of a double-tap
+        // lands inside the window and is ignored, so double-tap reads as one
+        // toggle — in when fitted, out when zoomed.
+        toggleAt(px, py);
+        lastTap = now;
+      }
+    };
+    stage.addEventListener('pointerup', end);
+    stage.addEventListener('pointercancel', end);
+
+    // trackpad pinch arrives as ctrl + wheel; zoom around the cursor
+    stage.addEventListener(
+      'wheel',
+      (e) => {
+        if (!e.ctrlKey) return;
+        e.preventDefault();
+        stopEasing();
+        const [px, py] = local(e.clientX, e.clientY);
+        zoomAround(s * Math.exp(-e.deltaY * 0.01), px, py);
+      },
+      { passive: false },
+    );
+
+    // Safari's own pinch events would zoom the page under the dialog
+    stage.addEventListener('gesturestart', (e) => e.preventDefault());
+
+    // a rotate or resize changes the fitted box — drop back to fit. Width
+    // only: iOS toolbars change the height while you pan.
+    let lastW = window.innerWidth;
+    window.addEventListener('resize', () => {
+      if (window.innerWidth === lastW) return;
+      lastW = window.innerWidth;
+      if (dialog.open) reset();
+    });
+  }
+</script>
