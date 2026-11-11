@@ -7,9 +7,9 @@
  *
  * Zoom is one transform (translate + scale) on the fitted photo, shared by
  * every input so they can't disagree:
- *   - touch: pinch zooms around the fingers, one finger drags while zoomed,
- *     tap / double-tap toggles zoom at that spot, a sideways swipe at 1×
- *     steps to the next photo
+ *   - touch: pinch zooms around the fingers (the only way in — taps don't
+ *     zoom), one finger drags while zoomed, a sideways swipe at 1× steps to
+ *     the next photo
  *   - mouse: click toggles zoom, the photo then follows the cursor; trackpad
  *     pinch (ctrl + wheel) zooms around the cursor
  *   - keyboard: Enter / Space toggles zoom, ← / → step, Esc closes
@@ -21,7 +21,10 @@
  */
 ---
 
-<dialog class="zoom" data-zoom-dialog aria-label="Photo viewer">
+{/* autofocus on the dialog itself: showModal() otherwise focuses its first
+    control (the stage, or ×) and browsers count that as keyboard focus even
+    after a tap, so the ring drew on open. Tab still reaches every control. */}
+<dialog class="zoom" data-zoom-dialog aria-label="Photo viewer" autofocus>
   <div class="zoom-stage" data-zoom-stage tabindex="0" role="button">
     <img class="zoom-img" data-zoom-img alt="" decoding="async" draggable="false" />
   </div>
@@ -47,6 +50,10 @@
     color: var(--ink);
     overflow: hidden;
   }
+  /* the dialog only holds focus as a starting point — never ring it */
+  .zoom:focus {
+    outline: none;
+  }
   .zoom::backdrop {
     background: var(--cream);
   }
@@ -66,6 +73,14 @@
     overscroll-behavior: contain;
     cursor: zoom-in;
     outline-offset: -4px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* the ring is for keyboard users only — a tap must never draw it */
+  .zoom-stage:focus:not(:focus-visible) {
+    outline: none;
+  }
+  .zoom-btn {
+    -webkit-tap-highlight-color: transparent;
   }
   .zoom-stage.is-zoomed {
     cursor: zoom-out;
@@ -136,10 +151,6 @@
     color: var(--muted);
     font-variant-numeric: tabular-nums;
     pointer-events: none;
-  }
-  /* zoomed, the chrome gets out of the photo's way — only × stays */
-  .zoom:has(.is-zoomed) :is(.zoom-prev, .zoom-next, .zoom-count) {
-    visibility: hidden;
   }
   /* desktop: arrows sit mid-height on the sides, like any viewer */
   @media (min-width: 900px) {
@@ -334,7 +345,6 @@
     let pinch: { dist: number; s: number; ix: number; iy: number } | null = null;
     let travelled = 0; // furthest the single pointer moved — tells taps from drags
     let multi = false; // a second finger joined: this gesture can't be a tap or swipe
-    let lastTap = 0;
 
     const mid = () => {
       const [a, b] = Array.from(pointers.values());
@@ -434,23 +444,16 @@
         return;
       }
 
-      const now = performance.now();
-      if (e.pointerType === 'mouse') {
-        // click: zoom so the cursor's spot lines up with the follow mapping —
-        // no jump on the first mouse move after
-        if (s > 1.01) eased(reset);
-        else
-          eased(() => {
-            s = maxScale();
-            follow(px, py);
-          });
-      } else if (now - lastTap > 300) {
-        // touch: a tap toggles at the finger. The second tap of a double-tap
-        // lands inside the window and is ignored, so double-tap reads as one
-        // toggle — in when fitted, out when zoomed.
-        toggleAt(px, py);
-        lastTap = now;
-      }
+      // touch zooms by pinch only — a tap on the photo does nothing
+      if (e.pointerType !== 'mouse') return;
+      // click: zoom so the cursor's spot lines up with the follow mapping —
+      // no jump on the first mouse move after
+      if (s > 1.01) eased(reset);
+      else
+        eased(() => {
+          s = maxScale();
+          follow(px, py);
+        });
     };
     stage.addEventListener('pointerup', end);
     stage.addEventListener('pointercancel', end);
