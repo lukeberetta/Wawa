@@ -133,6 +133,14 @@ export const products: Product[] = [
     priceRange: { minVariantPrice: zar('17500.00') },
     images: [fish.front('Wawa Classic Fish, deck'), fish.back('Wawa Classic Fish, hull')],
     featured: 2,
+    // Spec sheet. Dims left off until confirmed; add length/width/thickness
+    // here and the plate draws its dimension lines.
+    sheet: {
+      outline: 'fish',
+      finSolution: 'Glass on',
+      finSetup: 'Twin',
+      fins: 'Gephart keels',
+    },
     // Spec table. Two blocks: performance, then build.
     specs: [
       [

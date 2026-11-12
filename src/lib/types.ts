@@ -55,6 +55,9 @@ export interface Product {
   /** PDP spec list, shown as a label/value table. Grouped: each inner array is
    *  a block, rendered with a gap between blocks (e.g. performance vs build). */
   specs?: { label: string; value: string }[][];
+  /** Spec sheet slide in the PDP carousel (lib/specSheet.ts), after the photos.
+   *  Reads Material and Finish from `specs`. */
+  sheet?: BoardSheet;
 }
 
 /** Top-level discipline (Craft sub-section) → maps to a Shopify collection. */
@@ -68,4 +71,17 @@ export interface Discipline {
   hero?: string;
   /** category tags shown as filters under this discipline */
   categories: string[];
+}
+
+/** Board build card for the PDP spec sheet. Dimension strings are as written
+ *  on the sheet (5'6", 21", 2½"). Omit any you don't know — the line shows blank. */
+export interface BoardSheet {
+  outline: 'fish';
+  length?: string;
+  width?: string;
+  thickness?: string;
+  finSolution: 'FCS + Fusion' | '2 + 1 Fin' | 'Glass on' | 'Future Fins';
+  finSetup: 'Twin' | 'Single' | 'Quad' | 'Thruster';
+  /** Fin notes, e.g. 'Gephart keels'. */
+  fins?: string;
 }
