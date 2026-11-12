@@ -137,8 +137,7 @@ export const products: Product[] = [
     // here and the plate draws its dimension lines.
     sheet: {
       outline: 'fish',
-      finSolution: 'Glass on',
-      finSetup: 'Twin',
+      finSetup: 'Twin keel',
       fins: 'Gephart keels',
     },
     // Spec table. Two blocks: performance, then build.
@@ -165,6 +164,8 @@ export const products: Product[] = [
     tags: ['Short'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('17500.00') },
+    // Spec sheet: outline traced from the deck photo; dims only where on record.
+    sheet: { outline: 'gun-fish', finSetup: 'Twin' },
     images: [gunFish.front('Wawa Gun Fish, deck'), gunFish.back('Wawa Gun Fish, hull')],
     specs: [
       [
@@ -189,6 +190,7 @@ export const products: Product[] = [
     tags: ['Short'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('17500.00') },
+    sheet: { outline: 'mini-simmons', finSetup: 'Five box' },
     images: [
       miniSimmons.front('Wawa Mini-Simmons deck in paulownia with a green seagrass inlay'),
       miniSimmons.back('Wawa Mini-Simmons bottom with quad fin boxes and red twin fins'),
@@ -216,6 +218,7 @@ export const products: Product[] = [
     tags: ['Short'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('17500.00') },
+    sheet: { outline: 'bonzer-5', finSetup: 'Bonzer 5' },
     // deck shot only — no back, so no hover swap
     images: [bonzer5.front('Wawa Bonzer 5 deck in paulownia with cork rails')],
     specs: [
@@ -243,6 +246,7 @@ export const products: Product[] = [
     tags: ['Mid'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('19500.00') },
+    sheet: { outline: 'speed-egg', finSetup: 'Single' },
     images: [
       speedEgg.front('Wawa Speed Egg deck in paulownia with cork rails'),
       speedEgg.back('Wawa Speed Egg bottom with single fin box'),
@@ -271,6 +275,7 @@ export const products: Product[] = [
     tags: ['Mid'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('19500.00') },
+    sheet: { outline: 'evo-egg', length: `8'4"`, finSetup: 'Single' },
     images: [
       evoEgg.front('Wawa Evo Egg deck in paulownia with cork rails'),
       evoEgg.back('Wawa Evo Egg bottom with single fin box'),
@@ -300,6 +305,7 @@ export const products: Product[] = [
     tags: ['Mid'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('19500.00') },
+    sheet: { outline: 'needle-fish', length: `6'11"`, width: '21"', thickness: '2¾"' },
     images: [
       needleFish.front('Wawa Needle Fish asymmetrical surfboard, deck in paulownia with cork rails and an offset tail'),
       {
@@ -330,6 +336,7 @@ export const products: Product[] = [
     tags: ['Mid'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('19500.00') },
+    sheet: { outline: 'mid', finSetup: 'Quad' },
     images: [mid.front('Wawa Long Fish, deck'), mid.back('Wawa Long Fish, hull')],
     specs: [
       [
@@ -354,6 +361,7 @@ export const products: Product[] = [
     tags: ['Mid'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('19500.00') },
+    sheet: { outline: 'big-bonzer-3', finSetup: 'Bonzer 3' },
     images: [
       bigBonzer.front('Wawa Big Bonzer 3, deck'),
       bigBonzer.back('Wawa Big Bonzer 3 bottom with centre fin and bonzer side keels'),
@@ -385,6 +393,7 @@ export const products: Product[] = [
     tags: ['Mid'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('19500.00') },
+    sheet: { outline: 'mote-twin', length: `6'8"`, finSetup: 'Twin' },
     images: [
       moteTwin.front('Wawa Mote Twin deck in paulownia with cork rails'),
       moteTwin.back('Wawa Mote Twin bottom with red twin fins'),
@@ -414,6 +423,7 @@ export const products: Product[] = [
     tags: ['Long'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('22500.00') },
+    sheet: { outline: 'model-p', finSetup: 'Single' },
     images: [
       modelP.front('Wawa Model P Longboard, deck'),
       modelP.back('Wawa Model P Longboard, hull'),
@@ -442,6 +452,7 @@ export const products: Product[] = [
     tags: ['Long'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('22500.00') },
+    sheet: { outline: 'long', finSetup: 'Single' },
     images: [long.front('Wawa Model T Longboard, deck'), long.back('Wawa Model T Longboard, hull')],
     specs: [
       [
@@ -467,6 +478,7 @@ export const products: Product[] = [
     tags: ['Long'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('22500.00') },
+    sheet: { outline: 'model-l', finSetup: '2+1' },
     images: [modelL.front('Wawa Model L Longboard, deck'), modelL.back('Wawa Model L Longboard, hull')],
     specs: [
       [
@@ -500,6 +512,7 @@ export const products: Product[] = [
       { title: 'Needle', id: '41466018168896' },
     ],
     priceRange: { minVariantPrice: zar('12000.00') },
+    sheet: { outline: 'alaia', finSetup: 'Finless' },
     images: [alaia.front('Wawa Alaia, top'), alaia.back('Wawa Alaia, base')],
     specs: [
       [
@@ -526,6 +539,7 @@ export const products: Product[] = [
     tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('30000.00') },
+    sheet: { outline: 'foil-prone', finSetup: 'Foil' },
     images: [
       foilProne.front('Wawa Prone Foilboard, deck'),
       foilProne.back('Wawa Prone Foilboard, hull with foil tracks'),
@@ -557,6 +571,7 @@ export const products: Product[] = [
     tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('30000.00') },
+    sheet: { outline: 'foil-wave', finSetup: 'Foil' },
     images: [
       foilWave.front('Wawa Wave Foilboard, deck'),
       foilWave.back('Wawa Wave Foilboard, hull with twin foil tracks'),
@@ -589,6 +604,7 @@ export const products: Product[] = [
     tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('35000.00') },
+    sheet: { outline: 'foil-wing', finSetup: 'Foil' },
     images: [
       foilWing.front('Wawa Wing Foilboard deck with footstrap inserts'),
       foilWing.back('Wawa Wing Foilboard bottom with twin foil tracks and carry handle'),
@@ -618,6 +634,7 @@ export const products: Product[] = [
     tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('25000.00') },
+    sheet: { outline: 'kite-tomo', finSetup: 'Thruster' },
     images: [kiteTomo.front('Wawa Tomo Kiteboard, deck'), kiteTomo.back('Wawa Tomo Kiteboard, hull with fins')],
     specs: [
       [
@@ -769,6 +786,7 @@ export const products: Product[] = [
     // sold as the adjustable-strap variant of the Shopify Handslide product
     variantId: '41465790005312',
     priceRange: { minVariantPrice: zar('1950.00') },
+    sheet: { outline: 'handslide-pro' },
     images: [
       handslidePro.front('Wawa Handslide Pro in dark striped wood with an adjustable black neoprene strap and burnt-in logo'),
       handslidePro.back('Underside of the Wawa Handslide Pro, stamped Handcrafted in Cape Town'),
@@ -797,6 +815,7 @@ export const products: Product[] = [
     availableForSale: true,
     variantId: '41465933070400',
     priceRange: { minVariantPrice: zar('6500.00') },
+    sheet: { outline: 'bodyboard' },
     images: [bodyboard.front('Wawa Bodyboard, deck'), bodyboard.back('Wawa Bodyboard, hull')],
     featured: 7,
     specs: [
