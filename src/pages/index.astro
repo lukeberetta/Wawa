@@ -137,7 +137,6 @@ const igTiles = [
         );
       })}
       <div class="event-inner">
-        <p class="label">{event.label}</p>
         <!-- Cobus's hand lettering, painted cream through a mask (like the
              signature). The real title stays in the h2 for readers + search. -->
         <h2 id="event-title" class="event-lettering">
@@ -146,12 +145,10 @@ const igTiles = [
         <p class="event-facts">
           <span>{event.dates}</span>
           <a href={event.mapHref} target="_blank" rel="noopener noreferrer">{event.venue}, {event.locality}</a>
-          <span class="event-opening">{event.opening}</span>
         </p>
         <a href={event.href} class="event-btn">
           {event.cta} <span aria-hidden="true">→</span>
         </a>
-        <p class="event-credit">{event.artCredit}</p>
       </div>
     </section>
   )}
@@ -503,6 +500,14 @@ const igTiles = [
   .event-print--desk {
     display: none;
   }
+  /* scroll-linked blur-in, same as the footer text: each print sharpens as it
+     rises into view and blurs back out on scroll up. `--reveal` (0–1) is set
+     per print by the script below; no-JS keeps them sharp. */
+  .event-print {
+    opacity: calc(0.35 + var(--reveal, 1) * 0.65);
+    filter: blur(calc((1 - var(--reveal, 1)) * 12px));
+    will-change: opacity, filter;
+  }
   /* tablets: prints hit their width cap, so the bands above and below the
      copy need to grow with them */
   @media (min-width: 600px) {
@@ -517,9 +522,6 @@ const igTiles = [
     width: 100%;
     max-width: 30rem;
     text-align: center;
-  }
-  .event-inner .label {
-    color: var(--event-muted);
   }
   /* the h2 is the shape, filled cream through the mask. text stays in the
      DOM but clipped off, so it's read but never painted. */
@@ -543,8 +545,7 @@ const igTiles = [
     clip-path: inset(50%);
     white-space: nowrap;
   }
-  /* three short lines — date, place, opening — so nothing wraps mid-phrase on
-     a phone */
+  /* two short lines — date, place — so nothing wraps mid-phrase on a phone */
   .event-facts {
     display: flex;
     flex-direction: column;
@@ -561,11 +562,6 @@ const igTiles = [
   .event-facts a:hover {
     border-color: var(--cream);
   }
-  .event-opening {
-    margin-top: 0.35rem;
-    font-size: var(--fs-body);
-    color: var(--event-muted);
-  }
   .event-btn {
     display: inline-flex;
     align-items: center;
@@ -579,11 +575,6 @@ const igTiles = [
   .event-btn:hover {
     gap: 0.9rem;
     background: #fff;
-  }
-  .event-credit {
-    margin-top: var(--space-md);
-    font-size: var(--fs-caption);
-    color: var(--event-muted);
   }
   @media (min-width: 900px) {
     .event-inner {
@@ -635,6 +626,8 @@ const igTiles = [
   @media (prefers-reduced-motion: reduce) {
     .event-print {
       transition: none;
+      opacity: 1;
+      filter: none;
     }
   }
 
@@ -881,4 +874,52 @@ const igTiles = [
   const v = document.querySelector<HTMLVideoElement>('.hero-video');
   // Hero is above the fold, so it attaches as soon as the page settles.
   if (v) ambientVideo(v, { name: 'hero', rootMargin: '0px' });
+</script>
+
+<script>
+  // Exhibition prints blur into focus on scroll (like the footer text). Each
+  // print's page offset is measured on load/resize only; scrolling just reads
+  // scrollY, so nothing forces layout per frame.
+  const prints = [...document.querySelectorAll<HTMLElement>('.event-print')];
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (prints.length && !reduce) {
+    let tops: number[] = [];
+    let shown: boolean[] = [];
+    let winH = window.innerHeight;
+    let ticking = false;
+
+    const compute = () => {
+      ticking = false;
+      const bottom = window.scrollY + winH;
+      // sharp once the print's top is a third of the screen above the fold
+      const span = winH * 0.35;
+      prints.forEach((el, i) => {
+        if (!shown[i]) return;
+        const p = Math.min(Math.max((bottom - tops[i]) / span, 0), 1);
+        el.style.setProperty('--reveal', p.toFixed(3));
+      });
+    };
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(compute);
+      }
+    };
+    const remeasure = () => {
+      winH = window.innerHeight;
+      tops = prints.map((el) => el.getBoundingClientRect().top + window.scrollY);
+      // desk-only prints are display:none on phones
+      shown = prints.map((el) => el.offsetParent !== null);
+      compute();
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', remeasure);
+    window.addEventListener('load', remeasure);
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(remeasure).observe(document.body);
+    }
+    remeasure();
+  }
 </script>

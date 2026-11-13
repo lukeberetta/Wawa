@@ -1,10 +1,8 @@
 /** Global site constants. WhatsApp is the phase-1 order channel (no cart yet). */
 export interface SiteEvent {
-  label: string;
   title: string;
   artist: string;
   dates: string;
-  opening: string;
   blurb: string;
   start: string;
   end: string;
@@ -14,7 +12,6 @@ export interface SiteEvent {
   mapHref: string;
   cta: string;
   href: string;
-  artCredit: string;
   image: string;
 }
 
@@ -89,11 +86,9 @@ export const site = {
   // Featured event on the home page, directly under the hero (and its
   // VisualArtsEvent node in the page schema). Set to null once it's over.
   event: {
-    label: 'Wawa News',
     title: 'First Monoprint Exhibition',
     artist: 'Cobus Joubert',
     dates: '27–29 November',
-    opening: 'Opening night Friday 27, 6–9pm',
     // Schema description only — the band itself stays to two lines of facts.
     blurb:
       'Twelve monoprints by Wawa founder Cobus Joubert, each also an A3 poster, on paper or framed in timber.',
@@ -108,7 +103,6 @@ export const site = {
     href: '/products/art-prints/monoprint-exhibition-posters',
     // The scattered prints around the band are laid out in index.astro.
     // Schema image stays the full poster.
-    artCredit: 'Monoprints by Cobus Joubert',
     image: '/img/product/monoprint-01.webp',
   } as SiteEvent | null,
   // Methods the Yoco gateway offers on Shopify's checkout. Icons in
