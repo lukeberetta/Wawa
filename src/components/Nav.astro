@@ -136,10 +136,28 @@ const isActive = (label: string) => {
     align-items: stretch;
     /* same grained sand as the shop filter strip (::after below) */
     --nav-bg: color-mix(in srgb, var(--warm) 18%, var(--cream));
-    background: var(--nav-bg);
     border-bottom: 1px solid var(--rule);
     transition: background 0.3s var(--ease), border-color 0.3s var(--ease),
       height 0.3s var(--ease);
+  }
+  /* no strip once dismissed: the bar is the whole header, one colour, so it
+     can carry the sand itself (and Safari tints sand) */
+  :global(:root.no-announce) #nav {
+    background: var(--nav-bg);
+  }
+  /* The sand surface is a layer, not #nav's own background. Safari 26 tints
+     its tab bar from the background-color of the fixed element on the top
+     edge, and gives up when that colour (sand) differs from what's actually
+     painted there (the wood announce strip). With #nav transparent it reads
+     the strip and tints wood. Positioned children (announce, bar) paint
+     above this. */
+  #nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--nav-bg);
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease);
   }
   /* Over the hero (homepage) the bar floats transparent with cream marks until
      the page scrolls past the fold, then settles into the solid cream header.
@@ -168,6 +186,7 @@ const isActive = (label: string) => {
       border-bottom-color: transparent;
     }
     /* transparent over the hero, which has its own grain */
+    #nav.overlay:not(.scrolled):not(.menu-open)::before,
     #nav.overlay:not(.scrolled):not(.menu-open)::after {
       opacity: 0;
     }
