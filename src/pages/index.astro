@@ -169,43 +169,15 @@ const igTiles = [
   <!-- FEATURED -->
   <section id="featured-home">
     <div class="wrap">
-      <div class="section-head">
-        <p class="label">Featured</p>
-        <h2>Featured products.</h2>
+      <div class="section-head section-head--split">
+        <div>
+          <p class="label">Featured</p>
+          <h2>Featured products.</h2>
+        </div>
+        <a href="/products" class="head-link">Shop all <span aria-hidden="true">→</span></a>
       </div>
       <div class="product-grid">
         {featured.map((p) => <ProductCard product={p} />)}
-      </div>
-      <div class="section-foot">
-        <a href="/products" class="link-arrow">View all products <span class="arrow">→</span></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- BRAND STATEMENT -->
-  <section id="pullquote" class="grain">
-    <img
-      class="pullquote-img"
-      src="/img/contact/workshop-door.webp"
-      srcset={srcset('/img/contact/workshop-door.webp')}
-      sizes="100vw"
-      alt=""
-      width={2200}
-      height={1650}
-      loading="lazy"
-      decoding="async"
-    />
-    <div class="wrap">
-      <p class="label">Honouring the source</p>
-      <p class="quote-text">
-        &ldquo;Way out on surfing&rsquo;s fringe sits an
-        anachronistic wooden surfboard company, <span class="hl">built on quality, respect for our roots
-        and the sanctity of nature.</span> We shape surf craft inspired by the
-        hydrodynamic genius of ancient Hawaiian board builders.&rdquo;
-      </p>
-      <div class="quote-sign">
-        <span class="signature" role="img" aria-label="Cobus's signature"></span>
-        <p class="quote-attr">Cobus Joubert, Founder</p>
       </div>
     </div>
   </section>
@@ -213,9 +185,14 @@ const igTiles = [
   <!-- INSTAGRAM -->
   <section id="instagram">
     <div class="wrap">
-      <div class="section-head">
-        <p class="label">Instagram</p>
-        <h2>Around the workshop.</h2>
+      <div class="section-head section-head--split">
+        <div>
+          <p class="label">Instagram</p>
+          <h2>Around the workshop.</h2>
+        </div>
+        <a href={site.instagram} target="_blank" rel="noopener noreferrer" class="head-link">
+          Follow <span aria-hidden="true">↗</span>
+        </a>
       </div>
     </div>
     <div class="ig-grid">
@@ -251,11 +228,21 @@ const igTiles = [
         </a>
       ))}
     </div>
+  </section>
+
+  <!-- BRAND STATEMENT -->
+  <section id="pullquote">
     <div class="wrap">
-      <div class="section-foot">
-        <a href={site.instagram} target="_blank" rel="noopener noreferrer" class="link-arrow">
-          Follow along <span class="arrow">→</span>
-        </a>
+      <p class="label">Honouring the source</p>
+      <p class="quote-text">
+        &ldquo;Way out on surfing&rsquo;s fringe sits an
+        anachronistic wooden surfboard company, <span class="hl">built on quality, respect for our roots
+        and the sanctity of nature.</span> We shape surf craft inspired by the
+        hydrodynamic genius of ancient Hawaiian board builders.&rdquo;
+      </p>
+      <div class="quote-sign">
+        <span class="signature" role="img" aria-label="Cobus's signature"></span>
+        <p class="quote-attr">Cobus Joubert, Founder</p>
       </div>
     </div>
   </section>
@@ -382,58 +369,14 @@ const igTiles = [
     color: #fff;
   }
 
-  /* dark grained band — breaks the cream run between hero and range, and the
-     accent highlight reads stronger on ink than on cream */
+  /* brand statement: no band of its own — it sits in the cream run after
+     instagram, on the same rhythm (top padding only; it closes the run, so
+     it pads its bottom too before the perks strip) */
   #pullquote {
-    position: relative;
-    overflow: hidden;
     padding: var(--space-section) 0;
-    background: var(--ink);
-    color: var(--cream);
-  }
-  /* workshop door photo, shared with contact's Visit band — mirrored so the
-     door sits opposite the quote */
-  .pullquote-img {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: scaleX(-1);
-  }
-  /* wash: deep on the left behind the quote, easing off to the right so the
-     door still reads; a vertical stop underneath keeps the band even */
-  #pullquote::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background:
-      linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--ink) 85%, transparent) 0%,
-        color-mix(in srgb, var(--ink) 60%, transparent) 55%,
-        color-mix(in srgb, var(--ink) 15%, transparent) 100%
-      ),
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--ink) 62%, transparent),
-        color-mix(in srgb, var(--ink) 75%, transparent)
-      );
-  }
-  /* grain over photo + wash, under the copy */
-  #pullquote.grain::after {
-    z-index: 1;
-    --grain-opacity: 0.2;
-  }
-  #pullquote .wrap {
-    position: relative;
-    z-index: 2;
   }
   #pullquote .label {
     margin-bottom: 1.5rem;
-    color: color-mix(in srgb, var(--cream) 60%, transparent);
   }
   .quote-text {
     font-size: var(--fs-quote);
@@ -450,7 +393,7 @@ const igTiles = [
     display: block;
     width: clamp(120px, 9rem + 4vw, 190px);
     aspect-ratio: 875 / 260;
-    background: var(--cream);
+    background: var(--ink);
     -webkit-mask: url('/img/signature-cobus.png') no-repeat center / contain;
     mask: url('/img/signature-cobus.png') no-repeat center / contain;
     transform: rotate(-3deg);
@@ -458,7 +401,7 @@ const igTiles = [
   }
   .quote-attr {
     margin-top: 0.75rem;
-    color: color-mix(in srgb, var(--cream) 60%, transparent);
+    color: var(--muted);
     font-size: 0.9rem;
   }
 
@@ -631,12 +574,15 @@ const igTiles = [
     }
   }
 
+  /* one rhythm down the cream run (range → featured → instagram): each
+     section pads its top only, so every gap is exactly one --space-section
+     instead of stacking two paddings. the quote closes the run. */
   #range-home {
-    padding: var(--space-section) 0 var(--space-sm);
+    padding: var(--space-section) 0 0;
   }
 
   #featured-home {
-    padding: var(--space-section) 0;
+    padding: var(--space-section) 0 0;
   }
   .section-head {
     margin-bottom: var(--space-xl);
@@ -687,14 +633,35 @@ const igTiles = [
       flex-basis: 22%;
     }
   }
-  .section-foot {
-    margin-top: 3rem;
-    text-align: center;
+  /* title left, a quiet tracked-caps link right on the h2's baseline —
+     replaces the centred "View all →" that trailed under each grid */
+  .section-head--split {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  .head-link {
+    flex: none;
+    display: inline-flex;
+    gap: 0.45rem;
+    padding-bottom: 0.35em;
+    font-size: var(--fs-eyebrow);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 0.4em;
+    transition: text-decoration-color 0.2s var(--ease);
+  }
+  .head-link:hover {
+    text-decoration-color: currentColor;
   }
   /* instagram mosaic: editorial tile wall. mobile is a plain 2-up grid; desktop
      becomes a named-area mosaic with one large 2×2 feature tile. */
   #instagram {
-    padding: var(--space-section) 0;
+    padding: var(--space-section) 0 0;
   }
   /* tight hairline grid, same frame treatment as .product-grid: the container
      draws the top + left rule, each tile draws its own right + bottom rule, so
