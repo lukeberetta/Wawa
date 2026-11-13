@@ -50,7 +50,7 @@ const { src, alt, width, height } = Astro.props;
     padding-top: var(--nav-h);
     padding-bottom: clamp(2.5rem, 6vh, 5rem);
     background: var(--ink);
-    color: var(--cream);
+    color: #fff;
   }
   .page-hero-img {
     position: absolute;
@@ -90,13 +90,19 @@ const { src, alt, width, height } = Astro.props;
     position: relative;
     z-index: 2;
   }
-  /* one sentence, nothing else — same as the home page hero */
+  /* one sentence in two spans, one per line, the first in the bright accent —
+     same as the home page hero */
   .page-hero h1 {
-    font-size: var(--fs-display);
-    line-height: 1.04;
-    max-width: 15ch;
+    font-size: clamp(2rem, 1.3rem + 2.85vw, 3.9rem);
+    line-height: 1.08;
   }
-  .page-hero h1 :global(.accent) {
-    color: var(--accent);
+  .page-hero h1 :global(span) {
+    display: block;
+  }
+  .page-hero h1 :global(span:first-child) {
+    color: var(--accent-bright);
+  }
+  .page-hero h1 :global(span + span) {
+    max-width: 16ch;
   }
 </style>

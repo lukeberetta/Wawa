@@ -12,6 +12,9 @@
   --warm: #9c7d5e;
   /* brighter, more saturated warm — for accents that need to pop */
   --accent: #bc854e;
+  /* --accent lifted for type over dark footage/photos, where the base tone
+     goes muddy — the hero headlines' first line */
+  --accent-bright: #e8a862;
   /* sun-baked terracotta — the one saturated colour, kept for the shop strip */
   --clay: #b0532f;
 

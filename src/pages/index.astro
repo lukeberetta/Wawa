@@ -104,7 +104,7 @@ const igTiles = [
     ></video>
     <div class="wrap hero-grid">
       <div class="hero-content">
-        <h1><span class="accent">Wooden surfboards.</span> Made by hand, shaped by nature.</h1>
+        <h1><span>Wooden surfboards.</span> <span>Made by hand, shaped by nature.</span></h1>
         <a href="/products" class="link-arrow">
           Find your board <span class="arrow">→</span>
         </a>
@@ -306,7 +306,7 @@ const igTiles = [
     padding-bottom: clamp(2.5rem, 6vh, 5rem);
     /* poster doubles as the load + reduced-motion fallback behind the video */
     background: var(--ink) url('/hero-poster.jpg') center / cover no-repeat;
-    color: var(--cream);
+    color: #fff;
   }
   .hero-video {
     position: absolute;
@@ -360,14 +360,20 @@ const igTiles = [
       display: none;
     }
   }
+  /* one phrase per line; the second wraps at its own measure on phones */
   #hero h1 {
-    font-size: var(--fs-display);
-    line-height: 1.04;
-    max-width: 15ch;
+    font-size: clamp(2rem, 1.3rem + 2.85vw, 3.9rem);
+    line-height: 1.08;
     margin-bottom: 2.25rem;
   }
-  #hero h1 .accent {
-    color: var(--accent);
+  #hero h1 span {
+    display: block;
+  }
+  #hero h1 span:first-child {
+    color: var(--accent-bright);
+  }
+  #hero h1 span + span {
+    max-width: 16ch;
   }
   .hero-sub {
     font-size: var(--fs-lead);
@@ -376,7 +382,7 @@ const igTiles = [
     margin-bottom: 2rem;
   }
   #hero .link-arrow {
-    color: var(--cream);
+    color: #fff;
   }
 
   /* dark grained band — breaks the cream run between hero and range, and the
