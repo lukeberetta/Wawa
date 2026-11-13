@@ -49,15 +49,13 @@ const id = `signup-${source}`;
 </form>
 
 <style>
-  /* a single outlined sand field with film grain — a quiet tint of the
+  /* a single borderless sand field with film grain — a quiet tint of the
      cream; Enter submits (the button is visually hidden). Colour and grain sit
      on the row, since an <input> can't carry the ::after overlay. */
   .signup-row {
     display: flex;
     background: color-mix(in srgb, var(--warm) 18%, var(--cream));
     --grain-opacity: 0.3;
-    border: 1px solid var(--rule);
-    transition: border-color 0.2s var(--ease);
   }
   .signup-row input[type='email'] {
     flex: 1;
@@ -74,9 +72,9 @@ const id = `signup-${source}`;
   .signup-row input::placeholder {
     color: var(--muted);
   }
-  .signup-row:hover,
+  /* no border; keyboard focus still gets a ring (the input has outline: none) */
   .signup-row:has(input:focus-visible) {
-    border-color: var(--ink);
+    outline: 1px solid var(--ink);
   }
   .signup-msg,
   .signup-note {

@@ -139,7 +139,7 @@ const policies = [
     gap: var(--space-xs);
   }
   .fn-col a {
-    font-size: var(--fs-lead);
+    font-size: var(--fs-body);
     font-weight: var(--fw-light);
     color: var(--ink);
     transition: color 0.2s var(--ease);
@@ -147,13 +147,13 @@ const policies = [
   .fn-col a:hover {
     color: var(--warm);
   }
-  /* base bar — outside .wrap so it runs edge to edge; same grained sand as
-     the signup field (Signup.astro) */
+  /* base bar — outside .wrap so it runs edge to edge; cream like the link
+     columns above, with grain over it */
   .fn-base {
     margin-top: var(--space-2xl);
     border-top: 1px solid var(--rule);
     padding: var(--space-md) 0;
-    background: color-mix(in srgb, var(--warm) 18%, var(--cream));
+    background: var(--cream);
     --grain-opacity: 0.3;
   }
   /* stacked (phones/tablets): centred — short trust line, logos, then
