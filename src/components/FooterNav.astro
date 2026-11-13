@@ -3,11 +3,14 @@
  * In-flow sitemap band — the last block of <main>, so it scrolls normally and
  * then the fixed curtain Footer reveals beneath it. Gives the site the real
  * wayfinding it was missing (footer had zero links) without diluting the
- * "Made by hand, shaped by nature" brand moment.
+ * "Made slowly. Ridden forever." brand moment.
  */
 import { site } from '@/lib/site';
 import { disciplines } from '@/lib/catalog';
 import Signup from '@/components/Signup.astro';
+import PaymentIcons from '@/components/PaymentIcons.astro';
+
+const year = new Date().getFullYear();
 
 // Store policies live on Shopify (they're also linked from checkout); the site
 // must surface them too — ECTA wants returns/privacy reachable before purchase.
@@ -67,6 +70,24 @@ const policies = [
       </div>
     </div>
   </div>
+  <!-- base bar: full-bleed hairline, copyright left, checkout trust right -->
+  <div class="fn-base grain">
+    <div class="wrap fn-base-inner">
+      <p class="fn-meta">© {year} {site.name}</p>
+      {site.salesOpen && (
+        <div class="fn-secure">
+          <p class="fn-meta">
+            <svg class="fn-lock" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+              <rect x="3" y="7" width="10" height="7.5" rx="1.25" fill="currentColor" />
+              <path d="M5.25 7V5a2.75 2.75 0 0 1 5.5 0v2" fill="none" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+            Secure checkout by Shopify. Your card details are encrypted and never stored by us.
+          </p>
+          <PaymentIcons shopify />
+        </div>
+      )}
+    </div>
+  </div>
 </section>
 
 <style>
@@ -77,7 +98,7 @@ const policies = [
        rule instead of stacking into a doubled 2px line */
     margin-top: -1px;
     border-top: 1px solid var(--rule);
-    padding: var(--space-2xl) 0 var(--space-xl);
+    padding-top: var(--space-2xl);
   }
   .fn-cols {
     display: grid;
@@ -125,6 +146,46 @@ const policies = [
   }
   .fn-col a:hover {
     color: var(--warm);
+  }
+  /* base bar — outside .wrap so it runs edge to edge; same grained sand as
+     the signup field (Signup.astro) */
+  .fn-base {
+    margin-top: var(--space-2xl);
+    border-top: 1px solid var(--rule);
+    padding: var(--space-md) 0;
+    background: color-mix(in srgb, var(--warm) 18%, var(--cream));
+    --grain-opacity: 0.3;
+  }
+  .fn-base-inner {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--space-sm);
+  }
+  .fn-secure {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+  }
+  .fn-meta {
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .fn-lock {
+    display: inline-block;
+    vertical-align: -1px;
+  }
+  @media (min-width: 900px) {
+    .fn-base-inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .fn-secure {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-md);
+    }
   }
 </style>
 

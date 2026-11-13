@@ -1,7 +1,4 @@
 ---
-import { site } from '@/lib/site';
-import PaymentIcons from '@/components/PaymentIcons.astro';
-const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer grain" aria-label="Site footer">
@@ -25,8 +22,6 @@ const year = new Date().getFullYear();
     <a class="f-order" href="/products">
       Shop the workshop <span aria-hidden="true">→</span>
     </a>
-    {site.salesOpen && <PaymentIcons class="f-pay" />}
-    <p class="f-meta">© {year} {site.name}</p>
   </div>
 </footer>
 
@@ -130,14 +125,6 @@ const year = new Date().getFullYear();
   .f-order:hover {
     opacity: 0.85;
     gap: 0.9rem;
-  }
-  /* payment marks: a quiet row between the button and the copyright */
-  .footer-inner :global(.f-pay) {
-    justify-content: center;
-  }
-  .f-meta {
-    font-size: 0.78rem;
-    color: color-mix(in srgb, var(--cream) 48%, transparent);
   }
 
   /* ── scroll-linked blur-in ──

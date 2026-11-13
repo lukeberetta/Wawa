@@ -51,7 +51,7 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
   <!-- Primary lens: discipline pills, pinned directly below the nav. The
        wrapper clears the fixed nav at rest; the band then sticks under it. -->
   <div class="disc-band-wrap">
-    <nav class="disc-band" aria-label="Filter by discipline">
+    <nav class="disc-band grain" aria-label="Filter by discipline">
       <div class="disc-band-inner wrap">
         <button class="disc-pill" data-discipline="all" aria-pressed="true">All</button>
         {disciplines.map((d) => (
@@ -160,7 +160,9 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
     left: 0;
     right: 0;
     z-index: 50;
-    background: color-mix(in srgb, var(--warm) 12%, var(--cream));
+    /* same grained sand as the signup field and footer base bar */
+    background: color-mix(in srgb, var(--warm) 18%, var(--cream));
+    --grain-opacity: 0.3;
     border-bottom: 1px solid var(--rule);
   }
   .disc-band-inner {

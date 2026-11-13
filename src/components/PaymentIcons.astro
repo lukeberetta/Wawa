@@ -8,12 +8,21 @@ import { site } from '@/lib/site';
 
 export interface Props {
   class?: string;
+  /** lead with a Shopify badge (checkout provider, not a payment method) */
+  shopify?: boolean;
 }
-const { class: className } = Astro.props;
+const { class: className, shopify = false } = Astro.props;
 const label = `We accept ${site.payments.map((p) => p.name).join(', ')}`;
 ---
 
 <ul class:list={['pay-icons', className]} aria-label={label}>
+  {
+    shopify && (
+      <li>
+        <img src="/payment/shopify.svg" alt="Checkout by Shopify" width="38" height="24" loading="lazy" />
+      </li>
+    )
+  }
   {
     site.payments.map((p) => (
       <li>
