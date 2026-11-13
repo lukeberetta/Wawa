@@ -81,7 +81,7 @@ const policies = [
               <rect x="3" y="7" width="10" height="7.5" rx="1.25" fill="currentColor" />
               <path d="M5.25 7V5a2.75 2.75 0 0 1 5.5 0v2" fill="none" stroke="currentColor" stroke-width="1.5" />
             </svg>
-            Secure checkout by Shopify.<span class="fn-secure-more"> Your card details are encrypted and never stored by us.</span>
+            Secure checkout by Shopify.
           </p>
           <PaymentIcons shopify />
         </div>
@@ -101,11 +101,6 @@ const policies = [
     padding-top: var(--space-2xl);
     background: color-mix(in srgb, var(--warm) 18%, var(--cream));
     --grain-opacity: 0.3;
-  }
-  /* the signup field is sand-on-cream elsewhere; on the sand band it flips to
-     cream so it still reads as a field */
-  .footer-nav :global(.signup-row) {
-    background: var(--cream);
   }
   .fn-cols {
     display: grid;
@@ -162,7 +157,7 @@ const policies = [
     padding: var(--space-md) 0;
   }
   /* stacked (phones/tablets): centred — short trust line, logos, then
-     copyright; the long sentence only shows on the one-row desktop bar */
+     copyright */
   .fn-base-inner {
     display: flex;
     flex-direction: column-reverse;
@@ -178,9 +173,6 @@ const policies = [
   }
   .fn-secure :global(.pay-icons) {
     justify-content: center;
-  }
-  .fn-secure-more {
-    display: none;
   }
   .fn-meta {
     font-size: 0.78rem;
@@ -200,9 +192,6 @@ const policies = [
     .fn-secure {
       flex-direction: row;
       gap: var(--space-md);
-    }
-    .fn-secure-more {
-      display: inline;
     }
   }
 </style>

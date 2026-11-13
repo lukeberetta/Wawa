@@ -28,7 +28,7 @@ const id = `signup-${source}`;
   novalidate
   data-signup
 >
-  <div class="signup-row grain">
+  <div class="signup-row">
     <label class="signup-hide" for={id}>Email address</label>
     <input
       id={id}
@@ -45,17 +45,20 @@ const id = `signup-${source}`;
     <button class="signup-hide" type="submit">Sign up</button>
   </div>
   <p class="signup-msg" role="status" aria-live="polite"></p>
-  {!compact && <p class="signup-note">New boards, sales and workshop events. A few emails a year.</p>}
+  {!compact && <p class="signup-note">New boards, sales and workshop events.</p>}
 </form>
 
 <style>
-  /* a single borderless sand field with film grain — a quiet tint of the
-     cream; Enter submits (the button is visually hidden). Colour and grain sit
-     on the row, since an <input> can't carry the ::after overlay. */
+  /* a single clean outlined field on whatever surface it sits on; Enter
+     submits (the button is visually hidden) */
   .signup-row {
     display: flex;
-    background: color-mix(in srgb, var(--warm) 18%, var(--cream));
-    --grain-opacity: 0.3;
+    border: 1px solid var(--rule);
+    transition: border-color 0.2s var(--ease);
+  }
+  .signup-row:hover,
+  .signup-row:has(input:focus) {
+    border-color: var(--ink);
   }
   .signup-row input[type='email'] {
     flex: 1;
@@ -72,9 +75,10 @@ const id = `signup-${source}`;
   .signup-row input::placeholder {
     color: var(--muted);
   }
-  /* no border; keyboard focus still gets a ring (the input has outline: none) */
+  /* keyboard focus gets a ring outside the outline (the input has outline: none) */
   .signup-row:has(input:focus-visible) {
     outline: 1px solid var(--ink);
+    outline-offset: 2px;
   }
   .signup-msg,
   .signup-note {
