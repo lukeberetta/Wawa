@@ -3,7 +3,6 @@ import Layout from '@/layouts/Layout.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import PaymentIcons from '@/components/PaymentIcons.astro';
 import Zoom from '@/components/Zoom.astro';
-import { specSheet } from '@/lib/specSheet';
 import { disciplines, getProducts, slug, formatPrice, makeYourOwnPrice, isBuyable, isGoods } from '@/lib/catalog';
 import { site } from '@/lib/site';
 import { ORG_ID, abs, breadcrumbs } from '@/lib/schema';
@@ -119,13 +118,9 @@ const lead = product.images[0];
 // Filterable galleries show every image up front, so their padding slides
 // start hidden and only fill in once a picked value leaves fewer than 3.
 const minSet = filterable ? Math.min(...Object.values(product.optionImages ?? {}).map((s) => s.length)) : 0;
-// A board with a spec sheet gets it as the slide after its photos.
-const sheet = specSheet(product);
-const sheetAt = sheet ? images.length : -1;
-const slideCount = filterable
-  ? images.length + Math.max(0, 3 - minSet)
-  : Math.max(images.length + (sheet ? 1 : 0), 3);
+const slideCount = filterable ? images.length + Math.max(0, 3 - minSet) : Math.max(images.length, 3);
 const hiddenPad = (i: number) => filterable && i >= images.length;
+const hasDims = product.specs?.flat().some((s) => s.label === 'Dimensions') ?? false;
 const category = product.tags[0];
 const disciplineHref = `/products?discipline=${slug(product.productType)}`;
 
@@ -182,11 +177,7 @@ const crumbs = breadcrumbs([
         <ul class:list={['car-track', { 'has-more': slideCount > 3 }]} data-car-track>
           {Array.from({ length: slideCount }).map((_, i) => (
             <li class="car-slide" data-value={gallery[i]?.value} data-pad={hiddenPad(i) || undefined} hidden={hiddenPad(i)}>
-              {i === sheetAt ? (
-                <button type="button" class="slide-media slide-zoom grain" data-zoom aria-label={`Enlarge: ${sheet!.alt}`}>
-                  <img class="slide-img" src={sheet!.src} alt={sheet!.alt} width="1600" height="2000" loading="lazy" decoding="async" />
-                </button>
-              ) : images[i]?.placeholder ? (
+              {images[i]?.placeholder ? (
                 <div class="slide-media slide-soon">
                   <img
                     class="slide-img"
@@ -416,14 +407,22 @@ const crumbs = breadcrumbs([
 
             {
               product.specs ? (
-                <dl class="specs">
-                  {product.specs.flat().map((s) => (
-                    <div>
-                      <dt>{s.label}</dt>
-                      <dd>{s.value}</dd>
-                    </div>
-                  ))}
-                </dl>
+                <>
+                  <dl class="specs">
+                    {product.specs.flat().map((s) => (
+                      <div>
+                        <dt>{s.label}{s.label === 'Dimensions' && '*'}</dt>
+                        <dd>{s.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  {/* Dimensions are read off one board's decal, not a fixed spec */}
+                  {hasDims && (
+                    <p class="specs-note">
+                      *Sizes are from a board we’ve built. Every board is shaped to your weight and waves.
+                    </p>
+                  )}
+                </>
               ) : (
                 <dl class="specs">
                   <div>
@@ -1037,6 +1036,12 @@ const crumbs = breadcrumbs([
   }
   .specs dd a:hover {
     border-color: var(--ink);
+  }
+  .specs-note {
+    margin-top: 0.85rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--muted);
   }
   @media (min-width: 600px) {
     .specs > div {

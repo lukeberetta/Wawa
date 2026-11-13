@@ -131,15 +131,12 @@ export const products: Product[] = [
     tags: ['Short'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('17500.00') },
-    images: [fish.front('Wawa Classic Fish, deck'), fish.back('Wawa Classic Fish, hull')],
+    images: [
+      fish.front('Wawa Classic Fish, deck'),
+      fish.back('Wawa Classic Fish, hull'),
+      { url: '/img/product/classic-fish-detail.webp', altText: 'Hand-drawn swallow laminate on a Lis fish, "kites to sea", 6\'1 x 21¼ x 2¾", wood & cork over EPS, 2026' },
+    ],
     featured: 2,
-    // Spec sheet. Dims left off until confirmed; add length/width/thickness
-    // here and the plate draws its dimension lines.
-    sheet: {
-      outline: 'fish',
-      finSetup: 'Twin keel',
-      fins: 'Gephart keels',
-    },
     // Spec table. Two blocks: performance, then build.
     specs: [
       [
@@ -148,6 +145,8 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Ask us about sizing for your experience' },
       ],
       [
+        { label: 'Fins', value: 'Twin keel (Gephart keels)' },
+        { label: 'Dimensions', value: '6′1″ × 21¼″ × 2¾″' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
         { label: 'Finish', value: 'Matte' },
@@ -164,9 +163,12 @@ export const products: Product[] = [
     tags: ['Short'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('17500.00') },
-    // Spec sheet: outline traced from the deck photo; dims only where on record.
-    sheet: { outline: 'gun-fish', finSetup: 'Twin' },
-    images: [gunFish.front('Wawa Gun Fish, deck'), gunFish.back('Wawa Gun Fish, hull')],
+    images: [
+      gunFish.front('Wawa Gun Fish, deck'),
+      gunFish.back('Wawa Gun Fish, hull'),
+      { url: '/img/product/gun-fish-keanu-detail.webp', altText: 'Hand-drawn fish laminate on a Gun Fish twin, "shaped by Keanu", 5\'7 x 20 x 2⅜", 2026' },
+      { url: '/img/product/gun-fish-detail.webp', altText: 'Painted green and yellow laminate on a Gun Fish: 5\'6 x 19 x 2⅜", wood & cork over EPS, "gunfish model"' },
+    ],
     specs: [
       [
         { label: 'Best For', value: 'Medium to overhead waves' },
@@ -174,6 +176,8 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Intermediate to advanced' },
       ],
       [
+        { label: 'Fins', value: 'Twin' },
+        { label: 'Dimensions', value: '5′6″ × 19″ × 2⅜″' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
         { label: 'Finish', value: 'Matte' },
@@ -190,10 +194,10 @@ export const products: Product[] = [
     tags: ['Short'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('17500.00') },
-    sheet: { outline: 'mini-simmons', finSetup: 'Five box' },
     images: [
       miniSimmons.front('Wawa Mini-Simmons deck in paulownia with a green seagrass inlay'),
       miniSimmons.back('Wawa Mini-Simmons bottom with quad fin boxes and red twin fins'),
+      { url: '/img/product/mini-simmons-detail.webp', altText: 'Hand-drawn fish laminate on a Mini-Simmons: "jumping bean Simmons", 5\'6 x 22 x 2⅝", 2026' },
     ],
     specs: [
       [
@@ -202,6 +206,8 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Beginner to advanced' },
       ],
       [
+        { label: 'Fins', value: 'Five boxes' },
+        { label: 'Dimensions', value: '5′6″ × 22″ × 2⅝″' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
         { label: 'Finish', value: 'Matte' },
@@ -218,9 +224,11 @@ export const products: Product[] = [
     tags: ['Short'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('17500.00') },
-    sheet: { outline: 'bonzer-5', finSetup: 'Bonzer 5' },
-    // deck shot only — no back, so no hover swap
-    images: [bonzer5.front('Wawa Bonzer 5 deck in paulownia with cork rails')],
+    images: [
+      bonzer5.front('Wawa Bonzer 5 deck in paulownia with cork rails'),
+      bonzer5.back('Wawa Bonzer 5 bottom with centre fin and two pairs of bonzer side fins'),
+      { url: '/img/product/bonzer-5-detail.webp', altText: 'Hand-drawn fish laminate on the Bonzer 5: 6\' x 20½", wood & EPS, 2026' },
+    ],
     specs: [
       [
         { label: 'Best For', value: 'Medium to overhead waves' },
@@ -228,8 +236,41 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Intermediate to advanced' },
       ],
       [
+        { label: 'Fins', value: 'Bonzer 5' },
+        { label: 'Dimensions', value: '6′0″ × 20½″ × 2⅝″' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/kingfish-twin',
+    handle: 'kingfish-twin',
+    title: 'Kingfish Twin',
+    // Placeholder copy until Cobus sends text; dims from the laminate.
+    description:
+      'A 6′0″ twin-fin, 20″ wide and 2⅝″ thick, built in wood over an EPS core. Talk to us about dimensions for your weight and the waves you ride.',
+    productType: 'Surf',
+    tags: ['Short'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: zar('17500.00') },
+    // not yet shot: empty-room plate, decal as the second image
+    images: [
+      ...soon('Wawa Kingfish Twin'),
+      { url: '/img/product/kingfish-twin-detail.webp', altText: 'Hand-drawn kingfish laminate on a Kingfish Twin, 6\'0 x 20 x 2⅝", wood & EPS, 2026' },
+    ],
+    specs: [
+      [
+        { label: 'Best For', value: 'Small to medium waves' },
+        { label: 'Board Feel', value: 'Fast and loose' },
+        { label: 'Skill Level', value: 'Ask us about sizing for your experience' },
+      ],
+      [
+        { label: 'Dimensions', value: '6′0″ × 20″ × 2⅝″' },
+        { label: 'Fins', value: 'Twin' },
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Wood over EPS' },
         { label: 'Finish', value: 'Matte' },
       ],
     ],
@@ -246,10 +287,10 @@ export const products: Product[] = [
     tags: ['Mid'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('19500.00') },
-    sheet: { outline: 'speed-egg', finSetup: 'Single' },
     images: [
       speedEgg.front('Wawa Speed Egg deck in paulownia with cork rails'),
       speedEgg.back('Wawa Speed Egg bottom with single fin box'),
+      { url: '/img/product/speed-egg-detail.webp', altText: 'Hand-drawn coelacanth laminate on a Speed Egg: "coelacanth egg", 8\'6 x 22½ x 2⅞", wood & EPS' },
     ],
     featured: 4,
     specs: [
@@ -259,6 +300,8 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Ask us about sizing for your experience' },
       ],
       [
+        { label: 'Fins', value: 'Single' },
+        { label: 'Dimensions', value: '8′6″ × 22½″ × 2⅞″' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
         { label: 'Finish', value: 'Matte' },
@@ -275,7 +318,6 @@ export const products: Product[] = [
     tags: ['Mid'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('19500.00') },
-    sheet: { outline: 'evo-egg', length: `8'4"`, finSetup: 'Single' },
     images: [
       evoEgg.front('Wawa Evo Egg deck in paulownia with cork rails'),
       evoEgg.back('Wawa Evo Egg bottom with single fin box'),
@@ -287,6 +329,8 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'All levels' },
       ],
       [
+        { label: 'Dimensions', value: '8′4″' },
+        { label: 'Fins', value: 'Single' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
         { label: 'Finish', value: 'Matte' },
@@ -305,7 +349,6 @@ export const products: Product[] = [
     tags: ['Mid'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('19500.00') },
-    sheet: { outline: 'needle-fish', length: `6'11"`, width: '21"', thickness: '2¾"' },
     images: [
       needleFish.front('Wawa Needle Fish asymmetrical surfboard, deck in paulownia with cork rails and an offset tail'),
       {
@@ -320,6 +363,7 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Intermediate to advanced' },
       ],
       [
+        { label: 'Dimensions', value: '6′11″ × 21″ × 2¾″' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Wood & cork, EPS core' },
         { label: 'Finish', value: 'Matte' },
@@ -336,7 +380,6 @@ export const products: Product[] = [
     tags: ['Mid'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('19500.00') },
-    sheet: { outline: 'mid', finSetup: 'Quad' },
     images: [mid.front('Wawa Long Fish, deck'), mid.back('Wawa Long Fish, hull')],
     specs: [
       [
@@ -345,6 +388,7 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Intermediate' },
       ],
       [
+        { label: 'Fins', value: 'Quad' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
         { label: 'Finish', value: 'Matte' },
@@ -361,7 +405,6 @@ export const products: Product[] = [
     tags: ['Mid'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('19500.00') },
-    sheet: { outline: 'big-bonzer-3', finSetup: 'Bonzer 3' },
     images: [
       bigBonzer.front('Wawa Big Bonzer 3, deck'),
       bigBonzer.back('Wawa Big Bonzer 3 bottom with centre fin and bonzer side keels'),
@@ -377,6 +420,8 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Intermediate to advanced' },
       ],
       [
+        { label: 'Fins', value: 'Bonzer 3' },
+        { label: 'Dimensions', value: '7′11″ × 21¼″ × 3¼″' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Wood & cork, EPS core' },
         { label: 'Finish', value: 'Matte' },
@@ -393,10 +438,10 @@ export const products: Product[] = [
     tags: ['Mid'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('19500.00') },
-    sheet: { outline: 'mote-twin', length: `6'8"`, finSetup: 'Twin' },
     images: [
       moteTwin.front('Wawa Mote Twin deck in paulownia with cork rails'),
       moteTwin.back('Wawa Mote Twin bottom with red twin fins'),
+      { url: '/img/product/mote-twin-detail.webp', altText: 'Hand-drawn skipjack tuna laminate on a Mote Twin: 6\'4 x 20¾ x 2³⁄₁₆", wood & cork over EPS, 2026' },
     ],
     specs: [
       [
@@ -405,6 +450,8 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Intermediate to advanced' },
       ],
       [
+        { label: 'Dimensions', value: '6′4″ × 20¾″ × 2³⁄₁₆″' },
+        { label: 'Fins', value: 'Twin' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
         { label: 'Finish', value: 'Matte' },
@@ -423,7 +470,6 @@ export const products: Product[] = [
     tags: ['Long'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('22500.00') },
-    sheet: { outline: 'model-p', finSetup: 'Single' },
     images: [
       modelP.front('Wawa Model P Longboard, deck'),
       modelP.back('Wawa Model P Longboard, hull'),
@@ -436,6 +482,8 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Intermediate to advanced' },
       ],
       [
+        { label: 'Fins', value: 'Single' },
+        { label: 'Dimensions', value: '9′5″ × 22¾″ × 3¼″' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
         { label: 'Finish', value: 'Matte' },
@@ -452,8 +500,11 @@ export const products: Product[] = [
     tags: ['Long'],
     availableForSale: true,
     priceRange: { minVariantPrice: zar('22500.00') },
-    sheet: { outline: 'long', finSetup: 'Single' },
-    images: [long.front('Wawa Model T Longboard, deck'), long.back('Wawa Model T Longboard, hull')],
+    images: [
+      long.front('Wawa Model T Longboard, deck'),
+      long.back('Wawa Model T Longboard, hull'),
+      { url: '/img/product/model-t-detail.webp', altText: 'Hand-drawn red octopus laminate on a Model T: "cuttlefish model T longboard", 9\'5 x 22½ x 3¼", wood & cork over EPS' },
+    ],
     specs: [
       [
         { label: 'Best For', value: 'Small to medium waves' },
@@ -461,6 +512,8 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'All levels' },
       ],
       [
+        { label: 'Fins', value: 'Single' },
+        { label: 'Dimensions', value: '9′5″ × 22½″ × 3¼″' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Timber & cork over EPS' },
         { label: 'Finish', value: 'Matte' },
@@ -478,8 +531,11 @@ export const products: Product[] = [
     tags: ['Long'],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('22500.00') },
-    sheet: { outline: 'model-l', finSetup: '2+1' },
-    images: [modelL.front('Wawa Model L Longboard, deck'), modelL.back('Wawa Model L Longboard, hull')],
+    images: [
+      modelL.front('Wawa Model L Longboard, deck'),
+      modelL.back('Wawa Model L Longboard, hull'),
+      { url: '/img/product/model-l-detail.webp', altText: 'Hand-drawn red octopus laminate on a Model L: "cuttlefish model L", "happy surfing Alex!", 2025' },
+    ],
     specs: [
       [
         { label: 'Best For', value: 'Small surf to serious' },
@@ -487,8 +543,40 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Advanced' },
       ],
       [
+        { label: 'Fins', value: '2+1' },
+        { label: 'Dimensions', value: '9′3″ × 23″ × 3¼″' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
+  {
+    id: 'mock/makoro-sup',
+    handle: 'makoro-sup',
+    title: 'Makoro SUP',
+    // Placeholder copy until Cobus sends text; dims from the laminate.
+    description:
+      'A handmade stand-up paddleboard, 9′7″ × 28½″ × 4″, built in wood over an EPS core. Talk to us about dimensions for your weight and how you want to paddle.',
+    productType: 'Surf',
+    tags: ['Long'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: zar('22500.00') },
+    // not yet shot: empty-room plate, decal as the second image
+    images: [
+      ...soon('Wawa Makoro SUP'),
+      { url: '/img/product/makoro-sup-detail.webp', altText: 'Hand-drawn mermaid holding two fish over blue waves, on the Makoro SUP: 9\'7 x 28½ x 4", wood & EPS, handmade' },
+    ],
+    specs: [
+      [
+        { label: 'Best For', value: 'Paddling and small, rolling waves' },
+        { label: 'Board Feel', value: 'Stable and gliding' },
+        { label: 'Skill Level', value: 'Ask us about sizing for your experience' },
+      ],
+      [
+        { label: 'Dimensions', value: '9′7″ × 28½″ × 4″' },
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Wood over EPS' },
         { label: 'Finish', value: 'Matte' },
       ],
     ],
@@ -512,8 +600,12 @@ export const products: Product[] = [
       { title: 'Needle', id: '41466018168896' },
     ],
     priceRange: { minVariantPrice: zar('12000.00') },
-    sheet: { outline: 'alaia', finSetup: 'Finless' },
-    images: [alaia.front('Wawa Alaia, top'), alaia.back('Wawa Alaia, base')],
+    images: [
+      alaia.front('Wawa Alaia, top'),
+      alaia.back('Wawa Alaia, base'),
+      { url: '/img/product/alaia-trigger-detail.webp', altText: 'Red stencilled ALAIA roundel on the Trigger model, 6\'0 x 17 x ⅞"' },
+      { url: '/img/product/alaia-needle-detail.webp', altText: 'Green stencilled ALAIA roundel on the Needle model, 6\'1 x 16 x ⅞"' },
+    ],
     specs: [
       [
         { label: 'Best For', value: 'Clean, open faces' },
@@ -521,6 +613,7 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Advanced' },
       ],
       [
+        { label: 'Fins', value: 'Finless' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Solid timber' },
         { label: 'Finish', value: 'Oiled' },
@@ -539,7 +632,6 @@ export const products: Product[] = [
     tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('30000.00') },
-    sheet: { outline: 'foil-prone', finSetup: 'Foil' },
     images: [
       foilProne.front('Wawa Prone Foilboard, deck'),
       foilProne.back('Wawa Prone Foilboard, hull with foil tracks'),
@@ -555,6 +647,8 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Intermediate to advanced' },
       ],
       [
+        { label: 'Dimensions', value: '7′8″ × 20¼″ × 6″' },
+        { label: 'Volume', value: '110L' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Paulownia & cork' },
         { label: 'Finish', value: 'Speed skin' },
@@ -571,7 +665,6 @@ export const products: Product[] = [
     tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('30000.00') },
-    sheet: { outline: 'foil-wave', finSetup: 'Foil' },
     images: [
       foilWave.front('Wawa Wave Foilboard, deck'),
       foilWave.back('Wawa Wave Foilboard, hull with twin foil tracks'),
@@ -588,6 +681,8 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Intermediate to advanced' },
       ],
       [
+        { label: 'Dimensions', value: '5′0″ × 29″' },
+        { label: 'Volume', value: '90L' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Timber & cork' },
         { label: 'Finish', value: 'Speed skin' },
@@ -604,7 +699,6 @@ export const products: Product[] = [
     tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('35000.00') },
-    sheet: { outline: 'foil-wing', finSetup: 'Foil' },
     images: [
       foilWing.front('Wawa Wing Foilboard deck with footstrap inserts'),
       foilWing.back('Wawa Wing Foilboard bottom with twin foil tracks and carry handle'),
@@ -634,8 +728,11 @@ export const products: Product[] = [
     tags: [],
     availableForSale: false,
     priceRange: { minVariantPrice: zar('25000.00') },
-    sheet: { outline: 'kite-tomo', finSetup: 'Thruster' },
-    images: [kiteTomo.front('Wawa Tomo Kiteboard, deck'), kiteTomo.back('Wawa Tomo Kiteboard, hull with fins')],
+    images: [
+      kiteTomo.front('Wawa Tomo Kiteboard, deck'),
+      kiteTomo.back('Wawa Tomo Kiteboard, hull with fins'),
+      { url: '/img/product/kite-tomo-detail.webp', altText: 'Hand-drawn blue skate laminate on a Tomo Kiteboard: "skate kite", 4\'10 x 17⅜ x 2", wood & EPS, 2026' },
+    ],
     specs: [
       [
         { label: 'Best For', value: 'Strong wind' },
@@ -643,6 +740,8 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'Intermediate to advanced' },
       ],
       [
+        { label: 'Fins', value: 'Thruster' },
+        { label: 'Dimensions', value: '4′10″ × 17⅜″ × 2″' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Timber & cork' },
         { label: 'Finish', value: 'Matte' },
@@ -731,6 +830,7 @@ export const products: Product[] = [
     images: [
       paipo.front('Four Wawa paipos leaning on a sunlit wall, painted PAIPO and octopus graphics'),
       paipo.back('Four Wawa paipos showing their branded sides, solid timber grain'),
+      { url: '/img/product/paipo-detail.webp', altText: 'Hand-drawn mermaid on a wave laminate on a paipo: 4\'4 x 19½", EPS & wood, 2024' },
     ],
     specs: [
       [
@@ -786,7 +886,6 @@ export const products: Product[] = [
     // sold as the adjustable-strap variant of the Shopify Handslide product
     variantId: '41465790005312',
     priceRange: { minVariantPrice: zar('1950.00') },
-    sheet: { outline: 'handslide-pro' },
     images: [
       handslidePro.front('Wawa Handslide Pro in dark striped wood with an adjustable black neoprene strap and burnt-in logo'),
       handslidePro.back('Underside of the Wawa Handslide Pro, stamped Handcrafted in Cape Town'),
@@ -815,8 +914,11 @@ export const products: Product[] = [
     availableForSale: true,
     variantId: '41465933070400',
     priceRange: { minVariantPrice: zar('6500.00') },
-    sheet: { outline: 'bodyboard' },
-    images: [bodyboard.front('Wawa Bodyboard, deck'), bodyboard.back('Wawa Bodyboard, hull')],
+    images: [
+      bodyboard.front('Wawa Bodyboard, deck'),
+      bodyboard.back('Wawa Bodyboard, hull'),
+      { url: '/img/product/bodyboard-detail.webp', altText: 'Hand-drawn red stingray laminate on a bodyboard: "stingray boogie", 4\' x 19½", recycled EPS & wood, 2025' },
+    ],
     featured: 7,
     specs: [
       [
@@ -825,6 +927,7 @@ export const products: Product[] = [
         { label: 'Skill Level', value: 'All levels' },
       ],
       [
+        { label: 'Dimensions', value: '41½″ × 19½″' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Cork deck, recycled foam core, paulownia bottom' },
         { label: 'Finish', value: 'Matte' },

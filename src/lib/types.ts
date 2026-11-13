@@ -55,9 +55,6 @@ export interface Product {
   /** PDP spec list, shown as a label/value table. Grouped: each inner array is
    *  a block, rendered with a gap between blocks (e.g. performance vs build). */
   specs?: { label: string; value: string }[][];
-  /** Spec sheet slide in the PDP carousel (lib/specSheet.ts), after the photos.
-   *  Reads Material and Finish from `specs`. */
-  sheet?: BoardSheet;
 }
 
 /** Top-level discipline (Craft sub-section) → maps to a Shopify collection. */
@@ -71,32 +68,4 @@ export interface Discipline {
   hero?: string;
   /** category tags shown as filters under this discipline */
   categories: string[];
-}
-
-/** Fin layout drawn on the spec sheet's hull (and side view). */
-export type FinSetup =
-  | 'Twin keel'
-  | 'Twin'
-  | 'Single'
-  | 'Quad'
-  | 'Thruster'
-  | '2+1'
-  | 'Bonzer 3'
-  | 'Bonzer 5'
-  | 'Five box'
-  | 'Foil'
-  | 'Finless';
-
-/** Board build card for the PDP spec sheet. Dimension strings are as written
- *  on a sheet (5'6", 21", 2½"); each one left off simply isn't drawn. */
-export interface BoardSheet {
-  /** key into src/data/outlines.ts */
-  outline: string;
-  length?: string;
-  width?: string;
-  thickness?: string;
-  /** omit when unknown: no fins drawn, no Fins line */
-  finSetup?: FinSetup;
-  /** Fins line wording, when it should say more than the setup (e.g. 'Gephart keels') */
-  fins?: string;
 }
