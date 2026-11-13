@@ -433,7 +433,7 @@ export const products: Product[] = [
     handle: 'mote-twin',
     title: 'Mote Twin',
     description:
-      'A 6′8″ twin-fin with a pulled-in nose and a rounded pin, long enough to paddle early and loose enough to turn off the tail. Built in paulownia with cork rails. Talk to us about dimensions for your weight and the waves you ride.',
+      'A 6′4″ twin-fin with a pulled-in nose and a rounded pin, long enough to paddle early and loose enough to turn off the tail. Built in paulownia with cork rails. Talk to us about dimensions for your weight and the waves you ride.',
     productType: 'Surf',
     tags: ['Mid'],
     availableForSale: false,
