@@ -246,34 +246,6 @@ const igTiles = [
       </div>
     </div>
   </section>
-
-  <!-- PERKS -->
-  <section id="perks">
-    <ul class="perks">
-      <li class="perk">
-        <svg class="perk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M11 20A7 7 0 0 1 4 13C4 7 10 4 17 4c0 7-3 13-9 13Z" />
-          <path d="M4 20c2-4 5-6.5 8-7.5" />
-        </svg>
-        <p>Shaped by hand from timber</p>
-      </li>
-      <li class="perk">
-        <svg class="perk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="9" />
-          <path d="M3 12h18" />
-          <path d="M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" />
-        </svg>
-        <p>Shipped worldwide</p>
-      </li>
-      <li class="perk">
-        <svg class="perk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M4 20h4L18.5 9.5a2.12 2.12 0 0 0-3-3L5 17v3Z" />
-          <path d="M13.5 8 16 10.5" />
-        </svg>
-        <p>Custom builds welcome</p>
-      </li>
-    </ul>
-  </section>
 </Layout>
 
 <style>
@@ -370,8 +342,7 @@ const igTiles = [
   }
 
   /* brand statement: no band of its own — it sits in the cream run after
-     instagram, on the same rhythm (top padding only; it closes the run, so
-     it pads its bottom too before the perks strip) */
+     instagram, on the same rhythm. it closes the page, so it pads its bottom too. */
   #pullquote {
     padding: var(--space-section) 0;
   }
@@ -405,25 +376,25 @@ const igTiles = [
     font-size: 0.9rem;
   }
 
-  /* featured event: the twelve prints scattered on the print's own leaf green
-     (sampled from monoprint No. 1, so local rather than a token), with one
+  /* featured event: the twelve prints scattered on the nav's grained sand
+     (ink type, lettering and button so it reads on the light ground), with one
      centred column in the clearing. built for the phone first: prints sit in
      bands above and below the copy, which the vertical padding reserves. */
   #event-home {
-    --event-bg: #2c412f;
-    --event-muted: color-mix(in srgb, var(--cream) 70%, transparent);
+    --event-bg: color-mix(in srgb, var(--warm) 18%, var(--cream));
+    --event-muted: color-mix(in srgb, var(--ink) 40%, transparent);
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 11rem var(--wrap-pad);
     background: var(--event-bg);
-    color: var(--cream);
+    color: var(--ink);
   }
   #event-home.grain::after {
     z-index: 1;
-    --grain-opacity: 0.2;
+    --grain-opacity: 0.3;
   }
-  /* each print on a thin paper mat, tilted, with a soft shadow on the green */
+  /* each print on a thin paper mat, tilted, with a soft shadow on the sand */
   .event-print {
     position: absolute;
     z-index: 0;
@@ -437,7 +408,7 @@ const igTiles = [
     height: auto;
     padding: 0.3rem;
     background: var(--cream);
-    box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.3);
     rotate: calc(var(--mr, var(--r)) * 1deg);
   }
   .event-print--desk {
@@ -466,14 +437,14 @@ const igTiles = [
     max-width: 30rem;
     text-align: center;
   }
-  /* the h2 is the shape, filled cream through the mask. text stays in the
+  /* the h2 is the shape, filled ink through the mask. text stays in the
      DOM but clipped off, so it's read but never painted. */
   .event-lettering {
     margin: var(--space-lg) auto 0;
     /* inset on phones so the nudged "1st" keeps clear of the gutter */
     width: 88%;
     aspect-ratio: 1400 / 410;
-    background: var(--cream);
+    background: var(--ink);
     -webkit-mask: url('/img/event/monoprint-lettering.png') no-repeat center / contain;
     mask: url('/img/event/monoprint-lettering.png') no-repeat center / contain;
     /* the "1st" hangs off the left of the artwork, so the box centre sits left
@@ -503,7 +474,7 @@ const igTiles = [
     transition: border-color 0.25s var(--ease);
   }
   .event-facts a:hover {
-    border-color: var(--cream);
+    border-color: var(--ink);
   }
   .event-btn {
     display: inline-flex;
@@ -511,13 +482,13 @@ const igTiles = [
     gap: 0.6rem;
     margin-top: var(--space-lg);
     padding: 0.95rem 1.6rem;
-    background: var(--cream);
-    color: var(--ink);
+    background: var(--ink);
+    color: var(--cream);
     transition: gap 0.3s var(--ease), background 0.25s var(--ease);
   }
   .event-btn:hover {
     gap: 0.9rem;
-    background: #fff;
+    background: var(--wood);
   }
   @media (min-width: 900px) {
     .event-inner {
@@ -793,45 +764,6 @@ const igTiles = [
     .ig-tile--e { grid-area: e; }
     .ig-tile--f { grid-area: f; }
     .ig-tile--feat { grid-area: feat; }
-  }
-
-  /* perks strip: full-bleed hairline band. mobile-first — stacked with
-     horizontal dividers, becoming a 3-up row with vertical dividers. */
-  .perks {
-    list-style: none;
-    display: grid;
-    grid-template-columns: 1fr;
-    margin-inline: calc(50% - 50vw);
-    border-block: 1px solid var(--rule);
-  }
-  .perk {
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    gap: 1.1rem;
-    padding: 2rem var(--wrap-pad);
-  }
-  .perk:not(:last-child) {
-    border-bottom: 1px solid var(--rule);
-  }
-  .perk-icon {
-    width: 26px;
-    height: 26px;
-    flex-shrink: 0;
-    color: var(--ink);
-  }
-  .perk p {
-    font-size: 1rem;
-    line-height: 1.3;
-  }
-  @media (min-width: 768px) {
-    .perks {
-      grid-template-columns: repeat(3, 1fr);
-    }
-    .perk:not(:last-child) {
-      border-bottom: none;
-      border-right: 1px solid var(--rule);
-    }
   }
 </style>
 
