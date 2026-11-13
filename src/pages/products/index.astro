@@ -581,6 +581,21 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
     });
   }
 
+  // ── Back to top ───────────────────────────────
+  // a new filter/sort starts the list from the top. Instant, since the grid
+  // has just changed under you. While the sheet is open the page is pinned by
+  // lockScroll (which restores the old position on release), so defer the
+  // jump until the sheet closes.
+  let topOnClose = false;
+  function toTop() {
+    if (document.documentElement.classList.contains('is-locked')) {
+      topOnClose = true;
+      return;
+    }
+    if (window.lenis) window.lenis.scrollTo(0, { immediate: true, force: true });
+    else window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
   // ── Controls ──────────────────────────────────
   discPills.forEach((b) =>
     b.addEventListener('click', () => {
@@ -589,6 +604,7 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
       renderCats(state.discipline);
       writeUrl(true);
       apply();
+      toTop();
     }),
   );
   sortBtns.forEach((b) =>
@@ -596,6 +612,7 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
       state.sort = b.dataset.sort || 'featured';
       writeUrl();
       apply();
+      toTop();
     }),
   );
   // category buttons are rebuilt per discipline, so delegate from the group
@@ -605,6 +622,7 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
     state.category = btn.dataset.category || 'all';
     writeUrl(true);
     apply();
+    toTop();
   });
   document.querySelectorAll('[data-reset]').forEach((b) =>
     b.addEventListener('click', () => {
@@ -614,6 +632,7 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
       renderCats('all');
       writeUrl(true);
       apply();
+      toTop();
     }),
   );
 
@@ -636,6 +655,10 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
     sheet.classList.toggle('open', open);
     sheetOverlay.classList.toggle('open', open);
     lockScroll(open);
+    if (!open && topOnClose) {
+      topOnClose = false;
+      toTop();
+    }
     if (open) {
       sheetOverlay.hidden = false;
       releaseTrap = trapFocus(sheet, closeBtn);
