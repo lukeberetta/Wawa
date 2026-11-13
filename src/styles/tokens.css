@@ -15,8 +15,8 @@
   /* --accent lifted for type over dark footage/photos, where the base tone
      goes muddy — the hero headlines' first line */
   --accent-bright: #e8a862;
-  /* sun-baked terracotta — the one saturated colour, kept for the shop strip */
-  --clay: #b0532f;
+  /* mahogany — the shop strip and the mobile status-bar band */
+  --wood: #6e3f2a;
 
   /* type */
   /* system-ui carries the brief moment before PolySans swaps in — no webfont

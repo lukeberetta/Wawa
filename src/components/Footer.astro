@@ -49,6 +49,14 @@
          a hairline of the cream body showing under the footer */
       box-shadow: 0 1px 0 var(--ink);
     }
+    /* iOS 26 Safari: at the end of the page the band under the floating
+       toolbar is past the document, so no content can paint there — Safari
+       fills it with the <body> background (wood on mobile, see global.css).
+       Go ink while the footer is on screen so the band continues the
+       video's faded-out bottom (below). */
+    :global(html.footer-in body) {
+      background: var(--ink);
+    }
   }
   /* hero video as the footer backdrop, behind the darkening gradient — same
      treatment as #hero so the two video panels read identically */
@@ -78,6 +86,18 @@
       color-mix(in srgb, var(--ink) 38%, transparent),
       color-mix(in srgb, var(--ink) 56%, transparent)
     );
+  }
+  /* mobile: fade the bottom of the panel into solid ink so it runs on into
+     the flat ink band Safari paints under its toolbar (see above) */
+  @media (max-width: 768px) {
+    .site-footer::before {
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--ink) 38%, transparent),
+        color-mix(in srgb, var(--ink) 56%, transparent) 55%,
+        var(--ink) 100%
+      );
+    }
   }
   /* film grain over video + gradient, under the text — matches #hero */
   .site-footer.grain::after {
@@ -208,4 +228,13 @@
   // viewport; the sentinel at the end of <main> is what actually approaches
   // as the user nears the bottom.
   if (v) ambientVideo(v, { name: 'hero', watch: document.getElementById('footer-sentinel') });
+
+  // Flags the footer being on screen, for the iOS toolbar band (see the
+  // `html.footer-in body` rule — mobile only, where the footer is in flow).
+  const f = document.querySelector('.site-footer');
+  if (f && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => {
+      document.documentElement.classList.toggle('footer-in', e.isIntersecting);
+    }).observe(f);
+  }
 </script>
