@@ -158,7 +158,7 @@ const igTiles = [
     <div class="wrap">
       <div class="section-head">
         <p class="label">Our range</p>
-        <h2>Find your craft.</h2>
+        <h2><a href="/products" class="title-link">Find your craft.</a></h2>
       </div>
       <div class="product-grid">
         {homeDisciplines.map((d) => <CategoryCard discipline={d} />)}
@@ -169,12 +169,9 @@ const igTiles = [
   <!-- FEATURED -->
   <section id="featured-home">
     <div class="wrap">
-      <div class="section-head section-head--split">
-        <div>
-          <p class="label">Featured</p>
-          <h2>Featured products.</h2>
-        </div>
-        <a href="/products" class="head-link">Shop all <span aria-hidden="true">→</span></a>
+      <div class="section-head">
+        <p class="label">Featured</p>
+        <h2><a href="/products" class="title-link">Featured products.</a></h2>
       </div>
       <div class="product-grid">
         {featured.map((p) => <ProductCard product={p} />)}
@@ -185,14 +182,9 @@ const igTiles = [
   <!-- INSTAGRAM -->
   <section id="instagram">
     <div class="wrap">
-      <div class="section-head section-head--split">
-        <div>
-          <p class="label">Instagram</p>
-          <h2>Around the workshop.</h2>
-        </div>
-        <a href={site.instagram} target="_blank" rel="noopener noreferrer" class="head-link">
-          Follow <span aria-hidden="true">↗</span>
-        </a>
+      <div class="section-head">
+        <p class="label">Instagram</p>
+        <h2><a href={site.instagram} target="_blank" rel="noopener noreferrer" class="title-link">Around the workshop.</a></h2>
       </div>
     </div>
     <div class="ig-grid">
@@ -604,29 +596,16 @@ const igTiles = [
       flex-basis: 22%;
     }
   }
-  /* title left, a quiet tracked-caps link right on the h2's baseline —
-     replaces the centred "View all →" that trailed under each grid */
-  .section-head--split {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1.5rem;
-  }
-  .head-link {
-    flex: none;
-    display: inline-flex;
-    gap: 0.45rem;
-    padding-bottom: 0.35em;
-    font-size: var(--fs-eyebrow);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--ink);
+  /* the whole title is the link — no separate "Shop all" / "Follow" */
+  .title-link {
+    color: inherit;
     text-decoration: underline;
     text-decoration-color: transparent;
-    text-underline-offset: 0.4em;
+    text-decoration-thickness: 0.06em;
+    text-underline-offset: 0.14em;
     transition: text-decoration-color 0.2s var(--ease);
   }
-  .head-link:hover {
+  .title-link:hover {
     text-decoration-color: currentColor;
   }
   /* instagram mosaic: editorial tile wall. mobile is a plain 2-up grid; desktop
