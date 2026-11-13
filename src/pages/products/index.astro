@@ -151,7 +151,8 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
   /* discipline pills band — fixed directly under the nav, always on screen.
      The wrapper reserves nav + band height so the header below clears both. */
   .disc-band-wrap {
-    --disc-band-h: 3.1rem;
+    /* pills (~1.7rem) hang just under the logo row with a tight gap below */
+    --disc-band-h: 2.5rem;
     height: calc(var(--nav-h) + env(safe-area-inset-top) + var(--disc-band-h));
   }
   .disc-band {
@@ -165,10 +166,24 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
     --grain-opacity: 0.3;
     border-bottom: 1px solid var(--rule);
   }
+  /* nav and filter strip read as one sand block: drop the nav's hairline
+     outright (a transparent border still leaves a 1px row the grain misses).
+     :has keeps it to this page even if the CSS chunk is shared */
+  :global(body:has(.disc-band) #nav) {
+    border-bottom: 0;
+  }
+  /* continue the nav's grain tile instead of restarting it at the band's top
+     edge (the nav's grain box is the bar, starting --bar-h above us), so
+     there's no seam where the two meet */
+  .disc-band.grain::after {
+    background-position: 0 calc(-1 * var(--bar-h));
+  }
   .disc-band-inner {
     display: flex;
     gap: var(--space-xs);
-    align-items: center;
+    align-items: flex-start;
+    /* 2px keeps the pill focus ring clear of the scroller's clip */
+    padding-top: 2px;
     height: var(--disc-band-h);
     overflow-x: auto;
     scrollbar-width: none;
@@ -188,7 +203,7 @@ const headerCopy: Record<string, { title: string; sub: string }> = {
     background: none;
     border: 1px solid var(--rule);
     border-radius: var(--radius-pill);
-    padding: 0.4rem 0.9rem;
+    padding: 0.3rem 0.85rem;
     cursor: pointer;
     transition: color 0.2s var(--ease), background 0.2s var(--ease),
       border-color 0.2s var(--ease);
