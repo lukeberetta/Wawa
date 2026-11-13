@@ -45,6 +45,9 @@
   @media (max-width: 768px) {
     .site-footer {
       position: relative;
+      /* paint 1px of ink past the bottom edge: a fractional page height left
+         a hairline of the cream body showing under the footer */
+      box-shadow: 0 1px 0 var(--ink);
     }
   }
   /* hero video as the footer backdrop, behind the darkening gradient — same

@@ -81,7 +81,7 @@ const policies = [
               <rect x="3" y="7" width="10" height="7.5" rx="1.25" fill="currentColor" />
               <path d="M5.25 7V5a2.75 2.75 0 0 1 5.5 0v2" fill="none" stroke="currentColor" stroke-width="1.5" />
             </svg>
-            Secure checkout by Shopify. Your card details are encrypted and never stored by us.
+            Secure checkout by Shopify.<span class="fn-secure-more"> Your card details are encrypted and never stored by us.</span>
           </p>
           <PaymentIcons shopify />
         </div>
@@ -156,15 +156,26 @@ const policies = [
     background: color-mix(in srgb, var(--warm) 18%, var(--cream));
     --grain-opacity: 0.3;
   }
+  /* stacked (phones/tablets): centred — short trust line, logos, then
+     copyright; the long sentence only shows on the one-row desktop bar */
   .fn-base-inner {
     display: flex;
     flex-direction: column-reverse;
-    gap: var(--space-sm);
+    align-items: center;
+    gap: var(--space-xs);
+    text-align: center;
   }
   .fn-secure {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2xs);
+    align-items: center;
+    gap: var(--space-xs);
+  }
+  .fn-secure :global(.pay-icons) {
+    justify-content: center;
+  }
+  .fn-secure-more {
+    display: none;
   }
   .fn-meta {
     font-size: 0.78rem;
@@ -178,13 +189,15 @@ const policies = [
   @media (min-width: 900px) {
     .fn-base-inner {
       flex-direction: row;
-      align-items: center;
       justify-content: space-between;
+      text-align: left;
     }
     .fn-secure {
       flex-direction: row;
-      align-items: center;
       gap: var(--space-md);
+    }
+    .fn-secure-more {
+      display: inline;
     }
   }
 </style>
