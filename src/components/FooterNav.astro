@@ -23,7 +23,7 @@ const policies = [
 ];
 ---
 
-<section class="footer-nav" aria-label="Site links">
+<section class="footer-nav grain" aria-label="Site links">
   <div class="wrap footer-nav-inner">
     <div class="fn-cols">
       <nav class="fn-links" aria-label="Footer">
@@ -71,7 +71,7 @@ const policies = [
     </div>
   </div>
   <!-- base bar: full-bleed hairline, copyright left, checkout trust right -->
-  <div class="fn-base grain">
+  <div class="fn-base">
     <div class="wrap fn-base-inner">
       <p class="fn-meta">© {year} {site.name}</p>
       {site.salesOpen && (
@@ -91,14 +91,21 @@ const policies = [
 </section>
 
 <style>
-  /* sits at the very bottom of main, on the cream surface, framed by a top
-     hairline; the curtain footer reveals below it on scroll */
+  /* sits at the very bottom of main, on the nav's grained sand, framed by a
+     top hairline; the curtain footer reveals below it on scroll */
   .footer-nav {
     /* pull up 1px so this top hairline overlaps the preceding block's bottom
        rule instead of stacking into a doubled 2px line */
     margin-top: -1px;
     border-top: 1px solid var(--rule);
     padding-top: var(--space-2xl);
+    background: color-mix(in srgb, var(--warm) 18%, var(--cream));
+    --grain-opacity: 0.3;
+  }
+  /* the signup field is sand-on-cream elsewhere; on the sand band it flips to
+     cream so it still reads as a field */
+  .footer-nav :global(.signup-row) {
+    background: var(--cream);
   }
   .fn-cols {
     display: grid;
@@ -147,14 +154,12 @@ const policies = [
   .fn-col a:hover {
     color: var(--warm);
   }
-  /* base bar — outside .wrap so it runs edge to edge; cream like the link
-     columns above, with grain over it */
+  /* base bar — outside .wrap so it runs edge to edge; shares the band's sand
+     and grain, split off by a hairline */
   .fn-base {
     margin-top: var(--space-2xl);
     border-top: 1px solid var(--rule);
     padding: var(--space-md) 0;
-    background: var(--cream);
-    --grain-opacity: 0.3;
   }
   /* stacked (phones/tablets): centred — short trust line, logos, then
      copyright; the long sentence only shows on the one-row desktop bar */
