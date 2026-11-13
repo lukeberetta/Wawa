@@ -79,10 +79,9 @@ export const site = {
   // Set to null to remove the strip.
   announce: {
     id: 'shop-open-2026-11',
-    text: 'Our online shop is open',
-    cta: 'Shop now',
+    text: 'Online store now live 🎉',
     href: '/products',
-  } as { id: string; text: string; cta: string; href: string } | null,
+  } as { id: string; text: string; href: string } | null,
   // Featured event on the home page, directly under the hero (and its
   // VisualArtsEvent node in the page schema). Set to null once it's over.
   event: {
