@@ -19,3 +19,7 @@
 
 /*.webm
   Cache-Control: public, max-age=2592000
+
+# Calendar file for the home page event (src/pages/event.ics.ts).
+/event.ics
+  Content-Type: text/calendar; charset=utf-8

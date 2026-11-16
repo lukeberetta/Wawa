@@ -143,7 +143,7 @@ export function exhibition(e: SiteEvent) {
     name: e.title,
     performer: { '@type': 'Person', name: e.artist },
     description: e.blurb,
-    startDate: e.start,
+    startDate: e.opens ? `${e.start}T${e.opens}:00+02:00` : e.start,
     endDate: e.end,
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
@@ -159,7 +159,7 @@ export function exhibition(e: SiteEvent) {
       },
     },
     image: abs(e.image),
-    url: abs(e.href),
+    url: abs('/'), // announced on the home page
     organizer: ref(ORG_ID),
   };
 }

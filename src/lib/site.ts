@@ -6,12 +6,15 @@ export interface SiteEvent {
   blurb: string;
   start: string;
   end: string;
+  /** Opening time on the start day, 24h local (SAST), e.g. '18:00'. Optional. */
+  opens?: string;
+  /** Display line for the opening, under the dates in the home band. Optional. */
+  openingLine?: string;
   venue: string;
   street: string;
   locality: string;
   mapHref: string;
   cta: string;
-  href: string;
   image: string;
 }
 
@@ -87,21 +90,22 @@ export const site = {
   event: {
     title: 'First Monoprint Exhibition',
     artist: 'Cobus Joubert',
-    dates: '27–29 November',
+    dates: 'Friday 27 – Sunday 29 November',
     // Schema description only — the band itself stays to two lines of facts.
     blurb:
-      'Twelve monoprints by Wawa founder Cobus Joubert, each also an A3 poster, on paper or framed in timber.',
+      'Twelve monoprints by Wawa founder Cobus Joubert.',
     // ISO dates, for the schema node.
     start: '2026-11-27',
     end: '2026-11-29',
+    opens: '18:00', // Friday opening night
+    openingLine: 'Opening night Friday, 6pm',
     venue: 'Studio Muse',
     street: '136 Main Rd',
     locality: 'Kalk Bay',
     mapHref: 'https://www.google.com/maps/search/?api=1&query=Studio+Muse+136+Main+Rd+Kalk+Bay',
-    cta: 'Buy a print',
-    href: '/products/art-prints/monoprint-exhibition-posters',
+    cta: 'Add to calendar',
     // The scattered prints around the band are laid out in index.astro.
-    // Schema image stays the full poster.
+    // Schema image stays the full poster (the file outlived the poster product).
     image: '/img/product/monoprint-01.webp',
   } as SiteEvent | null,
   // Methods the Yoco gateway offers on Shopify's checkout. Icons in

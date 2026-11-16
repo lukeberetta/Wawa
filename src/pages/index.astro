@@ -113,12 +113,11 @@ const igTiles = [
   </section>
 
   <!-- EVENT (site.event — null removes it). One job: announce the show and
-       sell a print. Full-bleed artwork, the hand lettering as the headline,
+       send people to it. Full-bleed artwork, the hand lettering as the headline,
        facts kept to three short lines. Full schedule lives on the poster. -->
   {event && (
     <section id="event-home" class="grain" aria-labelledby="event-title">
-      <!-- decorative: the prints are for sale on the product page, where each
-           is described; here they're texture around the announcement -->
+      <!-- decorative: texture around the announcement -->
       {PRINTS.map((p) => {
         const src = `/img/event/print-${String(p.n).padStart(2, '0')}.webp`;
         return (
@@ -144,9 +143,10 @@ const igTiles = [
         </h2>
         <p class="event-facts">
           <span>{event.dates}</span>
+          {event.openingLine && <span>{event.openingLine}</span>}
           <a href={event.mapHref} target="_blank" rel="noopener noreferrer">{event.venue}, {event.locality}</a>
         </p>
-        <a href={event.href} class="event-btn">
+        <a href="/event.ics" class="event-btn" download="wawa-monoprint-exhibition.ics">
           {event.cta} <span aria-hidden="true">→</span>
         </a>
       </div>

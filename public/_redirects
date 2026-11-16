@@ -4,3 +4,5 @@
 /products/accessories/posters-and-prints /products/art-prints/heritage-prints 301
 /products/art-prints/posters-and-prints /products/art-prints/heritage-prints 301
 /products/accessories/spex-wave-photography /products/art-prints/spex-wave-photography 301
+# Monoprint posters withdrawn from sale (2026-11-16).
+/products/art-prints/monoprint-exhibition-posters /products?discipline=art-prints 301

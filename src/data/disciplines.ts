@@ -63,7 +63,7 @@ export const disciplines: Discipline[] = [
     title: 'Art & Prints',
     blurb: 'Prints, posters and wave photography, on paper or framed in timber.',
     intro:
-      'Art for the wall from the Wawa world: engravings and woodcuts, wave photography by Spex, and posters from Cobus Joubert’s monoprint exhibition. On paper, or framed in timber.',
+      'Art for the wall from the Wawa world: engravings and woodcuts and wave photography by Spex. On paper, or framed in timber.',
     hero: '/img/category/art-prints.webp',
     categories: [],
   },
