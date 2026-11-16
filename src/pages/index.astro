@@ -48,15 +48,6 @@ const printStyle = ({ x, y, w, r, m }: Print) =>
     m?.b !== undefined && `--mb:${m.b}rem`,
   ].filter(Boolean).join(';');
 
-// Home grid runs in its own order: Surf leads (it's the craft), then
-// accessories and art & prints, pulled up because they sell online. Nav,
-// footer and the products pills keep the plain `disciplines` order, so this
-// stays local. Any handle left out of the list falls to the end.
-const HOME_ORDER = ['surf', 'accessories', 'art-prints', 'foil', 'skate', 'kite', 'body-belly'];
-const homeDisciplines = [...disciplines].sort(
-  (a, b) =>
-    (HOME_ORDER.indexOf(a.handle) + 1 || Infinity) - (HOME_ORDER.indexOf(b.handle) + 1 || Infinity),
-);
 
 // Instagram mosaic. `area` maps each tile to a named cell in the desktop grid
 // (see #instagram CSS); `feat` is the large 2×2 centre. Stand-in imagery from
@@ -161,7 +152,8 @@ const igTiles = [
         <h2><a href="/products" class="title-link">Find your craft.</a></h2>
       </div>
       <div class="product-grid">
-        {homeDisciplines.map((d) => <CategoryCard discipline={d} />)}
+        {/* same order as the shop's discipline pills, nav and footer */}
+        {disciplines.map((d) => <CategoryCard discipline={d} />)}
       </div>
     </div>
   </section>
