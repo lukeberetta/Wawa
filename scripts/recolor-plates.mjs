@@ -54,6 +54,8 @@ const SETS = {
   mid: 'Mid', // Long Fish
   'big-bonzer-3': 'Mid',
   'mote-twin': 'Mid',
+  'gun-model': 'Mid',
+  'sailfish-twinzer': 'Mid',
   long: 'Long', // Model T
   'model-p': 'Long',
   'model-l': 'Long',

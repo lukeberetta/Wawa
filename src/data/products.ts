@@ -62,6 +62,8 @@ const moteTwin = studioSet('mote-twin');
 const evoEgg = studioSet('evo-egg');
 const bonzer5 = studioSet('bonzer-5');
 const needleFish = studioSet('needle-fish');
+const gunModel = studioSet('gun-model');
+const sailfish = studioSet('sailfish-twinzer');
 
 /** Cobus's monoprint exhibition posters, in design order (No. 1 = monoprint-01). */
 const MONOPRINTS = [
@@ -366,6 +368,69 @@ export const products: Product[] = [
         { label: 'Dimensions', value: '6′11″ × 21″ × 2¾″' },
         { label: 'Designer', value: 'Cobus Joubert' },
         { label: 'Material', value: 'Wood & cork, EPS core' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
+  {
+    // Placeholder copy until Cobus sends text. Name and dims from the
+    // laminate ("runner gun model").
+    id: 'mock/gun-model',
+    handle: 'gun-model',
+    title: 'Gun Model',
+    description:
+      'A 7′6″ single-fin with a pulled-in gun outline and a pinched tail, made for drive and hold when the waves get bigger. Wood and cork over an EPS core, 7′6″ × 21⅞″ × 2¹³⁄₁₆″. Talk to us about dimensions for your weight and the waves you ride.',
+    productType: 'Surf',
+    tags: ['Mid'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: zar('19500.00') },
+    images: [
+      gunModel.front('Wawa Gun Model deck in paulownia with cork rails and green inlay stripes'),
+      gunModel.back('Wawa Gun Model bottom with single fin'),
+      { url: '/img/product/gun-model-detail.webp', altText: 'Hand-drawn rainbow runner laminate on the Gun Model: "eps & wood, made to fly & last", 7\'6 x 21⅞ x 2 13/16", 2025' },
+    ],
+    specs: [
+      [
+        { label: 'Best For', value: 'Medium to overhead waves' },
+        { label: 'Board Feel', value: 'Drive and hold' },
+        { label: 'Skill Level', value: 'Intermediate to advanced' },
+      ],
+      [
+        { label: 'Dimensions', value: '7′6″ × 21⅞″ × 2¹³⁄₁₆″' },
+        { label: 'Fins', value: 'Single' },
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Wood & cork, EPS core' },
+        { label: 'Finish', value: 'Matte' },
+      ],
+    ],
+  },
+  {
+    // Placeholder copy until Cobus sends text. Name and dims from the laminate.
+    id: 'mock/sailfish-twinzer',
+    handle: 'sailfish-twinzer',
+    title: 'Sailfish Twinzer',
+    description:
+      'A 7′0″ fish with a swallow tail and a twinzer setup: two main fins with a small canard set just ahead of each, for extra drive and hold through turns without losing the loose feel of a twin. Wood over an EPS core, 7′0″ × 21¾″ × 2¼″. Talk to us about dimensions for your weight and the waves you ride.',
+    productType: 'Surf',
+    tags: ['Mid'],
+    availableForSale: false,
+    priceRange: { minVariantPrice: zar('19500.00') },
+    images: [
+      sailfish.front('Wawa Sailfish Twinzer deck in paulownia with red, yellow and blue resin tints and a swallow tail'),
+      sailfish.back('Wawa Sailfish Twinzer bottom with twinzer fins and a red resin tint'),
+      { url: '/img/product/sailfish-twinzer-detail.webp', altText: 'Hand-drawn sailfish laminate on the Sailfish Twinzer: 7\'0 x 21¾ x 2¼", wood & EPS, 2026' },
+    ],
+    specs: [
+      [
+        { label: 'Best For', value: 'Small to overhead waves' },
+        { label: 'Board Feel', value: 'Fast, with drive and hold' },
+        { label: 'Skill Level', value: 'Ask us about sizing for your experience' },
+      ],
+      [
+        { label: 'Dimensions', value: '7′0″ × 21¾″ × 2¼″' },
+        { label: 'Fins', value: 'Twinzer' },
+        { label: 'Designer', value: 'Cobus Joubert' },
+        { label: 'Material', value: 'Wood over EPS' },
         { label: 'Finish', value: 'Matte' },
       ],
     ],
