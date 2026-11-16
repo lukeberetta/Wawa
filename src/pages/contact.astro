@@ -13,11 +13,67 @@ const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
   `${site.name}, ${addressLine}`,
 )}`;
 
+// FAQ — one array feeds both the <details> list and the FAQPage schema.
+// Answers are HTML (a few links); the schema gets them with tags stripped.
+// Drafted from what's on record; TODO(Cobus) marks what he needs to confirm.
+const policy = (handle: string) => `https://${site.shopDomain}/policies/${handle}`;
+const faqs: { q: string; a: string }[] = [
+  {
+    q: 'How does ordering a custom board work?',
+    a: `It starts with a conversation, on <a href="${wa}" target="_blank" rel="noopener noreferrer">WhatsApp</a>, by <a href="mailto:${site.email}">email</a> or at the workshop. Tell us your weight, the waves you ride and how long you’ve been surfing, and we’ll shape the rest. The Enquire button on any board page gets it going.`,
+  },
+  {
+    // TODO(Cobus): lead time in weeks, and whether a deposit is taken.
+    q: 'How long does a board take?',
+    a: 'Every board is built to order by hand, so it depends on what’s on the racks. Ask us for the current lead time.',
+  },
+  {
+    q: 'Can I buy something off the rack?',
+    a: 'Accessories, skateboards, paipos, handslides, alaias and bodyboards sell <a href="/products">online</a>. Surfboards and foils are built to order, though a finished board at the workshop may be looking for a home.',
+  },
+  {
+    q: 'What are the boards made of?',
+    a: 'Paulownia and cork over an EPS core. Light, strong, and made to last years rather than a few seasons.',
+  },
+  {
+    q: 'What size should I get?',
+    a: 'Each board page lists the dimensions of one we’ve built. Yours is sized to your weight, your experience and your break, so talk to us before you settle on a number.',
+  },
+  {
+    // TODO(Cobus): how boards ship and what it costs — Shopify rates stop at 10 kg.
+    q: 'Do you ship?',
+    a: `Yes. Within South Africa by Courier Guy and worldwide by DHL Express, or collect your online order from the workshop for free. See the <a href="${policy('shipping-policy')}" target="_blank" rel="noopener noreferrer">shipping policy</a>.`,
+  },
+  {
+    q: 'Can I return something?',
+    a: `Online orders can be returned within 30 days; see the <a href="${policy('refund-policy')}" target="_blank" rel="noopener noreferrer">returns policy</a>. Custom boards are made for you, so if something’s not right, talk to us. Gift cards aren’t refundable, but you can pass them on.`,
+  },
+  {
+    // TODO(Cobus): care for the glassed paulownia boards — the oiling below is
+    // from the 2012 notes and fits raw timber (alaia, paipo, handslide) only.
+    q: 'How do I look after a wooden board?',
+    a: 'Not much is needed. Smooth any rough spots with 400-grit sandpaper. Re-oil solid-timber craft (alaias, paipos, handslides) with two coats of linseed oil and mineral spirits mixed 1:1. Fill dings with wood glue mixed with sawdust, or resin. Or bring it in and we’ll help.',
+  },
+  {
+    q: 'Can I visit the workshop?',
+    a: `Yes. We’re at ${street}, ${locality}, and the coffee’s on. <a href="#hours">Opening hours</a> are below.`,
+  },
+];
+const plain = (html: string) => html.replace(/<[^>]+>/g, '');
+
 const schema = [
   {
     '@type': 'ContactPage',
     name: 'Contact Wawa Surfboards',
     mainEntity: { '@id': ORG_ID },
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: plain(f.a) },
+    })),
   },
   breadcrumbs([{ name: 'Contact' }]),
 ];
@@ -25,7 +81,7 @@ const schema = [
 
 <Layout
   title="Contact · Wawa Surfboards"
-  description="Talk to the Wawa workshop about a custom wooden board. 166-168 Main Rd, Muizenberg, Cape Town — WhatsApp, email or knock on the door."
+  description="Talk to the Wawa workshop about a custom wooden board: lead times, sizing, shipping and care. 166-168 Main Rd, Muizenberg, Cape Town — WhatsApp, email or knock on the door."
   current="contact"
   schema={schema}
 >
@@ -45,6 +101,30 @@ const schema = [
 
     </div>
   </header>
+
+  <!-- FAQ — native <details>, no script. Same hairline-row pattern as the
+       order modal's optional sections. -->
+  <section id="faq" class="grain">
+    <div class="wrap faq-grid">
+      <div class="faq-head">
+        <p class="label">Questions</p>
+        <h2>Before you ask.</h2>
+      </div>
+      <div class="faq-body">
+      <div class="faq-list">
+        {faqs.map((f) => (
+          <details class="faq">
+            <summary>{f.q}</summary>
+            <p class="faq-a" set:html={f.a} />
+          </details>
+        ))}
+      </div>
+      <p class="faq-more">
+        Still wondering? <a href={wa} target="_blank" rel="noopener noreferrer">Message us <span aria-hidden="true">→</span></a>
+      </p>
+      </div>
+    </div>
+  </section>
 
   <!-- OPENING TIMES — a photographic band rather than a panel: the door is the
        thing you're being told to walk through. Same scrim + cream type as the
@@ -150,7 +230,97 @@ const schema = [
       width: auto;
     }
   }
+  /* ── FAQ ── */
+  /* its own grained sand band (same sand as the footer base bar and shop
+     filter strip), so it reads as a separate block from the cream hero */
+  #faq {
+    position: relative;
+    padding: var(--space-section) 0;
+    background: color-mix(in srgb, var(--warm) 18%, var(--cream));
+    --grain-opacity: 0.3;
+    border-top: 1px solid var(--rule);
+    scroll-margin-top: var(--nav-h);
+    /* .grain sets overflow:hidden, which makes this the sticky heading's
+       scroll container; clip still contains the grain without that */
+    overflow: clip;
+  }
+  #faq .wrap {
+    position: relative;
+    z-index: 2;
+  }
+  #faq h2 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    margin: 0.75rem 0 2rem;
+  }
+  /* desktop: heading left, questions right — a different shape from the
+     stacked hero above */
+  @media (min-width: 900px) {
+    .faq-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      gap: var(--grid-gap);
+      max-width: var(--grid-max);
+    }
+    .faq-head {
+      position: sticky;
+      top: calc(var(--nav-h) + var(--space-lg));
+      align-self: start;
+    }
+    #faq h2 {
+      margin-bottom: 0;
+    }
+  }
+  .faq-list {
+    max-width: 46rem;
+    border-top: 1px solid var(--rule);
+  }
+  .faq {
+    border-bottom: 1px solid var(--rule);
+  }
+  .faq summary {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1.15rem 0;
+    font-size: 1.05rem;
+    line-height: 1.35;
+    cursor: pointer;
+    list-style: none;
+  }
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq summary::after {
+    content: '+';
+    margin-left: auto;
+    font-size: 1.3rem;
+    line-height: 1;
+    color: var(--muted);
+  }
+  .faq[open] summary::after {
+    content: '−';
+  }
+  .faq-a {
+    max-width: 60ch;
+    padding: 0 2rem 1.4rem 0;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .faq-a :global(a),
+  .faq-more a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+  .faq-more {
+    margin-top: 1.75rem;
+    color: var(--muted);
+  }
   /* ── Opening times ── full-bleed photographic band ── */
+  #hours {
+    scroll-margin-top: var(--nav-h);
+  }
   #hours {
     position: relative;
     overflow: hidden;
