@@ -118,7 +118,7 @@ export const products: Product[] = [
       fish.back('Wawa Classic Fish, hull'),
       { url: '/img/product/classic-fish-detail.webp', altText: 'Hand-drawn swallow laminate on a Lis fish, "kites to sea", 6\'1 x 21¼ x 2¾", wood & cork over EPS, 2026' },
     ],
-    featured: 2,
+    featured: 3,
     // Spec table. Two blocks: performance, then build.
     specs: [
       [
@@ -274,7 +274,7 @@ export const products: Product[] = [
       speedEgg.back('Wawa Speed Egg bottom with single fin box'),
       { url: '/img/product/speed-egg-detail.webp', altText: 'Hand-drawn coelacanth laminate on a Speed Egg: "coelacanth egg", 8\'6 x 22½ x 2⅞", wood & EPS' },
     ],
-    featured: 4,
+    featured: 5,
     specs: [
       [
         { label: 'Best For', value: 'Small to overhead waves' },
@@ -581,6 +581,7 @@ export const products: Product[] = [
       modelL.back('Wawa Model L Longboard, hull'),
       { url: '/img/product/model-l-detail.webp', altText: 'Hand-drawn red octopus laminate on a Model L: "cuttlefish model L", "happy surfing Alex!", 2025' },
     ],
+    featured: 1,
     specs: [
       [
         { label: 'Best For', value: 'Small surf to serious' },
@@ -718,7 +719,7 @@ export const products: Product[] = [
         altText: 'Hand-drawn flying fish laminate on a Wave Foilboard: "tripod model foil", wood & EPS',
       },
     ],
-    featured: 6,
+    featured: 7,
     specs: [
       [
         { label: 'Best For', value: 'Open-ocean swell' },
@@ -905,7 +906,7 @@ export const products: Product[] = [
       handslide.front('Wawa handslide with red hand strap and burnt-in logo, held against a sunlit wall'),
       handslide.back('Wawa handslide underside with floral inlay under resin, swallow tail'),
     ],
-    featured: 1,
+    featured: 2,
     specs: [
       [
         { label: 'Best For', value: 'Bodysurfing' },
@@ -964,7 +965,7 @@ export const products: Product[] = [
       bodyboard.back('Wawa Bodyboard, hull'),
       { url: '/img/product/bodyboard-detail.webp', altText: 'Hand-drawn red stingray laminate on a bodyboard: "stingray boogie", 4\' x 19½", recycled EPS & wood, 2025' },
     ],
-    featured: 7,
+    featured: 8,
     specs: [
       [
         { label: 'Best For', value: 'Punchy beach breaks' },
@@ -1118,7 +1119,7 @@ export const products: Product[] = [
       carryall.front('Wawa canvas carryall with olive and rust straps, patch side'),
       carryall.back('Wawa canvas carryall, plain side'),
     ],
-    featured: 3,
+    featured: 4,
     specs: [
       [
         { label: 'Colour', value: 'Natural canvas, olive & rust straps' },
@@ -1316,7 +1317,7 @@ export const products: Product[] = [
         woodIsGood.back('Wawa Wood Is Good tee in navy, back print'),
       ],
     },
-    featured: 5,
+    featured: 6,
     specs: [
       [
         { label: 'Colour', value: 'Navy' },
